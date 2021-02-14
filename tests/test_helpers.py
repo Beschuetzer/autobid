@@ -241,5 +241,13 @@ class getHighCardPoints(unittest.TestCase):
         convention = 'Alternative'
         self.assertEqual(autobid.getHighCardPoints(hand, convention), 30.25)
 
+    def test_Error_NoHand(self):
+        convention = 'hcp'
+        self.assertEqual(autobid.getHighCardPoints(None, convention), -1)
+
+    def test_Error_NoConvention(self):
+        convention = 'hcp'
+        self.assertEqual(autobid.getHighCardPoints([1,2,3], None), -1)
+
 
 

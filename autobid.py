@@ -117,7 +117,7 @@ def getHighCardPoints(hand, clientPointCountingConvention):
     #input:
         #hand as 2d list (not flat)
         #clientPointCountingConvention as a string (either 'Alternative' or 'HCP')
-    # try:
+    try:
         if hand == None or clientPointCountingConvention == None:
             return -1
 
@@ -147,8 +147,8 @@ def getHighCardPoints(hand, clientPointCountingConvention):
             
         print(points)
         return points   
-    # except:
-        # return -2
+    except:
+        return -2
 #endregion
 
 
