@@ -128,17 +128,21 @@ def getHighCardPoints(hand, clientPointCountingConvention):
         points = 0
         for i in range(len(hand)):
             suit = hand[i]
+            # print(len(suit))
             for j in range(len(suit)):
-                cardValue = suit[j]
-                if cardValue % 13 == 8 and clientPointCountingConvention.lower() == 'alternative' and len(suit) >= suitLengthRequiredToCount['ten']:
+                # print(points)
+                # print(pointCountsToUse)
+                # print(suitLengthRequiredToCount)
+                cardValue = suit[j] % 13
+                if cardValue == 8 and clientPointCountingConvention.lower() == 'alternative' and len(suit) >= suitLengthRequiredToCount['ten']:
                     points += pointCountsToUse['ten']
-                if cardValue % 13 == 9 and len(suit) >= suitLengthRequiredToCount['jack']:
+                if cardValue == 9 and len(suit) >= suitLengthRequiredToCount['jack']:
                     points += pointCountsToUse['jack']
-                if cardValue % 13 == 10 and len(suit) >= suitLengthRequiredToCount['queen']:
+                if cardValue == 10 and len(suit) >= suitLengthRequiredToCount['queen']:
                     points += pointCountsToUse['queen']
-                if cardValue % 13 == 11 and len(suit) >= suitLengthRequiredToCount['king']:
+                if cardValue == 11 and len(suit) >= suitLengthRequiredToCount['king']:
                     points += pointCountsToUse['king']
-                if cardValue % 13 == 12:
+                if cardValue == 12:
                     points += pointCountsToUse['ace']
             
         print(points)
@@ -150,10 +154,10 @@ def getHighCardPoints(hand, clientPointCountingConvention):
 
 
 # print(autoBid(bids, 2, 0))
-clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
-diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
-hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
-spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+clubs = [i for i in range(0, 13) if i%13 != 11]
+diamonds = [i for i in range(13, 26) if i%13 != 10]
+hearts = [i for i in range(26, 39) if i%13 != 9]
+spades = [i for i in range(39, 52) if i%13 != 12]
 hand = [clubs, diamonds, hearts, spades]
 convention = 'HCP'
 print(hand)

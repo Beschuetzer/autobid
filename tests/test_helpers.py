@@ -75,7 +75,7 @@ class getPartnersBids(unittest.TestCase):
         self.assertListEqual(expected, ['Pass', 'Double'])
     
 class getHighCardPoints(unittest.TestCase):
-    def test_Normal_noHonors(self):
+    def test_Normal_None(self):
         clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
         diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
         hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
@@ -129,7 +129,117 @@ class getHighCardPoints(unittest.TestCase):
         convention = 'HCP'
         self.assertEqual(autobid.getHighCardPoints(hand, convention), 16)
 
+    def test_Normal_All(self):
+        clubs = [i for i in range(0, 13)]
+        diamonds = [i for i in range(13, 26)]
+        hearts = [i for i in range(26, 39)]
+        spades = [i for i in range(39, 52)]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'HCP'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 40)
+
+    def test_Normal_OneOfEach(self):
+        clubs = [i for i in range(0, 13) if i%13==12]
+        diamonds = [i for i in range(13, 26) if i%13==11]
+        hearts = [i for i in range(26, 39) if i%13==10]
+        spades = [i for i in range(39, 52) if i%13==9]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'HCP'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 4)
+
+    def test_Normal_AllButOneOfEach(self):
+        clubs = [i for i in range(0, 13) if i%13 != 11]
+        diamonds = [i for i in range(13, 26) if i%13 != 10]
+        hearts = [i for i in range(26, 39) if i%13 != 9]
+        spades = [i for i in range(39, 52) if i%13 != 12]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'HCP'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 30)
+
     
+
+
+
+    def test_Alternative_None(self):
+        clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'Alternative'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 0)
+
+    def test_Alternative_onlyTens(self):
+        clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9]
+        diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9]
+        hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9]
+        spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'Alternative'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 1)
+
+    def test_Alternative_onlyJacks(self):
+        clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+        diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+        hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+        spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'Alternative'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 3)
+    
+    def test_Alternative_onlyQueens(self):
+        clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 9 if i%13 != 8]
+        diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 9 if i%13 != 8]
+        hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 9 if i%13 != 8]
+        spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 11 if i%13 != 9 if i%13 != 8]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'Alternative'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 6)
+
+    def test_Alternative_onlyKings(self):
+        clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'Alternative'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 12)
+
+    def test_Alternative_onlyAces(self):
+        clubs = [i for i in range(0, 13) if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        diamonds = [i for i in range(13, 26) if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hearts = [i for i in range(26, 39) if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        spades = [i for i in range(39, 52) if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'Alternative'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 18)
+
+    def test_Alternative_All(self):
+        clubs = [i for i in range(0, 13)]
+        diamonds = [i for i in range(13, 26)]
+        hearts = [i for i in range(26, 39)]
+        spades = [i for i in range(39, 52)]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'Alternative'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 40)
+
+    def test_Alternative_OneOfEach(self):
+        clubs = [i for i in range(0, 13) if i%13==12]
+        diamonds = [i for i in range(13, 26) if i%13==11]
+        hearts = [i for i in range(26, 39) if i%13==10]
+        spades = [i for i in range(39, 52) if i%13==9]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'Alternative'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 4.5)
+
+    def test_Alternative_AllButOneOfEach(self):
+        clubs = [i for i in range(0, 13) if i%13 != 11]
+        diamonds = [i for i in range(13, 26) if i%13 != 10]
+        hearts = [i for i in range(26, 39) if i%13 != 9]
+        spades = [i for i in range(39, 52) if i%13 != 12]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'Alternative'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 30.25)
 
 
 
