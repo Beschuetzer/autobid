@@ -113,6 +113,7 @@ distributionPointValues = {
     },
 }
 #endregion
+
 def getHighCardPoints(hand, clientPointCountingConvention): 
     #input:
         #hand as 2d list (not flat)
@@ -149,6 +150,48 @@ def getHighCardPoints(hand, clientPointCountingConvention):
         return points   
     except:
         return -2
+
+def getDistributionPoints(hand):
+    try:
+        if hand == None:
+            return -1
+
+        suitCounts = {
+            "clubs": 0,
+            "diamonds":  0,
+            "hearts":  0,
+            "spades": 0,
+        }
+        
+        hasNonHighCard = {
+            "clubs": False,
+            "diamonds": False,
+            "hearts": False,
+            "spades": False,
+        }
+
+        for suit in hand:
+            suitName = getSuitFromCardAsNumber(suit[0])
+            suitCounts[suitName] = getDistributionPointsInSuit(suit)
+
+        return tallyUpTotal(suitCounts, hasNonHighCard)
+    except:
+        print(-2)
+
+def getDistributionPointsInSuit(suit):
+    #input: suit as list of ints
+    #return: int representing how man distriubtion points in that suit
+    pass
+
+def tallyUpTotal(suitCounts, hasNonHighCard):
+    #input: 
+        #suitCounts as a dictionary where keys are suitNames and values are ints representing how many of that suit
+        #hasNonHighCard as a dictionary where keys are suitNames and values are a boolean (true or false)
+    #return: int representing total distribution points in all 4 suits
+        
+    pass
+
+
 #endregion
 
 

@@ -8,14 +8,14 @@
         (heartsHasNonHighCard = false),
         (spadesHasNonHighCard = false);
       for (let i = 0; i < hand.length; i++) {
-        getSuitCounts(hand[i]);
+        getDistributionPointsInSuit(hand[i]);
       }
-      getDistributionPointsHelper();
+      tallyUpTotal();
     } catch (error) {
       console.error('error =', error);
     }
   }
-  function getSuitCounts(suit) {
+  function getDistributionPointsInSuit(suit) {
     try {
       if (suit === undefined || suit === null) return -1;
       for (let i = 0; i < suit.length; i++) {
@@ -51,7 +51,7 @@
       console.error('error =', error);
     }
   }
-  function getDistributionPointsHelper() {
+  function tallyUpTotal() {
     try {
       let points = 0;
       //===============================================================================
