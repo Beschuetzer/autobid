@@ -259,6 +259,7 @@ class tallyUpTotal(unittest.TestCase):
             "spades": 0,
         }
         self.assertEqual(autoBid.tallyUpTotal(suitCounts), 18)
+    
     def test_None(self):
         suitCounts = {
             "clubs": 4,
@@ -267,6 +268,7 @@ class tallyUpTotal(unittest.TestCase):
             "spades": 3,
         }
         self.assertEqual(autoBid.tallyUpTotal(suitCounts), 0)
+    
     def test_Singleton(self):
         suitCounts = {
             "clubs": 4,
@@ -275,6 +277,7 @@ class tallyUpTotal(unittest.TestCase):
             "spades": 1,
         }
         self.assertEqual(autoBid.tallyUpTotal(suitCounts), 2)
+    
     def test_Doubleton(self):
         suitCounts = {
             "clubs": 4,
@@ -283,6 +286,7 @@ class tallyUpTotal(unittest.TestCase):
             "spades": 2,
         }
         self.assertEqual(autoBid.tallyUpTotal(suitCounts), 1)
+    
     def test_FiveOfOne(self):
         suitCounts = {
             "clubs": 5,
@@ -291,6 +295,7 @@ class tallyUpTotal(unittest.TestCase):
             "spades": 3,
         }
         self.assertEqual(autoBid.tallyUpTotal(suitCounts), 1)
+    
     def test_Void(self):
         suitCounts = {
             "clubs": 4,
@@ -300,3 +305,77 @@ class tallyUpTotal(unittest.TestCase):
         }
         self.assertEqual(autoBid.tallyUpTotal(suitCounts), 3)
 
+class getDistributionPoints(unittest.TestCase):
+    def test_AllOneSuit(self):
+        clubs = [i for i in range(0, 13)]
+        diamonds = []
+        hearts = []
+        spades = []
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getDistributionPoints(hand), 18)
+    
+    def test_None(self):
+        clubLength = 4
+        diamondLength = 4
+        heartLength = 3
+        spadeLength = 3
+
+        clubs = [i for i in range(0, 0 + clubLength)]
+        diamonds = [i for i in range(13, 13 + diamondLength)]
+        hearts = [i for i in range(26, 26 + heartLength)]
+        spades = [i for i in range(39, 39 + spadeLength)]
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getDistributionPoints(hand), 0)
+    
+    def test_Void(self):
+        clubLength = 0
+        diamondLength = 4
+        heartLength = 4
+        spadeLength = 4
+
+        clubs = [i for i in range(0, 0 + clubLength)]
+        diamonds = [i for i in range(13, 13 + diamondLength)]
+        hearts = [i for i in range(26, 26 + heartLength)]
+        spades = [i for i in range(39, 39 + spadeLength)]
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getDistributionPoints(hand), 3)
+
+    def test_Singleton(self):
+        clubLength = 4
+        diamondLength = 1
+        heartLength = 3
+        spadeLength = 3
+
+        clubs = [i for i in range(0, 0 + clubLength)]
+        diamonds = [i for i in range(13, 13 + diamondLength)]
+        hearts = [i for i in range(26, 26 + heartLength)]
+        spades = [i for i in range(39, 39 + spadeLength)]
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getDistributionPoints(hand), 2)
+
+    def test_Doubleton(self):
+        clubLength = 4
+        diamondLength = 2
+        heartLength = 3
+        spadeLength = 3
+
+        clubs = [i for i in range(0, 0 + clubLength)]
+        diamonds = [i for i in range(13, 13 + diamondLength)]
+        hearts = [i for i in range(26, 26 + heartLength)]
+        spades = [i for i in range(39, 39 + spadeLength)]
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getDistributionPoints(hand), 1)
+
+    def test_FiveLong(self):
+        clubLength = 5
+        diamondLength = 4
+        heartLength = 3
+        spadeLength = 3
+
+        clubs = [i for i in range(0, 0 + clubLength)]
+        diamonds = [i for i in range(13, 13 + diamondLength)]
+        hearts = [i for i in range(26, 26 + heartLength)]
+        spades = [i for i in range(39, 39 + spadeLength)]
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getDistributionPoints(hand), 1)
+   

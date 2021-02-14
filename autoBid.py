@@ -164,17 +164,14 @@ def getDistributionPoints(hand):
         }
 
         for suit in hand:
+            if len(suit) == 0:
+                continue
             suitName = getSuitNameFromCardAsNumber(suit[0])
             suitCounts[suitName] = len(suit)
 
         return tallyUpTotal(suitCounts)
     except:
         print(-2)
-
-# def getDistributionPointsInSuit(suit):
-#     #input: suit as list of ints
-#     #return: int representing how man distriubtion points in that suit
-#     pass
 
 def tallyUpTotal(suitCounts):
     #input: suitCounts as a dictionary where keys are suit names and values are ints representing how many of that suit
@@ -202,11 +199,17 @@ def tallyUpTotal(suitCounts):
 
 
 # print(autoBid(bids, 2, 0))
+clubLength = 4
+diamondLength = 4
+heartLength = 3
+spadeLength = 3
 
-suitCounts = {
-    "clubs": 13,
-    "diamonds":  0,
-    "hearts":  0,
-    "spades": 0,
-}
-print(tallyUpTotal(suitCounts))
+
+clubs = [i for i in range(0, clubLength)]
+diamonds = [i for i in range(13, 13 + diamondLength)]
+hearts = [i for i in range(26, 26 + heartLength)]
+spades = [i for i in range(39, 39 + spadeLength)]
+
+hand = [clubs, diamonds, hearts, spades]
+print(hand)
+print(getDistributionPoints(hand))
