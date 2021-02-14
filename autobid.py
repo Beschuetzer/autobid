@@ -1,4 +1,6 @@
 #Purpose: make best bid taking into account cards in hand, previous bids, possibly score
+import helpers.getHandPoints
+
 '''
 Inputs:
     Hand: 2D array
@@ -16,7 +18,8 @@ def autoBid(incomingBids, hand, score):
     partnersBids = getPartnersBids(incomingBids)
 
     #get total hand point count based on partners bids and hand
-    
+    handPoints = getHandPoints(hand, partnersBids)
+
     #get all possible bids based on suit counts and hand points
 
     #remove bids from possible bids that meet one of the following conditions:
@@ -73,6 +76,13 @@ def getPartnersBids(incomingBids):
         i+=1
     print(bids)
     return bids
+
+def getHandPoints(hand, partnersBids):
+    #input: the hand and the bids partner has made up to this point from most current to least
+    #return: an integer represting the estimated value of the hand based on partner's bids
+
+    if len(partnersBids) == 0:
+        return getHandPointValue
 
 
 
