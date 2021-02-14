@@ -162,47 +162,51 @@ def getDistributionPoints(hand):
             "hearts":  0,
             "spades": 0,
         }
-        
-        hasNonHighCard = {
-            "clubs": False,
-            "diamonds": False,
-            "hearts": False,
-            "spades": False,
-        }
 
         for suit in hand:
             suitName = getSuitNameFromCardAsNumber(suit[0])
             suitCounts[suitName] = len(suit)
 
-        return tallyUpTotal(suitCounts, hasNonHighCard)
+        return tallyUpTotal(suitCounts)
     except:
         print(-2)
 
-def getDistributionPointsInSuit(suit):
-    #input: suit as list of ints
-    #return: int representing how man distriubtion points in that suit
-    pass
+# def getDistributionPointsInSuit(suit):
+#     #input: suit as list of ints
+#     #return: int representing how man distriubtion points in that suit
+#     pass
 
-def tallyUpTotal(suitCounts, hasNonHighCard):
-    #input: 
-        #suitCounts as a dictionary where keys are suitNames and values are ints representing how many of that suit
-        #hasNonHighCard as a dictionary where keys are suitNames and values are a boolean (true or false)
+def tallyUpTotal(suitCounts):
+    #input: suitCounts as a dictionary where keys are suit names and values are ints representing how many of that suit
     #return: int representing total distribution points in all 4 suits
-        
-    pass
+    try:
+        points = 0
+        print(suitCounts)
+        print(distributionPointValues)
+        for suit in suitCounts:
+            print(points)
+            if suitCounts[suit] == 0:
+                points += distributionPointValues['shortness']['void']
+            elif suitCounts[suit] == 1:
+                points += distributionPointValues['shortness']['singleton']
+            elif suitCounts[suit] == 2:
+                points += distributionPointValues['shortness']['doubleton']
+            elif suitCounts[suit] > 4:
+                points += suitCounts[suit] - 4
 
-
+        return points
+    except:
+        return -2       
 #endregion
 
 
 
 # print(autoBid(bids, 2, 0))
-# clubs = [i for i in range(0, 13) if i%13 != 11]
-# diamonds = [i for i in range(13, 26) if i%13 != 10]
-# hearts = [i for i in range(26, 39) if i%13 != 9]
-# spades = [i for i in range(39, 52) if i%13 != 12]
-# hand = [clubs, diamonds, hearts, spades]
-# convention = 'HCP'
-# print(hand)
-# print(getHighCardPoints(hand, convention))
 
+suitCounts = {
+    "clubs": 13,
+    "diamonds":  0,
+    "hearts":  0,
+    "spades": 0,
+}
+print(tallyUpTotal(suitCounts))
