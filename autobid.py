@@ -1,8 +1,7 @@
 #Purpose: make best bid taking into account cards in hand, previous bids, possibly score
 '''
 Inputs:
-    Hand: 2D array
-        Integers from 0-51
+    Hand: 2D array with four items (1st = clubs, 2nd = diamonds, 3rd = hearts, 4th = spades) containing integers from 0-51
     Incoming Bids: 2D array
         First index is name of bidder
         Second index is string representing the name of the bid i.e. 1 No Trump
@@ -10,8 +9,11 @@ Returns: "best" bid for current situation in the form of the original input (2D 
 '''
 bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass']]
 hand = [0, 1, 5, 7, 11, 13, 18, 19, 29, 30, 32, 40, 51]
+flatten = lambda t: [item for sublist in t for item in sublist]
 
 def autoBid(incomingBids, hand, score):
+    print(1)
+    print(flatten([[1,2,3],[4,5,6]]))
     #get partners bids
     partnersBids = getPartnersBids(incomingBids)
 
@@ -75,7 +77,73 @@ def getPartnersBids(incomingBids):
     return bids
 
 
+#region Hand Counting Stuff
+#region Initialization (Hard Coding Stuff)
+highCardPointValues = {
+    "hcp": {
+        "ace": 4,
+        "king": 3,
+        "queen": 2,
+        "jack": 1,
+    },
+    "alternative": {
+        "ace": 4.5,
+        "king": 3,
+        "queen": 1.5,
+        "jack": 0.75,
+        "ten": 0.25,
+    },
+}
+suitLengthRequiredToCount = {
+    "king": 2,
+    "queen": 3,
+    "jack": 4,
+    "ten": 5,
+}
+distributionPointValues = {
+    "shortness": {
+        "void": 3,
+        "singleton": 2,
+        "doubleton": 1,
+    },
+    "length": {
+        "fiveCardSuit": 1,
+        "sixCardsSuit": 2,
+        "sevenCardsSuit": 3,  
+    },
+}
+#endregion
+def getHighCardPoints(hand, clientPointCountingConvention): 
+    try:
+        if hand == None or clientPointCountingConvention == None:
+            return -1
+
+        pointCountsToUse = highCardPointValues.hcp
+        if clientPointCountingConvention['pointCountingConvention'].lower() == "alternative":
+            pointCountsToUse = highCardPointValues.alternative
+
+        points = 0
+        for i in range(len(hand)):
+            suit = hand[i]
+            for j in range(len(suit)):
+                cardValue = suit[j]
+                if cardValue % 13 == 8 and clientPointCountingConvention['pointCountingConvention'].lower() == 'alternative' and len(suit) >= suitLengthRequiredToCount['ten']:
+                    points += pointCountsToUse['ten']
+                if cardValue % 13 == 9 and len(suit) >= suitLengthRequiredToCount['jack']:
+                    points += pointCountsToUse['jack']
+                if cardValue % 13 == 10 and len(suit) >= suitLengthRequiredToCount['queen']:
+                    points += pointCountsToUse['queen']
+                if cardValue % 13 == 11 and len(suit) >= suitLengthRequiredToCount['king']:
+                    points += pointCountsToUse['king']
+                if cardValue % 13 == 12 and len(suit) >= suitLengthRequiredToCount['ace']:
+                    points += pointCountsToUse['ace']
+            
+        return points   
+    except:
+        return -2
+#endregion
 
 
-# print(autoBid(bids, 2, 0))
+
+print(autoBid(bids, 2, 0))
 
