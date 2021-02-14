@@ -49,17 +49,17 @@ def autoBid(incomingBids, hand, score):
 
 
 
-def getSuitFromCardAsNumber(cardAsNumber):
+def getSuitNameFromCardAsNumber(cardAsNumber):
     #input: integer 0 - 51
-    #return a suit ('club', 'diamond', 'heart' or 'spade')
+    #return a suit ('clubs', 'diamonds', 'hearts' or 'spades')
     if cardAsNumber >= 0 and cardAsNumber <= 12:
-        return 'club'
+        return 'clubs'
     elif cardAsNumber >= 13 and cardAsNumber <= 25:
-        return 'diamond'
+        return 'diamonds'
     elif cardAsNumber >= 26 and cardAsNumber <= 38:
-        return 'heart'
+        return 'hearts'
     elif cardAsNumber >= 39 and cardAsNumber <= 51:
-        return 'spade'
+        return 'spades'
     else: 
         return None
 
@@ -171,8 +171,8 @@ def getDistributionPoints(hand):
         }
 
         for suit in hand:
-            suitName = getSuitFromCardAsNumber(suit[0])
-            suitCounts[suitName] = getDistributionPointsInSuit(suit)
+            suitName = getSuitNameFromCardAsNumber(suit[0])
+            suitCounts[suitName] = len(suit)
 
         return tallyUpTotal(suitCounts, hasNonHighCard)
     except:
@@ -197,12 +197,12 @@ def tallyUpTotal(suitCounts, hasNonHighCard):
 
 
 # print(autoBid(bids, 2, 0))
-clubs = [i for i in range(0, 13) if i%13 != 11]
-diamonds = [i for i in range(13, 26) if i%13 != 10]
-hearts = [i for i in range(26, 39) if i%13 != 9]
-spades = [i for i in range(39, 52) if i%13 != 12]
-hand = [clubs, diamonds, hearts, spades]
-convention = 'HCP'
-print(hand)
-print(getHighCardPoints(hand, convention))
+# clubs = [i for i in range(0, 13) if i%13 != 11]
+# diamonds = [i for i in range(13, 26) if i%13 != 10]
+# hearts = [i for i in range(26, 39) if i%13 != 9]
+# spades = [i for i in range(39, 52) if i%13 != 12]
+# hand = [clubs, diamonds, hearts, spades]
+# convention = 'HCP'
+# print(hand)
+# print(getHighCardPoints(hand, convention))
 

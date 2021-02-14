@@ -5,21 +5,21 @@ import autobid
 
 class getSuitFromCardAsNumber(unittest.TestCase):
     def test_clubLow(self):
-        self.assertEqual(autobid.getSuitFromCardAsNumber(0), 'club')
+        self.assertEqual(autobid.getSuitNameFromCardAsNumber(0), 'clubs')
     def test_clubHigh(self):
-        self.assertEqual(autobid.getSuitFromCardAsNumber(12), 'club')
+        self.assertEqual(autobid.getSuitNameFromCardAsNumber(12), 'clubs')
     def test_diamondLow(self):
-        self.assertEqual(autobid.getSuitFromCardAsNumber(13), 'diamond')
+        self.assertEqual(autobid.getSuitNameFromCardAsNumber(13), 'diamonds')
     def test_diamondHigh(self):
-        self.assertEqual(autobid.getSuitFromCardAsNumber(25), 'diamond')
+        self.assertEqual(autobid.getSuitNameFromCardAsNumber(25), 'diamonds')
     def test_heartLow(self):
-        self.assertEqual(autobid.getSuitFromCardAsNumber(26), 'heart')
+        self.assertEqual(autobid.getSuitNameFromCardAsNumber(26), 'hearts')
     def test_heartHigh(self):
-        self.assertEqual(autobid.getSuitFromCardAsNumber(38), 'heart')
+        self.assertEqual(autobid.getSuitNameFromCardAsNumber(38), 'hearts')
     def test_spadeLow(self):
-        self.assertEqual(autobid.getSuitFromCardAsNumber(39), 'spade')
+        self.assertEqual(autobid.getSuitNameFromCardAsNumber(39), 'spades')
     def test_spadeHigh(self):
-        self.assertEqual(autobid.getSuitFromCardAsNumber(51), 'spade')
+        self.assertEqual(autobid.getSuitNameFromCardAsNumber(51), 'spades')
 
 class getPartnersBids(unittest.TestCase):
     # bidsExample = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass']]
