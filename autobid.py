@@ -114,20 +114,23 @@ distributionPointValues = {
 }
 #endregion
 def getHighCardPoints(hand, clientPointCountingConvention): 
-    try:
+    #input:
+        #hand as 2d list (not flat)
+        #clientPointCountingConvention as a string (either 'Alternative' or 'HCP')
+    # try:
         if hand == None or clientPointCountingConvention == None:
             return -1
 
-        pointCountsToUse = highCardPointValues.hcp
-        if clientPointCountingConvention['pointCountingConvention'].lower() == "alternative":
-            pointCountsToUse = highCardPointValues.alternative
+        pointCountsToUse = highCardPointValues["hcp"]
+        if clientPointCountingConvention.lower() == "alternative":
+            pointCountsToUse = highCardPointValues["alternative"]
 
         points = 0
         for i in range(len(hand)):
             suit = hand[i]
             for j in range(len(suit)):
                 cardValue = suit[j]
-                if cardValue % 13 == 8 and clientPointCountingConvention['pointCountingConvention'].lower() == 'alternative' and len(suit) >= suitLengthRequiredToCount['ten']:
+                if cardValue % 13 == 8 and clientPointCountingConvention.lower() == 'alternative' and len(suit) >= suitLengthRequiredToCount['ten']:
                     points += pointCountsToUse['ten']
                 if cardValue % 13 == 9 and len(suit) >= suitLengthRequiredToCount['jack']:
                     points += pointCountsToUse['jack']
@@ -135,15 +138,24 @@ def getHighCardPoints(hand, clientPointCountingConvention):
                     points += pointCountsToUse['queen']
                 if cardValue % 13 == 11 and len(suit) >= suitLengthRequiredToCount['king']:
                     points += pointCountsToUse['king']
-                if cardValue % 13 == 12 and len(suit) >= suitLengthRequiredToCount['ace']:
+                if cardValue % 13 == 12:
                     points += pointCountsToUse['ace']
             
+        print(points)
         return points   
-    except:
-        return -2
+    # except:
+        # return -2
 #endregion
 
 
 
-print(autoBid(bids, 2, 0))
+# print(autoBid(bids, 2, 0))
+clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+hand = [clubs, diamonds, hearts, spades]
+convention = 'HCP'
+print(hand)
+print(getHighCardPoints(hand, convention))
 

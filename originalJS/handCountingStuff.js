@@ -1,41 +1,4 @@
-   function getHighCardPoints(hand) {
-    try {
-      let pointCountsToUse = highCardPointValues.hcp;
-      if (
-        clientPreferences.pointCountingConvention.toLowerCase() === "alternative"
-      ) {
-        pointCountsToUse = highCardPointValues.alternative;
-      }
-
-      if (hand === undefined || hand === null) return -1;
-      let points = 0;
-      for (let i = 0; i < hand.length; i++) {
-        const suit = hand[i];
-        for (let j = 0; j < suit.length; j++) {
-          const cardValue = suit[j];
-          if (
-            cardValue % 13 === 8 &&
-            clientPreferences.pointCountingConvention.toLowerCase() ===
-              "alternative" && suit.length >= suitLengthRequiredToCount.ten
-          ) {
-            points += pointCountsToUse.ten;
-          } else if (cardValue % 13 === 9 && suit.length >= suitLengthRequiredToCount.jack) {
-            points += pointCountsToUse.jack;
-          } else if (cardValue % 13 === 10 && suit.length >= suitLengthRequiredToCount.queen) {
-            points += pointCountsToUse.queen;
-          } else if (cardValue % 13 === 11 && suit.length >= suitLengthRequiredToCount.king) {
-            points += pointCountsToUse.king;
-          } else if (cardValue % 13 === 12) {
-            points += pointCountsToUse.ace;
-          }
-        }
-        highCardPoints = points;
-        highCardPointsLabel.innerHTML = points;
-      }
-    } catch (error) {
-      console.error('error =', error);
-    }
-  }
+ 
   function getDistributionPoints(hand) {
     try {
       if (hand === undefined || hand === null) return -1;

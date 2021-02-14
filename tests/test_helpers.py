@@ -74,11 +74,62 @@ class getPartnersBids(unittest.TestCase):
         expected = autobid.getPartnersBids(bids)
         self.assertListEqual(expected, ['Pass', 'Double'])
     
+class getHighCardPoints(unittest.TestCase):
+    def test_Normal_noHonors(self):
+        clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'HCP'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 0)
 
+    def test_Normal_onlyTens(self):
+        clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9]
+        diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9]
+        hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9]
+        spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'HCP'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 0)
 
+    def test_Normal_onlyJacks(self):
+        clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+        diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+        hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+        spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 8]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'HCP'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 4)
+    
+    def test_Normal_onlyQueens(self):
+        clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 9 if i%13 != 8]
+        diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 11 if i%13 != 9 if i%13 != 8]
+        hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 11 if i%13 != 9 if i%13 != 8]
+        spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 11 if i%13 != 9 if i%13 != 8]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'HCP'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 8)
 
+    def test_Normal_onlyKings(self):
+        clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        diamonds = [i for i in range(13, 26) if i%13 != 12 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hearts = [i for i in range(26, 39) if i%13 != 12 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        spades = [i for i in range(39, 52) if i%13 != 12 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'HCP'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 12)
 
+    def test_Normal_onlyAces(self):
+        clubs = [i for i in range(0, 13) if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        diamonds = [i for i in range(13, 26) if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hearts = [i for i in range(26, 39) if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        spades = [i for i in range(39, 52) if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
+        hand = [clubs, diamonds, hearts, spades]
+        convention = 'HCP'
+        self.assertEqual(autobid.getHighCardPoints(hand, convention), 16)
 
+    
 
 
 
