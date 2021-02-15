@@ -379,3 +379,28 @@ class getDistributionPoints(unittest.TestCase):
         hand = [clubs, diamonds, hearts, spades]
         self.assertEqual(autoBid.getDistributionPoints(hand), 1)
    
+class getCurrentActualBid(unittest.TestCase):
+    def test_Normal(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        expected = autoBid.getCurrentActualBid(bids)
+        actual = ['Ann', '3 Club']
+        self.assertListEqual(expected, actual)
+    
+    def test_LowerCase(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', '2 No Trump'], ['Tim', 'double'], ['Ann', 'pass'], ['Andrew', 'pass']]
+        expected = autoBid.getCurrentActualBid(bids)
+        actual = ['Adam', '2 No Trump']
+        self.assertListEqual(expected, actual)
+
+    def test_UpperCase(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', '2 NO TRUMP'], ['Tim', 'DOUBLE'], ['Ann', 'PASS'], ['Andrew', 'PASS']]
+        expected = autoBid.getCurrentActualBid(bids)
+        actual = ['Adam', '2 NO TRUMP']
+        self.assertListEqual(expected, actual)
+
+    def test_Empty(self):
+        bids = []
+        expected = autoBid.getCurrentActualBid(bids)
+        actual = None
+        self.assertEqual(expected, actual)
+

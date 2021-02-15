@@ -7,15 +7,20 @@ Inputs:
         Second index is string representing the name of the bid i.e. 1 No Trump
 Returns: "best" bid for current situation in the form of the original input (2D array or string)
 '''
-bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass']]
-hand = [0, 1, 5, 7, 11, 13, 18, 19, 29, 30, 32, 40, 51]
+
+import re
+
+#Examples of inputs
+bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+hand = [[0, 1, 5, 7, 11], [13, 18, 19], [29, 30, 32], [40, 51]]
 flatten = lambda t: [item for sublist in t for item in sublist]
 
-def autoBid(incomingBids, hand, score):
-    print(1)
-    print(flatten([[1,2,3],[4,5,6]]))
-    #get partners bids
+def autoBid(incomingBids, hand, scoring):
+    isFirstBid = len(incomingBids) < 4
+    partnerHasBid = len(incomingBids) >= 2
+    currentActualBid = getCurrentActualBid(incomingBids)
     partnersBids = getPartnersBids(incomingBids)
+    partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
 
     #add a function to check whether should double
 
@@ -74,12 +79,21 @@ def getPartnersBids(incomingBids):
     i = 1
     for bid in reversed(incomingBids):
         if i % 2 == 0 and i % 4 != 0:
-            # print(bid)
             bids.append(bid[1])
         i+=1
-    print(bids)
     return bids
 
+def getPartnersEstimatedPointCount(partnersBids):
+    #input: partnersBids in reverse chronological order (1st index is most recent)
+    #return: a list where the first index represents the lowest point count possible and the 2nd index the highest?
+    pass
+
+def getCurrentActualBid(incomingBids):
+    #input: all bids up to now
+    #return: the last bid made that is not double or pass
+    for bid in reversed(incomingBids):
+        if re.search('pass', bid[1], re.IGNORECASE) is None and re.search('double', bid[1], re.IGNORECASE) is None:
+            return bid
 
 #region Hand Counting Stuff
 #region Initialization (Hard Coding Stuff)
@@ -200,20 +214,19 @@ def tallyUpTotal(suitCounts):
         return -2       
 #endregion
 
+print(autoBid(bids, 2, 0))
+
+# clubLength = 4
+# diamondLength = 4
+# heartLength = 3
+# spadeLength = 3
 
 
-# print(autoBid(bids, 2, 0))
-clubLength = 4
-diamondLength = 4
-heartLength = 3
-spadeLength = 3
+# clubs = [i for i in range(0, clubLength)]
+# diamonds = [i for i in range(13, 13 + diamondLength)]
+# hearts = [i for i in range(26, 26 + heartLength)]
+# spades = [i for i in range(39, 39 + spadeLength)]
 
-
-clubs = [i for i in range(0, clubLength)]
-diamonds = [i for i in range(13, 13 + diamondLength)]
-hearts = [i for i in range(26, 26 + heartLength)]
-spades = [i for i in range(39, 39 + spadeLength)]
-
-hand = [clubs, diamonds, hearts, spades]
-print(hand)
-print(getDistributionPoints(hand))
+# hand = [clubs, diamonds, hearts, spades]
+# print(hand)
+# print(getDistributionPoints(hand))
