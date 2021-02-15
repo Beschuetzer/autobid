@@ -17,6 +17,10 @@ def autoBid(incomingBids, hand, score):
     #get partners bids
     partnersBids = getPartnersBids(incomingBids)
 
+    #add a function to check whether should double
+
+    #don't pass when have close to openers and a partial and you are third or fourth bidder and all previous bids are passes
+
     #get total hand point count based on partners bids and hand
     
     #get all possible bids based on suit counts and hand points
