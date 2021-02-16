@@ -5,26 +5,62 @@ Inputs:
     Incoming Bids: 2D array
         First index is name of bidder
         Second index is string representing the name of the bid i.e. 1 No Trump
-Returns: "best" bid for current situation in the form of the original input (2D array or string)
+Returns: "best" bid for current situation in the form of a string
 '''
 
 import re
 
 #Examples of inputs
-bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
-hand = [[0, 1, 5, 7, 11], [13, 18, 19], [29, 30, 32], [40, 51]]
+scoring = {
+    "northSouth": {
+        "totalScore": 150,   #this is the total including 'below'
+        "below": 0,
+    },
+    "eastWest": {
+        "totalScore": 350,   #this is the total including 'below'
+        "below": 40,
+    },
+}
+bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', 'Double'], ['Andrew', '3 Club']]
+hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
 flatten = lambda t: [item for sublist in t for item in sublist]
 
-def autoBid(incomingBids, hand, scoring):
+def autoBid(incomingBids, hand, scoring, clientPointCountingConvention):
     isFirstBid = len(incomingBids) < 4
     partnerHasBid = len(incomingBids) >= 2
     currentActualBid = getCurrentActualBid(incomingBids)
+    
     partnersBids = getPartnersBids(incomingBids)
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
 
-    #add a function to check whether should double
+    #Check whether to double and return double if true
+    canDouble = getCanDouble(incomingBids, partnersEstimatedPointCount)
+    shouldDouble = getShouldDouble(canDouble, scoring)
+    if shouldDouble is True:
+        return 'Double'
 
-    #don't pass when have close to openers and a partial and you are third or fourth bidder and all previous bids are passes
+    #get straight up point counts
+    highCardPoints = getHighCardPoints(hand, clientPointCountingConvention)
+    distributionPoints = getDistributionPoints(hand)
+    totalPoints = highCardPoints + distributionPoints
+    print('totalPoints = {0}'.format(totalPoints))
+
+    #responding to takeout dbl if applicable otherwise passing if less than 6 points total and is first bid
+    if len(partnersBids) == 1 and re.search('Double', partnersBids[0], re.IGNORECASE): 
+        #TODO: respond to partner bidding double first
+        
+        #must bid if person before you passed
+        mustBid = re.search('pass', incomingBids[-1][1], re.IGNORECASE)
+
+        #pass only if you have less than 6 points and not obliged to bid      
+        if totalPoints < 6 and mustBid is None:
+            return 'Pass'
+        else:
+            return getStrongestSuit(hand)
+    elif (totalPoints <6 and isFirstBid):
+        return 'Pass'
+
+    #don't pass when have close to openers and a partial and you are third or fourth bidder and all previous bids are passes?
 
     #get total hand point count based on partners bids and hand
     
@@ -45,18 +81,44 @@ def autoBid(incomingBids, hand, scoring):
 
     #analyze they's bids
 
-
-
-    # for cardAsNumber in hand:
-    #     suit = getSuitFromCardAsNumber(somethingElse)
-    #     print(sui
-
-
     outgoingBid = None
     return outgoingBid
 
+def getStrongestSuit(hand):
+    #input: hand as 2D array 
+    #return: 'clubs'/'diamonds'/'hearts'/'spades' depending on which one is the 'strongest'
+    pass
 
+def getPartnersEstimatedPointCount(partnersBids):
+    #input: partnersBids in reverse chronological order (1st index is most recent)
+    #return: a list where the first index represents the lowest point count possible and the 2nd index the highest?
+    pass
 
+def getCanDouble(incomingBids, partnersEstimatedPointCount):
+    #inputs: all bids made and partner's estimated point count
+    #return: true or false representing whether a double bid is feasible
+
+    #figure out a range of how many tricks partners could win based on estimated point count
+
+    #how to evaluate a void/singleton in the contract suit?
+
+    #estimate a range of how many tricks you could win (best case and worst case)
+
+    #if your estimated trick count + partners is >= tricks needed to set return true else false
+    pass
+
+def getShouldDouble(canDouble, scoring):
+    #inputs: 
+    #   canDouble - whether double is 'possible'
+    #   scoring - an obj/dictionary representing the scores
+    #returns: true or false representing whether it is better to double than to bid higher
+
+    #return if you can't double
+    if canDouble is False:
+        return
+
+    #consider total score and current game's below the line score to determine whether doubling is better than bidding something else 
+    pass
 
 def getSuitNameFromCardAsNumber(cardAsNumber):
     #input: integer 0 - 51
@@ -82,11 +144,6 @@ def getPartnersBids(incomingBids):
             bids.append(bid[1])
         i+=1
     return bids
-
-def getPartnersEstimatedPointCount(partnersBids):
-    #input: partnersBids in reverse chronological order (1st index is most recent)
-    #return: a list where the first index represents the lowest point count possible and the 2nd index the highest?
-    pass
 
 def getCurrentActualBid(incomingBids):
     #input: all bids up to now
@@ -147,11 +204,7 @@ def getHighCardPoints(hand, clientPointCountingConvention):
         points = 0
         for i in range(len(hand)):
             suit = hand[i]
-            # print(len(suit))
             for j in range(len(suit)):
-                # print(points)
-                # print(pointCountsToUse)
-                # print(suitLengthRequiredToCount)
                 cardValue = suit[j] % 13
                 if cardValue == 8 and clientPointCountingConvention.lower() == 'alternative' and len(suit) >= suitLengthRequiredToCount['ten']:
                     points += pointCountsToUse['ten']
@@ -164,7 +217,6 @@ def getHighCardPoints(hand, clientPointCountingConvention):
                 if cardValue == 12:
                     points += pointCountsToUse['ace']
             
-        print(points)
         return points   
     except:
         return -2
@@ -196,10 +248,7 @@ def tallyUpTotal(suitCounts):
     #return: int representing total distribution points in all 4 suits
     try:
         points = 0
-        print(suitCounts)
-        print(distributionPointValues)
         for suit in suitCounts:
-            print(points)
             if suitCounts[suit] == 0:
                 points += distributionPointValues['shortness']['void']
             elif suitCounts[suit] == 1:
@@ -214,7 +263,7 @@ def tallyUpTotal(suitCounts):
         return -2       
 #endregion
 
-print(autoBid(bids, 2, 0))
+print(autoBid(bids, hand, scoring, 'hcp'))
 
 # clubLength = 4
 # diamondLength = 4
