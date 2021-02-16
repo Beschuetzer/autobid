@@ -21,7 +21,7 @@ scoring = {
         "below": 40,
     },
 }
-bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', 'Double'], ['Andrew', '3 Club']]
+bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
 hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
 flatten = lambda t: [item for sublist in t for item in sublist]
 
@@ -29,7 +29,7 @@ def autoBid(incomingBids, hand, scoring, clientPointCountingConvention):
     isFirstBid = len(incomingBids) < 4
     partnerHasBid = len(incomingBids) >= 2
     currentActualBid = getCurrentActualBid(incomingBids)
-    
+    theyBids = getTheyBids(incomingBids)
     partnersBids = getPartnersBids(incomingBids)
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
 
@@ -45,20 +45,14 @@ def autoBid(incomingBids, hand, scoring, clientPointCountingConvention):
     totalPoints = highCardPoints + distributionPoints
     print('totalPoints = {0}'.format(totalPoints))
 
-    #responding to takeout dbl if applicable otherwise passing if less than 6 points total and is first bid
-    if len(partnersBids) == 1 and re.search('Double', partnersBids[0], re.IGNORECASE): 
-        #TODO: respond to partner bidding double first
-        
-        #must bid if person before you passed
-        mustBid = re.search('pass', incomingBids[-1][1], re.IGNORECASE)
+    result = handleTakeoutDouble(hand, incomingBids, partnersBids, theyBids, totalPoints) 
+    if result is not True:
+        return result
 
-        #pass only if you have less than 6 points and not obliged to bid      
-        if totalPoints < 6 and mustBid is None:
-            return 'Pass'
-        else:
-            return getStrongestSuit(hand)
-    elif (totalPoints <6 and isFirstBid):
+    #pass if less than 6 points and first bid
+    if (totalPoints < 6 and isFirstBid):
         return 'Pass'
+
 
     #don't pass when have close to openers and a partial and you are third or fourth bidder and all previous bids are passes?
 
@@ -84,9 +78,14 @@ def autoBid(incomingBids, hand, scoring, clientPointCountingConvention):
     outgoingBid = None
     return outgoingBid
 
-def getStrongestSuit(hand):
+def getStrongestSuit(theysBids, hand):
     #input: hand as 2D array 
-    #return: 'clubs'/'diamonds'/'hearts'/'spades' depending on which one is the 'strongest'
+    #return: 'clubs'/'diamonds'/'hearts'/'spades'/'no trump' depending on which one is the 'strongest' and which suits have already been mentioned
+
+    #check already mentioned suits
+
+    #return strongest of unmentioned suits
+
     pass
 
 def getPartnersEstimatedPointCount(partnersBids):
@@ -134,6 +133,12 @@ def getSuitNameFromCardAsNumber(cardAsNumber):
     else: 
         return None
 
+def getTheyBids(incomingBids):
+    #input: all bids
+    #returns: the bids that are not made by you or partner
+
+    pass
+
 def getPartnersBids(incomingBids):
     #input: all the bids made
     #return an array of bid names representing the bids your partner has made up to now.  the first index is the most recent bid and the last index is the first bid
@@ -152,6 +157,16 @@ def getCurrentActualBid(incomingBids):
         if re.search('pass', bid[1], re.IGNORECASE) is None and re.search('double', bid[1], re.IGNORECASE) is None:
             return bid
 
+def handleTakeoutDouble(hand, incomingBids, partnersBids, theyBids, totalPoints):
+    #responding to takeout dbl if applicable otherwise passing if less than 6 points total and is first bid
+    if len(partnersBids) == 1 and re.search('Double', partnersBids[0], re.IGNORECASE): 
+        mustBid = re.search('pass', incomingBids[-1][1], re.IGNORECASE)
+        if totalPoints < 6 and mustBid is None:
+            return 'Pass'
+        else:
+            return getStrongestSuit(hand, theyBids)
+    else:
+        return True
 #region Hand Counting Stuff
 #region Initialization (Hard Coding Stuff)
 highCardPointValues = {
