@@ -53,7 +53,6 @@ def autoBid(incomingBids, hand, scoring, clientPointCountingConvention):
     if (totalPoints < 6 and isFirstBid):
         return 'Pass'
 
-
     #don't pass when have close to openers and a partial and you are third or fourth bidder and all previous bids are passes?
 
     #get total hand point count based on partners bids and hand
