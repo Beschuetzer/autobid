@@ -135,8 +135,12 @@ def getSuitNameFromCardAsNumber(cardAsNumber):
 def getTheyBids(incomingBids):
     #input: all bids
     #returns: the bids that are not made by you or partner
+    theyBids = [];
+    for bid in incomingBids:
+        if bid % 2 == 1:
+            theyBids.append(bid)
 
-    pass
+    return theyBids
 
 def getPartnersBids(incomingBids):
     #input: all the bids made

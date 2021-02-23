@@ -404,3 +404,7 @@ class getCurrentActualBid(unittest.TestCase):
         actual = None
         self.assertEqual(expected, actual)
 
+class getTheyBids(unittest.TestCase):
+    def test_empty(self):
+        input = []
+        self.assertListEqual(input, [1])
