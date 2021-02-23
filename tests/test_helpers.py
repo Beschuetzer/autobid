@@ -1,4 +1,5 @@
 import unittest
+from unittest.case import expectedFailure
 import autoBid
 
 
@@ -249,7 +250,6 @@ class getHighCardPoints(unittest.TestCase):
         convention = 'hcp'
         self.assertEqual(autoBid.getHighCardPoints([1,2,3], None), -1)
 
-
 class tallyUpTotal(unittest.TestCase):
     def test_AllOneSuit(self):
         suitCounts = {
@@ -406,5 +406,21 @@ class getCurrentActualBid(unittest.TestCase):
 
 class getTheyBids(unittest.TestCase):
     def test_empty(self):
-        input = []
-        self.assertListEqual(input, [1])
+        testCase = autoBid.getTheyBids([])
+        self.assertListEqual(testCase, [])
+    def test_three(self):
+        bids = [["Tim", "Pass"], ["Dan", "Pass"], ["James", "Pass"]]
+        expected = [["Tim", "Pass"], ["James", "Pass"]]
+        testCase = autoBid.getTheyBids(bids)
+        self.assertListEqual(testCase, expected)
+    def test_four(self):
+        bids = [["Tim", "Pass"], ["Dan", "Pass"], ["James", "Pass"], ['Adam', 'One Club']]
+        expected = [["Dan", "Pass"], ['Adam', 'One Club']]
+        testCase = autoBid.getTheyBids(bids)
+        self.assertListEqual(testCase, expected)
+    def test_eight(self):
+        bids = [["Tim", "Pass"], ["Dan", "Pass"], ["James", "Pass"], ['Adam', 'One Club'],["Tim", "One No Trump"], ["Dan", "Pass"], ["James", "Pass"], ['Adam', 'Two Spades']]
+        expected = [["Dan", "Pass"], ['Adam', 'One Club'], ["Dan", "Pass"], ['Adam', 'Two Spades']]
+        testCase = autoBid.getTheyBids(bids)
+        self.assertListEqual(testCase, expected)
+        

@@ -5,6 +5,7 @@ Inputs:
     Incoming Bids: 2D array
         First index is name of bidder
         Second index is string representing the name of the bid i.e. 1 No Trump
+        Is in chronological order
 Returns: "best" bid for current situation in the form of a string
 '''
 
@@ -29,7 +30,7 @@ def autoBid(incomingBids, hand, scoring, clientPointCountingConvention):
     isFirstBid = len(incomingBids) < 4
     partnerHasBid = len(incomingBids) >= 2
     currentActualBid = getCurrentActualBid(incomingBids)
-    theyBids = getTheyBids(incomingBids)
+    # theyBids = getTheyBids(incomingBids)
     partnersBids = getPartnersBids(incomingBids)
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
 
@@ -45,9 +46,9 @@ def autoBid(incomingBids, hand, scoring, clientPointCountingConvention):
     totalPoints = highCardPoints + distributionPoints
     print('totalPoints = {0}'.format(totalPoints))
 
-    result = handleTakeoutDouble(hand, incomingBids, partnersBids, theyBids, totalPoints) 
-    if result is not True:
-        return result
+    # result = handleTakeoutDouble(hand, incomingBids, partnersBids, theyBids, totalPoints) 
+    # if result is not True:
+    #     return result
 
     #pass if less than 6 points and first bid
     if (totalPoints < 6 and isFirstBid):
@@ -135,11 +136,13 @@ def getSuitNameFromCardAsNumber(cardAsNumber):
 def getTheyBids(incomingBids):
     #input: all bids
     #returns: the bids that are not made by you or partner
-    theyBids = [];
-    for bid in incomingBids:
-        if bid % 2 == 1:
-            theyBids.append(bid)
+    theyBids = []
+    for index, bid in enumerate(reversed(incomingBids)):
+        if index % 2 == 0:
+            theyBids.insert(0, bid)
 
+
+    print('theyBids = {0}'.format(theyBids))
     return theyBids
 
 def getPartnersBids(incomingBids):
