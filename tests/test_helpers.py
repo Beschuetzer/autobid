@@ -552,7 +552,6 @@ class getRotationsAround(unittest.TestCase):
         expected = 'east'
         self.assertEqual(actual, expected)
 
-
 class getRelativeLocationFromSpot(unittest.TestCase):
     def test_self(self):
         usersSpot = 'east'
@@ -609,6 +608,88 @@ class getRelativeLocationFromSpot(unittest.TestCase):
         expected = 'right'
         self.assertEqual(expected, actual)
     
+class getBiddingObjRelative(unittest.TestCase):
+    def test_north(self):
+        spot = 'north'
+        biddingObjAbsolute = {
+            "north": ['Pass', 'Double'],
+            "east": ['Double', '1 Heart'],
+            "south": ['Pass', '1 Spade'],
+            "west": ['1 Diamond', '2 Diamond'],
+        }
+        expected = {
+            "bottom": ['Pass', 'Double'],
+            "left": ['Double', '1 Heart'],
+            "top": ['Pass', '1 Spade'],
+            "right": ['1 Diamond', '2 Diamond'],
+        }
+        actual = autoBid.getBiddingObjRelative(biddingObjAbsolute, spot)
+        self.assertDictEqual(expected, actual)
+    def test_south(self):
+        spot = 'south'
+        biddingObjAbsolute = {
+            "north": ['Pass', 'Double'],
+            "east": ['Double', '1 Heart'],
+            "south": ['Pass', '1 Spade'],
+            "west": ['1 Diamond', '2 Diamond'],
+        }
+        expected = {
+            "top": ['Pass', 'Double'],
+            "right": ['Double', '1 Heart'],
+            "bottom": ['Pass', '1 Spade'],
+            "left": ['1 Diamond', '2 Diamond'],
+        }
+        actual = autoBid.getBiddingObjRelative(biddingObjAbsolute, spot)
+        self.assertDictEqual(expected, actual)
+    def test_east(self):
+        spot = 'east'
+        biddingObjAbsolute = {
+            "north": ['Pass', 'Double'],
+            "east": ['Double', '1 Heart'],
+            "south": ['Pass', '1 Spade'],
+            "west": ['1 Diamond', '2 Diamond'],
+        }
+        expected = {
+            "right": ['Pass', 'Double'],
+            "bottom": ['Double', '1 Heart'],
+            "left": ['Pass', '1 Spade'],
+            "top": ['1 Diamond', '2 Diamond'],
+        }
+        actual = autoBid.getBiddingObjRelative(biddingObjAbsolute, spot)
+        self.assertDictEqual(expected, actual)
+    def test_west(self):
+        spot = 'west'
+        biddingObjAbsolute = {
+            "north": ['Pass', 'Double'],
+            "east": ['Double', '1 Heart'],
+            "south": ['Pass', '1 Spade'],
+            "west": ['1 Diamond', '2 Diamond'],
+        }
+        expected = {
+            "left": ['Pass', 'Double'],
+            "top": ['Double', '1 Heart'],
+            "right": ['Pass', '1 Spade'],
+            "bottom": ['1 Diamond', '2 Diamond'],
+        }
+        actual = autoBid.getBiddingObjRelative(biddingObjAbsolute, spot)
+        self.assertDictEqual(expected, actual)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
