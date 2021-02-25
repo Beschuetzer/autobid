@@ -1,13 +1,13 @@
 #Purpose: make best bid taking into account cards in hand, previous bids, possibly score
 '''
 Inputs:
-    hand: 2D array with four items (1st = clubs, 2nd = diamonds, 3rd = hearts, 4th = spades) containing integers from 0-51
     incomingBids: 2D array
+    hand: 2D array with four items (1st = clubs, 2nd = diamonds, 3rd = hearts, 4th = spades) containing integers from 0-51
         First index is name of bidder
         Second index is string representing the name of the bid i.e. 1 No Trump
         Is in chronological order
-    seating: a dictionary with cardinal directions as keys and strings as keys
     scoring: a dictionary representing the current scoring
+    seating: a dictionary with cardinal directions as keys and strings as keys
     spot: string representing seating position
     clientPointCountingConvention: string representing how client counts HCP points
 Returns: "best" bid for current situation in the form of a string
@@ -53,8 +53,8 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
     partnersBids = biddingObjRelative['top']
-    print('partnersBids = {0}'.format(partnersBids))
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
+    print('partnersBids = {0}'.format(partnersBids))
 
     #Check whether to double and return double if true
     canDouble = getCanDouble(incomingBids, partnersEstimatedPointCount)
@@ -68,9 +68,10 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     totalPoints = highCardPoints + distributionPoints
     print('totalPoints = {0}'.format(totalPoints))
 
-    # result = handleTakeoutDouble(hand, incomingBids, partnersBids, theyBids, totalPoints) 
-    # if result is not True:
-    #     return result
+    #TODO: do you pass if partner doubles and the person before you doubles?
+    result = handlePartnerDouble(hand, incomingBids, biddingObjRelative, totalPoints) 
+    if result is not None:
+        return result
 
     #pass if less than 6 points and first bid
     if (totalPoints < 6 and isFirstBid):
@@ -97,7 +98,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
     #analyze they's bids
 
-    outgoingBid = None
+    outgoingBid = 'Recommended Bid Goes here'
     return outgoingBid
 
 def getSpotAfterNRotations(spot, numberOfRotations):
@@ -156,7 +157,7 @@ def getBiddingObjAbsolute(incomingBids, seating):
         biddingObjAbsolute[direction].append(bid[1])
     return biddingObjAbsolute
 
-def getStrongestSuit(theysBids, hand):
+def getStrongestSuit(hand, biddingObjRelative):
     #input: hand as 2D array 
     #return: 'clubs'/'diamonds'/'hearts'/'spades'/'no trump' depending on which one is the 'strongest' and which suits have already been mentioned
 
@@ -230,16 +231,17 @@ def getCurrentActualBid(incomingBids):
         if re.search('pass', bid[1], re.IGNORECASE) is None and re.search('double', bid[1], re.IGNORECASE) is None:
             return bid
 
-def handleTakeoutDouble(hand, incomingBids, partnersBids, theyBids, totalPoints):
+def handlePartnerDouble(hand, incomingBids, biddingObjRelative, totalPoints):
     #responding to takeout dbl if applicable otherwise passing if less than 6 points total and is first bid
-    if len(partnersBids) == 1 and re.search('Double', partnersBids[0], re.IGNORECASE): 
+    if len(biddingObjRelative['top']) == 1 and re.search('Double', biddingObjRelative['top'][0], re.IGNORECASE): 
         mustBid = re.search('pass', incomingBids[-1][1], re.IGNORECASE)
         if totalPoints < 6 and mustBid is None:
             return 'Pass'
         else:
-            return getStrongestSuit(hand, theyBids)
+            return getStrongestSuit(hand, biddingObjRelative)
     else:
-        return True
+        #TODO: have to figure out when to trust partner's actual double bid and when to make a bid (e.g. you have a really nice suit with 18+ points?) or just always pass if partner doubles and it's not a takeout double?
+        return 'Pass'
 #region Hand Counting Stuff
 #region Initialization (Hard Coding Stuff)
 highCardPointValues = {
