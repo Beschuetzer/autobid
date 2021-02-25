@@ -100,7 +100,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     outgoingBid = None
     return outgoingBid
 
-def getRotationsAround(spot, numberOfRotations):
+def getSpotAfterNRotations(spot, numberOfRotations):
     #input: 
     #   spot - string representing user's cardinal position
     #   numberOfRotations - how many time to go clockwise until the desired position 
@@ -109,19 +109,31 @@ def getRotationsAround(spot, numberOfRotations):
         raise TypeError('Invalid numberOfRotations')
     if numberOfRotations == 0:
         return spot
-        
+
     spots = ['north', 'east', 'south', 'west']
     currentSpotIndex = spots.index(spot)
     return spots[(currentSpotIndex + numberOfRotations) % 4]
+
+def getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor):
+    #input -
+    #   usersSpot = string representing cardinal direction
+    #   spotToGetLocationFor = cardinal direction of spot to get
+    #return: the location (left, right, top, or bottom) of spotToGetLocationFor in relation to the usersSpot
+    spots = ['north', 'east', 'south', 'west']
+    locations = ['left', 'top', 'right', 'bottom']
+    usersSpotIndex = spots.index(usersSpot)
+    spotToGetIndex = spots.index(spotToGetLocationFor)
+    return locations[0]
 
 def getBiddingObjRelative(biddingObjAbsolute, spot):
     #input: 
     #   biddingObjAbsolute - dictionary of bids for each cardinal position
     #   spot - string representing user's cardinal position
     #return: dictionary with keys repsenting relative position to user (top, left, right, bottom (bottom being own bids))
-
-    pass
-
+    biddingObjRelative = {}
+    for key, value in biddingObjAbsolute.items():
+        biddingObjRelative[getRelativeLocationFromSpot(spot, key)] = value
+    return biddingObjRelative
 def getBiddingObjAbsolute(incomingBids, seating):
 #     #input: all bids made
 #     #return: a dictionary where the keys are cardinal directions (North South East West) and the values are arrays representing that persons bidding (['One Spade', 'Two Diamonds'])
