@@ -421,7 +421,7 @@ class getTheyBids(unittest.TestCase):
         testCase = autoBid.getTheyBids(bids)
         self.assertListEqual(testCase, expected)
         
-class getBiddingObj(unittest.TestCase):
+class getBiddingObjAbsolute(unittest.TestCase):
     def test_empty(self):
         bids = []
         seating = {
@@ -436,7 +436,7 @@ class getBiddingObj(unittest.TestCase):
             "south": [],
             "west": [],
         }
-        actual = autoBid.getBiddingObj([], seating)
+        actual = autoBid.getBiddingObjAbsolute([], seating)
         self.assertDictEqual(expected, actual)
     def test_One(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass']]
@@ -452,7 +452,7 @@ class getBiddingObj(unittest.TestCase):
             "south": ['3 Club'],
             "west": ['Pass'],
         }
-        actual = autoBid.getBiddingObj(bids, seating)
+        actual = autoBid.getBiddingObjAbsolute(bids, seating)
         self.assertDictEqual(expected, actual)
     def test_Two(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
@@ -468,7 +468,7 @@ class getBiddingObj(unittest.TestCase):
             "south": ['3 Club'],
             "west": ['Pass'],
         }
-        actual = autoBid.getBiddingObj(bids, seating)
+        actual = autoBid.getBiddingObjAbsolute(bids, seating)
         self.assertDictEqual(expected, actual)
     def test_Three(self):
         bids = [['Adam', 'Pass'], ['Tim', 'Double'], ['Ann', 'Pass'], ['Andrew', '1 Diamond'], ['Adam', 'Double'],  ['Tim', '1 Heart'], ['Ann', '1 Spade'], ['Andrew', '2 Diamond']]
@@ -484,5 +484,5 @@ class getBiddingObj(unittest.TestCase):
             "south": ['Pass', '1 Spade'],
             "west": ['1 Diamond', '2 Diamond'],
         }
-        actual = autoBid.getBiddingObj(bids, seating)
+        actual = autoBid.getBiddingObjAbsolute(bids, seating)
         self.assertDictEqual(expected, actual)

@@ -1,46 +1,57 @@
 #Purpose: make best bid taking into account cards in hand, previous bids, possibly score
 '''
 Inputs:
-    Hand: 2D array with four items (1st = clubs, 2nd = diamonds, 3rd = hearts, 4th = spades) containing integers from 0-51
-    Incoming Bids: 2D array
+    hand: 2D array with four items (1st = clubs, 2nd = diamonds, 3rd = hearts, 4th = spades) containing integers from 0-51
+    incomingBids: 2D array
         First index is name of bidder
         Second index is string representing the name of the bid i.e. 1 No Trump
         Is in chronological order
-    Seating: a dictionary with cardinal directions as keys and strings as keys
-    Scoring: a dictionary representing the current scoring
+    seating: a dictionary with cardinal directions as keys and strings as keys
+    scoring: a dictionary representing the current scoring
+    spot: string representing seating position
     clientPointCountingConvention: string representing how client counts HCP points
 Returns: "best" bid for current situation in the form of a string
 '''
 
-import re
-
 #Examples of inputs
-seating = {
-    "north": 'Andrew',
-    "south": 'Adam',
-    "east": 'Dan',
-    "west": "Ruthann",
-}
-scoring = {
-    "northSouth": {
-        "totalScore": 150,   #this is the total including 'below'
-        "below": 0,
-    },
-    "eastWest": {
-        "totalScore": 350,   #this is the total including 'below'
-        "below": 40,
-    },
-}
-bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
-hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
+# spot = 'north'
+# seating = {
+#     "north": 'Andrew',
+#     "south": 'Adam',
+#     "east": 'Dan',
+#     "west": "Ruthann",
+# }
+# scoring = {
+#     {
+#       "northSouth": {
+#         "aboveTheLine": 0,
+#         "belowTheLine": 0,
+#         "totalBelowTheLineScore": 0,
+#         "isVulnerable": False,
+#         "vulnerableTransitionIndex": None,
+#       }, 
+#       "eastWest": {
+#         "aboveTheLine": 0, 
+#         "belowTheLine": 0,
+#         "totalBelowTheLineScore": 0,
+#         "isVulnerable": False,
+#         "vulnerableTransitionIndex": None,
+#       },
+#     },
+# }
+# bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
+# hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
+
+import re
 flatten = lambda t: [item for sublist in t for item in sublist]
 
-def autoBid(incomingBids, hand, scoring, seating, clientPointCountingConvention):
+def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConvention):
     isFirstBid = len(incomingBids) < 4
     partnerHasBid = len(incomingBids) >= 2
     currentActualBid = getCurrentActualBid(incomingBids)
     theyBids = getTheyBids(incomingBids)
-    # biddingObj = getBiddingObj(incomingBids, seating)
+    biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)
+    biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
     partnersBids = getPartnersBids(incomingBids)
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
 
@@ -88,7 +99,14 @@ def autoBid(incomingBids, hand, scoring, seating, clientPointCountingConvention)
     outgoingBid = None
     return outgoingBid
 
-def getBiddingObj(incomingBids, seating):
+def getBiddingObjRelative(biddingObjAbsolute, spot):
+    #input: 
+    #   biddingObjAbsolute - dictionary of bids for each cardinal position
+    #   spot - string representing user's cardinal position
+    #return: dictionary with keys repsenting relative position to user (top, left, right, bottom (bottom being own bids))
+    pass
+
+def getBiddingObjAbsolute(incomingBids, seating):
 #     #input: all bids made
 #     #return: a dictionary where the keys are cardinal directions (North South East West) and the values are arrays representing that persons bidding (['One Spade', 'Two Diamonds'])
     biddingObj = {
@@ -99,15 +117,12 @@ def getBiddingObj(incomingBids, seating):
     }
     for bid in incomingBids:
         direction = ''
-        for key,value in seating.items():
+        for key, value in seating.items():
             if bid[0] == value:
                 direction = key
                 break
         biddingObj[direction].append(bid[1])
-
-    print(biddingObj)
     return biddingObj
-
 
 def getStrongestSuit(theysBids, hand):
     #input: hand as 2D array 
