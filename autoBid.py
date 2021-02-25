@@ -14,33 +14,32 @@ Returns: "best" bid for current situation in the form of a string
 '''
 
 #Examples of inputs
-# spot = 'north'
-# seating = {
-#     "north": 'Andrew',
-#     "south": 'Adam',
-#     "east": 'Dan',
-#     "west": "Ruthann",
-# }
-# scoring = {
-#     {
-#       "northSouth": {
-#         "aboveTheLine": 0,
-#         "belowTheLine": 0,
-#         "totalBelowTheLineScore": 0,
-#         "isVulnerable": False,
-#         "vulnerableTransitionIndex": None,
-#       }, 
-#       "eastWest": {
-#         "aboveTheLine": 0, 
-#         "belowTheLine": 0,
-#         "totalBelowTheLineScore": 0,
-#         "isVulnerable": False,
-#         "vulnerableTransitionIndex": None,
-#       },
-#     },
-# }
-# bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
-# hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
+clientPointCountingConvention = 'hcp'
+spot = 'north'
+seating = {
+    "north": 'Adam',
+    "east": 'Dan',
+    "south": 'Ann',
+    "west": "Andrew",
+}
+scoring = {
+    "northSouth": {
+        "aboveTheLine": 0,
+        "belowTheLine": 0,
+        "totalBelowTheLineScore": 0,
+        "isVulnerable": False,
+        "vulnerableTransitionIndex": None,
+    },
+    "eastWest": {
+        "aboveTheLine": 0, 
+        "belowTheLine": 0,
+        "totalBelowTheLineScore": 0,
+        "isVulnerable": False,
+        "vulnerableTransitionIndex": None,
+    },
+}
+bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
+hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
 
 from logging import exception
 import re
@@ -53,7 +52,8 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     theyBids = getTheyBids(incomingBids)
     biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
-    partnersBids = getPartnersBids(incomingBids)
+    partnersBids = biddingObjRelative['top']
+    print('partnersBids = {0}'.format(partnersBids))
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
 
     #Check whether to double and return double if true
@@ -126,10 +126,6 @@ def getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor):
     difference = usersSpotIndex - spotToGetIndex
     if difference < 0:
         difference += 4
-
-    print('difference = {0}'.format(difference))
-    print('usersSpotIndex = {0}'.format(usersSpotIndex))
-    print('spotToGetIndex = {0}'.format(spotToGetIndex))
     return locations[difference]
 
 def getBiddingObjRelative(biddingObjAbsolute, spot):
@@ -226,17 +222,6 @@ def getTheyBids(incomingBids):
 
     print('theyBids = {0}'.format(theyBids))
     return theyBids
-
-def getPartnersBids(incomingBids):
-    #input: all the bids made
-    #return an array of bid names representing the bids your partner has made up to now.  the first index is the most recent bid and the last index is the first bid
-    bids = []
-    i = 1
-    for bid in reversed(incomingBids):
-        if i % 2 == 0 and i % 4 != 0:
-            bids.append(bid[1])
-        i+=1
-    return bids
 
 def getCurrentActualBid(incomingBids):
     #input: all bids up to now
@@ -366,18 +351,4 @@ def tallyUpTotal(suitCounts):
         return -2       
 #endregion
 
-# print(autoBid(bids, hand, scoring, 'hcp'))
-# clubLength = 4
-# diamondLength = 4
-# heartLength = 3
-# spadeLength = 3
-
-
-# clubs = [i for i in range(0, clubLength)]
-# diamonds = [i for i in range(13, 13 + diamondLength)]
-# hearts = [i for i in range(26, 26 + heartLength)]
-# spades = [i for i in range(39, 39 + spadeLength)]
-
-# hand = [clubs, diamonds, hearts, spades]
-# print(hand)
-# print(getDistributionPoints(hand))
+print(autoBid(bids, hand, scoring, seating, spot, 'hcp'))

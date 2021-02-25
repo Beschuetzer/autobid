@@ -19,59 +19,6 @@ class getSuitFromCardAsNumber(unittest.TestCase):
     def test_spadeHigh(self):
         self.assertEqual(autoBid.getSuitNameFromCardAsNumber(51), 'spades')
 
-class getPartnersBids(unittest.TestCase):
-    # bidsExample = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass']]
-
-    def test_noBids(self):
-        expected = autoBid.getPartnersBids([])
-        self.assertListEqual(expected, [])
-   
-    def test_1Bid(self):
-        bids = [['Adam', 'Two No Trump']]
-        expected = autoBid.getPartnersBids(bids)
-        self.assertListEqual(expected, [])
-    def test_2Bids(self):
-        bids = [
-            ['Adam', 'Two No Trump'],
-            ['Tim', 'Three No Trump'],
-        ]  
-
-        expected = autoBid.getPartnersBids(bids)
-        self.assertListEqual(expected, ['Two No Trump'])
-    def test_3Bids(self):
-        bids = [
-            ['Adam', 'Two No Trump'],
-            ['Tim', 'Three No Trump'],
-            ['Ann', 'Four No Trump'],
-            ['Andrew', 'Pass'],
-        ]
-        expected = autoBid.getPartnersBids(bids)
-        self.assertListEqual(expected, ['Four No Trump'])
-    def test_5Bids(self):
-        bids = [
-            ['Adam', 'Two No Trump'],
-            ['Tim', 'Three No Trump'],
-            ['Ann', 'Four No Trump'],
-            ['Andrew', 'Pass'],
-            ['Adam', 'Double'],
-        ]
-        expected = autoBid.getPartnersBids(bids)
-        self.assertListEqual(expected, ['Pass'])
-    def test_9Bids(self):
-        bids = [
-            ['Adam', 'Two No Trump'],
-            ['Tim', 'Three No Trump'],
-            ['Ann', 'Four No Trump'],
-            ['Andrew', 'Double'],
-            ['Adam', 'Double'],
-            ['Tim', 'Five No Trump'],
-            ['Ann', 'Six Club'],
-            ['Andrew', 'Pass'],
-            ['Adam', 'Double']
-        ]
-        expected = autoBid.getPartnersBids(bids)
-        self.assertListEqual(expected, ['Pass', 'Double'])
-    
 class getHighCardPoints(unittest.TestCase):
     def test_Normal_None(self):
         clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
