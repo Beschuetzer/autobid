@@ -119,11 +119,18 @@ def getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor):
     #   usersSpot = string representing cardinal direction
     #   spotToGetLocationFor = cardinal direction of spot to get
     #return: the location (left, right, top, or bottom) of spotToGetLocationFor in relation to the usersSpot
-    spots = ['north', 'east', 'south', 'west']
-    locations = ['left', 'top', 'right', 'bottom']
+    spots = ['north', 'west', 'south', 'east']
+    locations = ['bottom', 'left', 'top', 'right']
     usersSpotIndex = spots.index(usersSpot)
     spotToGetIndex = spots.index(spotToGetLocationFor)
-    return locations[0]
+    difference = usersSpotIndex - spotToGetIndex
+    if difference < 0:
+        difference += 4
+
+    print('difference = {0}'.format(difference))
+    print('usersSpotIndex = {0}'.format(usersSpotIndex))
+    print('spotToGetIndex = {0}'.format(spotToGetIndex))
+    return locations[difference]
 
 def getBiddingObjRelative(biddingObjAbsolute, spot):
     #input: 
@@ -134,6 +141,7 @@ def getBiddingObjRelative(biddingObjAbsolute, spot):
     for key, value in biddingObjAbsolute.items():
         biddingObjRelative[getRelativeLocationFromSpot(spot, key)] = value
     return biddingObjRelative
+
 def getBiddingObjAbsolute(incomingBids, seating):
 #     #input: all bids made
 #     #return: a dictionary where the keys are cardinal directions (North South East West) and the values are arrays representing that persons bidding (['One Spade', 'Two Diamonds'])

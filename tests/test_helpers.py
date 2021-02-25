@@ -553,6 +553,64 @@ class getRotationsAround(unittest.TestCase):
         self.assertEqual(actual, expected)
 
 
+class getRelativeLocationFromSpot(unittest.TestCase):
+    def test_self(self):
+        usersSpot = 'east'
+        spotToGetLocationFor = 'east'
+        actual = autoBid.getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor)
+        expected = 'bottom'
+        self.assertEqual(expected, actual)
+    def test_one(self):
+        usersSpot = 'east'
+        spotToGetLocationFor = 'south'
+        actual = autoBid.getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor)
+        expected = 'left'
+        self.assertEqual(expected, actual)
+    def test_two(self):
+        usersSpot = 'east'
+        spotToGetLocationFor = 'west'
+        actual = autoBid.getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor)
+        expected = 'top'
+        self.assertEqual(expected, actual)
+    def test_three(self):
+        usersSpot = 'east'
+        spotToGetLocationFor = 'north'
+        actual = autoBid.getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor)
+        expected = 'right'
+        self.assertEqual(expected, actual)
+    def test_negative_one(self):
+        usersSpot = 'south'
+        spotToGetLocationFor = 'east'
+        actual = autoBid.getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor)
+        expected = 'right'
+        self.assertEqual(expected, actual)
+    def test_negative_two(self):
+        usersSpot = 'west'
+        spotToGetLocationFor = 'east'
+        actual = autoBid.getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor)
+        expected = 'top'
+        self.assertEqual(expected, actual)
+    def test_negative_three(self):
+        usersSpot = 'north'
+        spotToGetLocationFor = 'east'
+        actual = autoBid.getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor)
+        expected = 'left'
+        self.assertEqual(expected, actual)
+    def test_negative_four(self):
+        usersSpot = 'west'
+        spotToGetLocationFor = 'south'
+        actual = autoBid.getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor)
+        expected = 'right'
+        self.assertEqual(expected, actual)
+    def test_negative_five(self):
+        usersSpot = 'north'
+        spotToGetLocationFor = 'west'
+        actual = autoBid.getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor)
+        expected = 'right'
+        self.assertEqual(expected, actual)
+    
+
+
 
 
 
