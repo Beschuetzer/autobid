@@ -42,6 +42,7 @@ Returns: "best" bid for current situation in the form of a string
 # bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
 # hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
 
+from logging import exception
 import re
 flatten = lambda t: [item for sublist in t for item in sublist]
 
@@ -99,11 +100,26 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     outgoingBid = None
     return outgoingBid
 
+def getRotationsAround(spot, numberOfRotations):
+    #input: 
+    #   spot - string representing user's cardinal position
+    #   numberOfRotations - how many time to go clockwise until the desired position 
+    #return - string representing cardinal location n number of rotations from spot 
+    if numberOfRotations < 0:
+        raise TypeError('Invalid numberOfRotations')
+    if numberOfRotations == 0:
+        return spot
+        
+    spots = ['north', 'east', 'south', 'west']
+    currentSpotIndex = spots.index(spot)
+    return spots[(currentSpotIndex + numberOfRotations) % 4]
+
 def getBiddingObjRelative(biddingObjAbsolute, spot):
     #input: 
     #   biddingObjAbsolute - dictionary of bids for each cardinal position
     #   spot - string representing user's cardinal position
     #return: dictionary with keys repsenting relative position to user (top, left, right, bottom (bottom being own bids))
+
     pass
 
 def getBiddingObjAbsolute(incomingBids, seating):

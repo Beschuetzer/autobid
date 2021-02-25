@@ -422,6 +422,8 @@ class getTheyBids(unittest.TestCase):
         self.assertListEqual(testCase, expected)
         
 class getBiddingObjAbsolute(unittest.TestCase):
+
+
     def test_empty(self):
         bids = []
         seating = {
@@ -486,3 +488,77 @@ class getBiddingObjAbsolute(unittest.TestCase):
         }
         actual = autoBid.getBiddingObjAbsolute(bids, seating)
         self.assertDictEqual(expected, actual)
+
+class getRotationsAround(unittest.TestCase):
+    def test_negative(self):
+        spot = 'north'
+        numberOfRotations = -1
+        with self.assertRaises(TypeError) as context:
+            autoBid.getRotationsAround(spot, numberOfRotations)
+            self.assertTrue('Invalid numberOfRotations' in context.exception)
+
+    def test_none(self):
+        spot = 'north'
+        numberOfRotations = 0
+        actual = autoBid.getRotationsAround(spot, numberOfRotations)
+        expected = 'north'
+        self.assertEqual(actual, expected)
+    def test_oneRotation(self):
+        spot = 'north'
+        numberOfRotations = 1
+        actual = autoBid.getRotationsAround(spot, numberOfRotations)
+        expected = 'east'
+        self.assertEqual(actual, expected)
+    def test_twoRotations(self):
+        spot = 'east'
+        numberOfRotations = 2
+        actual = autoBid.getRotationsAround(spot, numberOfRotations)
+        expected = 'west'
+        self.assertEqual(actual, expected)
+    def test_threeRotations(self):
+        spot = 'south'
+        numberOfRotations = 3
+        actual = autoBid.getRotationsAround(spot, numberOfRotations)
+        expected = 'east'
+        self.assertEqual(actual, expected)
+    def test_fourRotations(self):
+        spot = 'west'
+        numberOfRotations = 4
+        actual = autoBid.getRotationsAround(spot, numberOfRotations)
+        expected = 'west'
+        self.assertEqual(actual, expected)
+    def test_sevenRotations(self):
+        spot = 'west'
+        numberOfRotations = 7
+        actual = autoBid.getRotationsAround(spot, numberOfRotations)
+        expected = 'south'
+        self.assertEqual(actual, expected)
+    def test_elevenRotations(self):
+        spot = 'east'
+        numberOfRotations = 11
+        actual = autoBid.getRotationsAround(spot, numberOfRotations)
+        expected = 'north'
+        self.assertEqual(actual, expected)
+    def test_twelveRotations(self):
+        spot = 'south'
+        numberOfRotations = 12
+        actual = autoBid.getRotationsAround(spot, numberOfRotations)
+        expected = 'south'
+        self.assertEqual(actual, expected)
+    def test_thirteenRotations(self):
+        spot = 'north'
+        numberOfRotations = 13
+        actual = autoBid.getRotationsAround(spot, numberOfRotations)
+        expected = 'east'
+        self.assertEqual(actual, expected)
+
+
+
+
+
+
+
+
+
+
+
