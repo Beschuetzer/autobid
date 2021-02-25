@@ -15,6 +15,12 @@ Returns: "best" bid for current situation in the form of a string
 import re
 
 #Examples of inputs
+seating = {
+    "north": 'Andrew',
+    "south": 'Adam',
+    "east": 'Dan',
+    "west": "Ruthann",
+}
 scoring = {
     "northSouth": {
         "totalScore": 150,   #this is the total including 'below'
@@ -29,12 +35,12 @@ bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', 'Double'], ['Andrew
 hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
 flatten = lambda t: [item for sublist in t for item in sublist]
 
-def autoBid(incomingBids, hand, seating, scoring, clientPointCountingConvention):
+def autoBid(incomingBids, hand, scoring, seating, clientPointCountingConvention):
     isFirstBid = len(incomingBids) < 4
     partnerHasBid = len(incomingBids) >= 2
     currentActualBid = getCurrentActualBid(incomingBids)
     theyBids = getTheyBids(incomingBids)
-    biddingObj = getBiddingObj(incomingBids, seating)
+    # biddingObj = getBiddingObj(incomingBids, seating)
     partnersBids = getPartnersBids(incomingBids)
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
 
@@ -85,8 +91,22 @@ def autoBid(incomingBids, hand, seating, scoring, clientPointCountingConvention)
 def getBiddingObj(incomingBids, seating):
 #     #input: all bids made
 #     #return: a dictionary where the keys are cardinal directions (North South East West) and the values are arrays representing that persons bidding (['One Spade', 'Two Diamonds'])
+    biddingObj = {
+        "north": [],
+        "south": [],
+        "east": [],
+        "west": [],
+    }
+    for bid in incomingBids:
+        direction = ''
+        for key,value in seating:
+            if bid[0] == value:
+                direction = key
+                break
+        biddingObj[direction].append(bid[1])
 
-    pass
+    print(biddingObj)
+    return biddingObj
 
 
 def getStrongestSuit(theysBids, hand):
@@ -295,8 +315,8 @@ def tallyUpTotal(suitCounts):
         return -2       
 #endregion
 
-print(autoBid(bids, hand, scoring, 'hcp'))
-
+# print(autoBid(bids, hand, scoring, 'hcp'))
+getBiddingObj()
 # clubLength = 4
 # diamondLength = 4
 # heartLength = 3
