@@ -6,6 +6,9 @@ Inputs:
         First index is name of bidder
         Second index is string representing the name of the bid i.e. 1 No Trump
         Is in chronological order
+    Seating: a dictionary with cardinal directions as keys and strings as keys
+    Scoring: a dictionary representing the current scoring
+    clientPointCountingConvention: string representing how client counts HCP points
 Returns: "best" bid for current situation in the form of a string
 '''
 
@@ -26,11 +29,12 @@ bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', 'Double'], ['Andrew
 hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
 flatten = lambda t: [item for sublist in t for item in sublist]
 
-def autoBid(incomingBids, hand, scoring, clientPointCountingConvention):
+def autoBid(incomingBids, hand, seating, scoring, clientPointCountingConvention):
     isFirstBid = len(incomingBids) < 4
     partnerHasBid = len(incomingBids) >= 2
     currentActualBid = getCurrentActualBid(incomingBids)
-    # theyBids = getTheyBids(incomingBids)
+    theyBids = getTheyBids(incomingBids)
+    biddingObj = getBiddingObj(incomingBids, seating)
     partnersBids = getPartnersBids(incomingBids)
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
 
@@ -77,6 +81,13 @@ def autoBid(incomingBids, hand, scoring, clientPointCountingConvention):
 
     outgoingBid = None
     return outgoingBid
+
+def getBiddingObj(incomingBids, seating):
+#     #input: all bids made
+#     #return: a dictionary where the keys are cardinal directions (North South East West) and the values are arrays representing that persons bidding (['One Spade', 'Two Diamonds'])
+
+    pass
+
 
 def getStrongestSuit(theysBids, hand):
     #input: hand as 2D array 
