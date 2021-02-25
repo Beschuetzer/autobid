@@ -1,8 +1,5 @@
 import unittest
-from unittest.case import expectedFailure
 import autoBid
-
-
 
 class getSuitFromCardAsNumber(unittest.TestCase):
     def test_clubLow(self):
@@ -424,3 +421,68 @@ class getTheyBids(unittest.TestCase):
         testCase = autoBid.getTheyBids(bids)
         self.assertListEqual(testCase, expected)
         
+class getBiddingObj(unittest.TestCase):
+    def test_empty(self):
+        bids = []
+        seating = {
+            "north": "Adam",
+            "east": "Tim",
+            "south": "Ann",
+            "west": "Andrew",
+        }
+        expected = {
+            "north": [],
+            "east": [],
+            "south": [],
+            "west": [],
+        }
+        actual = autoBid.getBiddingObj([], seating)
+        self.assertDictEqual(expected, actual)
+    def test_One(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass']]
+        seating = {
+            "north": "Adam",
+            "east": "Tim",
+            "south": "Ann",
+            "west": "Andrew",
+        }
+        expected = {
+            "north": ['2 No Trump'],
+            "east": ['Double'],
+            "south": ['3 Club'],
+            "west": ['Pass'],
+        }
+        actual = autoBid.getBiddingObj(bids, seating)
+        self.assertDictEqual(expected, actual)
+    def test_Two(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        seating = {
+            "north": "Adam",
+            "east": "Tim",
+            "south": "Ann",
+            "west": "Andrew",
+        }
+        expected = {
+            "north": ['2 No Trump', 'Double'],
+            "east": ['Double'],
+            "south": ['3 Club'],
+            "west": ['Pass'],
+        }
+        actual = autoBid.getBiddingObj(bids, seating)
+        self.assertDictEqual(expected, actual)
+    def test_Three(self):
+        bids = [['Adam', 'Pass'], ['Tim', 'Double'], ['Ann', 'Pass'], ['Andrew', '1 Diamond'], ['Adam', 'Double'],  ['Tim', '1 Heart'], ['Ann', '1 Spade'], ['Andrew', '2 Diamond']]
+        seating = {
+            "north": "Adam",
+            "east": "Tim",
+            "south": "Ann",
+            "west": "Andrew",
+        }
+        expected = {
+            "north": ['Pass', 'Double'],
+            "east": ['Double', '1 Heart'],
+            "south": ['Pass', '1 Spade'],
+            "west": ['1 Diamond', '2 Diamond'],
+        }
+        actual = autoBid.getBiddingObj(bids, seating)
+        self.assertDictEqual(expected, actual)

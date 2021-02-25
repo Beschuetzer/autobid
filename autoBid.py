@@ -99,7 +99,7 @@ def getBiddingObj(incomingBids, seating):
     }
     for bid in incomingBids:
         direction = ''
-        for key,value in seating:
+        for key,value in seating.items():
             if bid[0] == value:
                 direction = key
                 break
@@ -316,7 +316,6 @@ def tallyUpTotal(suitCounts):
 #endregion
 
 # print(autoBid(bids, hand, scoring, 'hcp'))
-getBiddingObj()
 # clubLength = 4
 # diamondLength = 4
 # heartLength = 3
