@@ -673,6 +673,22 @@ class getBiddingObjRelative(unittest.TestCase):
         }
         actual = autoBid.getBiddingObjRelative(biddingObjAbsolute, spot)
         self.assertDictEqual(expected, actual)
+    def test_empty(self):
+        spot = 'west'
+        biddingObjAbsolute = {
+            "north": [],
+            "east": [],
+            "south": [],
+            "west": [],
+        }
+        expected = {
+            "left": [],
+            "top": [],
+            "right": [],
+            "bottom": [],
+        }
+        actual = autoBid.getBiddingObjRelative(biddingObjAbsolute, spot)
+        self.assertDictEqual(expected, actual)
 
 
 

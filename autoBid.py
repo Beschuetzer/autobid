@@ -145,7 +145,7 @@ def getBiddingObjRelative(biddingObjAbsolute, spot):
 def getBiddingObjAbsolute(incomingBids, seating):
 #     #input: all bids made
 #     #return: a dictionary where the keys are cardinal directions (North South East West) and the values are arrays representing that persons bidding (['One Spade', 'Two Diamonds'])
-    biddingObj = {
+    biddingObjAbsolute = {
         "north": [],
         "south": [],
         "east": [],
@@ -157,8 +157,8 @@ def getBiddingObjAbsolute(incomingBids, seating):
             if bid[0] == value:
                 direction = key
                 break
-        biddingObj[direction].append(bid[1])
-    return biddingObj
+        biddingObjAbsolute[direction].append(bid[1])
+    return biddingObjAbsolute
 
 def getStrongestSuit(theysBids, hand):
     #input: hand as 2D array 
