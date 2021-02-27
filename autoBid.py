@@ -175,8 +175,30 @@ def getStrongestSuit(hand, biddingObjRelative):
     #return: 'clubs'/'diamonds'/'hearts'/'spades'/'no trump' depending on which one is the 'strongest' and which suits have already been mentioned
 
     #check already mentioned suits
+    mentioned = {
+        "clubs": False,
+        "diamonds": False,
+        "hearts": False,
+        "spades": False,
+        "nt": False,
+    }
+
+    for location, bids in biddingObjRelative.items():
+        for bid in bids:
+            if (re.search('club', bid[1], re.IGNORECASE)):
+                mentioned.clubs = True
+            elif (re.search('diamond', bid[1], re.IGNORECASE)):
+                mentioned.diamond = True
+            elif (re.search('heart', bid[1], re.IGNORECASE)):
+                mentioned.heart = True
+            elif (re.search('spade', bid[1], re.IGNORECASE)):
+                mentioned.spade = True
+            elif (re.search('trump', bid[1], re.IGNORECASE)):
+                mentioned.nt = True
 
     #return strongest of unmentioned suits
+    for suit, hasBeenMentioned in mentioned.items():
+        if (hasBeenMentioned == False)
 
     pass
 
