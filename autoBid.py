@@ -40,7 +40,7 @@ scoring = {
 }
 bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
 hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
-
+       
 import re
 flatten = lambda t: [item for sublist in t for item in sublist]
 
@@ -49,6 +49,8 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     isFirstBid = len(incomingBids) < 4
     partnerHasBid = len(incomingBids) >= 2
     currentActualBid = getCurrentActualBid(incomingBids)
+    suitCounts = getSuitCounts(hand)
+    print('suitCounts = {0}'.format(suitCounts))
     # theyBids = getTheyBids(incomingBids)
 
     biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)
@@ -72,7 +74,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
     #get straight up point counts
     highCardPoints = getHighCardPoints(hand, clientPointCountingConvention)
-    distributionPoints = getDistributionPoints(hand, incomingBids, biddingObjRelative)
+    distributionPoints = getDistributionPoints(hand, incomingBids, biddingObjRelative, suitCounts)
     totalPoints = highCardPoints + distributionPoints
     print('totalPoints = {0}'.format(totalPoints))
 
@@ -312,6 +314,21 @@ distributionPointValues = {
 }
 #endregion
 
+def getSuitCounts(hand):
+    suitCounts = {
+        "clubs": 0,
+        "diamonds":  0,
+        "hearts":  0,
+        "spades": 0,
+    }
+
+    for suit in hand:
+        if len(suit) == 0:
+            continue
+        suitName = getSuitNameFromCardAsNumber(suit[0])
+        suitCounts[suitName] = len(suit)
+    return suitCounts
+
 def getHighCardPoints(hand, clientPointCountingConvention): 
     #input:
         #hand as 2d list (not flat)
@@ -344,25 +361,10 @@ def getHighCardPoints(hand, clientPointCountingConvention):
     except:
         return -2
 
-def getDistributionPoints(hand, incomingBids, biddingObjRelative):
+def getDistributionPoints(hand, incomingBids, biddingObjRelative, suitCounts):
     try:
         if hand == None:
-            return -1
-
-        suitCounts = {
-            "clubs": 0,
-            "diamonds":  0,
-            "hearts":  0,
-            "spades": 0,
-        }
-
-        for suit in hand:
-            if len(suit) == 0:
-                continue
-            suitName = getSuitNameFromCardAsNumber(suit[0])
-            suitCounts[suitName] = len(suit)
-
-
+            return -1    
 
         #otherwise use responding total
         distributionPoints = -1;
@@ -394,10 +396,9 @@ def getShouldCalculateRespondingPoints(incomingBids):
     #otherwise 
     pass
 
-def getRespondingDistributionPoints(incomingBid):
+def getRespondingDistributionPoints(incomingBids):
 
     pass
-
 
 def getOpeningDistributionPoints(suitCounts):
     #input: suitCounts as a dictionary where keys are suit names and values are ints representing how many of that suit
