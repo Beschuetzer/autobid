@@ -73,24 +73,26 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
     #region Check whether to double and return double if true
     canDouble = getCanDouble(biddingObjRelative)
-    shouldDouble = getShouldDouble(canDouble, scoring)
+    shouldDouble = getShouldDouble(scoring, biddingObjRelative, partnersEstimatedPointCount, hand, currentActualBid)
     if shouldDouble is True:
         return 'Double'
-    #endregion
+    #endregion    
 
-
-
-
+    #handle partner 2 Club
 
     #TODO: do you pass if partner doubles and the person before you doubles?
     result = handlePartnerDouble(hand, incomingBids, biddingObjRelative, totalPoints) 
     if result is not None:
         return result
 
-    #pass if less than 6 points and first bid
-    if (totalPoints < 6 and isFirstBid):
+    #pass if less than 13 points and first bid
+    if (totalPoints < 13 and isFirstBid):
         return 'Pass'
 
+    #pass if less than 6 points and partner bid
+    
+    #what to bid if autobid has opening points
+    if (totalPoints > 12 )
 
 
     #don't pass when have close to openers and a partial and you are third or fourth bidder and all previous bids are passes?
@@ -217,33 +219,23 @@ def getCanDouble(biddingObjRelative):
     if len(biddingObjRelative['left']) == 0 and len(biddingObjRelative['right']) == 0:
         return False
     
-
-def getShouldDouble(canDouble, scoring):
+def getShouldDouble(scoring, biddingObjRelative, hand, currentActualBid):
     #inputs: 
-    #   canDouble - whether double is 'possible'
     #   scoring - an obj/dictionary representing the scores
+    #   biddingObjRelative - all prior bids
+
     #returns: true or false representing whether it is better to double than to bid higher
 
-    #inputs: all bids made and partner's estimated point count
-    #return: true or false representing whether a double bid is feasible  
-
     #figure out a range of how many tricks partners could win based on estimated point count
-
+    #evaluate if unsuccessful double results in game for opponents
     #how to evaluate a void/singleton in the contract suit?
 
     #estimate a range of how many tricks you could win (best case and worst case)
 
     #if your estimated trick count + partners is >= tricks needed to set return true else false
-    pass
-
-
-
-    #return if you can't double
-    if canDouble is False:
-        return
-
+    
     #consider total score and current game's below the line score to determine whether doubling is better than bidding something else 
-    pass
+    return False
 
 def getSuitNameFromCardAsNumber(cardAsNumber):
     #input: integer 0 - 51
