@@ -65,12 +65,6 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
     print('partnersBids = {0}'.format(partnersBids))
 
-    #region Check whether to double and return double if true
-    canDouble = getCanDouble(incomingBids, partnersEstimatedPointCount)
-    shouldDouble = getShouldDouble(canDouble, scoring)
-    if shouldDouble is True:
-        return 'Double'
-    #endregion
 
     #get straight up point counts
     highCardPoints = getHighCardPoints(hand, clientPointCountingConvention)
@@ -78,14 +72,80 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     totalPoints = highCardPoints + distributionPoints
     print('totalPoints = {0}'.format(totalPoints))
 
+
+    #region Check whether to double and return double if true
+    canDouble = getCanDouble(biddingObjRelative)
+    shouldDouble = getShouldDouble(scoring, biddingObjRelative, partnersEstimatedPointCount, hand, currentActualBid)
+    if shouldDouble is True:
+        return 'Double'
+    #endregion    
+
+    #handle partner 1 Club
+
+    #handle partner 2 Club
+    #make sure it is an opening 2 Club
+
+
+
+    #handle weak bid: -> pass/3NT/game in their suit/your best suit if lots of points or 6+ of a suit depending on your points, cards in their suit, if you have stoppers
+    #if 1 NT -> best suit
+
     #TODO: do you pass if partner doubles and the person before you doubles?
     result = handlePartnerDouble(hand, incomingBids, biddingObjRelative, totalPoints) 
     if result is not None:
         return result
 
-    #pass if less than 6 points and first bid
-    if (totalPoints < 6 and isFirstBid):
+    #pass if less than 13 points and first bid
+    if (totalPoints < 13 and isFirstBid):
         return 'Pass'
+
+    #pass if less than 6 points and partner bid
+
+
+#%%%logic for opening (first bid)
+#
+#your partner passed or hasn't had a turn
+#do you have at least opening points or weak bid? If not, pass
+#if > opening points < 20 points -> 1 NT
+#2 Clubs is accounted for above
+#if opening points (calculate before looking for 6+ of a suit) and less than 15 points -> if other team has bid, double, if not bid best suit
+#if > 7 points < opening points and > 6 of suit -> bid 3 of suit
+#if > 9 points < opening points and 6 of suit -> bid 2 of suit
+
+
+#logic for responding
+#your partner opened
+#special situations accounted for above (takeout double, 1/2 Clubs, 1 NT and weak bids)
+#if < 6 points pass
+#if > 5 points and < 10* points (high card? total?) plus 3 of partner's suit
+#   -> bid up 1 in partner's suit
+#   if 2 of partner's suit and biddable suit
+#   -> bid that suit, if no biddable suit, bid up 1 in partner's suit
+#   if < 2 of partner's suit and no biddable suit -> pass
+#if > 9 points and < 13 points (high card? total?) and biddable suit -> bid that suit, if no biddable suit bid NT
+#if >12 points jump shift bid to best suit or NT
+
+
+
+
+
+
+
+
+
+#logic for continuation of bidding (communication of second suits, determining game, competing with opponents)
+
+
+
+
+
+#Scoring considerations:
+#do you have at least 10 points and opposing team is vulnerable and has at least 50 points, bid as if you have opening
+#if > opening points < 20 points -> 1 NT (unless have openers in major or minor and bid in that suit results in game)
+#if > 7 points < opening points and > 6 of suit -> bid 3 of suit (unless point count and previous bidding = win, i.e. 3 passes and 70-80 partial depending on suit?)
+#if >9 points < opening points and 6 of suit -> bid 2 of suit (unless clubs, unless point count and previous bidding = win, i.e. 3 passes and 70-80 partial depending on suit?)
+#%%
+
 
 
 
@@ -206,31 +266,30 @@ def getPartnersEstimatedPointCount(partnersBids):
     #return: a list where the first index represents the lowest point count possible and the 2nd index the highest?
     pass
 
-def getCanDouble(incomingBids, partnersEstimatedPointCount):
-    #inputs: all bids made and partner's estimated point count
-    #return: true or false representing whether a double bid is feasible
+def getCanDouble(biddingObjRelative):
+    #inputs: if opposing team bid
+    # outputs: whether or not you can double
+    # if opposing team hasn't bid, can't double   
+    if len(biddingObjRelative['left']) == 0 and len(biddingObjRelative['right']) == 0:
+        return False
+    
+def getShouldDouble(scoring, biddingObjRelative, hand, currentActualBid):
+    #inputs: 
+    #   scoring - an obj/dictionary representing the scores
+    #   biddingObjRelative - all prior bids
+
+    #returns: true or false representing whether it is better to double than to bid higher
 
     #figure out a range of how many tricks partners could win based on estimated point count
-
+    #evaluate if unsuccessful double results in game for opponents
     #how to evaluate a void/singleton in the contract suit?
 
     #estimate a range of how many tricks you could win (best case and worst case)
 
     #if your estimated trick count + partners is >= tricks needed to set return true else false
-    pass
-
-def getShouldDouble(canDouble, scoring):
-    #inputs: 
-    #   canDouble - whether double is 'possible'
-    #   scoring - an obj/dictionary representing the scores
-    #returns: true or false representing whether it is better to double than to bid higher
-
-    #return if you can't double
-    if canDouble is False:
-        return
-
+    
     #consider total score and current game's below the line score to determine whether doubling is better than bidding something else 
-    pass
+    return False
 
 def getSuitNameFromCardAsNumber(cardAsNumber):
     #input: integer 0 - 51
