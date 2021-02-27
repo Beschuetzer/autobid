@@ -43,24 +43,33 @@ hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
 
 from logging import exception
 import re
+from tests.test_main import Takeout_Double
 flatten = lambda t: [item for sublist in t for item in sublist]
 
 def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConvention):
+    #region Initialization (Getting Values and Dicts to work with)
     isFirstBid = len(incomingBids) < 4
     partnerHasBid = len(incomingBids) >= 2
     currentActualBid = getCurrentActualBid(incomingBids)
-    theyBids = getTheyBids(incomingBids)
+    # theyBids = getTheyBids(incomingBids)
+
     biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)
+    #biddingObjRelative is a dictionary where relative locations are keys and the values are that person's bids (top: [...], left: [...], ...)
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
     partnersBids = biddingObjRelative['top']
+    #endregion
+
+
+
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
     print('partnersBids = {0}'.format(partnersBids))
 
-    #Check whether to double and return double if true
+    #region Check whether to double and return double if true
     canDouble = getCanDouble(incomingBids, partnersEstimatedPointCount)
     shouldDouble = getShouldDouble(canDouble, scoring)
     if shouldDouble is True:
         return 'Double'
+    #endregion
 
     #get straight up point counts
     highCardPoints = getHighCardPoints(hand, clientPointCountingConvention)
@@ -76,6 +85,10 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     #pass if less than 6 points and first bid
     if (totalPoints < 6 and isFirstBid):
         return 'Pass'
+
+
+    #TODO: have different behavior depending on whether set to reliable or agressive?
+
 
     #don't pass when have close to openers and a partial and you are third or fourth bidder and all previous bids are passes?
 
@@ -168,7 +181,7 @@ def getStrongestSuit(hand, biddingObjRelative):
     pass
 
 def getPartnersEstimatedPointCount(partnersBids):
-    #input: partnersBids in reverse chronological order (1st index is most recent)
+    #input: partnersBids in chronological order (1st index is most first bid they made)
     #return: a list where the first index represents the lowest point count possible and the 2nd index the highest?
     pass
 
@@ -212,6 +225,8 @@ def getSuitNameFromCardAsNumber(cardAsNumber):
     else: 
         return None
 
+
+#TODO: is this needed?
 def getTheyBids(incomingBids):
     #input: all bids
     #returns: the bids that are not made by you or partner
@@ -219,7 +234,6 @@ def getTheyBids(incomingBids):
     for index, bid in enumerate(reversed(incomingBids)):
         if index % 2 == 0:
             theyBids.insert(0, bid)
-
 
     print('theyBids = {0}'.format(theyBids))
     return theyBids
