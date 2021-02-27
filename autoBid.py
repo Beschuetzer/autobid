@@ -77,9 +77,9 @@ scoring = {
     },
 }
 # bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
-bids = [['Adam', 'Pass'], ['Dan', 'two clubs'], ['Ann', 'pass']]
+bids = [['Adam', 'Pass'], ['Dan', 'Two Club'], ['Ann', 'pass']]
 
-hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
+hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40,42]]
 
       
 import re, math
@@ -209,27 +209,62 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
 def partnerTwoClubResponse(biddingObjRelative, totalOpeningPoints, currentActualBid):
 
-    #first response
-    currentIndex = contracts.index(currentActualBid)
+    currentIndex = contracts.index(currentActualBid[1])
 
+    #region first response
     bestSuitIsNoTrump = None 
-    if len(biddingObjRelative['top'] > 2):
+    if len(biddingObjRelative['top']) > 2:
         bestSuitIsNoTrump = re.search('trump', biddingObjRelative['top'][1], re.IGNORECASE)
 
     if re.search('two club', biddingObjRelative['top'][-1], re.IGNORECASE):
         if totalOpeningPoints == 0:
             return contracts[currentIndex + 1]
-        wholeNumber = math.ceil(totalOpeningPoints / 3);
-        return contracts[currentIndex + wholeNumber]
 
-    #second response
+        wholeNumber = int(math.ceil(totalOpeningPoints / 3));
+        print('wholeNumber = {0}'.format(wholeNumber))
+        return contracts[currentIndex + wholeNumber]
+    #endregion
+    
+    #region second response
     elif len(biddingObjRelative['top']) >= 2:
         return getStrongestSuit(hand, biddingObjRelative)
+    #endregion
+    #region handle slam Aces
+    elif not bestSuitIsNoTrump and re.search('trump', biddingObjRelative['top'][-1], re.IGNORECASE):
+        aceCount = 0
+        for suit in hand:
+            for cardAsNumber in suit:
+                if cardAsNumber % 13 == 12:
+                    aceCount += 1
 
-    #hanlde slam
-    elif not bestSuitIsNoTrump and biddingObjRelative['top'][-1]:
-        
+        isAllOrNone = aceCount == 0 or aceCount == 4
+        indexAddition = 0
+        if isAllOrNone:
+            indexAddition = 1
+        else:
+            indexAddition = aceCount
 
+        return contracts[currentIndex + indexAddition]
+    #endregion
+    #region handle slam King
+    #if their second bid's suit is the same as their 4th bid's suit then pass
+    if biddingObjRelative['top'][1] != biddingObjRelative['top'][3]:
+        kingCount = None
+        for suit in hand:
+            for cardAsNumber in suit:
+                if cardAsNumber % 13 == 11:
+                    kingCount += 1
+
+        isAllOrNone = kingCount == 0 or kingCount == 4
+        indexAddition = 0
+        if isAllOrNone:
+            indexAddition = 1
+        else:
+            indexAddition = kingCount
+
+        return contracts[currentIndex + indexAddition]
+    #endregion
+    #handle stopping prematurely?
     #if opponent enter crazy bid, how to handle?
 
     #handle second response

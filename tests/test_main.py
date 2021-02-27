@@ -40,3 +40,16 @@ class Takeout_Double(unittest.TestCase):
         actual = autoBid.autoBid(bids, hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
         expected = 'Pass'
         self.assertEqual(actual, expected)
+
+
+class partnerTwoClubResponse(unittest.TestCase):
+    def test_initial_zero(self):
+        biddingObjRelative = {
+            "top": ['Two Club'],
+            "left": ['Pass'],
+        }
+        totalOpeningPoints = 0
+        currentActualBid = 'Two Club'
+        actual = autoBid.parpartnerTwoClubResponse(biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Two Diamond'
+        self.assertEqual(actual, expected)

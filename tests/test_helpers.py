@@ -1,4 +1,3 @@
-from enum import auto
 import unittest
 import autoBid
 
@@ -686,6 +685,28 @@ class getSuitCounts(unittest.TestCase):
             "hearts":  0,
             "spades": 0,
         }
+        self.assertEqual(actual, expected)
+
+class partnerTwoClubResponse(unittest.TestCase):
+    def test_invention(self):
+        biddingObjRelative = {
+            "top": ['Two Club'],
+            "left": ['One Diamond'],
+        }
+        totalOpeningPoints = 0
+        currentActualBid = ['Adam', 'Two Club']
+        actual = autoBid.partnerTwoClubResponse(biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Pass'
+        self.assertEqual(actual, expected)
+    def test_initial_zero(self):
+        biddingObjRelative = {
+            "top": ['Two Club'],
+            "left": ['Pass'],
+        }
+        totalOpeningPoints = 0
+        currentActualBid = ['Adam', 'Two Club']
+        actual = autoBid.partnerTwoClubResponse(biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Two Diamond'
         self.assertEqual(actual, expected)
 
 
