@@ -63,18 +63,24 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
     print('partnersBids = {0}'.format(partnersBids))
 
-    #region Check whether to double and return double if true
-    canDouble = getCanDouble(incomingBids, partnersEstimatedPointCount)
-    shouldDouble = getShouldDouble(canDouble, scoring)
-    if shouldDouble is True:
-        return 'Double'
-    #endregion
 
     #get straight up point counts
     highCardPoints = getHighCardPoints(hand, clientPointCountingConvention)
     distributionPoints = getDistributionPoints(hand, incomingBids, biddingObjRelative)
     totalPoints = highCardPoints + distributionPoints
     print('totalPoints = {0}'.format(totalPoints))
+
+
+    #region Check whether to double and return double if true
+    canDouble = getCanDouble(biddingObjRelative)
+    shouldDouble = getShouldDouble(canDouble, scoring)
+    if shouldDouble is True:
+        return 'Double'
+    #endregion
+
+
+
+
 
     #TODO: do you pass if partner doubles and the person before you doubles?
     result = handlePartnerDouble(hand, incomingBids, biddingObjRelative, totalPoints) 
@@ -204,9 +210,22 @@ def getPartnersEstimatedPointCount(partnersBids):
     #return: a list where the first index represents the lowest point count possible and the 2nd index the highest?
     pass
 
-def getCanDouble(incomingBids, partnersEstimatedPointCount):
+def getCanDouble(biddingObjRelative):
+    #inputs: if opposing team bid
+    # outputs: whether or not you can double
+    # if opposing team hasn't bid, can't double   
+    if len(biddingObjRelative['left']) == 0 and len(biddingObjRelative['right']) == 0:
+        return False
+    
+
+def getShouldDouble(canDouble, scoring):
+    #inputs: 
+    #   canDouble - whether double is 'possible'
+    #   scoring - an obj/dictionary representing the scores
+    #returns: true or false representing whether it is better to double than to bid higher
+
     #inputs: all bids made and partner's estimated point count
-    #return: true or false representing whether a double bid is feasible
+    #return: true or false representing whether a double bid is feasible  
 
     #figure out a range of how many tricks partners could win based on estimated point count
 
@@ -217,11 +236,7 @@ def getCanDouble(incomingBids, partnersEstimatedPointCount):
     #if your estimated trick count + partners is >= tricks needed to set return true else false
     pass
 
-def getShouldDouble(canDouble, scoring):
-    #inputs: 
-    #   canDouble - whether double is 'possible'
-    #   scoring - an obj/dictionary representing the scores
-    #returns: true or false representing whether it is better to double than to bid higher
+
 
     #return if you can't double
     if canDouble is False:
