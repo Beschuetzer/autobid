@@ -13,9 +13,47 @@ Inputs:
 Returns: "best" bid for current situation in the form of a string
 '''
 
+contracts = [
+  "One Club",
+  "One Diamond",
+  "One Heart",
+  "One Spade",
+  "One No Trump",
+  "Two Club",
+  "Two Diamond",
+  "Two Heart",
+  "Two Spade",
+  "Two No Trump",
+  "Three Club",
+  "Three Diamond",
+  "Three Heart",
+  "Three Spade",
+  "Three No Trump",
+  "Four Club",
+  "Four Diamond",
+  "Four Heart",
+  "Four Spade",
+  "Four No Trump",
+  "Five Club",
+  "Five Diamond",
+  "Five Heart",
+  "Five Spade",
+  "Five No Trump",
+  "Six Club",
+  "Six Diamond",
+  "Six Heart",
+  "Six Spade",
+  "Six No Trump",
+  "Seven Club",
+  "Seven Diamond",
+  "Seven Heart",
+  "Seven Spade",
+  "Seven No Trump",
+];
+
 #Examples of inputs
 clientPointCountingConvention = 'hcp'
-spot = 'north'
+spot = 'west'
 seating = {
     "north": 'Adam',
     "east": 'Dan',
@@ -38,10 +76,13 @@ scoring = {
         "vulnerableTransitionIndex": None,
     },
 }
-bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
+# bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
+bids = [['Adam', 'Pass'], ['Dan', 'two clubs'], ['Ann', 'pass']]
+
 hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
-       
-import re
+
+      
+import re, math
 flatten = lambda t: [item for sublist in t for item in sublist]
 
 def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConvention):
@@ -83,7 +124,10 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     #handle partner 1 Club
 
     #handle partner 2 Club
-    #make sure it is an opening 2 Club
+    if (isFirstBid and re.search('two club', biddingObjRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingObjRelative['left'][0], re.IGNORECASE)):
+        openDistributionPoints = getOpeningDistributionPoints(suitCounts)
+        return partnerTwoClubResponse(biddingObjRelative, highCardPoints + openDistributionPoints, currentActualBid)
+    
 
 
 
@@ -102,8 +146,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     #pass if less than 6 points and partner bid
 
 
-#%%%logic for opening (first bid)
-#
+#logic for opening (first bid)
 #your partner passed or hasn't had a turn
 #do you have at least opening points or weak bid? If not, pass
 #if > opening points < 20 points -> 1 NT
@@ -126,13 +169,6 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 #if >12 points jump shift bid to best suit or NT
 
 
-
-
-
-
-
-
-
 #logic for continuation of bidding (communication of second suits, determining game, competing with opponents)
 
 
@@ -144,8 +180,6 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 #if > opening points < 20 points -> 1 NT (unless have openers in major or minor and bid in that suit results in game)
 #if > 7 points < opening points and > 6 of suit -> bid 3 of suit (unless point count and previous bidding = win, i.e. 3 passes and 70-80 partial depending on suit?)
 #if >9 points < opening points and 6 of suit -> bid 2 of suit (unless clubs, unless point count and previous bidding = win, i.e. 3 passes and 70-80 partial depending on suit?)
-#%%
-
 
 
 
@@ -172,6 +206,35 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
     outgoingBid = 'Recommended Bid Goes here'
     return outgoingBid
+
+def partnerTwoClubResponse(biddingObjRelative, totalOpeningPoints, currentActualBid):
+
+    #first response
+    currentIndex = contracts.index(currentActualBid)
+
+    bestSuitIsNoTrump = None 
+    if len(biddingObjRelative['top'] > 2):
+        bestSuitIsNoTrump = re.search('trump', biddingObjRelative['top'][1], re.IGNORECASE)
+
+    if re.search('two club', biddingObjRelative['top'][-1], re.IGNORECASE):
+        if totalOpeningPoints == 0:
+            return contracts[currentIndex + 1]
+        wholeNumber = math.ceil(totalOpeningPoints / 3);
+        return contracts[currentIndex + wholeNumber]
+
+    #second response
+    elif len(biddingObjRelative['top']) >= 2:
+        return getStrongestSuit(hand, biddingObjRelative)
+
+    #hanlde slam
+    elif not bestSuitIsNoTrump and biddingObjRelative['top'][-1]:
+        
+
+    #if opponent enter crazy bid, how to handle?
+
+    #handle second response
+
+    return 'Pass'
 
 def getSpotAfterNRotations(spot, numberOfRotations):
     #input: 
@@ -273,7 +336,7 @@ def getCanDouble(biddingObjRelative):
     if len(biddingObjRelative['left']) == 0 and len(biddingObjRelative['right']) == 0:
         return False
     
-def getShouldDouble(scoring, biddingObjRelative, hand, currentActualBid):
+def getShouldDouble(scoring, biddingObjRelative, partnersEstimatedPointCount, hand, currentActualBid):
     #inputs: 
     #   scoring - an obj/dictionary representing the scores
     #   biddingObjRelative - all prior bids
