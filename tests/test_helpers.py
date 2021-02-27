@@ -657,6 +657,36 @@ class getSuitCounts(unittest.TestCase):
             "spades": 2,
         }
         self.assertEqual(actual, expected)
+    def test_two(self):
+        hand = [[0, 1, 5, 7, 8,9,10], [13, 19], [29], [40, 42,51]]
+        actual = autoBid.getSuitCounts(hand)
+        expected = {
+            "clubs": 7,
+            "diamonds":  2,
+            "hearts":  1,
+            "spades": 3,
+        }
+        self.assertEqual(actual, expected)
+    def test_three(self):
+        hand = [[0, 1, 2,3], [13,15,17,18, 19], [29,31,33,34], []]
+        actual = autoBid.getSuitCounts(hand)
+        expected = {
+            "clubs": 4,
+            "diamonds":  5,
+            "hearts":  4,
+            "spades": 0,
+        }
+        self.assertEqual(actual, expected)
+    def test_four(self):
+        hand = [[0, 1, 2,3,4,5,6,7,8,9,10,11,12], [],[], []]
+        actual = autoBid.getSuitCounts(hand)
+        expected = {
+            "clubs": 13,
+            "diamonds":  0,
+            "hearts":  0,
+            "spades": 0,
+        }
+        self.assertEqual(actual, expected)
     
 
 
