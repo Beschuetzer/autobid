@@ -198,8 +198,8 @@ def getStrongestSuit(hand, biddingObjRelative):
 
     #return strongest of unmentioned suits
     for suit, hasBeenMentioned in mentioned.items():
-        if (hasBeenMentioned == False)
-        fdfd
+        if (hasBeenMentioned == False):
+            print(1)
     pass
 
 def getPartnersEstimatedPointCount(partnersBids):
