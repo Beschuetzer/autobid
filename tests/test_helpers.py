@@ -637,7 +637,17 @@ class getBiddingObjRelative(unittest.TestCase):
         self.assertDictEqual(expected, actual)
 
 class getSuitCounts(unittest.TestCase):
-    def test_clubs_one(self):
+    def test_empty(self):
+        hand = []
+        actual = autoBid.getSuitCounts(hand)
+        expected = {
+            "clubs": 0,
+            "diamonds":  0,
+            "hearts":  0,
+            "spades": 0,
+        }
+        self.assertEqual(actual, expected)
+    def test_one(self):
         hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
         actual = autoBid.getSuitCounts(hand)
         expected = {
@@ -647,7 +657,7 @@ class getSuitCounts(unittest.TestCase):
             "spades": 2,
         }
         self.assertEqual(actual, expected)
-
+    
 
 
 
