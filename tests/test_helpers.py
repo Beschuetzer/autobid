@@ -202,7 +202,7 @@ class tallyUpTotal(unittest.TestCase):
             "hearts":  0,
             "spades": 0,
         }
-        self.assertEqual(autoBid.tallyUpTotal(suitCounts), 18)
+        self.assertEqual(autoBid.getOpeningDistributionPoints(suitCounts), 18)
     
     def test_None(self):
         suitCounts = {
@@ -211,7 +211,7 @@ class tallyUpTotal(unittest.TestCase):
             "hearts":  3,
             "spades": 3,
         }
-        self.assertEqual(autoBid.tallyUpTotal(suitCounts), 0)
+        self.assertEqual(autoBid.getOpeningDistributionPoints(suitCounts), 0)
     
     def test_Singleton(self):
         suitCounts = {
@@ -220,7 +220,7 @@ class tallyUpTotal(unittest.TestCase):
             "hearts":  4,
             "spades": 1,
         }
-        self.assertEqual(autoBid.tallyUpTotal(suitCounts), 2)
+        self.assertEqual(autoBid.getOpeningDistributionPoints(suitCounts), 2)
     
     def test_Doubleton(self):
         suitCounts = {
@@ -229,7 +229,7 @@ class tallyUpTotal(unittest.TestCase):
             "hearts":  3,
             "spades": 2,
         }
-        self.assertEqual(autoBid.tallyUpTotal(suitCounts), 1)
+        self.assertEqual(autoBid.getOpeningDistributionPoints(suitCounts), 1)
     
     def test_FiveOfOne(self):
         suitCounts = {
@@ -238,7 +238,7 @@ class tallyUpTotal(unittest.TestCase):
             "hearts":  3,
             "spades": 3,
         }
-        self.assertEqual(autoBid.tallyUpTotal(suitCounts), 1)
+        self.assertEqual(autoBid.getOpeningDistributionPoints(suitCounts), 1)
     
     def test_Void(self):
         suitCounts = {
@@ -247,7 +247,7 @@ class tallyUpTotal(unittest.TestCase):
             "hearts":  4,
             "spades": 4,
         }
-        self.assertEqual(autoBid.tallyUpTotal(suitCounts), 3)
+        self.assertEqual(autoBid.getOpeningDistributionPoints(suitCounts), 3)
 
 class getDistributionPoints(unittest.TestCase):
     def test_AllOneSuit(self):

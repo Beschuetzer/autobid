@@ -41,9 +41,7 @@ scoring = {
 bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
 hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
 
-from logging import exception
 import re
-from tests.test_main import Takeout_Double
 flatten = lambda t: [item for sublist in t for item in sublist]
 
 def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConvention):
@@ -55,6 +53,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
     biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)
     #biddingObjRelative is a dictionary where relative locations are keys and the values are that person's bids (top: [...], left: [...], ...)
+    
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
     partnersBids = biddingObjRelative['top']
     #endregion
@@ -73,7 +72,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
     #get straight up point counts
     highCardPoints = getHighCardPoints(hand, clientPointCountingConvention)
-    distributionPoints = getDistributionPoints(hand)
+    distributionPoints = getDistributionPoints(hand, incomingBids, biddingObjRelative)
     totalPoints = highCardPoints + distributionPoints
     print('totalPoints = {0}'.format(totalPoints))
 
@@ -86,8 +85,6 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     if (totalPoints < 6 and isFirstBid):
         return 'Pass'
 
-
-    #TODO: have different behavior depending on whether set to reliable or agressive?
 
 
     #don't pass when have close to openers and a partial and you are third or fourth bidder and all previous bids are passes?
@@ -197,8 +194,8 @@ def getStrongestSuit(hand, biddingObjRelative):
                 mentioned.nt = True
 
     #return strongest of unmentioned suits
-    for suit, hasBeenMentioned in mentioned.items():
-        if (hasBeenMentioned == False)
+    # for suit, hasBeenMentioned in mentioned.items():
+        # if (hasBeenMentioned == False):
 
     pass
 
@@ -347,7 +344,7 @@ def getHighCardPoints(hand, clientPointCountingConvention):
     except:
         return -2
 
-def getDistributionPoints(hand):
+def getDistributionPoints(hand, incomingBids, biddingObjRelative):
     try:
         if hand == None:
             return -1
@@ -365,11 +362,44 @@ def getDistributionPoints(hand):
             suitName = getSuitNameFromCardAsNumber(suit[0])
             suitCounts[suitName] = len(suit)
 
-        return tallyUpTotal(suitCounts)
+
+
+        #otherwise use responding total
+        distributionPoints = -1;
+        shouldCalculateRespondingPoints = getShouldCalculateRespondingPoints(incomingBids)
+
+
+        if shouldCalculateRespondingPoints:
+            partnersMentionedSuits = getPartnersMentionedSuits(biddingObjRelative['top'])
+            distributionPoints = getRespondingDistributionPoints(suitCounts, partnersMentionedSuits)
+        else:
+            distributionPoints = getOpeningDistributionPoints(suitCounts)
+
+        return distributionPoints
+
     except:
         print(-2)
 
-def tallyUpTotal(suitCounts):
+def getPartnersMentionedSuits(partnersBids):
+    #incoming list of bids 
+    #return a list of suits that partner has bid
+
+    pass
+
+def getShouldCalculateRespondingPoints(incomingBids):
+    #determine whether or not to calculate opening distribution or responding distribution
+
+    #if partner bids 1 Clubs, 2 Clubs or 1NT return false
+
+    #otherwise 
+    pass
+
+def getRespondingDistributionPoints(incomingBid):
+
+    pass
+
+
+def getOpeningDistributionPoints(suitCounts):
     #input: suitCounts as a dictionary where keys are suit names and values are ints representing how many of that suit
     #return: int representing total distribution points in all 4 suits
     try:
