@@ -83,6 +83,8 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     #handle partner 2 Club
     #make sure it is an opening 2 Club
 
+
+
     #handle weak bid: -> pass/3NT/game in their suit/your best suit if lots of points or 6+ of a suit depending on your points, cards in their suit, if you have stoppers
     #if 1 NT -> best suit
 
