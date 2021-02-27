@@ -78,7 +78,13 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
         return 'Double'
     #endregion    
 
+    #handle partner 1 Club
+
     #handle partner 2 Club
+    #make sure it is an opening 2 Club
+
+    #handle weak bid: -> pass/3NT/game in their suit/your best suit if lots of points or 6+ of a suit depending on your points, cards in their suit, if you have stoppers
+    #if 1 NT -> best suit
 
     #TODO: do you pass if partner doubles and the person before you doubles?
     result = handlePartnerDouble(hand, incomingBids, biddingObjRelative, totalPoints) 
@@ -90,9 +96,53 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
         return 'Pass'
 
     #pass if less than 6 points and partner bid
-    
-    #what to bid if autobid has opening points
-    if (totalPoints > 12 )
+
+
+#%%%logic for opening (first bid)
+#
+#your partner passed or hasn't had a turn
+#do you have at least opening points or weak bid? If not, pass
+#if > opening points < 20 points -> 1 NT
+#2 Clubs is accounted for above
+#if opening points (calculate before looking for 6+ of a suit) and less than 15 points -> if other team has bid, double, if not bid best suit
+#if > 7 points < opening points and > 6 of suit -> bid 3 of suit
+#if > 9 points < opening points and 6 of suit -> bid 2 of suit
+
+
+#logic for responding
+#your partner opened
+#special situations accounted for above (takeout double, 1/2 Clubs, 1 NT and weak bids)
+#if < 6 points pass
+#if > 5 points and < 10* points (high card? total?) plus 3 of partner's suit
+#   -> bid up 1 in partner's suit
+#   if 2 of partner's suit and biddable suit
+#   -> bid that suit, if no biddable suit, bid up 1 in partner's suit
+#   if < 2 of partner's suit and no biddable suit -> pass
+#if > 9 points and < 13 points (high card? total?) and biddable suit -> bid that suit, if no biddable suit bid NT
+#if >12 points jump shift bid to best suit or NT
+
+
+
+
+
+
+
+
+
+#logic for continuation of bidding (communication of second suits, determining game, competing with opponents)
+
+
+
+
+
+#Scoring considerations:
+#do you have at least 10 points and opposing team is vulnerable and has at least 50 points, bid as if you have opening
+#if > opening points < 20 points -> 1 NT (unless have openers in major or minor and bid in that suit results in game)
+#if > 7 points < opening points and > 6 of suit -> bid 3 of suit (unless point count and previous bidding = win, i.e. 3 passes and 70-80 partial depending on suit?)
+#if >9 points < opening points and 6 of suit -> bid 2 of suit (unless clubs, unless point count and previous bidding = win, i.e. 3 passes and 70-80 partial depending on suit?)
+#%%
+
+
 
 
     #don't pass when have close to openers and a partial and you are third or fourth bidder and all previous bids are passes?
