@@ -827,6 +827,90 @@ class partnerTwoClubResponse(unittest.TestCase):
         self.assertEqual(actual, expected)
 
 
+    def test_ask_for_kings_pass(self):
+        hand = [[0, 1, 7, 8,12], [13, 18, 23, 24], [29, 30, 32], [40,42]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Diamond', 'Four No Trump', 'Five Diamond'],
+            "left": ['Pass', 'Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Five Club']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Pass'
+        self.assertEqual(actual, expected)
+    def test_ask_for_kings_pass_NT(self):
+        hand = [[0, 1, 7, 8,12], [13, 18, 23, 24], [29, 30, 32], [40,42]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three No Trump', 'Four No Trump', 'Five No Trump'],
+            "left": ['Pass', 'Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Five No Trump']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Pass'
+        self.assertEqual(actual, expected)
+    def test_ask_for_kings_one(self):
+        hand = [[0, 1, 7, 8,12], [13, 18, 23, 24], [29, 30, 32], [40,42]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Club', 'Four No Trump', 'Five Diamond'],
+            "left": ['Pass', 'Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Five Diamond']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Five Spade'
+        self.assertEqual(actual, expected)
+    def test_ask_for_kings_two(self):
+        hand = [[0, 1, 7, 8,11], [13, 18, 23, 24], [29, 30, 32], [40,42]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Club', 'Four No Trump', 'Five Heart'],
+            "left": ['Pass', 'Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Five Heart']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Six Club'
+        self.assertEqual(actual, expected)
+    def test_ask_for_kings_three(self):
+        hand = [[0, 1, 7, 8,11], [13, 18, 23, 24], [29, 30, 32], [40,50]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Club', 'Four No Trump', 'Five Spade'],
+            "left": ['Pass', 'Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Five Spade']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Six Heart'
+        self.assertEqual(actual, expected)
+    def test_ask_for_kings_four(self):
+        hand = [[0, 1, 7, 8,11], [13, 18, 23, 24], [29, 30, 37], [40,50]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Club', 'Four No Trump', 'Five No Trump'],
+            "left": ['Pass', 'Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Five No Trump']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Six Club'
+        self.assertEqual(actual, expected)
+    def test_ask_for_kings_none(self):
+        hand = [[0, 1, 7, 8,12], [13, 18, 23,25], [29, 30, 38], [40,51]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Club', 'Four No Trump', 'Four Diamond'],
+            "left": ['Pass', 'Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Four Diamond']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Four Heart'
+        self.assertEqual(actual, expected)
+    
+
+#need to finish this
+class getSuitFromBid(unittest.TestCase):
+    def test_empty(self):
+        pass
+
 class getStrongestSuit(unittest.TestCase):
     def test_LengthOverPointCount(self):
         hand = [[0, 1, 7, 8,12], [13, 18, 23, 24], [29, 30, 32], [40,42]]

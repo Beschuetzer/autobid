@@ -244,7 +244,6 @@ def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, current
                 if cardAsNumber % 13 == 12:
                     aceCount += 1
 
-        print('aceCount = {0}'.format(aceCount))
         isAllOrNone = aceCount == 0 or aceCount == 4
         indexAddition = 0
         if isAllOrNone:
@@ -252,24 +251,24 @@ def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, current
         else:
             indexAddition = aceCount + 1
 
-        print('indexAddition = {0}'.format(indexAddition))
         return contracts[currentIndex + indexAddition]
     #endregion
-    #region handle slam King
-    #if their second bid's suit is the same as their 4th bid's suit then pass
-    elif biddingObjRelative['top'][1] != biddingObjRelative['top'][3]:
-        kingCount = None
+    #region handle slam Kings
+    #if their second bid's suit is the same as their 4th bid's suit then assume wants to stop otherwise assume asking for kings
+    elif getSuitFromBid(biddingObjRelative['top'][1]) != getSuitFromBid(biddingObjRelative['top'][3]):
+        kingCount = 0
         for suit in hand:
             for cardAsNumber in suit:
                 if cardAsNumber % 13 == 11:
                     kingCount += 1
 
+        print('kingCount = {0}'.format(kingCount))
         isAllOrNone = kingCount == 0 or kingCount == 4
         indexAddition = 0
         if isAllOrNone:
             indexAddition = 1
         else:
-            indexAddition = kingCount
+            indexAddition = kingCount + 1
 
         return contracts[currentIndex + indexAddition]
     #endregion
@@ -279,6 +278,10 @@ def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, current
     #handle second response
 
     return 'Pass'
+
+
+def getSuitFromBid(bid):
+    return bid.split()[1]
 
 def getSpotAfterNRotations(spot, numberOfRotations):
     #input: 
