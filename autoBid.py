@@ -126,7 +126,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     #handle partner 2 Club
     if (isFirstBid and re.search('two club', biddingObjRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingObjRelative['left'][0], re.IGNORECASE)):
         openDistributionPoints = getOpeningDistributionPoints(suitCounts)
-        return partnerTwoClubResponse(biddingObjRelative, highCardPoints + openDistributionPoints, currentActualBid)
+        return partnerTwoClubResponse(hand, biddingObjRelative, highCardPoints + openDistributionPoints, currentActualBid)
     
 
 
@@ -207,27 +207,40 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     outgoingBid = 'Recommended Bid Goes here'
     return outgoingBid
 
-def partnerTwoClubResponse(biddingObjRelative, totalOpeningPoints, currentActualBid):
-
+def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid):
     currentIndex = contracts.index(currentActualBid[1])
+
+    #return early if left bids first
+    if not re.search('pass', biddingObjRelative['left'][0], re.IGNORECASE) and not re.search('double', biddingObjRelative['left'][0], re.IGNORECASE):
+        return 'Pass'
 
     #region first response
     bestSuitIsNoTrump = None 
     if len(biddingObjRelative['top']) > 2:
+        print(1)
         bestSuitIsNoTrump = re.search('trump', biddingObjRelative['top'][1], re.IGNORECASE)
 
     if re.search('two club', biddingObjRelative['top'][-1], re.IGNORECASE):
         if totalOpeningPoints == 0:
+            print(2)
+
             return contracts[currentIndex + 1]
+
+        print(3)
 
         wholeNumber = int(math.ceil(totalOpeningPoints / 3));
         print('wholeNumber = {0}'.format(wholeNumber))
         return contracts[currentIndex + wholeNumber]
     #endregion
-    
     #region second response
     elif len(biddingObjRelative['top']) >= 2:
-        return getStrongestSuit(hand, biddingObjRelative)
+
+        suit = getStrongestSuit(hand, biddingObjRelative)
+        for i in range(1, 6):
+            print('contracts[currentIndex + i] = {0}'.format(contracts[currentIndex + i]))
+            if re.search(suit, contracts[currentIndex + i], re.IGNORECASE):
+                return contracts[currentIndex + i]
+
     #endregion
     #region handle slam Aces
     elif not bestSuitIsNoTrump and re.search('trump', biddingObjRelative['top'][-1], re.IGNORECASE):
@@ -248,7 +261,7 @@ def partnerTwoClubResponse(biddingObjRelative, totalOpeningPoints, currentActual
     #endregion
     #region handle slam King
     #if their second bid's suit is the same as their 4th bid's suit then pass
-    if biddingObjRelative['top'][1] != biddingObjRelative['top'][3]:
+    elif biddingObjRelative['top'][1] != biddingObjRelative['top'][3]:
         kingCount = None
         for suit in hand:
             for cardAsNumber in suit:
@@ -327,9 +340,9 @@ def getBiddingObjAbsolute(incomingBids, seating):
         biddingObjAbsolute[direction].append(bid[1])
     return biddingObjAbsolute
 
-def getStrongestSuit(hand, biddingObjRelative):
+def getStrongestSuit(hand, biddingObjRelative, isResponding=False):
     #input: hand as 2D array 
-    #return: 'clubs'/'diamonds'/'hearts'/'spades'/'no trump' depending on which one is the 'strongest' and which suits have already been mentioned
+    #return: 'club'/'diamond'/'heart'/'spade'/'no trump' depending on which one is the 'strongest' and which suits have already been mentioned
 
     #check already mentioned suits
     mentioned = {
@@ -353,9 +366,17 @@ def getStrongestSuit(hand, biddingObjRelative):
             elif (re.search('trump', bid[1], re.IGNORECASE)):
                 mentioned.nt = True
 
-    #return strongest of unmentioned suits
-    # for suit, hasBeenMentioned in mentioned.items():
-        # if (hasBeenMentioned == False):
+    #get longest suit
+
+    #get suit with most HCP
+
+
+    #if you are responding to openers
+    if isResponding:
+        pass
+    #otherwise
+    else:
+        pass
 
     pass
 
