@@ -781,7 +781,7 @@ class getStrongestSuit(unittest.TestCase):
             "left": ['Pass', 'Pass'],
         }
         actual = autoBid.getStrongestSuit(hand, biddingObjRelative)
-        expected = 'club'
+        expected = 'Four Club'
         self.assertEqual(actual, expected)
     def test_length(self):
         hand = [[0, 1, 7], [13, 18, 25], [29, 30, 32,33,34], [40,42]]
@@ -792,7 +792,7 @@ class getStrongestSuit(unittest.TestCase):
         totalOpeningPoints = 0
         currentActualBid = ['Adam', 'Three Diamond']
         actual = autoBid.getStrongestSuit(hand, biddingObjRelative)
-        expected = 'heart'
+        expected = 'Three Heart'
         self.assertEqual(actual, expected)
     def test_pointCountOverLength(self):
         hand = [[0, 1, 7], [13, 18, 25], [29, 30, 32,33,34], [48,49,50,51]]
@@ -803,7 +803,7 @@ class getStrongestSuit(unittest.TestCase):
         totalOpeningPoints = 0
         currentActualBid = ['Adam', 'Three Diamond']
         actual = autoBid.getStrongestSuit(hand, biddingObjRelative)
-        expected = 'spade'
+        expected = 'Three Spade'
         self.assertEqual(actual, expected)
 
 
