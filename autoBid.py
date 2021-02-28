@@ -12,7 +12,13 @@ Inputs:
     clientPointCountingConvention: string representing how client counts HCP points
 Returns: "best" bid for current situation in the form of a string
 '''
-
+suits = {
+    "clubs": 'club',
+    "diamonds": 'diamond',
+    "hearts": 'heart',
+    "spades": 'spade',
+    "noTrump": 'trump',
+}
 contracts = [
   "One Club",
   "One Diamond",
@@ -279,7 +285,6 @@ def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, current
 
     return 'Pass'
 
-
 def getSuitFromBid(bid):
     split = bid.split()
     if split and len(split) > 1:
@@ -347,27 +352,7 @@ def getStrongestSuit(hand, biddingObjRelative, isResponding=False):
     #input: hand as 2D array 
     #return: 'club'/'diamond'/'heart'/'spade'/'no trump' depending on which one is the 'strongest' and which suits have already been mentioned
 
-    #check already mentioned suits
-    mentioned = {
-        "clubs": False,
-        "diamonds": False,
-        "hearts": False,
-        "spades": False,
-        "nt": False,
-    }
-
-    for location, bids in biddingObjRelative.items():
-        for bid in bids:
-            if (re.search('club', bid[1], re.IGNORECASE)):
-                mentioned.clubs = True
-            elif (re.search('diamond', bid[1], re.IGNORECASE)):
-                mentioned.diamond = True
-            elif (re.search('heart', bid[1], re.IGNORECASE)):
-                mentioned.heart = True
-            elif (re.search('spade', bid[1], re.IGNORECASE)):
-                mentioned.spade = True
-            elif (re.search('trump', bid[1], re.IGNORECASE)):
-                mentioned.nt = True
+    alreadyMentionedSuits = getMentionedSuitsByOpponents(biddingObjRelative)
 
     #get longest suit
 
@@ -382,6 +367,39 @@ def getStrongestSuit(hand, biddingObjRelative, isResponding=False):
         pass
 
     pass
+
+def getSuitsMentionedByOpponents(biddingObjRelative):
+    #check already mentioned suits
+    mentioned = {
+        "clubs": False,
+        "diamonds": False,
+        "hearts": False,
+        "spades": False,
+        "noTrump": False,
+    }
+
+    handsToCheck = ['left', 'right']
+
+    for handToCheck in handsToCheck:
+        for bid in biddingObjRelative[handToCheck]:
+            for key,suit in suits.items():
+                print('suit = {0}'.format(suit))
+                print('bid = {0}'.format(bid))
+                if (re.search(suit, bid, re.IGNORECASE)):
+                    mentioned[key] = True
+                
+                # if (re.search(suits.clubs, bid[1], re.IGNORECASE)):
+                #     mentioned.club = True
+                # elif (re.search(suits.diamonds, bid[1], re.IGNORECASE)):
+                #     mentioned.diamond = True
+                # elif (re.search(suits.hearts, bid[1], re.IGNORECASE)):
+                #     mentioned.heart = True
+                # elif (re.search(suits.spades, bid[1], re.IGNORECASE)):
+                #     mentioned.spade = True
+                # elif (re.search('trump', bid[1], re.IGNORECASE)):
+                #     mentioned.noTrump = True
+
+    return mentioned
 
 def getPartnersEstimatedPointCount(partnersBids):
     #input: partnersBids in chronological order (1st index is most first bid they made)

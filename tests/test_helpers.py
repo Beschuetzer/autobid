@@ -966,7 +966,103 @@ class getStrongestSuit(unittest.TestCase):
         expected = 'Three Spade'
         self.assertEqual(actual, expected)
 
-
+class getSuitsMentionedByOpponents(unittest.TestCase):
+    def test_five(self):
+        biddingObjRelative = {
+            "right": ['Two Club', 'Three Diamond', 'Four No Trump'],
+            "left": ['Two Heart', 'Three Spade'],
+            "bottom": ['Pass', 'Pass'],
+            "top": ['Pass', 'Pass'],
+        }
+        actual = autoBid.getSuitsMentionedByOpponents(biddingObjRelative)
+        expected = {
+            "clubs": True,
+            "diamonds": True,
+            "hearts": True,
+            "spades": True,
+            "noTrump": True,
+        }
+        self.assertDictEqual(actual, expected)
+    def test_four(self):
+        biddingObjRelative = {
+            "right": ['Pass', 'Three Diamond', 'Four No Trump'],
+            "left": ['Two Heart', 'Three Spade'],
+            "bottom": ['Two Club', 'Pass'],
+            "top": ['Pass', 'Three Club'],
+        }
+        actual = autoBid.getSuitsMentionedByOpponents(biddingObjRelative)
+        expected = {
+            "clubs": False,
+            "diamonds": True,
+            "hearts": True,
+            "spades": True,
+            "noTrump": True,
+        }
+        self.assertDictEqual(actual, expected)
+    def test_three(self):
+        biddingObjRelative = {
+            "right": ['Pass', 'Three Diamond', 'Pass'],
+            "left": ['Two Heart', 'Three Spade'],
+            "bottom": ['Two Club', 'Pass'],
+            "top": ['Three No Trump', 'Three Club'],
+        }
+        actual = autoBid.getSuitsMentionedByOpponents(biddingObjRelative)
+        expected = {
+            "clubs": False,
+            "diamonds": True,
+            "hearts": True,
+            "spades": True,
+            "noTrump": False,
+        }
+        self.assertDictEqual(actual, expected)
+    def test_two(self):
+        biddingObjRelative = {
+            "right": ['Pass', 'Three Diamond', 'Double'],
+            "left": ['Double', 'Three Spade'],
+            "bottom": ['Two Club', 'Pass'],
+            "top": ['Three No Trump', 'Three Club'],
+        }
+        actual = autoBid.getSuitsMentionedByOpponents(biddingObjRelative)
+        expected = {
+            "clubs": False,
+            "diamonds": True,
+            "hearts": False,
+            "spades": True,
+            "noTrump": False,
+        }
+        self.assertDictEqual(actual, expected)
+    def test_one(self):
+        biddingObjRelative = {
+            "right": ['Pass', 'Three Club', 'Pass'],
+            "left": ['Double', 'Four Club'],
+            "bottom": ['Two Club', 'Pass'],
+            "top": ['Three No Trump', 'Three Club'],
+        }
+        actual = autoBid.getSuitsMentionedByOpponents(biddingObjRelative)
+        expected = {
+            "clubs": True,
+            "diamonds": False,
+            "hearts": False,
+            "spades": False,
+            "noTrump": False,
+        }
+        self.assertDictEqual(actual, expected)
+    def test_none(self):
+        biddingObjRelative = {
+            "right": ['Pass', 'Double', 'Pass'],
+            "left": ['Double', 'Pass'],
+            "bottom": ['Two Club', 'Three Diamond'],
+            "top": ['Three No Trump', 'Three Club'],
+        }
+        actual = autoBid.getSuitsMentionedByOpponents(biddingObjRelative)
+        expected = {
+            "clubs": False,
+            "diamonds": False,
+            "hearts": False,
+            "spades": False,
+            "noTrump": False,
+        }
+        self.assertDictEqual(actual, expected)
 
     
 
