@@ -281,7 +281,11 @@ def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, current
 
 
 def getSuitFromBid(bid):
-    return bid.split()[1]
+    split = bid.split()
+    if split and len(split) > 1:
+        return bid.split()[1]
+    
+    return None
 
 def getSpotAfterNRotations(spot, numberOfRotations):
     #input: 

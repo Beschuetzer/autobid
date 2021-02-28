@@ -909,7 +909,29 @@ class partnerTwoClubResponse(unittest.TestCase):
 #need to finish this
 class getSuitFromBid(unittest.TestCase):
     def test_empty(self):
-        pass
+        actual = autoBid.getSuitFromBid('')
+        expected = None
+        self.assertEqual(actual, expected)
+    def test_NT(self):
+        actual = autoBid.getSuitFromBid('Five No Trump')
+        expected = 'No'
+        self.assertEqual(actual, expected)
+    def test_club(self):
+        actual = autoBid.getSuitFromBid('Two Club')
+        expected = 'Club'
+        self.assertEqual(actual, expected)
+    def test_Diamond(self):
+        actual = autoBid.getSuitFromBid('Two Diamond')
+        expected = 'Diamond'
+        self.assertEqual(actual, expected)
+    def test_Heart(self):
+        actual = autoBid.getSuitFromBid('Two Heart')
+        expected = 'Heart'
+        self.assertEqual(actual, expected)
+    def test_Spade(self):
+        actual = autoBid.getSuitFromBid('Two Spade')
+        expected = 'Spade'
+        self.assertEqual(actual, expected)
 
 class getStrongestSuit(unittest.TestCase):
     def test_LengthOverPointCount(self):
