@@ -12,6 +12,8 @@ Inputs:
     clientPointCountingConvention: string representing how client counts HCP points
 Returns: "best" bid for current situation in the form of a string
 '''
+suitCounts = None
+highCardPointValuesInEachSuit = None
 suits = {
     "clubs": 'club',
     "diamonds": 'diamond',
@@ -82,8 +84,8 @@ scoring = {
         "vulnerableTransitionIndex": None,
     },
 }
-# bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
-bids = [['Adam', 'Pass'], ['Dan', 'Two Club'], ['Ann', 'pass']]
+bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
+# bids = [['Adam', 'Pass'], ['Dan', 'Two Club'], ['Ann', 'pass']]
 
 hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40,42]]
 
@@ -92,33 +94,29 @@ import re, math
 flatten = lambda t: [item for sublist in t for item in sublist]
 
 def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConvention):
+    global suitCounts
+    global highCardPointValuesInEachSuit
+
     #region Initialization (Getting Values and Dicts to work with)
     isFirstBid = len(incomingBids) < 4
     partnerHasBid = len(incomingBids) >= 2
     currentActualBid = getCurrentActualBid(incomingBids)
-    suitCounts = getSuitCounts(hand)
-    print('suitCounts = {0}'.format(suitCounts))
-    # theyBids = getTheyBids(incomingBids)
-
-    biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)
-    #biddingObjRelative is a dictionary where relative locations are keys and the values are that person's bids (top: [...], left: [...], ...)
-    
+    if suitCounts == None:
+        suitCounts = getSuitCounts(hand)
+    if highCardPointValuesInEachSuit == None:
+        highCardPointValuesInEachSuit = getHighCardPointValuesInEachSuit(hand)
+        
+    biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)    
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
     partnersBids = biddingObjRelative['top']
     #endregion
 
-
-
     partnersEstimatedPointCount = getPartnersEstimatedPointCount(partnersBids)
-    print('partnersBids = {0}'.format(partnersBids))
-
 
     #get straight up point counts
     highCardPoints = getHighCardPoints(hand, clientPointCountingConvention)
     distributionPoints = getDistributionPoints(hand, incomingBids, biddingObjRelative, suitCounts)
     totalPoints = highCardPoints + distributionPoints
-    print('totalPoints = {0}'.format(totalPoints))
-
 
     #region Check whether to double and return double if true
     canDouble = getCanDouble(biddingObjRelative)
@@ -134,8 +132,6 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
         openDistributionPoints = getOpeningDistributionPoints(suitCounts)
         return partnerTwoClubResponse(hand, biddingObjRelative, highCardPoints + openDistributionPoints, currentActualBid)
     
-
-
 
     #handle weak bid: -> pass/3NT/game in their suit/your best suit if lots of points or 6+ of a suit depending on your points, cards in their suit, if you have stoppers
     #if 1 NT -> best suit
@@ -352,17 +348,16 @@ def getStrongestSuit(hand, biddingObjRelative, isResponding=False):
     #input: hand as 2D array 
     #return: 'club'/'diamond'/'heart'/'spade'/'no trump' depending on which one is the 'strongest' and which suits have already been mentioned
 
-    alreadyMentionedSuits = getMentionedSuitsByOpponents(biddingObjRelative)
+    suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingObjRelative)
 
-    #get longest suit
+    #global vars to use: 'suitCounts' and 'highCardPointValuesInEachSuit'
 
-    #get suit with most HCP
-
-
-    #if you are responding to openers
-    if isResponding:
+    #region if you are getting strongest suit for opening 
+    if isResponding:       
+        
         pass
-    #otherwise
+    #endregion
+    #region getting responding strongest
     else:
         pass
 
@@ -383,22 +378,9 @@ def getSuitsMentionedByOpponents(biddingObjRelative):
     for handToCheck in handsToCheck:
         for bid in biddingObjRelative[handToCheck]:
             for key,suit in suits.items():
-                print('suit = {0}'.format(suit))
-                print('bid = {0}'.format(bid))
                 if (re.search(suit, bid, re.IGNORECASE)):
                     mentioned[key] = True
-                
-                # if (re.search(suits.clubs, bid[1], re.IGNORECASE)):
-                #     mentioned.club = True
-                # elif (re.search(suits.diamonds, bid[1], re.IGNORECASE)):
-                #     mentioned.diamond = True
-                # elif (re.search(suits.hearts, bid[1], re.IGNORECASE)):
-                #     mentioned.heart = True
-                # elif (re.search(suits.spades, bid[1], re.IGNORECASE)):
-                #     mentioned.spade = True
-                # elif (re.search('trump', bid[1], re.IGNORECASE)):
-                #     mentioned.noTrump = True
-
+               
     return mentioned
 
 def getPartnersEstimatedPointCount(partnersBids):
@@ -412,6 +394,8 @@ def getCanDouble(biddingObjRelative):
     # if opposing team hasn't bid, can't double   
     if len(biddingObjRelative['left']) == 0 and len(biddingObjRelative['right']) == 0:
         return False
+
+    return True
     
 def getShouldDouble(scoring, biddingObjRelative, partnersEstimatedPointCount, hand, currentActualBid):
     #inputs: 
@@ -444,19 +428,6 @@ def getSuitNameFromCardAsNumber(cardAsNumber):
         return 'spades'
     else: 
         return None
-
-
-#TODO: is this needed?
-def getTheyBids(incomingBids):
-    #input: all bids
-    #returns: the bids that are not made by you or partner
-    theyBids = []
-    for index, bid in enumerate(reversed(incomingBids)):
-        if index % 2 == 0:
-            theyBids.insert(0, bid)
-
-    print('theyBids = {0}'.format(theyBids))
-    return theyBids
 
 def getCurrentActualBid(incomingBids):
     #input: all bids up to now
@@ -512,6 +483,25 @@ distributionPointValues = {
     },
 }
 #endregion
+
+def getHighCardPointValuesInEachSuit(hand):
+    global highCardPointValuesInEachSuit
+    highCardPointValuesInEachSuit = {
+        "clubs": 0,
+        "diamonds": 0,
+        "hearts": 0,
+        "spades": 0,
+    }
+
+    for suit in hand:
+        suitName = ''
+        for cardAsNumber in suit:
+            if len(suit) > 0:
+                suitName = getSuitNameFromCardAsNumber(cardAsNumber)
+            if cardAsNumber >=9 and cardAsNumber <=12:
+                highCardPointValuesInEachSuit[suitName] += 1
+
+    return highCardPointValuesInEachSuit
 
 def getSuitCounts(hand):
     suitCounts = {

@@ -250,7 +250,81 @@ class tallyUpTotal(unittest.TestCase):
         }
         self.assertEqual(autoBid.getOpeningDistributionPoints(suitCounts), 3)
 
-class getOpeningPoints(unittest.TestCase):
+class getOpeningDistributionPoints(unittest.TestCase):
+    def test_AllOneSuit(self):
+        clubs = [i for i in range(0, 13)]
+        diamonds = []
+        hearts = []
+        spades = []
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getOpeningDistributionPoints(hand), 18)
+    
+    def test_None(self):
+        clubLength = 4
+        diamondLength = 4
+        heartLength = 3
+        spadeLength = 3
+
+        clubs = [i for i in range(0, 0 + clubLength)]
+        diamonds = [i for i in range(13, 13 + diamondLength)]
+        hearts = [i for i in range(26, 26 + heartLength)]
+        spades = [i for i in range(39, 39 + spadeLength)]
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getOpeningDistributionPoints(hand), 0)
+    
+    def test_Void(self):
+        clubLength = 0
+        diamondLength = 4
+        heartLength = 4
+        spadeLength = 4
+
+        clubs = [i for i in range(0, 0 + clubLength)]
+        diamonds = [i for i in range(13, 13 + diamondLength)]
+        hearts = [i for i in range(26, 26 + heartLength)]
+        spades = [i for i in range(39, 39 + spadeLength)]
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getOpeningDistributionPoints(hand), 3)
+
+    def test_Singleton(self):
+        clubLength = 4
+        diamondLength = 1
+        heartLength = 3
+        spadeLength = 3
+
+        clubs = [i for i in range(0, 0 + clubLength)]
+        diamonds = [i for i in range(13, 13 + diamondLength)]
+        hearts = [i for i in range(26, 26 + heartLength)]
+        spades = [i for i in range(39, 39 + spadeLength)]
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getOpeningDistributionPoints(hand), 2)
+
+    def test_Doubleton(self):
+        clubLength = 4
+        diamondLength = 2
+        heartLength = 3
+        spadeLength = 3
+
+        clubs = [i for i in range(0, 0 + clubLength)]
+        diamonds = [i for i in range(13, 13 + diamondLength)]
+        hearts = [i for i in range(26, 26 + heartLength)]
+        spades = [i for i in range(39, 39 + spadeLength)]
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getOpeningDistributionPoints(hand), 1)
+
+    def test_FiveLong(self):
+        clubLength = 5
+        diamondLength = 4
+        heartLength = 3
+        spadeLength = 3
+
+        clubs = [i for i in range(0, 0 + clubLength)]
+        diamonds = [i for i in range(13, 13 + diamondLength)]
+        hearts = [i for i in range(26, 26 + heartLength)]
+        spades = [i for i in range(39, 39 + spadeLength)]
+        hand = [clubs, diamonds, hearts, spades]
+        self.assertEqual(autoBid.getOpeningDistributionPoints(hand), 1)
+
+class getRespondingDistributionPoints(unittest.TestCase):
     def test_AllOneSuit(self):
         clubs = [i for i in range(0, 13)]
         diamonds = []
@@ -324,6 +398,7 @@ class getOpeningPoints(unittest.TestCase):
         hand = [clubs, diamonds, hearts, spades]
         self.assertEqual(autoBid.getOpeningDistributionPoints(hand), 1)
    
+
 class getCurrentActualBid(unittest.TestCase):
     def test_Normal(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
@@ -348,27 +423,7 @@ class getCurrentActualBid(unittest.TestCase):
         expected = autoBid.getCurrentActualBid(bids)
         actual = None
         self.assertEqual(expected, actual)
-
-class getTheyBids(unittest.TestCase):
-    def test_empty(self):
-        testCase = autoBid.getTheyBids([])
-        self.assertListEqual(testCase, [])
-    def test_three(self):
-        bids = [["Tim", "Pass"], ["Dan", "Pass"], ["James", "Pass"]]
-        expected = [["Tim", "Pass"], ["James", "Pass"]]
-        testCase = autoBid.getTheyBids(bids)
-        self.assertListEqual(testCase, expected)
-    def test_four(self):
-        bids = [["Tim", "Pass"], ["Dan", "Pass"], ["James", "Pass"], ['Adam', 'One Club']]
-        expected = [["Dan", "Pass"], ['Adam', 'One Club']]
-        testCase = autoBid.getTheyBids(bids)
-        self.assertListEqual(testCase, expected)
-    def test_eight(self):
-        bids = [["Tim", "Pass"], ["Dan", "Pass"], ["James", "Pass"], ['Adam', 'One Club'],["Tim", "One No Trump"], ["Dan", "Pass"], ["James", "Pass"], ['Adam', 'Two Spades']]
-        expected = [["Dan", "Pass"], ['Adam', 'One Club'], ["Dan", "Pass"], ['Adam', 'Two Spades']]
-        testCase = autoBid.getTheyBids(bids)
-        self.assertListEqual(testCase, expected)
-        
+    
 class getBiddingObjAbsolute(unittest.TestCase):
     def test_empty(self):
         bids = []
