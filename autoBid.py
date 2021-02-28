@@ -217,27 +217,21 @@ def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, current
     #region first response
     bestSuitIsNoTrump = None 
     if len(biddingObjRelative['top']) > 2:
-        print(1)
         bestSuitIsNoTrump = re.search('trump', biddingObjRelative['top'][1], re.IGNORECASE)
+    print('bestSuitIsNoTrump = {0}'.format(bestSuitIsNoTrump))
 
     if re.search('two club', biddingObjRelative['top'][-1], re.IGNORECASE):
         if totalOpeningPoints == 0:
-            print(2)
-
             return contracts[currentIndex + 1]
 
-        print(3)
-
         wholeNumber = int(math.ceil(totalOpeningPoints / 3));
-        print('wholeNumber = {0}'.format(wholeNumber))
         return contracts[currentIndex + wholeNumber]
     #endregion
     #region second response
-    elif len(biddingObjRelative['top']) >= 2:
+    elif len(biddingObjRelative['top']) == 2:
 
         suit = getStrongestSuit(hand, biddingObjRelative)
         for i in range(1, 6):
-            print('contracts[currentIndex + i] = {0}'.format(contracts[currentIndex + i]))
             if re.search(suit, contracts[currentIndex + i], re.IGNORECASE):
                 return contracts[currentIndex + i]
 
@@ -250,13 +244,15 @@ def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, current
                 if cardAsNumber % 13 == 12:
                     aceCount += 1
 
+        print('aceCount = {0}'.format(aceCount))
         isAllOrNone = aceCount == 0 or aceCount == 4
         indexAddition = 0
         if isAllOrNone:
             indexAddition = 1
         else:
-            indexAddition = aceCount
+            indexAddition = aceCount + 1
 
+        print('indexAddition = {0}'.format(indexAddition))
         return contracts[currentIndex + indexAddition]
     #endregion
     #region handle slam King

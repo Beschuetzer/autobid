@@ -767,10 +767,64 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 15
         currentActualBid = ['Adam', 'Two Club']
-        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid, True)
-        expected = True
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Four Club'
         self.assertEqual(actual, expected)
-
+    def test_ask_for_aces_one(self):
+        hand = [[0, 1, 7, 8,12], [13, 18, 23, 24], [29, 30, 32], [40,42]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Diamond', 'Four No Trump'],
+            "left": ['Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Four No Trump']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Five Diamond'
+        self.assertEqual(actual, expected)
+    def test_ask_for_aces_two(self):
+        hand = [[0, 1, 7, 8,12], [13, 18, 23,25], [29, 30, 32], [40,42]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Diamond', 'Four No Trump'],
+            "left": ['Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Four No Trump']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Five Heart'
+        self.assertEqual(actual, expected)
+    def test_ask_for_aces_three(self):
+        hand = [[0, 1, 7, 8,12], [13, 18, 23,25], [29, 30, 38], [40,42]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Diamond', 'Four No Trump'],
+            "left": ['Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Four No Trump']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Five Spade'
+        self.assertEqual(actual, expected)
+    def test_ask_for_aces_four(self):
+        hand = [[0, 1, 7, 8,12], [13, 18, 23,25], [29, 30, 38], [40,51]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Diamond', 'Four No Trump'],
+            "left": ['Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Four No Trump']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Five Club'
+        self.assertEqual(actual, expected)
+    def test_ask_for_aces_none(self):
+        hand = [[0, 1, 7, 8,11], [13, 18, 23,24], [29, 30, 37], [40,50]]
+        biddingObjRelative = {
+            "top": ['Two Club', 'Three Diamond', 'Four No Trump'],
+            "left": ['Pass', 'Pass', 'Pass'],
+        }
+        totalOpeningPoints = 4
+        currentActualBid = ['Adam', 'Four No Trump']
+        actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Five Club'
+        self.assertEqual(actual, expected)
 
 
 class getStrongestSuit(unittest.TestCase):
