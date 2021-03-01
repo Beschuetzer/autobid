@@ -128,9 +128,7 @@ bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew
 # bids = [['Adam', 'Pass'], ['Dan', 'Two Club'], ['Ann', 'pass']]
 
 hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40,42]]
-
       
-from _typeshed import OpenBinaryModeWriting
 import re, math
 flatten = lambda t: [item for sublist in t for item in sublist]
 
@@ -385,7 +383,7 @@ def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids):
         bidsUpToUsersFirstBid = incomingBids[:indexOfUsersFirstBid]
 
     for bid in bidsUpToUsersFirstBid:
-        if not re.search('pass', bid, re.IGNORECASE) and not re.search('double', bid, re.IGNORECASE):
+        if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return True
 
 

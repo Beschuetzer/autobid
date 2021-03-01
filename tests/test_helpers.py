@@ -1751,9 +1751,64 @@ class getIsJumpShift(unittest.TestCase):
         actual = autoBid.getIsJumpShift(currentActualBid, usersBid)
         expected = True
         self.assertEqual(actual, expected)
-class getHasSomeOneOpenedBefore(unittest.TestCase):
-    
 
+class getHasSomeOneOpenedBefore(unittest.TestCase):
+    def test_empty(self):
+        indexOfUsersFirstBid = None
+        incomingBids = []
+        actual = autoBid.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_not_yet_bid_false_1(self):
+        indexOfUsersFirstBid = None
+        incomingBids = [['Adam', 'Pass']]
+        actual = autoBid.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_not_yet_bid_false_2(self):
+        indexOfUsersFirstBid = None
+        incomingBids = [['Adam', 'Pass'], ['Tim', 'Double']]
+        actual = autoBid.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_not_yet_bid_true_1(self):
+        indexOfUsersFirstBid = None
+        incomingBids = [['Adam', 'Pass'], ['Tim', 'Two Club']]
+        actual = autoBid.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_not_yet_bid_true_2(self):
+        indexOfUsersFirstBid = None
+        incomingBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = autoBid.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        expected = True
+        self.assertEqual(actual, expected)
+
+    def test_has_bid_false_1(self):
+        indexOfUsersFirstBid = 2
+        incomingBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club'],['Andrew','Pass'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = autoBid.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_has_bid_false_2(self):
+        indexOfUsersFirstBid = 0
+        incomingBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Pass'],['Andrew','One Heart'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = autoBid.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_has_bid_true_1(self):
+        indexOfUsersFirstBid = 3
+        incomingBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club'],['Andrew','Pass'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = autoBid.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_has_bid_true_2(self):
+        indexOfUsersFirstBid = 4
+        incomingBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Pass'],['Andrew','One Heart'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = autoBid.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        expected = True
+        self.assertEqual(actual, expected)
+   
 
 
 
