@@ -144,7 +144,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
     #get straight up point counts
     highCardPoints = getHighCardPoints(hand, clientPointCountingConvention)
-    distributionPoints = getDistributionPoints(hand, incomingBids, biddingObjRelative, suitCounts)
+    distributionPoints = getDistributionPoints(hand, incomingBids, biddingObjRelative, seatingRelative, suitCounts)
     totalPoints = highCardPoints + distributionPoints
 
     #region Check whether to double and return double if true
@@ -277,12 +277,10 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
 
         username = seatingRelative[location]
         indexOfUsersFirstBid = getIndexOfNthBid(username, incomingBids, 1)
-        biddingWhenUserMadeFirstBid = incomingBids[:indexOfUsersFirstBid]
-        hasPartnerOpened = getHasPartnerOpened(biddingWhenUserMadeFirstBid)
+        hasPartnerOpened = getHasPartnerOpened(incomingBids, seatingRelative)
         firstBid = biddingObjRelative[location][0]
 
         print('username = {0}'.format(username))
-        print('biddingWhenUserMadeFirstBid = {0}'.format(biddingWhenUserMadeFirstBid))
         print('firstBid = {0}'.format(firstBid))
         if re.search('pass', firstBid, re.IGNORECASE):
             if len(biddingObjRelative[location]) > 1:
@@ -382,8 +380,14 @@ def getIsJumpShift(currentActualBid, usersBid):
     indexOfUsersBid = contracts.index(usersBid)
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5
 
-def getHasPartnerOpened(biddingUpToUsersFirstBid):
+def getHasPartnerOpened(incomingBids, seatingRelative):
     #returns true or false depending on whether the player is responding to his/her partner
+    indexOfUsersFirstBid = getIndexOfNthBid(seatingRelative['bottom'], incomingBids, 1)
+    biddingUpToUsersFirstBid = incomingBids[:indexOfUsersFirstBid]
+
+    if len(biddingUpToUsersFirstBid) <= 1:
+        return False
+        
     if len(biddingUpToUsersFirstBid) >=2 and not re.search('pass', biddingUpToUsersFirstBid[-2][1], re.IGNORECASE):
         return True
 
@@ -738,26 +742,24 @@ def getHighCardPoints(hand, clientPointCountingConvention):
     except:
         return -2
 
-def getDistributionPoints(hand, incomingBids, biddingObjRelative, suitCounts):
-    try:
-        if hand == None:
-            return -1    
+def getDistributionPoints(hand, incomingBids, biddingObjRelative, seatingRelative, suitCounts):
+    if hand == None:
+        return -1    
 
-        #otherwise use responding total
-        distributionPoints = -1;
-        shouldCalculateRespondingPoints = getShouldCalculateRespondingPoints(incomingBids)
+    #otherwise use responding total
+    distributionPoints = -1;
+    hasPartnerOpened = getHasPartnerOpened(incomingBids, seatingRelative)
+    
+    getShouldCalculateRespondingPoints(incomingBids)
+    print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
 
+    if hasPartnerOpened:
+        partnersMentionedSuits = getPartnersMentionedSuits(biddingObjRelative['top'])
+        distributionPoints = getRespondingDistributionPoints(suitCounts, partnersMentionedSuits)
+    else:
+        distributionPoints = getOpeningDistributionPoints(suitCounts)
 
-        if shouldCalculateRespondingPoints:
-            partnersMentionedSuits = getPartnersMentionedSuits(biddingObjRelative['top'])
-            distributionPoints = getRespondingDistributionPoints(suitCounts, partnersMentionedSuits)
-        else:
-            distributionPoints = getOpeningDistributionPoints(suitCounts)
-
-        return distributionPoints
-
-    except:
-        print(-2)
+    return distributionPoints
 
 def getPartnersMentionedSuits(partnersBids):
     #incoming list of bids 
@@ -773,28 +775,25 @@ def getShouldCalculateRespondingPoints(incomingBids):
     #otherwise 
     pass
 
-def getRespondingDistributionPoints(incomingBids):
+def getRespondingDistributionPoints(suitCounts, partnersMentionedSuits):
 
-    pass
+    return -1
 
 def getOpeningDistributionPoints(suitCounts):
     #input: suitCounts as a dictionary where keys are suit names and values are ints representing how many of that suit
     #return: int representing total distribution points in all 4 suits
-    try:
-        points = 0
-        for suit in suitCounts:
-            if suitCounts[suit] == 0:
-                points += distributionPointValues['shortness']['void']
-            elif suitCounts[suit] == 1:
-                points += distributionPointValues['shortness']['singleton']
-            elif suitCounts[suit] == 2:
-                points += distributionPointValues['shortness']['doubleton']
-            elif suitCounts[suit] > 4:
-                points += suitCounts[suit] - 4
+    points = 0
+    for suit in suitCounts:
+        if suitCounts[suit] == 0:
+            points += distributionPointValues['shortness']['void']
+        elif suitCounts[suit] == 1:
+            points += distributionPointValues['shortness']['singleton']
+        elif suitCounts[suit] == 2:
+            points += distributionPointValues['shortness']['doubleton']
+        elif suitCounts[suit] > 4:
+            points += suitCounts[suit] - 4
 
-        return points
-    except:
-        return -2       
+    return points
 #endregion
 
 print(autoBid(bids, hand, scoring, seating, spot, 'hcp'))
