@@ -21,8 +21,9 @@ PASS_FIRST_BID_SECOND_ROUND_MIN = 12
 PASS_FIRST_DOUBLE_SECOND_ROUND_MAX = 8
 PASS_FIRST_DOUBLE_SECOND_ROUND_MIN = 12
 
-BID_SUIT_FIRST_ROUND_MAX = 15
-BID_SUIT_FIRST_ROUND_MIN = PASS_FIRST_ROUND_MAX + 1
+
+OPENING_BID_SUIT_FIRST_ROUND_MAX = 15
+OPENING_BID_SUIT_FIRST_ROUND_MIN = PASS_FIRST_ROUND_MAX + 1
 TWO_CLUB_FIRST_ROUND_MAX = 25
 TWO_CLUB_FIRST_ROUND_MIN = 18
 NT_FIRST_ROUND_MIN = 16
@@ -253,7 +254,7 @@ def getEstimatedPoints(biddingObjRelative, biddingHistory):
     }
 
     #right now this doesn't differentiate between responding and opening bids
-
+    print('biddingObjRelative = {0}'.format(biddingObjRelative))
     for location, bids in biddingObjRelative.items():
         numberOfBidsMade = len(biddingObjRelative[location])
         if numberOfBidsMade < 1:
@@ -261,10 +262,12 @@ def getEstimatedPoints(biddingObjRelative, biddingHistory):
 
         isRespondingToPartner = getIsRespondingToPartner(biddingObjRelative, biddingHistory)
         firstBid = biddingObjRelative[location][0]
-
+        print('firstBid = {0}'.format(firstBid))
         if re.search('pass', firstBid, re.IGNORECASE):
             if len(biddingObjRelative[location]) > 1:
+
                 secondBid = biddingObjRelative[location][1]
+                print('secondBid = {0}'.format(secondBid))
                 if re.search('trump', secondBid, re.IGNORECASE):
                     estimatedScoring[location]['min'] = PASS_FIRST_NT_SECOND_ROUND_MIN
                     estimatedScoring[location]['max'] = PASS_FIRST_NT_SECOND_ROUND_MAX
@@ -291,14 +294,15 @@ def getEstimatedPoints(biddingObjRelative, biddingHistory):
             estimatedScoring[location]['min'] = TWO_CLUB_FIRST_ROUND_MIN
             estimatedScoring[location]['max'] = TWO_CLUB_FIRST_ROUND_MAX
         else:
-            estimatedScoring[location]['min'] = BID_SUIT_FIRST_ROUND_MIN
-            estimatedScoring[location]['max'] = BID_SUIT_FIRST_ROUND_MAX
+            estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
+            estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
 
     print('estimatedScoring = {0}'.format(estimatedScoring))
     return estimatedScoring
 
 def getIsRespondingToPartner(biddingObjRelative, biddingHistory):
-    #returns true or false depending on whether th
+    #returns true or false depending on whether the player is responding to his/her partner
+
     pass
 
 def getBiddingHistory(incomingBids):

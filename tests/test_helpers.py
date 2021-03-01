@@ -1138,7 +1138,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative)
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,[])
         expected = {
             "top": {
                 "min": None,
@@ -1165,7 +1165,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative)
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,[])
         expected = {
             "top": {
                 "min": None,
@@ -1192,7 +1192,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative)
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,[])
         expected = {
             "top": {
                 "min": None,
@@ -1219,7 +1219,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative)
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,[])
         expected = {
             "top": {
                 "min": None,
@@ -1246,7 +1246,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative)
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,[])
         expected = {
             "top": {
                 "min": None,
@@ -1266,62 +1266,6 @@ class getEstimatedPoints(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-    def test_pass_first_nt_second(self):
-        biddingObjRelative = {
-            "right": ['Pass', 'One No Trump'],
-            "left": ['Pass', 'One Club'],
-            "bottom": ['Pass', 'One Diamond'],
-            "top": ['Pass', 'One Heart'],
-        }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative)
-        expected = {
-            "top": {
-                "min": autoBid.PASS_FIRST_NT_SECOND_ROUND_MIN,
-                "max": autoBid.PASS_FIRST_NT_SECOND_ROUND_MAX,
-            },
-            "bottom": {
-                "min": autoBid.PASS_FIRST_NT_SECOND_ROUND_MIN,
-                "max": autoBid.PASS_FIRST_NT_SECOND_ROUND_MAX,
-            },
-            "left": {
-                "min": autoBid.PASS_FIRST_NT_SECOND_ROUND_MIN,
-                "max": autoBid.PASS_FIRST_NT_SECOND_ROUND_MAX,
-            },
-            "right": {
-                "min": autoBid.PASS_FIRST_NT_SECOND_ROUND_MIN,
-                "max": autoBid.PASS_FIRST_NT_SECOND_ROUND_MAX,
-            },
-        }
-        self.assertDictEqual(actual, expected)
-    def test_pass_first_nt_second(self):
-        biddingObjRelative = {
-            "right": ['One No Trump'],
-            "left": [],
-            "bottom": [],
-            "top": [],
-        }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative)
-        expected = {
-            "top": {
-                "min": None,
-                "max": None,
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-            "left": {
-                "min": None,
-                "max": None,
-            },
-            "right": {
-                "min": autoBid.PASS_FIRST_DOUBLE_SECOND_ROUND_MIN,
-                "max": autoBid.PASS_FIRST_DOUBLE_SECOND_ROUND_MAX,
-            },
-        }
-        self.assertDictEqual(actual, expected)
-
-
 
 
 
