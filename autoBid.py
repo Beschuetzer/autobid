@@ -263,8 +263,10 @@ def getEstimatedPoints(biddingObjRelative, incomingBids):
         if numberOfBidsMade < 1:
             continue
 
-        bidInQuestion = getBidInQuestion()
-        isRespondingToPartner = getIsRespondingToPartner(incomingBids, bidInQuestion)
+        # bidInQuestion = getBidInQuestion()
+        isRespondingToPartner = getIsRespondingToPartner(incomingBids)
+
+
         firstBid = biddingObjRelative[location][0]
         print('firstBid = {0}'.format(firstBid))
         if re.search('pass', firstBid, re.IGNORECASE):
@@ -306,7 +308,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids):
                 estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX
             else:
-                isJumpShift = getIsJumpShift(incomingBids, bidInQuestion)
+                isJumpShift = getIsJumpShift(incomingBids)
                 if isJumpShift:
                     if re.search('trump', firstBid, re.IGNORECASE):
                         estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
@@ -318,11 +320,35 @@ def getEstimatedPoints(biddingObjRelative, incomingBids):
     print('estimatedScoring = {0}'.format(estimatedScoring))
     return estimatedScoring
 
-def getIsJumpShift(incomingBids, bidInQuestion):
+#TODO: add the seatingNames obj next
+def getIndexOfNthBid(username, incomingBids, nthBid):
+    #inputs:
+        #username - string
+        #incomingBids - 2D array
+        #nthBid - an integer greater than or equal to 1 (1 = 1st bid)
+    #this returns the nthBid that username made
+    print('username = {0}'.format(username))
+    print('incomingBids = {0}'.format(incomingBids))
+    i = 0
+    matchCount = 0
+    for bid in incomingBids:
+        print('i = {0}'.format(i))
+        print('nthBid = {0}'.format(nthBid))
+        print('bid[0] = {0}'.format(bid[0]))
+        if bid[0] == username:
+            matchCount += 1
+            if matchCount == nthBid:
+                return i
+        i += 1 
+      
+    
+    return None
+
+def getIsJumpShift(incomingBids):
     #returns True/False whether bidInQuestion is a jumpshift bid
     pass
 
-def getIsRespondingToPartner(incomingBids, bidInQuestion):
+def getIsRespondingToPartner(incomingBids):
     #returns true or false depending on whether the player is responding to his/her partner
     if len(incomingBids) >=2 and not re.search('pass', incomingBids[-2][1], re.IGNORECASE):
         return True

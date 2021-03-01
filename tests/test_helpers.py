@@ -1294,7 +1294,32 @@ class getIsRespondingToPartner(unittest.TestCase):
         actual = True
         self.assertEqual(expected, actual) 
 
-
+class getIndexOfNthBid(unittest.TestCase):
+    def test_invalid(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        actual = autoBid.getIndexOfNthBid('Tim', bids, 2)
+        expected = None
+        self.assertEqual(expected, actual) 
+    def test_valid_1(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        actual = autoBid.getIndexOfNthBid('Tim', bids, 1)
+        expected = 1
+        self.assertEqual(expected, actual) 
+    def test_valid_2(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        actual = autoBid.getIndexOfNthBid('Adam', bids, 2)
+        expected = 4
+        self.assertEqual(expected, actual) 
+    def test_valid_3(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass']]
+        actual = autoBid.getIndexOfNthBid('Andrew', bids, 2)
+        expected = 7
+        self.assertEqual(expected, actual) 
+    def test_no_bids(self):
+        bids = []
+        actual = autoBid.getIndexOfNthBid('Adam', bids, 2)
+        expected = None
+        self.assertEqual(expected, actual) 
 
 
 
