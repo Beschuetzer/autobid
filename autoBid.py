@@ -133,6 +133,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)    
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
     biddingHistory = getBiddingHistory(incomingBids)
+    seatingRelative = getSeatingRelative(seating, spot)
     estimatedPoints = getEstimatedPoints(biddingObjRelative, incomingBids)
     partnersBids = biddingObjRelative['top']
     #endregion
@@ -236,6 +237,16 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     outgoingBid = 'Recommended Bid Goes here'
     return outgoingBid
 
+def getSeatingRelative(seating, spot):
+    directions = ['north','east','south','west']
+    return {
+        "left": seating[directions[(directions.index(spot) + 1) % 4]],
+        "top": seating[directions[(directions.index(spot) + 2) % 4]],
+        "right": seating[directions[(directions.index(spot) + 3) % 4]],
+        "bottom": seating[directions[(directions.index(spot) + 0) % 4]],
+    }
+   
+
 def getEstimatedPoints(biddingObjRelative, incomingBids):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
@@ -320,7 +331,6 @@ def getEstimatedPoints(biddingObjRelative, incomingBids):
     print('estimatedScoring = {0}'.format(estimatedScoring))
     return estimatedScoring
 
-#TODO: add the seatingNames obj next
 def getIndexOfNthBid(username, incomingBids, nthBid):
     #inputs:
         #username - string

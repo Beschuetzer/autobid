@@ -1,5 +1,4 @@
 import unittest
-from unittest.case import TestCase
 import autoBid
 
 class getSuitFromCardAsNumber(unittest.TestCase):
@@ -1315,11 +1314,82 @@ class getIndexOfNthBid(unittest.TestCase):
         actual = autoBid.getIndexOfNthBid('Andrew', bids, 2)
         expected = 7
         self.assertEqual(expected, actual) 
+    def test_incorrectUsername(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass']]
+        actual = autoBid.getIndexOfNthBid('andrew', bids, 2)
+        expected = None
+        self.assertEqual(expected, actual) 
     def test_no_bids(self):
         bids = []
         actual = autoBid.getIndexOfNthBid('Adam', bids, 2)
         expected = None
         self.assertEqual(expected, actual) 
+
+class getSeatingRelative(unittest.TestCase):
+    def test_valid_north(self):
+        spot = 'north'
+        seating = {
+            "north": 'Adam',
+            "east": 'Dan',
+            "south": 'Ann',
+            "west": "Andrew",
+        }
+        actual = autoBid.getSeatingRelative(seating, spot)
+        expected = {
+            "bottom": 'Adam',
+            "left": 'Dan',
+            "top": 'Ann',
+            "right": "Andrew",
+        }
+        self.assertDictEqual(expected, actual) 
+    def test_valid_east(self):
+        spot = 'east'
+        seating = {
+            "north": 'Adam',
+            "east": 'Dan',
+            "south": 'Ann',
+            "west": "Andrew",
+        }
+        actual = autoBid.getSeatingRelative(seating, spot)
+        expected = {
+            "bottom": 'Dan',
+            "left": 'Ann',
+            "top": 'Andrew',
+            "right": "Adam",
+        }
+        self.assertDictEqual(expected, actual) 
+    def test_valid_south(self):
+        spot = 'south'
+        seating = {
+            "north": 'Adam',
+            "east": 'Dan',
+            "south": 'Ann',
+            "west": "Andrew",
+        }
+        actual = autoBid.getSeatingRelative(seating, spot)
+        expected = {
+            "bottom": 'Ann',
+            "left": 'Andrew',
+            "top": 'Adam',
+            "right": "Dan",
+        }
+        self.assertDictEqual(expected, actual) 
+    def test_valid_west(self):
+        spot = 'west'
+        seating = {
+            "north": 'Adam',
+            "east": 'Dan',
+            "south": 'Ann',
+            "west": "Andrew",
+        }
+        actual = autoBid.getSeatingRelative(seating, spot)
+        expected = {
+            "bottom": 'Andrew',
+            "left": 'Adam',
+            "top": 'Dan',
+            "right": "Ann",
+        }
+        self.assertDictEqual(expected, actual) 
 
 
 
