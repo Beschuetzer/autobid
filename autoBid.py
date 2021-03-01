@@ -337,17 +337,30 @@ def getIndexOfNthBid(username, incomingBids, nthBid):
     #inputs:
         #username - string
         #incomingBids - 2D array
-        #nthBid - an integer greater than or equal to 1 (1 = 1st bid)
+        #nthBid - an integer greater than or equal to 1 (1 = first bid) or less than or equal to -1 (-1 = last bid, -2 = 2nd to last bid...)
     #this returns the nthBid that username made
     i = 0
     matchCount = 0
-    for bid in incomingBids:
-        if bid[0] == username:
-            matchCount += 1
-            if matchCount == nthBid:
-                return i
-        i += 1 
-      
+
+    if nthBid < 0:
+        incomingBids = incomingBids[::-1]
+        print('incomingBids = {0}'.format(incomingBids))
+        for bid in incomingBids:
+            if bid[0] == username:
+                matchCount += 1
+                nthBidToMatch = len(incomingBids) - i -1
+                print('nthBidToMatch = {0}'.format(nthBidToMatch))
+                print('matchCount = {0}'.format(matchCount))
+                if matchCount == -nthBid:
+                    return nthBidToMatch
+            i += 1 
+    else:
+        for bid in incomingBids:
+            if bid[0] == username:
+                matchCount += 1
+                if matchCount == nthBid:
+                    return i
+            i += 1 
     
     return None
 

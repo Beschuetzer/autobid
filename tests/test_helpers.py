@@ -1299,6 +1299,11 @@ class getIndexOfNthBid(unittest.TestCase):
         actual = autoBid.getIndexOfNthBid('Tim', bids, 2)
         expected = None
         self.assertEqual(expected, actual) 
+    def test_valid_0(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double']]
+        actual = autoBid.getIndexOfNthBid('Adam', bids, 1)
+        expected = 0
+        self.assertEqual(expected, actual) 
     def test_valid_1(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
         actual = autoBid.getIndexOfNthBid('Tim', bids, 1)
@@ -1324,7 +1329,21 @@ class getIndexOfNthBid(unittest.TestCase):
         actual = autoBid.getIndexOfNthBid('Adam', bids, 2)
         expected = None
         self.assertEqual(expected, actual) 
-
+    def test_valid_negative_1(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        actual = autoBid.getIndexOfNthBid('Tim', bids, -1)
+        expected = 1
+        self.assertEqual(expected, actual) 
+    def test_valid_negative_2(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double'], ['Tim', '2 No Trump'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        actual = autoBid.getIndexOfNthBid('Tim', bids, -1)
+        expected = 5
+        self.assertEqual(expected, actual) 
+    def test_valid_negative_3(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double'], ['Tim', '2 No Trump'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double'], ['Tim', '2 No Trump'], ['Ann', '3 Club'], ['Andrew', 'Pass']]
+        actual = autoBid.getIndexOfNthBid('Tim', bids, -1)
+        expected = 9
+        self.assertEqual(expected, actual) 
 class getSeatingRelative(unittest.TestCase):
     def test_valid_north(self):
         spot = 'north'
