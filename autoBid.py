@@ -12,6 +12,25 @@ Inputs:
     clientPointCountingConvention: string representing how client counts HCP points
 Returns: "best" bid for current situation in the form of a string
 '''
+PASS_FIRST_ROUND_MAX = 5
+PASS_FIRST_ROUND_MIN = 0
+PASS_FIRST_NT_SECOND_ROUND_MAX = 8
+PASS_FIRST_NT_SECOND_ROUND_MIN = 12
+PASS_FIRST_BID_SECOND_ROUND_MAX = 8
+PASS_FIRST_BID_SECOND_ROUND_MIN = 12
+PASS_FIRST_DOUBLE_SECOND_ROUND_MAX = 8
+PASS_FIRST_DOUBLE_SECOND_ROUND_MIN = 12
+
+BID_SUIT_FIRST_ROUND_MAX = 15
+BID_SUIT_FIRST_ROUND_MIN = PASS_FIRST_ROUND_MAX + 1
+TWO_CLUB_FIRST_ROUND_MAX = 25
+TWO_CLUB_FIRST_ROUND_MIN = 18
+NT_FIRST_ROUND_MIN = 16
+NT_FIRST_ROUND_MAX = 18
+DOUBLE_FIRST_ROUND_MIN = 13
+DOUBLE_FIRST_ROUND_MAX = 18
+
+
 suitCounts = None
 highCardPointValuesInEachSuit = None
 suits = {
@@ -215,20 +234,20 @@ def getEstimatedPoints(biddingObjRelative):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
         "top": {
-            min: 0,
-            max: 0,
+            "min": 0,
+            "max": 0,
         },
         "bottom": {
-            min: 0,
-            max: 0,
+            "min": 0,
+            "max": 0,
         },
         "left": {
-            min: 0,
-            max: 0,
+            "min": 0,
+            "max": 0,
         },
         "right": {
-            min: 0,
-            max: 0,
+            "min": 0,
+            "max": 0,
         },
     }
 
@@ -244,24 +263,35 @@ def getEstimatedPoints(biddingObjRelative):
             if len(biddingObjRelative[location]) > 1:
                 secondBid = biddingObjRelative[location][1]
                 if re.search('trump', secondBid, re.IGNORECASE):
-                    estimatedScoring[location].min = 6
-                    estimatedScoring[location].max = 12
+                    estimatedScoring[location]['min'] = PASS_FIRST_NT_SECOND_ROUND_MIN
+                    estimatedScoring[location]['max'] = PASS_FIRST_NT_SECOND_ROUND_MAX
+                elif re.search('double', secondBid, re.IGNORECASE):
+                    estimatedScoring[location]['min'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MIN
+                    estimatedScoring[location]['max'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MAX
+                elif re.search('pass', secondBid, re.IGNORECASE):
+                    #this is needed to handle cases when # of bids is > 1 and 1st and 2nd bids are pass
+                    estimatedScoring[location]['min'] = PASS_FIRST_ROUND_MIN
+                    estimatedScoring[location]['max'] = PASS_FIRST_ROUND_MAX
+                else:
+                    estimatedScoring[location]['min'] = PASS_FIRST_BID_SECOND_ROUND_MIN
+                    estimatedScoring[location]['max'] = PASS_FIRST_BID_SECOND_ROUND_MAX
             else:
-                estimatedScoring[location].min = 0
-                estimatedScoring[location].max = 5
+                estimatedScoring[location]['min'] = PASS_FIRST_ROUND_MIN
+                estimatedScoring[location]['max'] = PASS_FIRST_ROUND_MAX
         elif re.search('trump', firstBid, re.IGNORECASE):
-            estimatedScoring[location].min = 16
-            estimatedScoring[location].max = 18
+            estimatedScoring[location]['min'] = NT_FIRST_ROUND_MIN
+            estimatedScoring[location]['max'] = NT_FIRST_ROUND_MAX
         elif re.search('double', firstBid, re.IGNORECASE):
-            estimatedScoring[location].min = 13
-            estimatedScoring[location].max = 18
+            estimatedScoring[location]['min'] = DOUBLE_FIRST_ROUND_MIN
+            estimatedScoring[location]['max'] = DOUBLE_FIRST_ROUND_MAX
         elif re.search('Two Club', firstBid, re.IGNORECASE):
-            estimatedScoring[location].min = 18
-            estimatedScoring[location].max = 22
+            estimatedScoring[location]['min'] = TWO_CLUB_FIRST_ROUND_MIN
+            estimatedScoring[location]['max'] = TWO_CLUB_FIRST_ROUND_MAX
         else:
-            estimatedScoring[location].min = 13
-            estimatedScoring[location].max = 15
+            estimatedScoring[location]['min'] = BID_SUIT_FIRST_ROUND_MIN
+            estimatedScoring[location]['max'] = BID_SUIT_FIRST_ROUND_MAX
 
+    print('estimatedScoring = {0}'.format(estimatedScoring))
     return estimatedScoring
 
 def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid):
