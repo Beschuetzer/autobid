@@ -957,8 +957,6 @@ class partnerTwoClubResponse(unittest.TestCase):
         actual = autoBid.partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
         expected = 'Four Heart'
         self.assertEqual(actual, expected)
-    
-
 #need to finish this
 class getSuitFromBid(unittest.TestCase):
     def test_empty(self):
@@ -985,7 +983,6 @@ class getSuitFromBid(unittest.TestCase):
         actual = autoBid.getSuitFromBid('Two Spade')
         expected = 'Spade'
         self.assertEqual(actual, expected)
-
 class getStrongestSuit(unittest.TestCase):
     def test_LengthOverPointCount(self):
         hand = [[0, 1, 7, 8,12], [13, 18, 23, 24], [29, 30, 32], [40,42]]
@@ -1018,7 +1015,6 @@ class getStrongestSuit(unittest.TestCase):
         actual = autoBid.getStrongestSuit(hand, biddingObjRelative)
         expected = 'Three Spade'
         self.assertEqual(actual, expected)
-
 class getSuitsMentionedByOpponents(unittest.TestCase):
     def test_five(self):
         biddingObjRelative = {
@@ -1116,7 +1112,6 @@ class getSuitsMentionedByOpponents(unittest.TestCase):
             "noTrump": False,
         }
         self.assertDictEqual(actual, expected)
-
 class getBiddingHistory(unittest.TestCase):
     def test_none(self):
         bids = []
@@ -1128,7 +1123,6 @@ class getBiddingHistory(unittest.TestCase):
         actual = autoBid.getBiddingHistory(bids)
         expected = ['2 No Trump', 'Double', '3 Club', 'Pass', 'Double']
         self.assertListEqual(expected, actual)
-
 class getEstimatedPoints(unittest.TestCase):
     def test_no_bids(self):
         biddingObjRelative = {
@@ -1137,7 +1131,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,[])
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,[], "",'')
         expected = {
             "top": {
                 "min": None,
@@ -1158,13 +1152,19 @@ class getEstimatedPoints(unittest.TestCase):
         }
         self.assertDictEqual(actual, expected)
     def test_pass_first_no_second(self):
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
         biddingObjRelative = {
             "right": ['Pass'],
             "left": [],
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,[])
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
         expected = {
             "top": {
                 "min": None,
@@ -1185,13 +1185,19 @@ class getEstimatedPoints(unittest.TestCase):
         }
         self.assertDictEqual(actual, expected)
     def test_pass_first_nt_second(self):
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
         biddingObjRelative = {
             "right": ['Pass', 'One No Trump'],
             "left": [],
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,[])
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
         expected = {
             "top": {
                 "min": None,
@@ -1212,13 +1218,19 @@ class getEstimatedPoints(unittest.TestCase):
         }
         self.assertDictEqual(actual, expected)
     def test_pass_first_double_second(self):
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
         biddingObjRelative = {
             "right": ['Pass', 'double'],
             "left": [],
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,[])
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
         expected = {
             "top": {
                 "min": None,
@@ -1239,13 +1251,19 @@ class getEstimatedPoints(unittest.TestCase):
         }
         self.assertDictEqual(actual, expected)
     def test_pass_first_bid_second(self):
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
         biddingObjRelative = {
             "right": ['Pass', 'Two Club'],
             "left": [],
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,[])
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
         expected = {
             "top": {
                 "min": None,
@@ -1265,7 +1283,6 @@ class getEstimatedPoints(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-
 class getHasPartnerOpened(unittest.TestCase):
     def test_false(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
@@ -1292,7 +1309,6 @@ class getHasPartnerOpened(unittest.TestCase):
         expected = autoBid.getHasPartnerOpened(bids)
         actual = True
         self.assertEqual(expected, actual) 
-
 class getIndexOfNthBid(unittest.TestCase):
     def test_invalid(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]

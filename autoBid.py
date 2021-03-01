@@ -136,7 +136,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
     biddingHistory = getBiddingHistory(incomingBids)
     seatingRelative = getSeatingRelative(seating, spot)
-    estimatedPoints = getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative)
+    estimatedPoints = getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentActualBid)
     partnersBids = biddingObjRelative['top']
     #endregion
 
@@ -249,7 +249,7 @@ def getSeatingRelative(seating, spot):
     }
    
 
-def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative):
+def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentActualBid):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
         "top": {
@@ -323,8 +323,8 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative):
                 estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX
             else:
-                partnersLastBid = incomingBids[getIndexOfNthBid(seatingRelative['top'], incomingBids, -1)]
-                isJumpShift = getIsJumpShift(partnersLastBid, incomingBids[indexOfUsersFirstBid])
+                partnersLastBid = incomingBids[getIndexOfNthBid(seatingRelative['top'], incomingBids, -1)][1]
+                isJumpShift = getIsJumpShift(currentActualBid, incomingBids[indexOfUsersFirstBid][1])
 
                 print('partnersLastBid = {0}'.format(partnersLastBid))
                 print('isJumpShift = {0}'.format(isJumpShift))
@@ -371,13 +371,16 @@ def getIndexOfNthBid(username, incomingBids, nthBid):
     
     return None
 
-def getIsJumpShift(partnersBid, usersBid):
+def getIsJumpShift(currentActualBid, usersBid):
+    #inputs:
+        #partnersBid and usersBid = string representing bid
     #returns True/False whether usersBid is a jumpshift of partnersBid
-    if not hasPartnerOpened:
-        return False
-    print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
-    print('partnersLastBid = {0}'.format(partnersLastBid))
-    print('usersBid = {0}'.format(usersBid))
+
+   
+    # if re.search('pass', lastActualBid, re.IGNORECASE):
+    #     return True
+    # print('partnersLastBid = {0}'.format(partnersLastBid))
+    # print('usersBid = {0}'.format(usersBid))
     
     pass
 
