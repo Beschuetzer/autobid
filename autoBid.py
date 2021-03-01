@@ -232,7 +232,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     outgoingBid = 'Recommended Bid Goes here'
     return outgoingBid
 
-def getEstimatedPoints(biddingObjRelative, biddingHistory):
+def getEstimatedPoints(biddingObjRelative, incomingBids):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
         "top": {
@@ -254,13 +254,12 @@ def getEstimatedPoints(biddingObjRelative, biddingHistory):
     }
 
     #right now this doesn't differentiate between responding and opening bids
-    print('biddingObjRelative = {0}'.format(biddingObjRelative))
     for location, bids in biddingObjRelative.items():
         numberOfBidsMade = len(biddingObjRelative[location])
         if numberOfBidsMade < 1:
             continue
 
-        isRespondingToPartner = getIsRespondingToPartner(biddingObjRelative, biddingHistory)
+        isRespondingToPartner = getIsRespondingToPartner(incomingBids)
         firstBid = biddingObjRelative[location][0]
         print('firstBid = {0}'.format(firstBid))
         if re.search('pass', firstBid, re.IGNORECASE):
@@ -300,10 +299,12 @@ def getEstimatedPoints(biddingObjRelative, biddingHistory):
     print('estimatedScoring = {0}'.format(estimatedScoring))
     return estimatedScoring
 
-def getIsRespondingToPartner(biddingObjRelative, biddingHistory):
+def getIsRespondingToPartner(incomingBids):
     #returns true or false depending on whether the player is responding to his/her partner
+    if len(incomingBids) >=2 and not re.search('pass', incomingBids[-2][1], re.IGNORECASE):
+        return True
 
-    pass
+    return False
 
 def getBiddingHistory(incomingBids):
     #returns a list of strings representing the order in which the bids occured (same as incoming bids but is a 1D array of just bids rather than bids and bidder names)

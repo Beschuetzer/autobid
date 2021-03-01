@@ -1267,7 +1267,32 @@ class getEstimatedPoints(unittest.TestCase):
         }
         self.assertDictEqual(actual, expected)
 
-
+class getIsRespondingToPartner(unittest.TestCase):
+    def test_false(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        expected = autoBid.getIsRespondingToPartner(bids)
+        actual = False
+        self.assertEqual(expected, actual) 
+    def test_true(self):
+        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Three Diamond'], ['Adam', 'Double']]
+        expected = autoBid.getIsRespondingToPartner(bids)
+        actual = True
+        self.assertEqual(expected, actual) 
+    def test_length_1(self):
+        bids = [['Adam', '2 No Trump']]
+        expected = autoBid.getIsRespondingToPartner(bids)
+        actual = False
+        self.assertEqual(expected, actual) 
+    def test_length_0(self):
+        bids = []
+        expected = autoBid.getIsRespondingToPartner(bids)
+        actual = False
+        self.assertEqual(expected, actual) 
+    def test_length_2(self):
+        bids = [['Adam', '2 No Trump'],['Tim','Pass']]
+        expected = autoBid.getIsRespondingToPartner(bids)
+        actual = True
+        self.assertEqual(expected, actual) 
 
 
 
