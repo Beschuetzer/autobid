@@ -127,7 +127,8 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
         
     biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)    
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
-    estimatedPoints = getEstimatedPoints(biddingObjRelative)
+    biddingHistory = getBiddingHistory(incomingBids)
+    estimatedPoints = getEstimatedPoints(biddingObjRelative, incomingBids)
     partnersBids = biddingObjRelative['top']
     #endregion
 
@@ -230,33 +231,35 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     outgoingBid = 'Recommended Bid Goes here'
     return outgoingBid
 
-def getEstimatedPoints(biddingObjRelative):
+def getEstimatedPoints(biddingObjRelative, biddingHistory):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
         "top": {
-            "min": 0,
-            "max": 0,
+            "min": None,
+            "max": None,
         },
         "bottom": {
-            "min": 0,
-            "max": 0,
+            "min": None,
+            "max": None,
         },
         "left": {
-            "min": 0,
-            "max": 0,
+            "min": None,
+            "max": None,
         },
         "right": {
-            "min": 0,
-            "max": 0,
+            "min": None,
+            "max": None,
         },
     }
 
+    #right now this doesn't differentiate between responding and opening bids
+
     for location, bids in biddingObjRelative.items():
         numberOfBidsMade = len(biddingObjRelative[location])
-        print('numberOfBidsMade = {0}'.format(numberOfBidsMade))
-        print('location = {0}'.format(location))
         if numberOfBidsMade < 1:
             continue
+
+        isRespondingToPartner = getIsRespondingToPartner(biddingObjRelative, biddingHistory)
         firstBid = biddingObjRelative[location][0]
 
         if re.search('pass', firstBid, re.IGNORECASE):
@@ -293,6 +296,18 @@ def getEstimatedPoints(biddingObjRelative):
 
     print('estimatedScoring = {0}'.format(estimatedScoring))
     return estimatedScoring
+
+def getIsRespondingToPartner(biddingObjRelative, biddingHistory):
+    #returns true or false depending on whether th
+    pass
+
+def getBiddingHistory(incomingBids):
+    #returns a list of strings representing the order in which the bids occured (same as incoming bids but is a 1D array of just bids rather than bids and bidder names)
+    biddingHistory = []
+    for bid in incomingBids:
+        biddingHistory.append(bid[1])
+
+    return biddingHistory
 
 def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid):
     currentIndex = contracts.index(currentActualBid[1])
