@@ -25,17 +25,31 @@ OPENING_BID_SUIT_FIRST_ROUND_MAX = 15
 OPENING_BID_SUIT_FIRST_ROUND_MIN = 13
 OPENING_TWO_CLUB_FIRST_ROUND_MAX = 25
 OPENING_TWO_CLUB_FIRST_ROUND_MIN = 18
-OPENING_NT_FIRST_ROUND_MIN = 16
 OPENING_NT_FIRST_ROUND_MAX = 18
-OPENING_DOUBLE_FIRST_ROUND_MIN = 13
+OPENING_NT_FIRST_ROUND_MIN = 16
 OPENING_DOUBLE_FIRST_ROUND_MAX = 18
+OPENING_DOUBLE_FIRST_ROUND_MIN = 13
+OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX = 12
+OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN = 10
+OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX = 10
+OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN = 8
+
+#THESE CASES ARE AMBIGIOUS COULD BE REGULAR OPENERS OR WEAK BID
+#E.G. (1 SPADE, 2 HEART, 3 CLUB)
+OPENING_WEAK_TWO_AFTER_OPENERS_MAX = OPENING_BID_SUIT_FIRST_ROUND_MAX
+OPENING_WEAK_TWO_AFTER_OPENERS_MIN = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
+OPENING_WEAK_THREE_AFTER_OPENERS_MAX = OPENING_BID_SUIT_FIRST_ROUND_MAX
+OPENING_WEAK_THREE_AFTER_OPENERS_MIN = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
+
 
 RESPONDING_BID_SUIT_FIRST_ROUND_MAX = 12
 RESPONDING_BID_SUIT_FIRST_ROUND_MIN = PASS_FIRST_ROUND_MAX + 1
-RESPONDING_DOUBLE_FIRST_ROUND_MIN = 10
 RESPONDING_DOUBLE_FIRST_ROUND_MAX = 12
-RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN = 10
+RESPONDING_DOUBLE_FIRST_ROUND_MIN = 10
 RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX = 12
+RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN = 10
+RESPONDING_NO_JUMPSHIFT_MAX = 12
+RESPONDING_NO_JUMPSHIFT_MIN = 6
 
 
 suitCounts = None
@@ -116,6 +130,7 @@ bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew
 hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40,42]]
 
       
+from _typeshed import OpenBinaryModeWriting
 import re, math
 flatten = lambda t: [item for sublist in t for item in sublist]
 
@@ -270,19 +285,25 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         },
     }
 
+
     for location, bids in biddingObjRelative.items():
         numberOfBidsMade = len(biddingObjRelative[location])
         if numberOfBidsMade < 1:
             continue
 
         username = seatingRelative[location]
-        indexOfUsersFirstBid = getIndexOfNthBid(username, incomingBids, 1)
-        hasPartnerOpened = getHasPartnerOpened(incomingBids, seatingRelative)
-        firstBid = biddingObjRelative[location][0]
+
 
         print('username = {0}'.format(username))
-        print('firstBid = {0}'.format(firstBid))
+
+        indexOfUsersFirstBid = getIndexOfNthBid(username, incomingBids, 1)
+        hasPartnerOpened = getHasPartnerOpened(incomingBids, username)
+        firstBid = biddingObjRelative[location][0]
+
+        print('firstBid = {0}'.format(firstBid))    
+        print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
         if re.search('pass', firstBid, re.IGNORECASE):
+            print('pass')
             if len(biddingObjRelative[location]) > 1:
 
                 secondBid = biddingObjRelative[location][1]
@@ -304,6 +325,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                 estimatedScoring[location]['min'] = PASS_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = PASS_FIRST_ROUND_MAX
         elif not hasPartnerOpened:
+            print('opening')
             if re.search('trump', firstBid, re.IGNORECASE):
                 estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
@@ -313,10 +335,22 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
             elif re.search('Two Club', firstBid, re.IGNORECASE):
                 estimatedScoring[location]['min'] = OPENING_TWO_CLUB_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = OPENING_TWO_CLUB_FIRST_ROUND_MAX
+            elif re.search('Two', firstBid, re.IGNORECASE):
+                hasSomeOneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+                if hasSomeOneOpenedBefore:
+                    estimatedScoring[location]['min'] = OPENING_WEAK_TWO_AFTER_OPENERS_MIN
+                    estimatedScoring[location]['max'] = OPENING_WEAK_TWO_AFTER_OPENERS_MAX
+                else:
+                    estimatedScoring[location]['min'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
+                    estimatedScoring[location]['max'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX
+            elif re.search('Three', firstBid, re.IGNORECASE):
+                estimatedScoring[location]['min'] = OPENING_TWO_CLUB_FIRST_ROUND_MIN
+                estimatedScoring[location]['max'] = OPENING_TWO_CLUB_FIRST_ROUND_MAX
             else:
                 estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
         else:
+            print('responding')
             if re.search('double', firstBid, re.IGNORECASE):
                 estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX
@@ -338,8 +372,24 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                         else:
                             estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
                             estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
+                else:
+                    estimatedScoring[location]['min'] = RESPONDING_NO_JUMPSHIFT_MIN
+                    estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_MAX
 
     return estimatedScoring
+
+def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids):
+    #returns whether someone has opened before the users first bid
+    bidsUpToUsersFirstBid = incomingBids
+    if indexOfUsersFirstBid != None:
+        bidsUpToUsersFirstBid = incomingBids[:indexOfUsersFirstBid]
+
+    for bid in bidsUpToUsersFirstBid:
+        if not re.search('pass', bid, re.IGNORECASE) and not re.search('double', bid, re.IGNORECASE):
+            return True
+
+
+    return False
 
 def getIndexOfNthBid(username, incomingBids, nthBid):
     #inputs:
@@ -373,6 +423,7 @@ def getIsJumpShift(currentActualBid, usersBid):
     #inputs:
         #currentActualBid and usersBid = string representing bid
     #returns True/False whether usersBid is a jumpshift of currentActualBid
+
     if not currentActualBid or currentActualBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
         return False
     
@@ -380,10 +431,13 @@ def getIsJumpShift(currentActualBid, usersBid):
     indexOfUsersBid = contracts.index(usersBid)
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5
 
-def getHasPartnerOpened(incomingBids, seatingRelative):
+def getHasPartnerOpened(incomingBids, username):
     #returns true or false depending on whether the player is responding to his/her partner
-    indexOfUsersFirstBid = getIndexOfNthBid(seatingRelative['bottom'], incomingBids, 1)
+    indexOfUsersFirstBid = getIndexOfNthBid(username, incomingBids, 1)
     biddingUpToUsersFirstBid = incomingBids[:indexOfUsersFirstBid]
+
+    print('indexOfUsersFirstBid = {0}'.format(indexOfUsersFirstBid))
+    print('biddingUpToUsersFirstBid = {0}'.format(biddingUpToUsersFirstBid))
 
     if len(biddingUpToUsersFirstBid) <= 1:
         return False
@@ -748,7 +802,7 @@ def getDistributionPoints(hand, incomingBids, biddingObjRelative, seatingRelativ
 
     #otherwise use responding total
     distributionPoints = -1;
-    hasPartnerOpened = getHasPartnerOpened(incomingBids, seatingRelative)
+    hasPartnerOpened = getHasPartnerOpened(incomingBids, seatingRelative['bottom'])
     
     getShouldCalculateRespondingPoints(incomingBids)
     print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
