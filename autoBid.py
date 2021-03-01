@@ -134,7 +134,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
     biddingHistory = getBiddingHistory(incomingBids)
     seatingRelative = getSeatingRelative(seating, spot)
-    estimatedPoints = getEstimatedPoints(biddingObjRelative, incomingBids)
+    estimatedPoints = getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative)
     partnersBids = biddingObjRelative['top']
     #endregion
 
@@ -247,7 +247,7 @@ def getSeatingRelative(seating, spot):
     }
    
 
-def getEstimatedPoints(biddingObjRelative, incomingBids):
+def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
         "top": {
@@ -268,17 +268,19 @@ def getEstimatedPoints(biddingObjRelative, incomingBids):
         },
     }
 
-    #right now this doesn't differentiate between responding and opening bids
     for location, bids in biddingObjRelative.items():
         numberOfBidsMade = len(biddingObjRelative[location])
         if numberOfBidsMade < 1:
             continue
 
-        # bidInQuestion = getBidInQuestion()
-        isRespondingToPartner = getIsRespondingToPartner(incomingBids)
-
-
+        username = seatingRelative[location]
+        indexOfUsersFirstBid = getIndexOfNthBid(username, incomingBids, 1)
+        biddingWhenUserMadeFirstBid = incomingBids[:indexOfUsersFirstBid]
+        hasPartnerOpened = getHasPartnerOpened(biddingWhenUserMadeFirstBid)
         firstBid = biddingObjRelative[location][0]
+
+        print('username = {0}'.format(username))
+        print('biddingWhenUserMadeFirstBid = {0}'.format(biddingWhenUserMadeFirstBid))
         print('firstBid = {0}'.format(firstBid))
         if re.search('pass', firstBid, re.IGNORECASE):
             if len(biddingObjRelative[location]) > 1:
@@ -301,7 +303,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids):
             else:
                 estimatedScoring[location]['min'] = PASS_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = PASS_FIRST_ROUND_MAX
-        elif not isRespondingToPartner:
+        elif not hasPartnerOpened:
             if re.search('trump', firstBid, re.IGNORECASE):
                 estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
@@ -319,7 +321,8 @@ def getEstimatedPoints(biddingObjRelative, incomingBids):
                 estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX
             else:
-                isJumpShift = getIsJumpShift(incomingBids)
+                partnersLastBid = getIndexOfNthBid(seatingRelative['top'], incomingBids, -1)
+                isJumpShift = getIsJumpShift(hasPartnerOpened, partnersLastBid, incomingBids[indexOfUsersFirstBid])
                 if isJumpShift:
                     if re.search('trump', firstBid, re.IGNORECASE):
                         estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
@@ -328,7 +331,6 @@ def getEstimatedPoints(biddingObjRelative, incomingBids):
                         estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
                         estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
 
-    print('estimatedScoring = {0}'.format(estimatedScoring))
     return estimatedScoring
 
 def getIndexOfNthBid(username, incomingBids, nthBid):
@@ -337,14 +339,9 @@ def getIndexOfNthBid(username, incomingBids, nthBid):
         #incomingBids - 2D array
         #nthBid - an integer greater than or equal to 1 (1 = 1st bid)
     #this returns the nthBid that username made
-    print('username = {0}'.format(username))
-    print('incomingBids = {0}'.format(incomingBids))
     i = 0
     matchCount = 0
     for bid in incomingBids:
-        print('i = {0}'.format(i))
-        print('nthBid = {0}'.format(nthBid))
-        print('bid[0] = {0}'.format(bid[0]))
         if bid[0] == username:
             matchCount += 1
             if matchCount == nthBid:
@@ -354,13 +351,13 @@ def getIndexOfNthBid(username, incomingBids, nthBid):
     
     return None
 
-def getIsJumpShift(incomingBids):
+def getIsJumpShift(isRespondingToPartner, partnersLastBid, usersBid):
     #returns True/False whether bidInQuestion is a jumpshift bid
     pass
 
-def getIsRespondingToPartner(incomingBids):
+def getHasPartnerOpened(biddingUpToUsersFirstBid):
     #returns true or false depending on whether the player is responding to his/her partner
-    if len(incomingBids) >=2 and not re.search('pass', incomingBids[-2][1], re.IGNORECASE):
+    if len(biddingUpToUsersFirstBid) >=2 and not re.search('pass', biddingUpToUsersFirstBid[-2][1], re.IGNORECASE):
         return True
 
     return False
