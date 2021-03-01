@@ -233,19 +233,34 @@ def getEstimatedPoints(biddingObjRelative):
     }
 
     for location, bids in biddingObjRelative.items():
+        numberOfBidsMade = len(biddingObjRelative[location])
+        print('numberOfBidsMade = {0}'.format(numberOfBidsMade))
+        print('location = {0}'.format(location))
+        if numberOfBidsMade < 1:
+            continue
         firstBid = biddingObjRelative[location][0]
+
         if re.search('pass', firstBid, re.IGNORECASE):
-            estimatedScoring[location].min = 0
-            estimatedScoring[location].max = 5
+            if len(biddingObjRelative[location]) > 1:
+                secondBid = biddingObjRelative[location][1]
+                if re.search('trump', secondBid, re.IGNORECASE):
+                    estimatedScoring[location].min = 6
+                    estimatedScoring[location].max = 12
+            else:
+                estimatedScoring[location].min = 0
+                estimatedScoring[location].max = 5
         elif re.search('trump', firstBid, re.IGNORECASE):
             estimatedScoring[location].min = 16
             estimatedScoring[location].max = 18
         elif re.search('double', firstBid, re.IGNORECASE):
             estimatedScoring[location].min = 13
             estimatedScoring[location].max = 18
-        elif re.search('double', firstBid, re.IGNORECASE):
+        elif re.search('Two Club', firstBid, re.IGNORECASE):
+            estimatedScoring[location].min = 18
+            estimatedScoring[location].max = 22
+        else:
             estimatedScoring[location].min = 13
-            estimatedScoring[location].max = 18
+            estimatedScoring[location].max = 15
 
     return estimatedScoring
 
