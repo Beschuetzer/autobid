@@ -110,7 +110,7 @@ scoring = {
         "vulnerableTransitionIndex": None,
     },
 }
-bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', '3 club']]
+bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', 'Three Club']]
 # bids = [['Adam', 'Pass'], ['Dan', 'Two Club'], ['Ann', 'pass']]
 
 hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40,42]]
@@ -324,7 +324,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                 estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX
             else:
                 partnersLastBid = incomingBids[getIndexOfNthBid(seatingRelative['top'], incomingBids, -1)][1]
-                isJumpShift = getIsJumpShift(currentActualBid, incomingBids[indexOfUsersFirstBid][1])
+                isJumpShift = getIsJumpShift(currentActualBid[1], incomingBids[indexOfUsersFirstBid][1])
 
                 print('partnersLastBid = {0}'.format(partnersLastBid))
                 print('isJumpShift = {0}'.format(isJumpShift))
@@ -373,16 +373,14 @@ def getIndexOfNthBid(username, incomingBids, nthBid):
 
 def getIsJumpShift(currentActualBid, usersBid):
     #inputs:
-        #partnersBid and usersBid = string representing bid
-    #returns True/False whether usersBid is a jumpshift of partnersBid
-
-   
-    # if re.search('pass', lastActualBid, re.IGNORECASE):
-    #     return True
-    # print('partnersLastBid = {0}'.format(partnersLastBid))
-    # print('usersBid = {0}'.format(usersBid))
+        #currentActualBid and usersBid = string representing bid
+    #returns True/False whether usersBid is a jumpshift of currentActualBid
+    if not currentActualBid or currentActualBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
+        return False
     
-    pass
+    indexOfCurrentActualBid = contracts.index(currentActualBid)
+    indexOfUsersBid = contracts.index(usersBid)
+    return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5
 
 def getHasPartnerOpened(biddingUpToUsersFirstBid):
     #returns true or false depending on whether the player is responding to his/her partner

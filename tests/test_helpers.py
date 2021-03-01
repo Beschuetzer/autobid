@@ -18,7 +18,6 @@ class getSuitFromCardAsNumber(unittest.TestCase):
         self.assertEqual(autoBid.getSuitNameFromCardAsNumber(39), 'spades')
     def test_spadeHigh(self):
         self.assertEqual(autoBid.getSuitNameFromCardAsNumber(51), 'spades')
-
 class getHighCardPoints(unittest.TestCase):
     def test_Normal_None(self):
         clubs = [i for i in range(0, 13) if i%13 != 12 if i%13 != 11 if i%13 != 10 if i%13 != 9 if i%13 != 8]
@@ -193,7 +192,6 @@ class getHighCardPoints(unittest.TestCase):
     def test_Error_NoConvention(self):
         convention = 'hcp'
         self.assertEqual(autoBid.getHighCardPoints([1,2,3], None), -1)
-
 class tallyUpTotal(unittest.TestCase):
     def test_AllOneSuit(self):
         suitCounts = {
@@ -248,7 +246,6 @@ class tallyUpTotal(unittest.TestCase):
             "spades": 4,
         }
         self.assertEqual(autoBid.getOpeningDistributionPoints(suitCounts), 3)
-
 class getOpeningDistributionPoints(unittest.TestCase):
     def test_AllOneSuit(self):
         clubs = [i for i in range(0, 13)]
@@ -322,7 +319,6 @@ class getOpeningDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
         self.assertEqual(autoBid.getOpeningDistributionPoints(hand), 1)
-
 class getRespondingDistributionPoints(unittest.TestCase):
     def test_AllOneSuit(self):
         clubs = [i for i in range(0, 13)]
@@ -396,7 +392,6 @@ class getRespondingDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
         self.assertEqual(autoBid.getOpeningDistributionPoints(hand), 1)
-   
 class getCurrentActualBid(unittest.TestCase):
     def test_Normal(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
@@ -421,7 +416,6 @@ class getCurrentActualBid(unittest.TestCase):
         expected = autoBid.getCurrentActualBid(bids)
         actual = None
         self.assertEqual(expected, actual)
-    
 class getBiddingObjAbsolute(unittest.TestCase):
     def test_empty(self):
         bids = []
@@ -487,7 +481,6 @@ class getBiddingObjAbsolute(unittest.TestCase):
         }
         actual = autoBid.getBiddingObjAbsolute(bids, seating)
         self.assertDictEqual(expected, actual)
-
 class getRotationsAround(unittest.TestCase):
     def test_negative(self):
         spot = 'north'
@@ -550,7 +543,6 @@ class getRotationsAround(unittest.TestCase):
         actual = autoBid.getSpotAfterNRotations(spot, numberOfRotations)
         expected = 'east'
         self.assertEqual(actual, expected)
-
 class getRelativeLocationFromSpot(unittest.TestCase):
     def test_self(self):
         usersSpot = 'east'
@@ -606,7 +598,6 @@ class getRelativeLocationFromSpot(unittest.TestCase):
         actual = autoBid.getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor)
         expected = 'right'
         self.assertEqual(expected, actual)
-    
 class getBiddingObjRelative(unittest.TestCase):
     def test_north(self):
         spot = 'north'
@@ -688,7 +679,6 @@ class getBiddingObjRelative(unittest.TestCase):
         }
         actual = autoBid.getBiddingObjRelative(biddingObjAbsolute, spot)
         self.assertDictEqual(expected, actual)
-
 class getSuitCounts(unittest.TestCase):
     def test_empty(self):
         hand = []
@@ -740,7 +730,6 @@ class getSuitCounts(unittest.TestCase):
             "spades": 0,
         }
         self.assertEqual(actual, expected)
-
 class partnerTwoClubResponse(unittest.TestCase):
     def test_intervention(self):
         biddingObjRelative = {
@@ -1425,7 +1414,61 @@ class getSeatingRelative(unittest.TestCase):
             "right": "Ann",
         }
         self.assertDictEqual(expected, actual) 
-
+class getIsJumpShift(unittest.TestCase):
+    def test_pass(self):
+        currentActualBid = 'Two Club'
+        usersBid = 'Pass'
+        actual = autoBid.getIsJumpShift(currentActualBid, usersBid)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_double(self):
+        currentActualBid = 'Two Club'
+        usersBid = 'Double'
+        actual = autoBid.getIsJumpShift(currentActualBid, usersBid)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_noActualBid(self):
+        currentActualBid = ''
+        usersBid = 'Three Club'
+        actual = autoBid.getIsJumpShift(currentActualBid, usersBid)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_False_1(self):
+        currentActualBid = 'Two Club'
+        usersBid = 'Three Club'
+        actual = autoBid.getIsJumpShift(currentActualBid, usersBid)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_False_2(self):
+        currentActualBid = 'Two Club'
+        usersBid = 'Two Diamond'
+        actual = autoBid.getIsJumpShift(currentActualBid, usersBid)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_False_3(self):
+        currentActualBid = 'One Spade'
+        usersBid = 'One No Trump'
+        actual = autoBid.getIsJumpShift(currentActualBid, usersBid)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_True_1(self):
+        currentActualBid = 'One Club'
+        usersBid = 'Three Club'
+        actual = autoBid.getIsJumpShift(currentActualBid, usersBid)
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_True_2(self):
+        currentActualBid = 'One No Trump'
+        usersBid = 'Three Club'
+        actual = autoBid.getIsJumpShift(currentActualBid, usersBid)
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_True_3(self):
+        currentActualBid = 'Three Spade'
+        usersBid = 'Five No Trump'
+        actual = autoBid.getIsJumpShift(currentActualBid, usersBid)
+        expected = True
+        self.assertEqual(actual, expected)
 
 
 
