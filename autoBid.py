@@ -34,6 +34,8 @@ RESPONDING_BID_SUIT_FIRST_ROUND_MAX = 12
 RESPONDING_BID_SUIT_FIRST_ROUND_MIN = PASS_FIRST_ROUND_MAX + 1
 RESPONDING_DOUBLE_FIRST_ROUND_MIN = 10
 RESPONDING_DOUBLE_FIRST_ROUND_MAX = 12
+RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN = 10
+RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX = 12
 
 
 suitCounts = None
@@ -321,15 +323,23 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative):
                 estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX
             else:
-                partnersLastBid = getIndexOfNthBid(seatingRelative['top'], incomingBids, -1)
-                isJumpShift = getIsJumpShift(hasPartnerOpened, partnersLastBid, incomingBids[indexOfUsersFirstBid])
+                partnersLastBid = incomingBids[getIndexOfNthBid(seatingRelative['top'], incomingBids, -1)]
+                isJumpShift = getIsJumpShift(partnersLastBid, incomingBids[indexOfUsersFirstBid])
+
+                print('partnersLastBid = {0}'.format(partnersLastBid))
+                print('isJumpShift = {0}'.format(isJumpShift))
+
                 if isJumpShift:
-                    if re.search('trump', firstBid, re.IGNORECASE):
-                        estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
-                        estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
+                    if re.search('pass', firstBid, re.IGNORECASE):
+                        estimatedScoring[location]['min'] = RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN
+                        estimatedScoring[location]['max'] = RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX
                     else:
-                        estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
-                        estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
+                        if re.search('trump', firstBid, re.IGNORECASE):
+                            estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
+                            estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
+                        else:
+                            estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
+                            estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
 
     return estimatedScoring
 
@@ -344,13 +354,10 @@ def getIndexOfNthBid(username, incomingBids, nthBid):
 
     if nthBid < 0:
         incomingBids = incomingBids[::-1]
-        print('incomingBids = {0}'.format(incomingBids))
         for bid in incomingBids:
             if bid[0] == username:
                 matchCount += 1
                 nthBidToMatch = len(incomingBids) - i -1
-                print('nthBidToMatch = {0}'.format(nthBidToMatch))
-                print('matchCount = {0}'.format(matchCount))
                 if matchCount == -nthBid:
                     return nthBidToMatch
             i += 1 
@@ -364,8 +371,14 @@ def getIndexOfNthBid(username, incomingBids, nthBid):
     
     return None
 
-def getIsJumpShift(isRespondingToPartner, partnersLastBid, usersBid):
-    #returns True/False whether bidInQuestion is a jumpshift bid
+def getIsJumpShift(partnersBid, usersBid):
+    #returns True/False whether usersBid is a jumpshift of partnersBid
+    if not hasPartnerOpened:
+        return False
+    print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
+    print('partnersLastBid = {0}'.format(partnersLastBid))
+    print('usersBid = {0}'.format(usersBid))
+    
     pass
 
 def getHasPartnerOpened(biddingUpToUsersFirstBid):
