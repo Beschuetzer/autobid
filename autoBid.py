@@ -108,6 +108,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
         
     biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)    
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
+    estimatedPoints = getEstimatedPoints(biddingObjRelative)
     partnersBids = biddingObjRelative['top']
     #endregion
 
@@ -159,6 +160,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
 
 #logic for responding
+#TODO: if your partner takes it to game, pass (partner trust?)
 #your partner opened
 #special situations accounted for above (takeout double, 1/2 Clubs, 1 NT and weak bids)
 #if < 6 points pass
@@ -208,6 +210,44 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
     outgoingBid = 'Recommended Bid Goes here'
     return outgoingBid
+
+def getEstimatedPoints(biddingObjRelative):
+    #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
+    estimatedScoring = {
+        "top": {
+            min: 0,
+            max: 0,
+        },
+        "bottom": {
+            min: 0,
+            max: 0,
+        },
+        "left": {
+            min: 0,
+            max: 0,
+        },
+        "right": {
+            min: 0,
+            max: 0,
+        },
+    }
+
+    for location, bids in biddingObjRelative.items():
+        firstBid = biddingObjRelative[location][0]
+        if re.search('pass', firstBid, re.IGNORECASE):
+            estimatedScoring[location].min = 0
+            estimatedScoring[location].max = 5
+        elif re.search('trump', firstBid, re.IGNORECASE):
+            estimatedScoring[location].min = 16
+            estimatedScoring[location].max = 18
+        elif re.search('double', firstBid, re.IGNORECASE):
+            estimatedScoring[location].min = 13
+            estimatedScoring[location].max = 18
+        elif re.search('double', firstBid, re.IGNORECASE):
+            estimatedScoring[location].min = 13
+            estimatedScoring[location].max = 18
+
+    return estimatedScoring
 
 def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid):
     currentIndex = contracts.index(currentActualBid[1])
