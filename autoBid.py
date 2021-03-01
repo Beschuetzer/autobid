@@ -21,15 +21,19 @@ PASS_FIRST_BID_SECOND_ROUND_MIN = 12
 PASS_FIRST_DOUBLE_SECOND_ROUND_MAX = 8
 PASS_FIRST_DOUBLE_SECOND_ROUND_MIN = 12
 
-
 OPENING_BID_SUIT_FIRST_ROUND_MAX = 15
-OPENING_BID_SUIT_FIRST_ROUND_MIN = PASS_FIRST_ROUND_MAX + 1
-TWO_CLUB_FIRST_ROUND_MAX = 25
-TWO_CLUB_FIRST_ROUND_MIN = 18
-NT_FIRST_ROUND_MIN = 16
-NT_FIRST_ROUND_MAX = 18
-DOUBLE_FIRST_ROUND_MIN = 13
-DOUBLE_FIRST_ROUND_MAX = 18
+OPENING_BID_SUIT_FIRST_ROUND_MIN = 13
+OPENING_TWO_CLUB_FIRST_ROUND_MAX = 25
+OPENING_TWO_CLUB_FIRST_ROUND_MIN = 18
+OPENING_NT_FIRST_ROUND_MIN = 16
+OPENING_NT_FIRST_ROUND_MAX = 18
+OPENING_DOUBLE_FIRST_ROUND_MIN = 13
+OPENING_DOUBLE_FIRST_ROUND_MAX = 18
+
+RESPONDING_BID_SUIT_FIRST_ROUND_MAX = 12
+RESPONDING_BID_SUIT_FIRST_ROUND_MIN = PASS_FIRST_ROUND_MAX + 1
+RESPONDING_DOUBLE_FIRST_ROUND_MIN = 10
+RESPONDING_DOUBLE_FIRST_ROUND_MAX = 12
 
 
 suitCounts = None
@@ -259,7 +263,8 @@ def getEstimatedPoints(biddingObjRelative, incomingBids):
         if numberOfBidsMade < 1:
             continue
 
-        isRespondingToPartner = getIsRespondingToPartner(incomingBids)
+        bidInQuestion = getBidInQuestion()
+        isRespondingToPartner = getIsRespondingToPartner(incomingBids, bidInQuestion)
         firstBid = biddingObjRelative[location][0]
         print('firstBid = {0}'.format(firstBid))
         if re.search('pass', firstBid, re.IGNORECASE):
@@ -283,23 +288,41 @@ def getEstimatedPoints(biddingObjRelative, incomingBids):
             else:
                 estimatedScoring[location]['min'] = PASS_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = PASS_FIRST_ROUND_MAX
-        elif re.search('trump', firstBid, re.IGNORECASE):
-            estimatedScoring[location]['min'] = NT_FIRST_ROUND_MIN
-            estimatedScoring[location]['max'] = NT_FIRST_ROUND_MAX
-        elif re.search('double', firstBid, re.IGNORECASE):
-            estimatedScoring[location]['min'] = DOUBLE_FIRST_ROUND_MIN
-            estimatedScoring[location]['max'] = DOUBLE_FIRST_ROUND_MAX
-        elif re.search('Two Club', firstBid, re.IGNORECASE):
-            estimatedScoring[location]['min'] = TWO_CLUB_FIRST_ROUND_MIN
-            estimatedScoring[location]['max'] = TWO_CLUB_FIRST_ROUND_MAX
+        elif not isRespondingToPartner:
+            if re.search('trump', firstBid, re.IGNORECASE):
+                estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
+                estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
+            elif re.search('double', firstBid, re.IGNORECASE):
+                estimatedScoring[location]['min'] = OPENING_DOUBLE_FIRST_ROUND_MIN
+                estimatedScoring[location]['max'] = OPENING_DOUBLE_FIRST_ROUND_MAX
+            elif re.search('Two Club', firstBid, re.IGNORECASE):
+                estimatedScoring[location]['min'] = OPENING_TWO_CLUB_FIRST_ROUND_MIN
+                estimatedScoring[location]['max'] = OPENING_TWO_CLUB_FIRST_ROUND_MAX
+            else:
+                estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
+                estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
         else:
-            estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
-            estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
+            if re.search('double', firstBid, re.IGNORECASE):
+                estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
+                estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX
+            else:
+                isJumpShift = getIsJumpShift(incomingBids, bidInQuestion)
+                if isJumpShift:
+                    if re.search('trump', firstBid, re.IGNORECASE):
+                        estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
+                        estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
+                    else:
+                        estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
+                        estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
 
     print('estimatedScoring = {0}'.format(estimatedScoring))
     return estimatedScoring
 
-def getIsRespondingToPartner(incomingBids):
+def getIsJumpShift(incomingBids, bidInQuestion):
+    #returns True/False whether bidInQuestion is a jumpshift bid
+    pass
+
+def getIsRespondingToPartner(incomingBids, bidInQuestion):
     #returns true or false depending on whether the player is responding to his/her partner
     if len(incomingBids) >=2 and not re.search('pass', incomingBids[-2][1], re.IGNORECASE):
         return True
