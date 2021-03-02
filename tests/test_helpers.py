@@ -1574,7 +1574,7 @@ class getEstimatedPoints(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-    def test_open_weak_two_unambiguous_2(self):
+    def test_open_weak_two_jumpshift(self):
         biddingObjRelative = {
             "top": ['Two Heart'],
             "left": ['One Club'],
@@ -1608,10 +1608,10 @@ class getEstimatedPoints(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-    def test_open_weak_three_unambiguous_2(self):
+    def test_open_weak_three_jumpshift(self):
         biddingObjRelative = {
             "top": ['Three Club'],
-            "left": ['One'],
+            "left": ['One No Trump'],
             "bottom": [],
             "right": ['Pass'],
         }
@@ -1621,7 +1621,7 @@ class getEstimatedPoints(unittest.TestCase):
             "left": "Andrew",
             "right": "Ann",
         }
-        bids = [['Adam', 'Three Club'],['Ann', 'Pass']]
+        bids = [['Andrew', 'One No Trump'],['Adam', 'Three Club'],['Ann', 'Pass']]
         actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "top": {
@@ -1633,12 +1633,81 @@ class getEstimatedPoints(unittest.TestCase):
                 "max": None,
             },
             "left": {
-                "min": None,
-                "max": None,
+                "min": autoBid.OPENING_NT_FIRST_ROUND_MIN,
+                "max": autoBid.OPENING_NT_FIRST_ROUND_MAX,
             },
             "right": {
                 "min": autoBid.PASS_FIRST_ROUND_MIN,
                 "max": autoBid.PASS_FIRST_ROUND_MAX,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+
+    def test_open_weak_two_ambiguous_1(self):
+        biddingObjRelative = {
+            "top": ['Two Heart'],
+            "left": ['One Spade'],
+            "bottom": [],
+            "right": ['Pass'],
+        }
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
+        bids = [['Andrew', "One Spade"],['Adam', 'Two Heart'],['Ann', 'Pass']]
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-2])
+        expected = {
+            "top": {
+                "min": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MIN,
+                "max": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MAX,
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+            "left": {
+                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+            },
+            "right": {
+                "min": autoBid.PASS_FIRST_ROUND_MIN,
+                "max": autoBid.PASS_FIRST_ROUND_MAX,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_open_weak_three_ambiguous_2(self):
+        biddingObjRelative = {
+            "top": ['Two Heart'],
+            "left": ['One No Trump'],
+            "bottom": [],
+            "right": ['Three Club'],
+        }
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
+        bids = [['Andrew', "Pass"],['Adam', 'Three Heart'],['Ann', 'Three Club']]
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        expected = {
+            "right": {
+                "min": autoBid.OPENING_WEAK_THREE_AFTER_OPENERS_MIN,
+                "max": autoBid.OPENING_WEAK_THREE_AFTER_OPENERS_MAX,
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+            },
+            "left": {
+                "min": autoBid.OPENING_NT_FIRST_ROUND_MIN,
+                "max": autoBid.OPENING_NT_FIRST_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
