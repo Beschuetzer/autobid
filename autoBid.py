@@ -298,6 +298,13 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         hasPartnerOpened = getHasPartnerOpened(incomingBids, username)
         firstBid = biddingObjRelative[location][0]
 
+        isJumpShift = False
+        try: 
+            biddingUpToThisPoint = incomingBids[:indexOfUsersFirstBid]
+            isJumpShift = getIsJumpShift(biddingUpToThisPoint, incomingBids[indexOfUsersFirstBid][1])
+        except:
+            pass
+
         print('firstBid = {0}'.format(firstBid))    
         print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
         if re.search('pass', firstBid, re.IGNORECASE):
@@ -335,15 +342,22 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                 estimatedScoring[location]['max'] = OPENING_TWO_CLUB_FIRST_ROUND_MAX
             elif re.search('Two', firstBid, re.IGNORECASE):
                 hasSomeOneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
-                if hasSomeOneOpenedBefore:
+                print('hasSomeOneOpenedBefore = {0}'.format(hasSomeOneOpenedBefore))
+                print('isJumpShift = {0}'.format(isJumpShift))
+                if hasSomeOneOpenedBefore and not isJumpShift:
                     estimatedScoring[location]['min'] = OPENING_WEAK_TWO_AFTER_OPENERS_MIN
                     estimatedScoring[location]['max'] = OPENING_WEAK_TWO_AFTER_OPENERS_MAX
                 else:
                     estimatedScoring[location]['min'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
                     estimatedScoring[location]['max'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX
             elif re.search('Three', firstBid, re.IGNORECASE):
-                estimatedScoring[location]['min'] = OPENING_TWO_CLUB_FIRST_ROUND_MIN
-                estimatedScoring[location]['max'] = OPENING_TWO_CLUB_FIRST_ROUND_MAX
+                hasSomeOneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+                if hasSomeOneOpenedBefore and not isJumpShift:
+                    estimatedScoring[location]['min'] = OPENING_WEAK_THREE_AFTER_OPENERS_MIN
+                    estimatedScoring[location]['max'] = OPENING_WEAK_THREE_AFTER_OPENERS_MAX
+                else:
+                    estimatedScoring[location]['min'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
+                    estimatedScoring[location]['max'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
             else:
                 estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
@@ -354,7 +368,6 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                 estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX
             else:
                 partnersLastBid = incomingBids[getIndexOfNthBid(seatingRelative['top'], incomingBids, -1)][1]
-                isJumpShift = getIsJumpShift(currentActualBid[1], incomingBids[indexOfUsersFirstBid][1])
 
                 print('partnersLastBid = {0}'.format(partnersLastBid))
                 print('isJumpShift = {0}'.format(isJumpShift))
@@ -385,8 +398,6 @@ def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids):
     for bid in bidsUpToUsersFirstBid:
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return True
-
-
     return False
 
 def getIndexOfNthBid(username, incomingBids, nthBid):
@@ -417,10 +428,19 @@ def getIndexOfNthBid(username, incomingBids, nthBid):
     
     return None
 
-def getIsJumpShift(currentActualBid, usersBid):
+def getIsJumpShift(biddingUpToThisPoint, usersBid):
     #inputs:
         #currentActualBid and usersBid = string representing bid
     #returns True/False whether usersBid is a jumpshift of currentActualBid
+
+    currentActualBid = None
+    if len(biddingUpToThisPoint) >= 1:
+        currentActualBid = getCurrentActualBid(biddingUpToThisPoint)[1]
+    else:
+        return False
+
+    print('currentActualBid = {0}'.format(currentActualBid))
+    print('usersBid = {0}'.format(usersBid))
 
     if not currentActualBid or currentActualBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
         return False
@@ -428,6 +448,7 @@ def getIsJumpShift(currentActualBid, usersBid):
     indexOfCurrentActualBid = contracts.index(currentActualBid)
     indexOfUsersBid = contracts.index(usersBid)
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5
+    
 
 def getHasPartnerOpened(incomingBids, username):
     #returns true or false depending on whether the player is responding to his/her partner
@@ -676,7 +697,11 @@ def getSuitNameFromCardAsNumber(cardAsNumber):
 def getCurrentActualBid(incomingBids):
     #input: all bids up to now
     #return: the last bid made that is not double or pass
+    print('incomingBids = {0}'.format(incomingBids))
     for bid in reversed(incomingBids):
+        if len(bid) <= 0:
+            return ''
+        print('bid = {0}'.format(bid))
         if re.search('pass', bid[1], re.IGNORECASE) is None and re.search('double', bid[1], re.IGNORECASE) is None:
             return bid
 
