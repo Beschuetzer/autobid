@@ -150,6 +150,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     biddingHistory = getBiddingHistory(incomingBids)
     seatingRelative = getSeatingRelative(seating, spot)
     estimatedPoints = getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentActualBid)
+    estimatedSuitCounts = getEstimatedSuitCounts(biddingObjRelative, incomingBids, seatingRelative)
     partnersBids = biddingObjRelative['top']
     #endregion
 
@@ -261,6 +262,53 @@ def getSeatingRelative(seating, spot):
         "bottom": seating[directions[(directions.index(spot) + 0) % 4]],
     }
    
+def getEstimatedSuitCounts(biddingObjRelative, incomingBids, seatingRelative):
+    '''
+    inputs: 
+        biddingObjRelative: dictionary where keys are relative positions and values are lists of strings representing that user's bids (in chronological order) 
+        incomingBids: list of bids as a list 
+        seatingRelative: dictionary where keys are relative positions and values are strings representing user's name
+    returns: a dictionary representing the current "best guess" of how many of each suit a player has
+    '''
+    defaultValue = -1
+    suitCounts = {
+        "top": {
+            "clubs": defaultValue,
+            "diamonds": defaultValue,
+            "hearts": defaultValue,
+            "spades": defaultValue,
+        },
+        "bottom": {
+            "clubs": defaultValue,
+            "diamonds": defaultValue,
+            "hearts": defaultValue,
+            "spades": defaultValue,
+        },
+        "left": {
+            "clubs": defaultValue,
+            "diamonds": defaultValue,
+            "hearts": defaultValue,
+            "spades": defaultValue,
+        },
+        "right": {
+            "clubs": defaultValue,
+            "diamonds": defaultValue,
+            "hearts": defaultValue,
+            "spades": defaultValue,
+        },
+    }
+
+    '''assumptions:
+    if a player says the same suit twice they likely have 1-2 more of that suit that would be assumed otherwise (5-6 for minors and 6-7 for majors?)
+
+    opening in no trump means no voids
+
+    responding to opening points in the same suit means you have at least 3 of that suit?
+
+    responding with a major means you have at least 5
+    '''
+
+    return suitCounts
 
 def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentActualBid):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)

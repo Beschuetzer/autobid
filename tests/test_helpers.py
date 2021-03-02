@@ -1710,6 +1710,40 @@ class getEstimatedPoints(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
+    def test_partnerOpens_open_two(self):
+        biddingObjRelative = {
+            "top": ['One No Trump'],
+            "left": ['One Diamond'],
+            "bottom": [],
+            "right": ['Two Club'],
+        }
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
+        bids = [['Andrew', "One Diamond"],['Adam', 'One No Trump'],['Ann', 'Two Club']]
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        expected = {
+            "right": {
+                "min": autoBid.RESPONDING_NO_JUMPSHIFT_MIN,
+                "max": autoBid.RESPONDING_NO_JUMPSHIFT_MAX,
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": autoBid.OPENING_NT_FIRST_ROUND_MIN,
+                "max": autoBid.OPENING_NT_FIRST_ROUND_MAX,
+            },
+            "left": {
+                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+            },
+        }
+        self.assertDictEqual(actual, expected)
     
 class getHasPartnerOpened(unittest.TestCase):
     def setUp(self):
