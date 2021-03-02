@@ -50,6 +50,8 @@ RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX = 12
 RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN = 10
 RESPONDING_NO_JUMPSHIFT_MAX = 12
 RESPONDING_NO_JUMPSHIFT_MIN = 6
+RESPONDING_NO_JUMPSHIFT_NT_MAX = 12
+RESPONDING_NO_JUMPSHIFT_NT_MIN = 10
 
 
 suitCounts = None
@@ -360,22 +362,33 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         if re.search('pass', firstBid, re.IGNORECASE):
             print('pass')
             if len(biddingObjRelative[location]) > 1:
-
                 secondBid = biddingObjRelative[location][1]
+                indexOfUsersSecondBid = getIndexOfNthBid(username, incomingBids, 2)
+                
+                secondBidIsJumpShift = getIsJumpShift(incomingBids[:indexOfUsersSecondBid], secondBid)
+
                 print('secondBid = {0}'.format(secondBid))
-                if re.search('trump', secondBid, re.IGNORECASE):
-                    estimatedScoring[location]['min'] = PASS_FIRST_NT_SECOND_ROUND_MIN
-                    estimatedScoring[location]['max'] = PASS_FIRST_NT_SECOND_ROUND_MAX
-                elif re.search('double', secondBid, re.IGNORECASE):
-                    estimatedScoring[location]['min'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MIN
-                    estimatedScoring[location]['max'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MAX
-                elif re.search('pass', secondBid, re.IGNORECASE):
-                    #this is needed to handle cases when # of bids is > 1 and 1st and 2nd bids are pass
-                    estimatedScoring[location]['min'] = PASS_FIRST_ROUND_MIN
-                    estimatedScoring[location]['max'] = PASS_FIRST_ROUND_MAX
+                print('indexOfUsersSecondBid = {0}'.format(indexOfUsersSecondBid))
+                print('secondBidIsJumpShift = {0}'.format(secondBidIsJumpShift))
+
+                if secondBidIsJumpShift:
+                    print('here')
+                    estimatedScoring[location]['min'] = RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN
+                    estimatedScoring[location]['max'] = RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX
                 else:
-                    estimatedScoring[location]['min'] = PASS_FIRST_BID_SECOND_ROUND_MIN
-                    estimatedScoring[location]['max'] = PASS_FIRST_BID_SECOND_ROUND_MAX
+                    if re.search('trump', secondBid, re.IGNORECASE):
+                        estimatedScoring[location]['min'] = PASS_FIRST_NT_SECOND_ROUND_MIN
+                        estimatedScoring[location]['max'] = PASS_FIRST_NT_SECOND_ROUND_MAX
+                    elif re.search('double', secondBid, re.IGNORECASE):
+                        estimatedScoring[location]['min'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MIN
+                        estimatedScoring[location]['max'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MAX
+                    elif re.search('pass', secondBid, re.IGNORECASE):
+                        #this is needed to handle cases when # of bids is > 1 and 1st and 2nd bids are pass
+                        estimatedScoring[location]['min'] = PASS_FIRST_ROUND_MIN
+                        estimatedScoring[location]['max'] = PASS_FIRST_ROUND_MAX
+                    else:
+                        estimatedScoring[location]['min'] = PASS_FIRST_BID_SECOND_ROUND_MIN
+                        estimatedScoring[location]['max'] = PASS_FIRST_BID_SECOND_ROUND_MAX
             else:
                 estimatedScoring[location]['min'] = PASS_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = PASS_FIRST_ROUND_MAX
@@ -423,18 +436,14 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
             print('responding')
             if re.search('double', firstBid, re.IGNORECASE):
                 estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
-                estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX
+                estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX            
             else:
                 partnersLocation = getPartnersLocation(username, seatingRelative)
                 partnersLastBid = incomingBids[getIndexOfNthBid(seatingRelative[partnersLocation], incomingBids, -1)][1]
 
                 print('partnersLastBid = {0}'.format(partnersLastBid))
-
+                
                 if isJumpShift:
-                    if re.search('pass', firstBid, re.IGNORECASE):
-                        estimatedScoring[location]['min'] = RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN
-                        estimatedScoring[location]['max'] = RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX
-                    else:
                         if re.search('trump', firstBid, re.IGNORECASE):
                             estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
                             estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
@@ -442,12 +451,16 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                             estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
                             estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
                 else:
-                    if re.search('three', firstBid, re.IGNORECASE):
+                    if re.search('three', firstBid, re.IGNORECASE):                     
                         estimatedScoring[location]['min'] = OPENING_WEAK_THREE_AFTER_OPENERS_MIN
                         estimatedScoring[location]['max'] = OPENING_WEAK_THREE_AFTER_OPENERS_MAX
-                    
-                    estimatedScoring[location]['min'] = RESPONDING_NO_JUMPSHIFT_MIN
-                    estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_MAX
+                    else:
+                        if re.search('trump', firstBid, re.IGNORECASE):
+                            estimatedScoring[location]['min'] = RESPONDING_NO_JUMPSHIFT_NT_MIN
+                            estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_NT_MAX
+                        else: 
+                            estimatedScoring[location]['min'] =    RESPONDING_NO_JUMPSHIFT_MIN
+                            estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_MAX
 
     return estimatedScoring
 
@@ -467,7 +480,6 @@ def getPartnersLocation(username, seatingRelative):
     returns location of the partner for username using seatingRelative
     '''
     locationToUse = None
-    usersLocation = None
     for location, usernameInDict in seatingRelative.items():
         if usernameInDict == username:
             locationToUse = location
@@ -513,6 +525,8 @@ def getIsJumpShift(biddingUpToThisPoint, usersBid):
     #inputs:
         #currentActualBid and usersBid = string representing bid
     #returns True/False whether usersBid is a jumpshift of currentActualBid
+    if biddingUpToThisPoint == None:
+        return False
 
     currentActualBid = None
     if len(biddingUpToThisPoint) >= 1:
@@ -776,7 +790,6 @@ def getCurrentActualBid(incomingBids):
     for bid in reversed(incomingBids):
         if len(bid) <= 0:
             return ''
-        print('bid = {0}'.format(bid))
         if re.search('pass', bid[1], re.IGNORECASE) is None and re.search('double', bid[1], re.IGNORECASE) is None:
             return bid
 
