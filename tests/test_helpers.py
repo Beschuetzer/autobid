@@ -1710,12 +1710,12 @@ class getEstimatedPoints(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-    def test_partnerOpens_open_two(self):
+    def responding_no_JumpShift_1(self):
         biddingObjRelative = {
-            "top": ['One No Trump'],
-            "left": ['One Diamond'],
+            "top": ['Two Diamond'],
+            "left": ['One No Trump'],
             "bottom": [],
-            "right": ['Two Club'],
+            "right": ['Two Heart'],
         }
         seatingRelative = {
             "top": "Adam",
@@ -1723,7 +1723,7 @@ class getEstimatedPoints(unittest.TestCase):
             "left": "Andrew",
             "right": "Ann",
         }
-        bids = [['Andrew', "One Diamond"],['Adam', 'One No Trump'],['Ann', 'Two Club']]
+        bids = [['Andrew', "One No Trump"],['Adam', 'Two Diamond'],['Ann', 'Two Heart']]
         actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "right": {
@@ -1734,9 +1734,43 @@ class getEstimatedPoints(unittest.TestCase):
                 "min": None,
                 "max": None,
             },
-            "top": {
+            "left": {
                 "min": autoBid.OPENING_NT_FIRST_ROUND_MIN,
                 "max": autoBid.OPENING_NT_FIRST_ROUND_MAX,
+            },
+            "top": {
+                "min": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MIN,
+                "max": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MAX,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_responding_no_JumpShift_2(self):
+        biddingObjRelative = {
+            "top": ['Two Heart'],
+            "left": ['One Diamond'],
+            "bottom": [],
+            "right": ['Three Club'],
+        }
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
+        bids = [['Andrew', "One Diamond"],['Adam', 'Two Heart'],['Ann', 'Three Club']]
+        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        expected = {
+            "right": {
+                "min": autoBid.OPENING_WEAK_THREE_AFTER_OPENERS_MIN,
+                "max": autoBid.OPENING_WEAK_THREE_AFTER_OPENERS_MAX,
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
+                "max": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
             },
             "left": {
                 "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
@@ -1955,7 +1989,6 @@ class getIsJumpShift(unittest.TestCase):
         actual = autoBid.getIsJumpShift(biddingUpToThisPoint, usersBid)
         expected = True
         self.assertEqual(actual, expected)
-
 class getHasSomeOneOpenedBefore(unittest.TestCase):
     def test_empty(self):
         indexOfUsersFirstBid = None
@@ -2012,8 +2045,73 @@ class getHasSomeOneOpenedBefore(unittest.TestCase):
         actual = autoBid.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
         expected = True
         self.assertEqual(actual, expected)
-   
-
+class getPartnersLocation(unittest.TestCase):
+    def test_empty(self):
+        username = ''
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
+        actual = autoBid.getPartnersLocation(username, seatingRelative)
+        expected = None
+        self.assertEqual(actual, expected)
+    def test_incorrectCase(self):
+        username = 'AdAm'
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
+        actual = autoBid.getPartnersLocation(username, seatingRelative)
+        expected = None
+        self.assertEqual(actual, expected)
+    def test_top(self):
+        username = 'Tim'
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
+        actual = autoBid.getPartnersLocation(username, seatingRelative)
+        expected = 'top'
+        self.assertEqual(actual, expected)
+    def test_bottom(self):
+        username = 'Adam'
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
+        actual = autoBid.getPartnersLocation(username, seatingRelative)
+        expected = 'bottom'
+        self.assertEqual(actual, expected)
+    def test_left(self):
+        username = 'Andrew'
+        seatingRelative = {
+            "left": "Adam",
+            "bottom": "Tim",
+            "right": "Andrew",
+            "top": "Ann",
+        }
+        actual = autoBid.getPartnersLocation(username, seatingRelative)
+        expected = 'left'
+        self.assertEqual(actual, expected)
+    def test_right(self):
+        username = 'Andrew'
+        seatingRelative = {
+            "top": "Adam",
+            "bottom": "Tim",
+            "left": "Andrew",
+            "right": "Ann",
+        }
+        actual = autoBid.getPartnersLocation(username, seatingRelative)
+        expected = 'right'
+        self.assertEqual(actual, expected)
 
 
 

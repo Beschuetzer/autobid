@@ -355,6 +355,8 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
 
         print('firstBid = {0}'.format(firstBid))    
         print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
+        print('isJumpShift = {0}'.format(isJumpShift))
+
         if re.search('pass', firstBid, re.IGNORECASE):
             print('pass')
             if len(biddingObjRelative[location]) > 1:
@@ -423,10 +425,10 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                 estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
                 estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX
             else:
-                partnersLastBid = incomingBids[getIndexOfNthBid(seatingRelative['top'], incomingBids, -1)][1]
+                partnersLocation = getPartnersLocation(username, seatingRelative)
+                partnersLastBid = incomingBids[getIndexOfNthBid(seatingRelative[partnersLocation], incomingBids, -1)][1]
 
                 print('partnersLastBid = {0}'.format(partnersLastBid))
-                print('isJumpShift = {0}'.format(isJumpShift))
 
                 if isJumpShift:
                     if re.search('pass', firstBid, re.IGNORECASE):
@@ -440,6 +442,10 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                             estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
                             estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
                 else:
+                    if re.search('three', firstBid, re.IGNORECASE):
+                        estimatedScoring[location]['min'] = OPENING_WEAK_THREE_AFTER_OPENERS_MIN
+                        estimatedScoring[location]['max'] = OPENING_WEAK_THREE_AFTER_OPENERS_MAX
+                    
                     estimatedScoring[location]['min'] = RESPONDING_NO_JUMPSHIFT_MIN
                     estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_MAX
 
@@ -455,6 +461,25 @@ def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids):
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return True
     return False
+
+def getPartnersLocation(username, seatingRelative):
+    '''
+    returns location of the partner for username using seatingRelative
+    '''
+    locationToUse = None
+    usersLocation = None
+    for location, usernameInDict in seatingRelative.items():
+        if usernameInDict == username:
+            locationToUse = location
+            break;
+
+    if locationToUse == None:
+        return None
+
+    locations = ['left','top','right','bottom']
+    indexOfUsersLocation = locations.index(locationToUse)
+    print('indexOfUsersLocation = {0}'.format(indexOfUsersLocation))
+    return locations[(indexOfUsersLocation + 2) % 4]
 
 def getIndexOfNthBid(username, incomingBids, nthBid):
     #inputs:
@@ -495,9 +520,6 @@ def getIsJumpShift(biddingUpToThisPoint, usersBid):
     else:
         return False
 
-    print('currentActualBid = {0}'.format(currentActualBid))
-    print('usersBid = {0}'.format(usersBid))
-
     if not currentActualBid or currentActualBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
         return False
     
@@ -510,9 +532,6 @@ def getHasPartnerOpened(incomingBids, username):
     #returns true or false depending on whether the player is responding to his/her partner
     indexOfUsersFirstBid = getIndexOfNthBid(username, incomingBids, 1)
     biddingUpToUsersFirstBid = incomingBids[:indexOfUsersFirstBid]
-
-    print('indexOfUsersFirstBid = {0}'.format(indexOfUsersFirstBid))
-    print('biddingUpToUsersFirstBid = {0}'.format(biddingUpToUsersFirstBid))
 
     if len(biddingUpToUsersFirstBid) <= 1:
         return False
