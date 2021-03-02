@@ -1642,7 +1642,6 @@ class getEstimatedPoints(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-
     def test_open_weak_two_ambiguous_1(self):
         biddingObjRelative = {
             "top": ['Two Heart'],
@@ -1679,8 +1678,8 @@ class getEstimatedPoints(unittest.TestCase):
         self.assertDictEqual(actual, expected)
     def test_open_weak_three_ambiguous_2(self):
         biddingObjRelative = {
-            "top": ['Two Heart'],
-            "left": ['One No Trump'],
+            "top": ['Three Heart'],
+            "left": ['Pass'],
             "bottom": [],
             "right": ['Three Club'],
         }
@@ -1702,16 +1701,16 @@ class getEstimatedPoints(unittest.TestCase):
                 "max": None,
             },
             "top": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": autoBid.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN,
+                "max": autoBid.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX,
             },
             "left": {
-                "min": autoBid.OPENING_NT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_NT_FIRST_ROUND_MAX,
+                "min": autoBid.PASS_FIRST_ROUND_MIN,
+                "max": autoBid.PASS_FIRST_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
-
+    
 class getHasPartnerOpened(unittest.TestCase):
     def setUp(self):
         self.seatingRelative = {

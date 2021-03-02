@@ -343,30 +343,29 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
             else:
                 hasSomeOneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
                 if re.search('Two', firstBid, re.IGNORECASE):
-                    print('hasSomeOneOpenedBefore = {0}'.format(hasSomeOneOpenedBefore))
-                    print('isJumpShift = {0}'.format(isJumpShift))
-                    if hasSomeOneOpenedBefore and not isJumpShift:
-                        estimatedScoring[location]['min'] = OPENING_WEAK_TWO_AFTER_OPENERS_MIN
-                        estimatedScoring[location]['max'] = OPENING_WEAK_TWO_AFTER_OPENERS_MAX
-                    elif hasSomeOneOpenedBefore and isJumpShift:
-                        estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
-                        estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
-                    else:
+                    if not hasSomeOneOpenedBefore:
                         estimatedScoring[location]['min'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
                         estimatedScoring[location]['max'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX
-                elif re.search('Three', firstBid, re.IGNORECASE):
-                    print(3)
-                    if hasSomeOneOpenedBefore and not isJumpShift:
-                        print(1)
-                        estimatedScoring[location]['min'] = OPENING_WEAK_THREE_AFTER_OPENERS_MIN
-                        estimatedScoring[location]['max'] = OPENING_WEAK_THREE_AFTER_OPENERS_MAX
-                    elif hasSomeOneOpenedBefore and isJumpShift:
-                        estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
-                        estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
                     else:
-                        print(2)
+                        if not isJumpShift:
+                            estimatedScoring[location]['min'] = OPENING_WEAK_TWO_AFTER_OPENERS_MIN
+                            estimatedScoring[location]['max'] = OPENING_WEAK_TWO_AFTER_OPENERS_MAX
+                        elif isJumpShift:
+                            estimatedScoring[location]['min'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
+                            estimatedScoring[location]['max'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX
+                       
+                elif re.search('Three', firstBid, re.IGNORECASE):
+                    if not hasSomeOneOpenedBefore:
                         estimatedScoring[location]['min'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
                         estimatedScoring[location]['max'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
+                    else:
+                        if not isJumpShift:
+                            estimatedScoring[location]['min'] = OPENING_WEAK_THREE_AFTER_OPENERS_MIN
+                            estimatedScoring[location]['max'] = OPENING_WEAK_THREE_AFTER_OPENERS_MAX
+                        elif isJumpShift:
+                            estimatedScoring[location]['min'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
+                            estimatedScoring[location]['max'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
+                        
                 else:
                     estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
                     estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
