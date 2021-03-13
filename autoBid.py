@@ -318,6 +318,16 @@ def getEstimatedSuitCounts(biddingObjRelative, incomingBids, seatingRelative):
 
     return suitCounts
 
+def getIsTeamsFirstBid(biddingObjRelative):
+    return len(biddingObjRelative["top"]) == 0
+
+def getIsPartnersFirstBidPass(biddingObjRelative):
+    partnersBidding = biddingObjRelative["top"] 
+    if len(partnersBidding) > 0:
+        return partnersBidding[0] == 'pass'
+    else:
+        return False
+
 def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentContractBid):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
@@ -352,6 +362,8 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         indexOfUsersFirstBid = getIndexOfNthBid(username, incomingBids, 1)
         hasPartnerOpened = getHasPartnerOpened(incomingBids, username)
         firstBid = biddingObjRelative[location][0]
+        isTeamsFirstBid = getIsTeamsFirstBid(biddingObjRelative)
+        isPartnersFirstBidPass =getIsPartnersFirstBidPass(biddingObjRelative)
 
         isJumpShift = False
         try: 
@@ -363,7 +375,36 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         print('firstBid = {0}'.format(firstBid))    
         print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
         print('isJumpShift = {0}'.format(isJumpShift))
+        print('isTeamsFirstBid = {0}'.format(isTeamsFirstBid))
 
+        firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
+        
+
+        #if player has team's first turn and they pass -> a
+        if isTeamsFirstBid is True and firstBidIsPass:
+            pass
+        
+        #if player has team's firt turn and they bid -> b
+        elif isTeamsFirstBid is True and not firstBidIsPass:
+            pass
+
+        #if player has team's second turn, parter bids, and they pass -> c
+        elif isTeamsFirstBid is False and isPartnersFirstBidPass is False and firstBidIsPass:
+            pass
+        
+        #if player has team's second turn, partner bids, and they bid -> d
+        elif isTeamsFirstBid is False and isPartnersFirstBidPass is False and not firstBidIsPass:
+            pass
+
+        #if player has team's second turn, parter passes, and they pass -> e
+        elif isTeamsFirstBid is False and isPartnersFirstBidPass is True and firstBidIsPass:
+            pass
+
+        #if player has team's second turn, parter passes, and they bid -> f
+        elif isTeamsFirstBid is False and isPartnersFirstBidPass is False and not firstBidIsPass:
+            pass
+
+        
         if re.search('pass', firstBid, re.IGNORECASE):
             print('pass')
             currentBidsForThisPlayer = biddingObjRelative[location]
