@@ -14,8 +14,10 @@ Returns: "best" bid for current situation in the form of a string
 
 #TODO: make sure suit count estimates from bidding is complete
 '''
-PASS_FIRST_ROUND_MAX = 5
-PASS_FIRST_ROUND_MIN = 0
+PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX = 5
+PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MIN = 0
+PASS_FIRST_ROUND_WITH_PARTNER_PASS_MAX = 12
+PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN = 0
 PASS_FIRST_NT_SECOND_ROUND_MAX = 12
 PASS_FIRST_NT_SECOND_ROUND_MIN = 6
 PASS_FIRST_BID_SECOND_ROUND_MAX = 12
@@ -45,7 +47,7 @@ OPENING_WEAK_THREE_AFTER_OPENERS_MIN = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
 
 
 RESPONDING_BID_SUIT_FIRST_ROUND_MAX = 12
-RESPONDING_BID_SUIT_FIRST_ROUND_MIN = PASS_FIRST_ROUND_MAX + 1
+RESPONDING_BID_SUIT_FIRST_ROUND_MIN = PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX + 1
 RESPONDING_DOUBLE_FIRST_ROUND_MAX = 12
 RESPONDING_DOUBLE_FIRST_ROUND_MIN = 10
 RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX = 12
@@ -390,14 +392,14 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                         estimatedScoring[location]['max'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MAX
                     elif re.search('pass', secondBid, re.IGNORECASE):
                         #this is needed to handle cases when # of bids is > 1 and 1st and 2nd bids are pass
-                        estimatedScoring[location]['min'] = PASS_FIRST_ROUND_MIN
-                        estimatedScoring[location]['max'] = PASS_FIRST_ROUND_MAX
+                        estimatedScoring[location]['min'] = PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN
+                        estimatedScoring[location]['max'] = PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX
                     else:
                         estimatedScoring[location]['min'] = PASS_FIRST_BID_SECOND_ROUND_MIN
                         estimatedScoring[location]['max'] = PASS_FIRST_BID_SECOND_ROUND_MAX
             else:
-                estimatedScoring[location]['min'] = PASS_FIRST_ROUND_MIN
-                estimatedScoring[location]['max'] = PASS_FIRST_ROUND_MAX
+                estimatedScoring[location]['min'] = PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN
+                estimatedScoring[location]['max'] = PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX
         elif not hasPartnerOpened:
             print('opening')
             if re.search('trump', firstBid, re.IGNORECASE):
