@@ -11,15 +11,17 @@ Inputs:
     spot: string representing seating position
     clientPointCountingConvention: string representing how client counts HCP points
 Returns: "best" bid for current situation in the form of a string
+
+#TODO: make sure suit count estimates from bidding is complete
 '''
 PASS_FIRST_ROUND_MAX = 5
 PASS_FIRST_ROUND_MIN = 0
-PASS_FIRST_NT_SECOND_ROUND_MAX = 8
-PASS_FIRST_NT_SECOND_ROUND_MIN = 12
-PASS_FIRST_BID_SECOND_ROUND_MAX = 8
-PASS_FIRST_BID_SECOND_ROUND_MIN = 12
-PASS_FIRST_DOUBLE_SECOND_ROUND_MAX = 8
-PASS_FIRST_DOUBLE_SECOND_ROUND_MIN = 12
+PASS_FIRST_NT_SECOND_ROUND_MAX = 12
+PASS_FIRST_NT_SECOND_ROUND_MIN = 6
+PASS_FIRST_BID_SECOND_ROUND_MAX = 12
+PASS_FIRST_BID_SECOND_ROUND_MIN = 8
+PASS_FIRST_DOUBLE_SECOND_ROUND_MAX = 12
+PASS_FIRST_DOUBLE_SECOND_ROUND_MIN = 8
 
 OPENING_BID_SUIT_FIRST_ROUND_MAX = 15
 OPENING_BID_SUIT_FIRST_ROUND_MIN = 13
@@ -32,7 +34,7 @@ OPENING_DOUBLE_FIRST_ROUND_MIN = 13
 OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX = 12
 OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN = 10
 OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX = 10
-OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN = 8
+OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN = 7
 
 #THESE CASES ARE AMBIGIOUS COULD BE REGULAR OPENERS OR WEAK BID
 #E.G. (1 SPADE, 2 HEART, 3 CLUB)
@@ -50,8 +52,8 @@ RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX = 12
 RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN = 10
 RESPONDING_NO_JUMPSHIFT_MAX = 12
 RESPONDING_NO_JUMPSHIFT_MIN = 6
-RESPONDING_NO_JUMPSHIFT_NT_MAX = 12
-RESPONDING_NO_JUMPSHIFT_NT_MIN = 10
+RESPONDING_NO_JUMPSHIFT_NT_MAX = RESPONDING_NO_JUMPSHIFT_MAX
+RESPONDING_NO_JUMPSHIFT_NT_MIN = RESPONDING_NO_JUMPSHIFT_MIN
 
 
 suitCounts = None
@@ -149,6 +151,8 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
         
     biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)    
     biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
+
+
     biddingHistory = getBiddingHistory(incomingBids)
     seatingRelative = getSeatingRelative(seating, spot)
     estimatedPoints = getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentActualBid)
@@ -312,7 +316,7 @@ def getEstimatedSuitCounts(biddingObjRelative, incomingBids, seatingRelative):
 
     return suitCounts
 
-def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentActualBid):
+def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentContractBid):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
         "top": {
@@ -332,7 +336,6 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
             "max": None,
         },
     }
-
 
     for location, bids in biddingObjRelative.items():
         numberOfBidsMade = len(biddingObjRelative[location])
@@ -361,8 +364,11 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
 
         if re.search('pass', firstBid, re.IGNORECASE):
             print('pass')
-            if len(biddingObjRelative[location]) > 1:
-                secondBid = biddingObjRelative[location][1]
+            currentBidsForThisPlayer = biddingObjRelative[location]
+            #TODO: remember to check whether you length of partners bidding array is 0
+            #if it is, it is the same case as partner passes first
+            if len(currentBidsForThisPlayer) > 1:
+                secondBid = currentBidsForThisPlayer[1]
                 indexOfUsersSecondBid = getIndexOfNthBid(username, incomingBids, 2)
                 
                 secondBidIsJumpShift = getIsJumpShift(incomingBids[:indexOfUsersSecondBid], secondBid)
@@ -539,8 +545,7 @@ def getIsJumpShift(biddingUpToThisPoint, usersBid):
     
     indexOfCurrentActualBid = contracts.index(currentActualBid)
     indexOfUsersBid = contracts.index(usersBid)
-    return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5
-    
+    return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
 def getHasPartnerOpened(incomingBids, username):
     #returns true or false depending on whether the player is responding to his/her partner
