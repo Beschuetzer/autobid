@@ -47,8 +47,100 @@ RESPONDING_NO_JUMPSHIFT_MIN = 6
 RESPONDING_NO_JUMPSHIFT_NT_MAX = RESPONDING_NO_JUMPSHIFT_MAX
 RESPONDING_NO_JUMPSHIFT_NT_MIN = RESPONDING_NO_JUMPSHIFT_MIN
 
- 
 
+estimatedValues = {
+    "isTeamsFirstBid": {
+        "partnerPassesFirst": {
+            "playerPassesFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerDoublesFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerBidsSuitFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerBidsNoTrumpFirst": {
+                "min": None,
+                "max": None,
+            },
+        },
+        "partnerBidsFirst": {
+            "playerPassesFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerDoublesFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerBidsSuitFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerBidsNoTrumpFirst": {
+                "min": None,
+                "max": None,
+            },
+        },
+    },    
+    "isNotTeamsFirstBid": {
+        "partnerPassesFirst": {
+            "playerPassesFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerDoublesFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerBidsSuitFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerBidsNoTrumpFirst": {
+                "min": None,
+                "max": None,
+            },
+        },
+        "partnerBidsFirst": {
+            "playerPassesFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerDoublesFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerBidsSuitFirst": {
+                "min": None,
+                "max": None,
+            },
+            "playerBidsNoTrumpFirst": {
+                "min": None,
+                "max": None,
+            },
+        },
+    }, 
+
+    "special": {
+        "weakTwo": {
+            "min": None,
+            "max": None,
+        },
+        "weakThree": {
+            "min": None,
+            "max": None,
+        },
+        "twoClubs": {
+            "min": None,
+            "max": None,
+        },
+    },
+}
 
 def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentContractBid):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
