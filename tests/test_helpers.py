@@ -1,5 +1,6 @@
 import unittest
-import autoBid
+import autoBid 
+import getEstimatedPoints
 
 class getSuitFromCardAsNumber(unittest.TestCase):
     def test_clubLow(self):
@@ -1277,7 +1278,7 @@ class getBiddingHistory(unittest.TestCase):
         actual = autoBid.getBiddingHistory(bids)
         expected = ['2 No Trump', 'Double', '3 Club', 'Pass', 'Double']
         self.assertListEqual(expected, actual)
-class getEstimatedPoints(unittest.TestCase):
+class getEstimatedPointsModule(unittest.TestCase):
     def test_no_bids(self):
         biddingObjRelative = {
             "right": [],
@@ -1285,7 +1286,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,[], "",'')
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,[], "",'')
         expected = {
             "top": {
                 "min": None,
@@ -1318,7 +1319,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
         expected = {
             "top": {
                 "min": None,
@@ -1333,8 +1334,8 @@ class getEstimatedPoints(unittest.TestCase):
                 "max": None,
             },
             "right": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1351,7 +1352,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
         expected = {
             "top": {
                 "min": None,
@@ -1366,8 +1367,8 @@ class getEstimatedPoints(unittest.TestCase):
                 "max": None,
             },
             "right": {
-                "min": autoBid.PASS_FIRST_NT_SECOND_ROUND_MIN,
-                "max": autoBid.PASS_FIRST_NT_SECOND_ROUND_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_NT_SECOND_ROUND_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_NT_SECOND_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1384,7 +1385,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
         expected = {
             "top": {
                 "min": None,
@@ -1399,8 +1400,8 @@ class getEstimatedPoints(unittest.TestCase):
                 "max": None,
             },
             "right": {
-                "min": autoBid.PASS_FIRST_DOUBLE_SECOND_ROUND_MIN,
-                "max": autoBid.PASS_FIRST_DOUBLE_SECOND_ROUND_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_DOUBLE_SECOND_ROUND_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_DOUBLE_SECOND_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1417,7 +1418,7 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": [],
             "top": [],
         }
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,[], seatingRelative,'')
         expected = {
             "top": {
                 "min": None,
@@ -1432,8 +1433,8 @@ class getEstimatedPoints(unittest.TestCase):
                 "max": None,
             },
             "right": {
-                "min": autoBid.PASS_FIRST_BID_SECOND_ROUND_MIN,
-                "max": autoBid.PASS_FIRST_BID_SECOND_ROUND_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_BID_SECOND_ROUND_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_BID_SECOND_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1451,23 +1452,23 @@ class getEstimatedPoints(unittest.TestCase):
             "top": ['Pass'],
         }
         bids = [['Andrew', "Pass"],['Adam', 'Pass'],['Ann', 'One Club'], ['Tim', 'Pass'], ['Andrew', "Two Diamond"]]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative,'')
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative,'')
         expected = {
             "right": {
-                "min": autoBid.RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN,
-                "max": autoBid.RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX,
             },
             "bottom": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
             "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
             "top": {
-                 "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                 "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1485,23 +1486,23 @@ class getEstimatedPoints(unittest.TestCase):
             "top": ['One Diamond'],
         }
         bids = [['Andrew', "Pass"],['Adam', 'Pass'],['Ann', 'One Club'], ['Tim', 'One Diamond'], ['Andrew', "Two Heart"]]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative,'')
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative,'')
         expected = {
             "right": {
-                "min": autoBid.PASS_FIRST_BID_SECOND_ROUND_MIN,
-                "max": autoBid.PASS_FIRST_BID_SECOND_ROUND_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_BID_SECOND_ROUND_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_BID_SECOND_ROUND_MAX,
             },
             "bottom": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
             "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
             "top": {
-                 "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                 "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1521,23 +1522,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Adam', 'Pass'],['Ann', 'One No Trump'], ['Tim', 'Double'],['Andrew', 'Two Diamond']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "top": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
             "bottom": {
-                "min": autoBid.OPENING_DOUBLE_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_DOUBLE_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_DOUBLE_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_DOUBLE_FIRST_ROUND_MAX,
             },
             "left": {
-                "min": autoBid.RESPONDING_NO_JUMPSHIFT_MIN,
-                "max": autoBid.RESPONDING_NO_JUMPSHIFT_MAX,
+                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_MIN,
+                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_MAX,
             },
             "right": {
-                "min": autoBid.OPENING_NT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_NT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_NT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_NT_FIRST_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1555,11 +1556,11 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Adam', 'Two Club'],['Ann', 'Pass']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "top": {
-                "min": autoBid.OPENING_TWO_CLUB_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_TWO_CLUB_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_TWO_CLUB_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_TWO_CLUB_FIRST_ROUND_MAX,
             },
             "bottom": {
                 "min": None,
@@ -1570,8 +1571,8 @@ class getEstimatedPoints(unittest.TestCase):
                 "max": None,
             },
             "right": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1589,11 +1590,11 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Adam', 'Two Heart'],['Ann', 'Pass']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
             },
             "bottom": {
                 "min": None,
@@ -1604,8 +1605,8 @@ class getEstimatedPoints(unittest.TestCase):
                 "max": None,
             },
             "right": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1623,11 +1624,11 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Adam', 'Three Club'],['Ann', 'Pass']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "top": {
-                "min": autoBid.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
+                "min": getEstimatedPoints.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
             },
             "bottom": {
                 "min": None,
@@ -1638,8 +1639,8 @@ class getEstimatedPoints(unittest.TestCase):
                 "max": None,
             },
             "right": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1657,23 +1658,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', "One Club"],['Adam', 'Two Heart'],['Ann', 'Pass']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-2])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-2])
         expected = {
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
             "right": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1691,23 +1692,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', 'One No Trump'],['Adam', 'Three Club'],['Ann', 'Pass']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "top": {
-                "min": autoBid.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
+                "min": getEstimatedPoints.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "left": {
-                "min": autoBid.OPENING_NT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_NT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_NT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_NT_FIRST_ROUND_MAX,
             },
             "right": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1725,23 +1726,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', "One Spade"],['Adam', 'Two Heart'],['Ann', 'Pass']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-2])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-2])
         expected = {
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_AFTER_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_AFTER_OPENERS_MAX,
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
             "right": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1759,23 +1760,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', "Pass"],['Adam', 'Three Heart'],['Ann', 'Three Club']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "right": {
-                "min": autoBid.OPENING_WEAK_THREE_AFTER_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_THREE_AFTER_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_THREE_AFTER_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_THREE_AFTER_OPENERS_MAX,
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "top": {
-                "min": autoBid.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX,
             },
             "left": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1794,23 +1795,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', "One No Trump"],['Adam', 'Two Diamond'],['Ann', 'Two Heart']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "right": {
-                "min": autoBid.RESPONDING_NO_JUMPSHIFT_MIN,
-                "max": autoBid.RESPONDING_NO_JUMPSHIFT_MAX,
+                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_MIN,
+                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_MAX,
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "left": {
-                "min": autoBid.OPENING_NT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_NT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_NT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_NT_FIRST_ROUND_MAX,
             },
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_AFTER_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_AFTER_OPENERS_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1828,23 +1829,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', "One Diamond"],['Adam', 'Two Heart'],['Ann', 'Three Club']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "right": {
-                "min": autoBid.RESPONDING_NO_JUMPSHIFT_MIN,
-                "max": autoBid.OPENING_WEAK_THREE_AFTER_OPENERS_MAX,
+                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_THREE_AFTER_OPENERS_MAX,
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
             },
             "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1862,23 +1863,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', "One Diamond"],['Adam', 'Two Heart'],['Ann', 'Two No Trump']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "right": {
-                "min": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MIN,
-                "max": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MAX,
+                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MIN,
+                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MAX,
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
             },
             "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1897,23 +1898,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', "One No Trump"],['Adam', 'Two Diamond'],['Ann', 'Two Heart']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "right": {
-                "min": autoBid.RESPONDING_NO_JUMPSHIFT_MIN,
-                "max": autoBid.RESPONDING_NO_JUMPSHIFT_MAX,
+                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_MIN,
+                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_MAX,
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "left": {
-                "min": autoBid.OPENING_NT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_NT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_NT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_NT_FIRST_ROUND_MAX,
             },
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_AFTER_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_AFTER_OPENERS_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1932,23 +1933,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', "One No Trump"],['Adam', 'Two Diamond'],['Ann', 'Three Heart']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "right": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "left": {
-                "min": autoBid.OPENING_NT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_NT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_NT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_NT_FIRST_ROUND_MAX,
             },
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_AFTER_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_AFTER_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_AFTER_OPENERS_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1966,23 +1967,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', "One Diamond"],['Adam', 'Two Heart'],['Ann', 'Three Club']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "right": {
-                "min": autoBid.OPENING_WEAK_THREE_AFTER_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_THREE_AFTER_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_THREE_AFTER_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_THREE_AFTER_OPENERS_MAX,
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
             },
             "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -2000,23 +2001,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Andrew', "One Diamond"],['Adam', 'Two Heart'],['Ann', 'Two No Trump']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
         expected = {
             "right": {
-                "min": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MIN,
-                "max": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MAX,
+                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MIN,
+                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MAX,
             },
             "bottom": {
                 "min": None,
                 "max": None,
             },
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
             },
             "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -2036,23 +2037,23 @@ class getEstimatedPoints(unittest.TestCase):
             "right": "RightPlayer",
         }
         bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ['BottomPlayer', 'Pass']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
         expected = {
             "right": {
-                "min": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MIN,
-                "max": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MAX,
+                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MIN,
+                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MAX,
             },
             "bottom": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
             },
             "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -2073,24 +2074,24 @@ class getEstimatedPoints(unittest.TestCase):
 
         expected = {
             "right": {
-                "min": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MIN,
-                "max": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MAX,
+                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MIN,
+                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MAX,
             },
             "bottom": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
             "top": {
-                "min": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
-                "max": autoBid.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
+                "max": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
             },
             "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
         }
 
-        actual = autoBid.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
         self.assertDictEqual(actual, expected)
     def test_pass_first_when_partner_passes(self):
         biddingObjRelative = {
@@ -2106,23 +2107,23 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": "BottomPlayer",
         }
         bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Pass'],['RightPlayer', 'Two No Trump'], ['BottomPlayer', 'Pass']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
         expected = {
            "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
             "top": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MAX,
             },
             "right": {
-                "min": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MIN,
-                "max": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MAX,
+                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MIN,
+                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MAX,
             },
             "bottom": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_PASS_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -2141,23 +2142,23 @@ class getEstimatedPoints(unittest.TestCase):
             "bottom": "BottomPlayer",
         }
         bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'One Heart'],['RightPlayer', 'Two No Trump'], ['BottomPlayer', 'Pass']]
-        actual = autoBid.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
         expected = {
            "left": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
             "top": {
-                "min": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MIN,
-                "max": autoBid.OPENING_BID_SUIT_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MIN,
+                "max": getEstimatedPoints.OPENING_BID_SUIT_FIRST_ROUND_MAX,
             },
             "right": {
-                "min": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MIN,
-                "max": autoBid.RESPONDING_NO_JUMPSHIFT_NT_MAX,
+                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MIN,
+                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MAX,
             },
             "bottom": {
-                "min": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MIN,
-                "max": autoBid.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MIN,
+                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
