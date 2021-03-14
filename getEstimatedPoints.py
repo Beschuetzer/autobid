@@ -6,8 +6,8 @@ import autoBid, re
 
 PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX = 5
 PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MIN = 0
-PASS_FIRST_ROUND_WITH_PARTNER_PASS_MAX = 12
-PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN = 0
+IS_TEAMS_FIRST_BID_PLAYER_PASSES_FIRST_MAX = 12
+IS_TEAMS_FIRST_BID_PLAYER_PASSES_FIRST_MIN = 0
 PASS_FIRST_NT_SECOND_ROUND_MAX = 12
 PASS_FIRST_NT_SECOND_ROUND_MIN = 6
 PASS_FIRST_BID_SECOND_ROUND_MAX = 12
@@ -48,43 +48,24 @@ RESPONDING_NO_JUMPSHIFT_NT_MAX = RESPONDING_NO_JUMPSHIFT_MAX
 RESPONDING_NO_JUMPSHIFT_NT_MIN = RESPONDING_NO_JUMPSHIFT_MIN
 
 
+#estimatedValues houses all of the above information but in a more logically accessible way
 estimatedValues = {
     "isTeamsFirstBid": {
-        "partnerPassesFirst": {
-            "playerPassesFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerDoublesFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerBidsSuitFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerBidsNoTrumpFirst": {
-                "min": None,
-                "max": None,
-            },
+        "playerPassesFirst": {
+            "min": IS_TEAMS_FIRST_BID_PLAYER_PASSES_FIRST_MIN,
+            "max": IS_TEAMS_FIRST_BID_PLAYER_PASSES_FIRST_MAX,
         },
-        "partnerBidsFirst": {
-            "playerPassesFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerDoublesFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerBidsSuitFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerBidsNoTrumpFirst": {
-                "min": None,
-                "max": None,
-            },
+        "playerDoublesFirst": {
+            "min": None,
+            "max": None,
+        },
+        "playerBidsSuitFirst": {
+            "min": None,
+            "max": None,
+        },
+        "playerBidsNoTrumpFirst": {
+            "min": None,
+            "max": None,
         },
     },    
     "isNotTeamsFirstBid": {
@@ -164,16 +145,17 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
     }
 
     for location, bids in biddingObjRelative.items():
+        #region Skipping to Next Player if no bids made
         numberOfBidsMade = len(biddingObjRelative[location])
         if numberOfBidsMade < 1:
             continue
-
+        #endregion
+        #region Setup
         username = seatingRelative[location]
-        print('username = {0}'.format(username))
-
         indexOfUsersFirstBid = autoBid.getIndexOfNthBid(username, incomingBids, 1)
         hasPartnerOpened = autoBid.getHasPartnerOpened(incomingBids, username)
         firstBid = biddingObjRelative[location][0]
+        firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
         isTeamsFirstBidOpportunity = len(biddingObjRelative["top"]) == 0
         isPartnersFirstBidPass = autoBid.getIsPartnersFirstBidPass(biddingObjRelative)
 
@@ -183,14 +165,15 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
             isJumpShift = autoBid.getIsJumpShift(biddingUpToThisPoint, incomingBids[indexOfUsersFirstBid][1])
         except:
             pass
-
+        #endregion
+        #region Debugging (remove when done)
+        print('username = {0}'.format(username))
         print('firstBid = {0}'.format(firstBid))    
         print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
         print('isJumpShift = {0}'.format(isJumpShift))
         print('isTeamsFirstBid = {0}'.format(isTeamsFirstBidOpportunity))
-
-        firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
-
+        #endregion
+        #region Logic
         #if player has team's first turn and they pass -> a
         if isTeamsFirstBidOpportunity is True and firstBidIsPass:
             print(1)
@@ -214,7 +197,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         #if player has team's second turn, parter passes, and they bid -> f
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
             print(6)
-
+        #endregion
 
         #region Adam's Not Working Code
         # if re.search('pass', firstBid, re.IGNORECASE):
