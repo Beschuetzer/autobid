@@ -6,8 +6,8 @@ import autoBid, re
 
 PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX = 5
 PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MIN = 0
-IS_TEAMS_FIRST_BID_PLAYER_PASSES_FIRST_MAX = 12
-IS_TEAMS_FIRST_BID_PLAYER_PASSES_FIRST_MIN = 0
+IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_FIRST_MAX = 12
+IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_FIRST_MIN = 0
 PASS_FIRST_NT_SECOND_ROUND_MAX = 12
 PASS_FIRST_NT_SECOND_ROUND_MIN = 6
 PASS_FIRST_BID_SECOND_ROUND_MAX = 12
@@ -52,8 +52,8 @@ RESPONDING_NO_JUMPSHIFT_NT_MIN = RESPONDING_NO_JUMPSHIFT_MIN
 estimatedValues = {
     "isTeamsFirstBid": {
         "playerPassesFirst": {
-            "min": IS_TEAMS_FIRST_BID_PLAYER_PASSES_FIRST_MIN,
-            "max": IS_TEAMS_FIRST_BID_PLAYER_PASSES_FIRST_MAX,
+            "min": IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_FIRST_MIN,
+            "max": IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_FIRST_MAX,
         },
         "playerDoublesFirst": {
             "min": None,
@@ -75,8 +75,8 @@ estimatedValues = {
                 "max": None,
             },
             "playerDoublesFirst": {
-                "min": None,
-                "max": None,
+                "min": IS_TEAMS_FIRST_BID_AND_PARTNER_PASSES_FIRST_AND_PLAYER_DOUBLES_FIRST_MIN,
+                "max": IS_TEAMS_FIRST_BID_AND_PARTNER_PASSES_FIRST_AND_PLAYER_DOUBLES_FIRST_MAX,
             },
             "playerBidsSuitFirst": {
                 "min": None,
