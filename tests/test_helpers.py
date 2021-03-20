@@ -2498,17 +2498,31 @@ class getPartnersLocation(unittest.TestCase):
         actual = helpers.getPartnersLocation(username, seatingRelative)
         expected = 'right'
         self.assertEqual(actual, expected)
-
 class getPlayerHasOnlyPassed(unittest.TestCase):
     def test_empty(self):
         bids = []
         actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
         expected = True
         self.assertEqual(actual, expected)
-    def test_only_pass(self):
-        bids = []
+    def test_only_pass_one(self):
+        bids = ['Pass']
         actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
         expected = True
+        self.assertEqual(actual, expected)
+    def test_only_pass_multiple(self):
+        bids = ['Pass', 'pass', 'Pass']
+        actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_bid_one(self):
+        bids = ['Two Club']
+        actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_bid_multiple(self):
+        bids = ['Pass', 'Three Diamond', 'Pass']
+        actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
+        expected = False
         self.assertEqual(actual, expected)
 
 

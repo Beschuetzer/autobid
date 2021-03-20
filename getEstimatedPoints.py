@@ -334,7 +334,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
 
 def getPlayerHasOnlyPassed(playerBids):
     for bid in playerBids:
-        if not re.search('pass', bid[1], re.IGNORECASE):
+        if not re.search('pass', bid, re.IGNORECASE):
             return False;
 
     return True
