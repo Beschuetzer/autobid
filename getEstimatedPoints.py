@@ -48,7 +48,7 @@ RESPONDING_NO_JUMPSHIFT_NT_MAX = RESPONDING_NO_JUMPSHIFT_MAX
 RESPONDING_NO_JUMPSHIFT_NT_MIN = RESPONDING_NO_JUMPSHIFT_MIN
 
 #values convey all of the above information but in a more logically organized way
-valuesDict = {
+values = {
     "isTeamsFirstBid": {
         "playerPasses": {
             "min": IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
@@ -180,13 +180,16 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         
         #if player has team's first turn and they pass -> a
         if isTeamsFirstBidOpportunity is True and firstBidIsPass:
-            #TODO: need to check how many bids player has made and whether they didn't bid pass on any other bid
             playerBids = biddingObjRelative[location]
             playerHasOnlyPassed = getPlayerHasOnlyPassed(playerBids);
             
             if playerHasOnlyPassed:
                 #player passed first then passed everytime thereafter
-                pass
+                if hasPartnerOpened:
+                    minToUse = values.isTeamsFirstBid.player
+
+                else:
+                    pass
             else:
                 #player passed first then bid something at some point later
 
@@ -219,7 +222,9 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
             print(6)
         #endregion
 
-    return {min: minToUse, max: maxToUse}
+        estimatedScoring[location]['min'] = minToUse
+        estimatedScoring[location]['max'] = maxToUse
+
 
         #region Adam's Not Working Code
         # if re.search('pass', firstBid, re.IGNORECASE):
@@ -329,8 +334,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
             #                 estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_MAX
         #endregion 
 
-    # return estimatedScoring
-
+    return estimatedScoring
 
 def getPlayerHasOnlyPassed(playerBids):
     for bid in playerBids:
