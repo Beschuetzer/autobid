@@ -182,10 +182,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         if isTeamsFirstBidOpportunity is True and firstBidIsPass:
             #TODO: need to check how many bids player has made and whether they didn't bid pass on any other bid
             playerBids = biddingObjRelative[location]
-            playerHasOnlyPassed = True;
-            if len(playerBids) > 1 #TODO finish logic here:
-                playerHasOnlyPassed = false
-
+            playerHasOnlyPassed = getPlayerHasOnlyPassed(playerBids);
             
             if playerHasOnlyPassed:
                 #player passed first then passed everytime thereafter
@@ -333,3 +330,11 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         #endregion 
 
     # return estimatedScoring
+
+
+def getPlayerHasOnlyPassed(playerBids):
+    for bid in playerBids:
+        if not re.search('pass', bid[1], re.IGNORECASE):
+            return False;
+
+    return True
