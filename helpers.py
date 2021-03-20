@@ -1,4 +1,4 @@
-import re
+import re, autoBid, math
 
 def getSeatingRelative(seating, spot):
     directions = ['north','east','south','west']
@@ -139,8 +139,8 @@ def getIsJumpShift(biddingUpToThisPoint, usersBid):
     if not currentActualBid or currentActualBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
         return False
     
-    indexOfCurrentActualBid = contracts.index(currentActualBid)
-    indexOfUsersBid = contracts.index(usersBid)
+    indexOfCurrentActualBid = autoBid.contracts.index(currentActualBid)
+    indexOfUsersBid = autoBid.contracts.index(usersBid)
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
 def getHasPartnerOpened(incomingBids, username):
@@ -164,8 +164,8 @@ def getBiddingHistory(incomingBids):
 
     return biddingHistory
 
-def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid):
-    currentIndex = contracts.index(currentActualBid[1])
+def getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid):
+    currentIndex = autoBid.contracts.index(currentActualBid[1])
 
     #return early if left bids first
     if not re.search('pass', biddingObjRelative['left'][0], re.IGNORECASE) and not re.search('double', biddingObjRelative['left'][0], re.IGNORECASE):
@@ -179,18 +179,18 @@ def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, current
 
     if re.search('two club', biddingObjRelative['top'][-1], re.IGNORECASE):
         if totalOpeningPoints == 0:
-            return contracts[currentIndex + 1]
+            return autoBid.contracts[currentIndex + 1]
 
         wholeNumber = int(math.ceil(totalOpeningPoints / 3));
-        return contracts[currentIndex + wholeNumber]
+        return autoBid.contracts[currentIndex + wholeNumber]
     #endregion
     #region second response
     elif len(biddingObjRelative['top']) == 2:
 
         suit = getStrongestSuit(hand, biddingObjRelative)
         for i in range(1, 6):
-            if re.search(suit, contracts[currentIndex + i], re.IGNORECASE):
-                return contracts[currentIndex + i]
+            if re.search(suit, autoBid.contracts[currentIndex + i], re.IGNORECASE):
+                return autoBid.contracts[currentIndex + i]
 
     #endregion
     #region handle slam Aces
@@ -208,7 +208,7 @@ def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, current
         else:
             indexAddition = aceCount + 1
 
-        return contracts[currentIndex + indexAddition]
+        return autoBid.contracts[currentIndex + indexAddition]
     #endregion
     #region handle slam Kings
     #if their second bid's suit is the same as their 4th bid's suit then assume wants to stop otherwise assume asking for kings
@@ -227,7 +227,7 @@ def partnerTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, current
         else:
             indexAddition = kingCount + 1
 
-        return contracts[currentIndex + indexAddition]
+        return autoBid.contracts[currentIndex + indexAddition]
     #endregion
     #handle stopping prematurely?
     #if opponent enter crazy bid, how to handle?

@@ -2,7 +2,7 @@
     Getting the estimated points of each player based on their first two bids
 '''
 #TODO: make sure suit count estimates from bidding is complete
-import autoBid, re
+import helpers, re
 
 PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX = 5
 PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MIN = 0
@@ -151,17 +151,17 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         #endregion
         #region Setup
         username = seatingRelative[location]
-        indexOfUsersFirstBid = autoBid.getIndexOfNthBid(username, incomingBids, 1)
-        hasPartnerOpened = autoBid.getHasPartnerOpened(incomingBids, username)
+        indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, incomingBids, 1)
+        hasPartnerOpened = helpers.getHasPartnerOpened(incomingBids, username)
         firstBid = biddingObjRelative[location][0]
         firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
         isTeamsFirstBidOpportunity = len(biddingObjRelative["top"]) == 0
-        isPartnersFirstBidPass = autoBid.getIsPartnersFirstBidPass(biddingObjRelative)
+        isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(biddingObjRelative)
 
         isJumpShift = False
         try: 
             biddingUpToThisPoint = incomingBids[:indexOfUsersFirstBid]
-            isJumpShift = autoBid.getIsJumpShift(biddingUpToThisPoint, incomingBids[indexOfUsersFirstBid][1])
+            isJumpShift = helpers.getIsJumpShift(biddingUpToThisPoint, incomingBids[indexOfUsersFirstBid][1])
         except:
             pass
         #endregion
@@ -304,8 +304,8 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
             #     estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
             #     estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX            
             # else:
-            #     partnersLocation = autoBid.getPartnersLocation(username, seatingRelative)
-            #     partnersLastBid = incomingBids[autoBid.getIndexOfNthBid(seatingRelative[partnersLocation], incomingBids, -1)][1]
+            #     partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
+            #     partnersLastBid = incomingBids[helpers.getIndexOfNthBid(seatingRelative[partnersLocation], incomingBids, -1)][1]
 
             #     print('partnersLastBid = {0}'.format(partnersLastBid))
                 

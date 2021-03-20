@@ -138,7 +138,7 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     #handle partner 2 Club
     if (isFirstBid and re.search('two club', biddingObjRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingObjRelative['left'][0], re.IGNORECASE)):
         openDistributionPoints = helpers.getOpeningDistributionPoints(suitCounts)
-        return helpers.partnerTwoClubResponse(hand, biddingObjRelative, highCardPoints + openDistributionPoints, currentActualBid)
+        return helpers.getTwoClubResponse(hand, biddingObjRelative, highCardPoints + openDistributionPoints, currentActualBid)
     
 
     #handle weak bid: -> pass/3NT/game in their suit/your best suit if lots of points or 6+ of a suit depending on your points, cards in their suit, if you have stoppers
