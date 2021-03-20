@@ -6,8 +6,8 @@ import autoBid, re
 
 PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX = 5
 PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MIN = 0
-IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_FIRST_MAX = 12
-IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_FIRST_MIN = 0
+IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MAX = 12
+IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN = 0
 PASS_FIRST_NT_SECOND_ROUND_MAX = 12
 PASS_FIRST_NT_SECOND_ROUND_MIN = 6
 PASS_FIRST_BID_SECOND_ROUND_MAX = 12
@@ -15,14 +15,14 @@ PASS_FIRST_BID_SECOND_ROUND_MIN = 8
 PASS_FIRST_DOUBLE_SECOND_ROUND_MAX = 12
 PASS_FIRST_DOUBLE_SECOND_ROUND_MIN = 8
 
-OPENING_BID_SUIT_FIRST_ROUND_MAX = 15
-OPENING_BID_SUIT_FIRST_ROUND_MIN = 13
+IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX = 15
+IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN = 13
 OPENING_TWO_CLUB_FIRST_ROUND_MAX = 25
 OPENING_TWO_CLUB_FIRST_ROUND_MIN = 18
-OPENING_NT_FIRST_ROUND_MAX = 18
-OPENING_NT_FIRST_ROUND_MIN = 16
-OPENING_DOUBLE_FIRST_ROUND_MAX = 18
-OPENING_DOUBLE_FIRST_ROUND_MIN = 13
+IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MAX = 18
+IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MIN = 16
+IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MAX = 18
+IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MIN = 13
 OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX = 12
 OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN = 10
 OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX = 10
@@ -30,9 +30,9 @@ OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN = 7
 
 #THESE CASES ARE AMBIGIOUS COULD BE REGULAR OPENERS OR WEAK BID
 #E.G. (1 SPADE, 2 HEART, 3 CLUB)
-OPENING_WEAK_TWO_AFTER_OPENERS_MAX = OPENING_BID_SUIT_FIRST_ROUND_MAX
+OPENING_WEAK_TWO_AFTER_OPENERS_MAX = IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX
 OPENING_WEAK_TWO_AFTER_OPENERS_MIN = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
-OPENING_WEAK_THREE_AFTER_OPENERS_MAX = OPENING_BID_SUIT_FIRST_ROUND_MAX
+OPENING_WEAK_THREE_AFTER_OPENERS_MAX = IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX
 OPENING_WEAK_THREE_AFTER_OPENERS_MIN = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
 
 
@@ -47,13 +47,50 @@ RESPONDING_NO_JUMPSHIFT_MIN = 6
 RESPONDING_NO_JUMPSHIFT_NT_MAX = RESPONDING_NO_JUMPSHIFT_MAX
 RESPONDING_NO_JUMPSHIFT_NT_MIN = RESPONDING_NO_JUMPSHIFT_MIN
 
-
-#estimatedValues houses all of the above information but in a more logically accessible way
-estimatedValues = {
+#values convey all of the above information but in a more logically organized way
+valuesDict = {
     "isTeamsFirstBid": {
+        "playerPasses": {
+            "min": IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
+            "max": IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MAX,
+        },
+        "playerDoubles": {
+            "min": IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MIN,
+            "max": IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MAX,
+        },
+        "playerBidsSuit": {
+            "min": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN,
+            "max": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX,
+        },
+        "playerBidsNoTrump": {
+            "min": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MIN,
+            "max": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MAX,
+        },
+    },    
+
+    "partnerPassesFirst": {
+        "playerPasses": {
+            "min": IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
+            "max": IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MAX,
+        },
+        "playerDoubles": {
+            "min": IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MIN,
+            "max": IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MAX,
+        },
+        "playerBidsSuit": {
+            "min": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN,
+            "max": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX,
+        },
+        "playerBidsNoTrump": {
+            "min": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MIN,
+            "max": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MAX,
+        },
+    },
+
+    "partnerBidsFirst": {
         "playerPassesFirst": {
-            "min": IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_FIRST_MIN,
-            "max": IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_FIRST_MAX,
+            "min": None,
+            "max": None,
         },
         "playerDoublesFirst": {
             "min": None,
@@ -67,45 +104,7 @@ estimatedValues = {
             "min": None,
             "max": None,
         },
-    },    
-    "isNotTeamsFirstBid": {
-        "partnerPassesFirst": {
-            "playerPassesFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerDoublesFirst": {
-                "min": IS_TEAMS_FIRST_BID_AND_PARTNER_PASSES_FIRST_AND_PLAYER_DOUBLES_FIRST_MIN,
-                "max": IS_TEAMS_FIRST_BID_AND_PARTNER_PASSES_FIRST_AND_PLAYER_DOUBLES_FIRST_MAX,
-            },
-            "playerBidsSuitFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerBidsNoTrumpFirst": {
-                "min": None,
-                "max": None,
-            },
-        },
-        "partnerBidsFirst": {
-            "playerPassesFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerDoublesFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerBidsSuitFirst": {
-                "min": None,
-                "max": None,
-            },
-            "playerBidsNoTrumpFirst": {
-                "min": None,
-                "max": None,
-            },
-        },
-    }, 
+    },
 
     "special": {
         "weakTwo": {
@@ -174,10 +173,34 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         print('isTeamsFirstBid = {0}'.format(isTeamsFirstBidOpportunity))
         #endregion
         #region Logic
+
+
+        minToUse = -1;
+        maxToUse = -1;
+        
         #if player has team's first turn and they pass -> a
         if isTeamsFirstBidOpportunity is True and firstBidIsPass:
-            print(1)
-        
+            #TODO: need to check how many bids player has made and whether they didn't bid pass on any other bid
+            playerBids = biddingObjRelative[location]
+            playerHasOnlyPassed = True;
+            if len(playerBids) > 1 #TODO finish logic here:
+                playerHasOnlyPassed = false
+
+            
+            if playerHasOnlyPassed:
+                #player passed first then passed everytime thereafter
+                pass
+            else:
+                #player passed first then bid something at some point later
+
+                #case partner opened:
+                if hasPartnerOpened:
+                    pass
+
+                #partner did not open
+                else:
+                    pass
+
         #if player has team's firt turn and they bid -> b
         elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
             print(2)
@@ -198,6 +221,8 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
             print(6)
         #endregion
+
+    return {min: minToUse, max: maxToUse}
 
         #region Adam's Not Working Code
         # if re.search('pass', firstBid, re.IGNORECASE):
@@ -307,4 +332,4 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
             #                 estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_MAX
         #endregion 
 
-    return estimatedScoring
+    # return estimatedScoring
