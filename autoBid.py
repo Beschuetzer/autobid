@@ -102,20 +102,20 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
     #region Initialization (Getting Values and Dicts to work with)
     isFirstBid = len(incomingBids) < 4
     partnerHasBid = len(incomingBids) >= 2
-    currentActualBid = getCurrentActualBid(incomingBids)
+    currentActualBid = helpers.getCurrentActualBid(incomingBids)
     if suitCounts == None:
-        suitCounts = getSuitCounts(hand)
+        suitCounts = helpers.getSuitCounts(hand)
     if highCardPointValuesInEachSuit == None:
-        highCardPointValuesInEachSuit = getHighCardPointValuesInEachSuit(hand)
+        highCardPointValuesInEachSuit = helpers.getHighCardPointValuesInEachSuit(hand)
         
-    biddingObjAbsolute = getBiddingObjAbsolute(incomingBids, seating)    
-    biddingObjRelative = getBiddingObjRelative(biddingObjAbsolute, spot)
+    biddingObjAbsolute = helpers.getBiddingObjAbsolute(incomingBids, seating)    
+    biddingObjRelative = helpers.getBiddingObjRelative(biddingObjAbsolute, spot)
 
 
-    biddingHistory = getBiddingHistory(incomingBids)
-    seatingRelative = getSeatingRelative(seating, spot)
+    biddingHistory = helpers.getBiddingHistory(incomingBids)
+    seatingRelative = helpers.getSeatingRelative(seating, spot)
     estimatedPoints = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentActualBid)
-    estimatedSuitCounts = getEstimatedSuitCounts(biddingObjRelative, incomingBids, seatingRelative)
+    estimatedSuitCounts = helpers.getEstimatedSuitCounts(biddingObjRelative, incomingBids, seatingRelative)
     partnersBids = biddingObjRelative['top']
     #endregion
 
@@ -137,8 +137,8 @@ def autoBid(incomingBids, hand, scoring, seating, spot, clientPointCountingConve
 
     #handle partner 2 Club
     if (isFirstBid and re.search('two club', biddingObjRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingObjRelative['left'][0], re.IGNORECASE)):
-        openDistributionPoints = getOpeningDistributionPoints(suitCounts)
-        return partnerTwoClubResponse(hand, biddingObjRelative, highCardPoints + openDistributionPoints, currentActualBid)
+        openDistributionPoints = helpers.getOpeningDistributionPoints(suitCounts)
+        return helpers.partnerTwoClubResponse(hand, biddingObjRelative, highCardPoints + openDistributionPoints, currentActualBid)
     
 
     #handle weak bid: -> pass/3NT/game in their suit/your best suit if lots of points or 6+ of a suit depending on your points, cards in their suit, if you have stoppers

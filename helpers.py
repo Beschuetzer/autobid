@@ -1,3 +1,5 @@
+import re
+
 def getSeatingRelative(seating, spot):
     directions = ['north','east','south','west']
     return {
