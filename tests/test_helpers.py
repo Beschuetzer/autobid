@@ -1336,7 +1336,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "right": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1461,7 +1461,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "bottom": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
             "left": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN,
@@ -1469,7 +1469,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "top": {
                  "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1495,7 +1495,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "bottom": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
             "left": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN,
@@ -1527,7 +1527,7 @@ class getEstimatedPointsModule(unittest.TestCase):
         expected = {
             "top": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
             "bottom": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MIN,
@@ -1573,7 +1573,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "right": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1607,7 +1607,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "right": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1641,7 +1641,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "right": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1675,7 +1675,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "right": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1709,7 +1709,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "right": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1743,7 +1743,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "right": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -1777,7 +1777,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "left": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -2046,7 +2046,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "bottom": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
             "top": {
                 "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
@@ -2080,7 +2080,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
             "bottom": {
                 "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
             "top": {
                 "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
@@ -2158,8 +2158,8 @@ class getEstimatedPointsModule(unittest.TestCase):
                 "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MAX,
             },
             "bottom": {
-                "min": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MIN,
-                "max": getEstimatedPoints.PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX,
+                "min": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MIN,
+                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
         self.assertDictEqual(actual, expected)
