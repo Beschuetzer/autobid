@@ -9,11 +9,11 @@ def getSeatingRelative(seating, spot):
         "bottom": seating[directions[(directions.index(spot) + 0) % 4]],
     }
    
-def getEstimatedSuitCounts(biddingObjRelative, incomingBids, seatingRelative):
+def getEstimatedSuitCounts(biddingObjRelative, allBids, seatingRelative):
     '''
     inputs: 
         biddingObjRelative: dictionary where keys are relative positions and values are lists of strings representing that user's bids (in chronological order) 
-        incomingBids: list of bids as a list 
+        allBids: list of bids as a list 
         seatingRelative: dictionary where keys are relative positions and values are strings representing user's name
     returns: a dictionary representing the current "best guess" of how many of each suit a player has
     '''
@@ -66,11 +66,11 @@ def getIsPartnersFirstBidPass(biddingObjRelative):
     else:
         return False
 
-def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids):
+def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids):
     #returns whether someone has opened before the users first bid
-    bidsUpToUsersFirstBid = incomingBids
+    bidsUpToUsersFirstBid = allBids
     if indexOfUsersFirstBid != None:
-        bidsUpToUsersFirstBid = incomingBids[:indexOfUsersFirstBid]
+        bidsUpToUsersFirstBid = allBids[:indexOfUsersFirstBid]
 
     for bid in bidsUpToUsersFirstBid:
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
@@ -95,26 +95,26 @@ def getPartnersLocation(username, seatingRelative):
     print('indexOfUsersLocation = {0}'.format(indexOfUsersLocation))
     return locations[(indexOfUsersLocation + 2) % 4]
 
-def getIndexOfNthBid(username, incomingBids, nthBid):
+def getIndexOfNthBid(username, allBids, nthBid):
     #inputs:
         #username - string
-        #incomingBids - 2D array
+        #allBids - 2D array
         #nthBid - an integer greater than or equal to 1 (1 = first bid) or less than or equal to -1 (-1 = last bid, -2 = 2nd to last bid...)
     #this returns the nthBid that username made
     i = 0
     matchCount = 0
 
     if nthBid < 0:
-        incomingBids = incomingBids[::-1]
-        for bid in incomingBids:
+        allBids = allBids[::-1]
+        for bid in allBids:
             if bid[0] == username:
                 matchCount += 1
-                nthBidToMatch = len(incomingBids) - i -1
+                nthBidToMatch = len(allBids) - i -1
                 if matchCount == -nthBid:
                     return nthBidToMatch
             i += 1 
     else:
-        for bid in incomingBids:
+        for bid in allBids:
             if bid[0] == username:
                 matchCount += 1
                 if matchCount == nthBid:
@@ -122,6 +122,29 @@ def getIndexOfNthBid(username, incomingBids, nthBid):
             i += 1 
     
     return None
+
+def getHasPlayerJumpShifted(username, playersBids, allBids):
+    #inputs:
+        #username as string
+        #playersBids as a list of strings
+        #allbids is a list of lists representing bids (bidder, bid)
+    #returns true if the player with username has made a jumpshift bid ever otherwise false
+    for i in range(0, len(playersBids)): 
+        bid = playersBids[i]
+        indexOfUsersBid = getIndexOfNthBid(username, allBids, i + 1)
+        biddingUpToThisPoint = allBids[:indexOfUsersBid]
+        contractBidAtThisPoint = getCurrentContractBid(biddingUpToThisPoint)
+        isAnyBidJumpShift = getIsJumpShift(contractBidAtThisPoint, bid)
+
+        print('bids = {0}'.format(playersBids))
+        print('indexOfUsersBid = {0}'.format(indexOfUsersBid))
+        print('biddingUpToThisPoint = {0}'.format(biddingUpToThisPoint))
+        print('contractBidAtThisPoint = {0}'.format(contractBidAtThisPoint))
+
+        i += 1
+        if isAnyBidJumpShift is True:
+            return True
+    return False
 
 def getIsJumpShift(currentContractBid, usersBid):
     #inputs:
@@ -138,10 +161,10 @@ def getIsJumpShift(currentContractBid, usersBid):
     indexOfUsersBid = autoBid.contracts.index(usersBid)
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
-def getHasPartnerOpened(incomingBids, username):
+def getHasPartnerOpened(allBids, username):
     #returns true or false depending on whether the player is responding to his/her partner
-    indexOfUsersFirstBid = getIndexOfNthBid(username, incomingBids, 1)
-    biddingUpToUsersFirstBid = incomingBids[:indexOfUsersFirstBid]
+    indexOfUsersFirstBid = getIndexOfNthBid(username, allBids, 1)
+    biddingUpToUsersFirstBid = allBids[:indexOfUsersFirstBid]
 
     if len(biddingUpToUsersFirstBid) <= 1:
         return False
@@ -151,10 +174,10 @@ def getHasPartnerOpened(incomingBids, username):
 
     return False
 
-def getBiddingHistory(incomingBids):
+def getBiddingHistory(allBids):
     #returns a list of strings representing the order in which the bids occured (same as incoming bids but is a 1D array of just bids rather than bids and bidder names)
     biddingHistory = []
-    for bid in incomingBids:
+    for bid in allBids:
         biddingHistory.append(bid[1])
 
     return biddingHistory
@@ -276,7 +299,7 @@ def getBiddingObjRelative(biddingObjAbsolute, spot):
         biddingObjRelative[getRelativeLocationFromSpot(spot, key)] = value
     return biddingObjRelative
 
-def getBiddingObjAbsolute(incomingBids, seating):
+def getBiddingObjAbsolute(allBids, seating):
 #     #input: all bids made
 #     #return: a dictionary where the keys are cardinal directions (North South East West) and the values are arrays representing that persons bidding (['One Spade', 'Two Diamonds'])
     biddingObjAbsolute = {
@@ -285,7 +308,7 @@ def getBiddingObjAbsolute(incomingBids, seating):
         "east": [],
         "west": [],
     }
-    for bid in incomingBids:
+    for bid in allBids:
         direction = ''
         for key, value in seating.items():
             if bid[0] == value:
@@ -379,20 +402,20 @@ def getSuitNameFromCardAsNumber(cardAsNumber):
     else: 
         return None
 
-def getCurrentContractBid(incomingBids):
+def getCurrentContractBid(allBids):
     #input: all bids up to now
     #return: the last bid made that is not double or pass
-    print('incomingBids = {0}'.format(incomingBids))
-    for bid in reversed(incomingBids):
+    print('allBids = {0}'.format(allBids))
+    for bid in reversed(allBids):
         if len(bid) <= 0:
             return None
         if re.search('pass', bid[1], re.IGNORECASE) is None and re.search('double', bid[1], re.IGNORECASE) is None:
             return bid
 
-def handlePartnerDouble(hand, incomingBids, biddingObjRelative, totalPoints):
+def handlePartnerDouble(hand, allBids, biddingObjRelative, totalPoints):
     #responding to takeout dbl if applicable otherwise passing if less than 6 points total and is first bid
     if len(biddingObjRelative['top']) == 1 and re.search('Double', biddingObjRelative['top'][0], re.IGNORECASE): 
-        mustBid = re.search('pass', incomingBids[-1][1], re.IGNORECASE)
+        mustBid = re.search('pass', allBids[-1][1], re.IGNORECASE)
         if totalPoints < 6 and mustBid is None:
             return 'Pass'
         else:
@@ -503,15 +526,15 @@ def getHighCardPoints(hand, clientPointCountingConvention):
     except:
         return -2
 
-def getDistributionPoints(hand, incomingBids, biddingObjRelative, seatingRelative, suitCounts):
+def getDistributionPoints(hand, allBids, biddingObjRelative, seatingRelative, suitCounts):
     if hand == None:
         return -1    
 
     #otherwise use responding total
     distributionPoints = -1;
-    hasPartnerOpened = getHasPartnerOpened(incomingBids, seatingRelative['bottom'])
+    hasPartnerOpened = getHasPartnerOpened(allBids, seatingRelative['bottom'])
     
-    getShouldCalculateRespondingPoints(incomingBids)
+    getShouldCalculateRespondingPoints(allBids)
     print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
 
     if hasPartnerOpened:
@@ -528,7 +551,7 @@ def getPartnersMentionedSuits(partnersBids):
 
     pass
 
-def getShouldCalculateRespondingPoints(incomingBids):
+def getShouldCalculateRespondingPoints(allBids):
     #determine whether or not to calculate opening distribution or responding distribution
 
     #if partner bids 1 Clubs, 2 Clubs or 1NT return false

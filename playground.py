@@ -1,13 +1,13 @@
 import helpers
 username = 'You'
-incomingBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
+allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
 bids = ['Pass','Two Heart']
 
 isAnyBidJumpShift = False
 for i in range(0, len(bids)): 
     bid = bids[i]
-    indexOfUsersBid = helpers.getIndexOfNthBid(username, incomingBids, i + 1)
-    biddingUpToThisPoint = incomingBids[:indexOfUsersBid]
+    indexOfUsersBid = helpers.getIndexOfNthBid(username, allBids, i + 1)
+    biddingUpToThisPoint = allBids[:indexOfUsersBid]
     contractBidAtThisPoint = helpers.getCurrentContractBid(biddingUpToThisPoint)
     isAnyBidJumpShift = helpers.getIsJumpShift(contractBidAtThisPoint, bid)
 

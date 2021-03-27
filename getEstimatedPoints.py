@@ -177,22 +177,7 @@ values = {
     },
 }
 
-def getIsAnyBidJumpShift(username, playerBids, incomingBids):
-    for i in range(0, len(playerBids)): 
-        bid = playerBids[i]
-        indexOfUsersBid = helpers.getIndexOfNthBid(username, incomingBids, i + 1)
-        biddingUpToThisPoint = incomingBids[:indexOfUsersBid]
-        contractBidAtThisPoint = helpers.getCurrentContractBid(biddingUpToThisPoint)
-        isAnyBidJumpShift = helpers.getIsJumpShift(contractBidAtThisPoint, bid)
 
-        print('bids = {0}'.format(playerBids))
-        print('indexOfUsersBid = {0}'.format(indexOfUsersBid))
-        print('biddingUpToThisPoint = {0}'.format(biddingUpToThisPoint))
-        print('contractBidAtThisPoint = {0}'.format(contractBidAtThisPoint))
-
-        i += 1
-        if isAnyBidJumpShift is True:
-            break
 
 def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentContractBid):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
@@ -237,8 +222,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
             isLastBidJumpShift = helpers.getIsJumpShift(currentContractBid, lastBid)
 
             #TODO: do we need to check if the user made a bid that is a jumpshift ever and then have entirely separate logic in that case?
-            print('TESTING')
-            isAnyBidJumpShift = getIsAnyBidJumpShift(username, playersBids, allBids)
+            isAnyBidJumpShift = helpers.getHasPlayerJumpShifted(username, playersBids, allBids)
 
 
         except:
@@ -359,9 +343,9 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
         #     #if it is, it is the same case as partner passes first
         #     if len(currentBidsForThisPlayer) > 1:
         #         secondBid = currentBidsForThisPlayer[1]
-        #         indexOfUsersSecondBid = getIndexOfNthBid(username, incomingBids, 2)
+        #         indexOfUsersSecondBid = getIndexOfNthBid(username, allBids, 2)
                 
-        #         secondBidIsJumpShift = getIsJumpShift(incomingBids[:indexOfUsersSecondBid], secondBid)
+        #         secondBidIsJumpShift = getIsJumpShift(allBids[:indexOfUsersSecondBid], secondBid)
 
         #         print('secondBid = {0}'.format(secondBid))
         #         print('indexOfUsersSecondBid = {0}'.format(indexOfUsersSecondBid))
@@ -400,7 +384,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
         #         estimatedScoring[location]['min'] = OPENING_TWO_CLUB_FIRST_ROUND_MIN
         #         estimatedScoring[location]['max'] = OPENING_TWO_CLUB_FIRST_ROUND_MAX
         #     else:
-        #         hasSomeOneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        #         hasSomeOneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
         #         if re.search('Two', firstBid, re.IGNORECASE):
         #             if not hasSomeOneOpenedBefore:
         #                 estimatedScoring[location]['min'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
@@ -435,7 +419,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
             #     estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX            
             # else:
             #     partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
-            #     partnersLastBid = incomingBids[helpers.getIndexOfNthBid(seatingRelative[partnersLocation], incomingBids, -1)][1]
+            #     partnersLastBid = allBids[helpers.getIndexOfNthBid(seatingRelative[partnersLocation], allBids, -1)][1]
 
             #     print('partnersLastBid = {0}'.format(partnersLastBid))
                 

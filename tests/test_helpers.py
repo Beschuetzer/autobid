@@ -262,7 +262,7 @@ class getDistributionPoints(unittest.TestCase):
         hearts = []
         spades = []
         hand = [clubs, diamonds, hearts, spades]
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -276,7 +276,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": 0,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 18)
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 18)
     def test_Opening_None(self):
         clubLength = 4
         diamondLength = 4
@@ -288,7 +288,7 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -302,7 +302,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 0)
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 0)
     def test_Opening_Void(self):
         clubLength = 0
         diamondLength = 4
@@ -314,7 +314,7 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -328,7 +328,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 3)
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 3)
     def test_Opening_Singleton(self):
         clubLength = 4
         diamondLength = 1
@@ -340,7 +340,7 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -354,7 +354,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 2)
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 2)
     def test_Opening_Doubleton(self):
         clubLength = 4
         diamondLength = 2
@@ -366,7 +366,7 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -380,7 +380,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 1)
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 1)
     def test_Opening_FiveLong(self):
         clubLength = 5
         diamondLength = 4
@@ -393,7 +393,7 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
 
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -406,7 +406,7 @@ class getDistributionPoints(unittest.TestCase):
             "hearts": heartLength,
             "spades": spadeLength,
         }
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 1)
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 1)
 
     def test_Responding_AllOneSuit(self):
         clubs = [i for i in range(0, 13)]
@@ -414,7 +414,7 @@ class getDistributionPoints(unittest.TestCase):
         hearts = []
         spades = []
         hand = [clubs, diamonds, hearts, spades]
-        incomingBids = [["Adam", 'One Club'],['Tim', 'Pass']]
+        allBids = [["Adam", 'One Club'],['Tim', 'Pass']]
         biddingObjRelative = {
             "top": ['One Club'],
             "bottom": [],
@@ -428,7 +428,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": 0,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
     def test_Responding_None(self):
         clubLength = 4
         diamondLength = 4
@@ -440,7 +440,7 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -454,7 +454,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
     def test_Responding_Void(self):
         clubLength = 0
         diamondLength = 4
@@ -466,7 +466,7 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -480,7 +480,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
     def test_Responding_Singleton(self):
         clubLength = 4
         diamondLength = 1
@@ -492,7 +492,7 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -506,7 +506,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
     def test_Responding_Doubleton(self):
         clubLength = 4
         diamondLength = 2
@@ -518,7 +518,7 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -532,7 +532,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
     def test_Responding_FiveLong(self):
         clubLength = 5
         diamondLength = 4
@@ -545,7 +545,7 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
 
-        incomingBids = []
+        allBids = []
         biddingObjRelative = {
             "top": [],
             "bottom": [],
@@ -558,7 +558,7 @@ class getDistributionPoints(unittest.TestCase):
             "hearts": heartLength,
             "spades": spadeLength,
         }
-        self.assertEqual(helpers.getDistributionPoints(hand, incomingBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
 class getCurrentActualBid(unittest.TestCase):
     def test_Normal(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
@@ -2575,60 +2575,90 @@ class getIsJumpShift(unittest.TestCase):
         actual = helpers.getIsJumpShift(currentContractBid, usersBid)
         expected = True
         self.assertEqual(actual, expected)
+class getIsAnyBidJumpShiftFunction(unittest.TestCase):
+    def test_True_1(self):
+        username = 'You'
+        allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
+        playersBids = ['Pass','Two Heart']
+        actual = helpers.getHasPlayerJumpShifted(username, playersBids, allBids)
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_True_2(self):
+        username = 'You'
+        allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'One Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass'], ['You', 'Three Club'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
+        playersBids = ['Pass', 'One Heart', 'Three Club']
+        actual = helpers.getHasPlayerJumpShifted(username, playersBids, allBids)
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_False_1(self):
+        username = 'You'
+        allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
+        playersBids = ['Pass','One Heart']
+        actual = helpers.getHasPlayerJumpShifted(username, playersBids, allBids)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_False_2(self):
+        username = 'You'
+        allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'One Heart'],['Tim', 'Two Spade'],['Tom', 'Pass'],['James', 'Pass'], ['You', 'Three Club'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
+        playersBids = ['Pass', 'One Heart', 'Three Club']
+        actual = helpers.getHasPlayerJumpShifted(username, playersBids, allBids)
+        expected = False
+        self.assertEqual(actual, expected)
+
 class getHasSomeOneOpenedBefore(unittest.TestCase):
     def test_empty(self):
         indexOfUsersFirstBid = None
-        incomingBids = []
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        allBids = []
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
         expected = False
         self.assertEqual(actual, expected)
     def test_not_yet_bid_false_1(self):
         indexOfUsersFirstBid = None
-        incomingBids = [['Adam', 'Pass']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        allBids = [['Adam', 'Pass']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
         expected = False
         self.assertEqual(actual, expected)
     def test_not_yet_bid_false_2(self):
         indexOfUsersFirstBid = None
-        incomingBids = [['Adam', 'Pass'], ['Tim', 'Double']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        allBids = [['Adam', 'Pass'], ['Tim', 'Double']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
         expected = False
         self.assertEqual(actual, expected)
     def test_not_yet_bid_true_1(self):
         indexOfUsersFirstBid = None
-        incomingBids = [['Adam', 'Pass'], ['Tim', 'Two Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        allBids = [['Adam', 'Pass'], ['Tim', 'Two Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
         expected = True
         self.assertEqual(actual, expected)
     def test_not_yet_bid_true_2(self):
         indexOfUsersFirstBid = None
-        incomingBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        allBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
         expected = True
         self.assertEqual(actual, expected)
 
     def test_has_bid_false_1(self):
         indexOfUsersFirstBid = 2
-        incomingBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club'],['Andrew','Pass'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        allBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club'],['Andrew','Pass'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
         expected = False
         self.assertEqual(actual, expected)
     def test_has_bid_false_2(self):
         indexOfUsersFirstBid = 0
-        incomingBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Pass'],['Andrew','One Heart'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        allBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Pass'],['Andrew','One Heart'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
         expected = False
         self.assertEqual(actual, expected)
     def test_has_bid_true_1(self):
         indexOfUsersFirstBid = 3
-        incomingBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club'],['Andrew','Pass'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        allBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club'],['Andrew','Pass'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
         expected = True
         self.assertEqual(actual, expected)
     def test_has_bid_true_2(self):
         indexOfUsersFirstBid = 4
-        incomingBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Pass'],['Andrew','One Heart'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, incomingBids)
+        allBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Pass'],['Andrew','One Heart'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
         expected = True
         self.assertEqual(actual, expected)
 class getPartnersLocation(unittest.TestCase):
