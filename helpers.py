@@ -130,7 +130,11 @@ def getIsJumpShift(currentContractBid, usersBid):
     if not currentContractBid or currentContractBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
         return False
     
-    indexOfCurrentActualBid = autoBid.contracts.index(currentContractBid[1])
+    if isinstance(currentContractBid, list) and len(currentContractBid) > 1:
+        currentContractBid = currentContractBid[1]
+
+    print('currentContractBid = {0}'.format(currentContractBid))
+    indexOfCurrentActualBid = autoBid.contracts.index(currentContractBid)
     indexOfUsersBid = autoBid.contracts.index(usersBid)
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
@@ -375,7 +379,7 @@ def getSuitNameFromCardAsNumber(cardAsNumber):
     else: 
         return None
 
-def getCurrentActualBid(incomingBids):
+def getCurrentContractBid(incomingBids):
     #input: all bids up to now
     #return: the last bid made that is not double or pass
     print('incomingBids = {0}'.format(incomingBids))

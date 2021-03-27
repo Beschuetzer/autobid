@@ -177,7 +177,24 @@ values = {
     },
 }
 
-def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentContractBid):
+def getIsAnyBidJumpShift(username, playerBids, incomingBids):
+    for i in range(0, len(playerBids)): 
+        bid = playerBids[i]
+        indexOfUsersBid = helpers.getIndexOfNthBid(username, incomingBids, i + 1)
+        biddingUpToThisPoint = incomingBids[:indexOfUsersBid]
+        contractBidAtThisPoint = helpers.getCurrentContractBid(biddingUpToThisPoint)
+        isAnyBidJumpShift = helpers.getIsJumpShift(contractBidAtThisPoint, bid)
+
+        print('bids = {0}'.format(playerBids))
+        print('indexOfUsersBid = {0}'.format(indexOfUsersBid))
+        print('biddingUpToThisPoint = {0}'.format(biddingUpToThisPoint))
+        print('contractBidAtThisPoint = {0}'.format(contractBidAtThisPoint))
+
+        i += 1
+        if isAnyBidJumpShift is True:
+            break
+
+def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentContractBid):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
         "top": {
@@ -198,7 +215,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         },
     }
 
-    for location, bids in biddingObjRelative.items():
+    for location, playersBids in biddingObjRelative.items():
         #region Skipping to Next Player if no bids made
         numberOfBidsMade = len(biddingObjRelative[location])
         if numberOfBidsMade < 1 or re.search('bottom', location, re.IGNORECASE):
@@ -206,26 +223,36 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         #endregion
         #region Setup
         username = seatingRelative[location]
-        indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, incomingBids, 1)
-        hasPartnerOpened = helpers.getHasPartnerOpened(incomingBids, username)
+        indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, allBids, 1)
+        hasPartnerOpened = helpers.getHasPartnerOpened(allBids, username)
         firstBid = biddingObjRelative[location][0]
+        lastBid = biddingObjRelative[location][-1]
+
         firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
         isTeamsFirstBidOpportunity = getIsTeamsFirstBidOpportunity(biddingObjRelative, location)
         isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(biddingObjRelative)
 
-        isJumpShift = False
         try: 
-            isJumpShift = helpers.getIsJumpShift(currentContractBid, incomingBids[indexOfUsersFirstBid][1])
+            isFirstBidJumpShift = helpers.getIsJumpShift(currentContractBid, firstBid)
+            isLastBidJumpShift = helpers.getIsJumpShift(currentContractBid, lastBid)
+
+            #TODO: do we need to check if the user made a bid that is a jumpshift ever and then have entirely separate logic in that case?
+            print('TESTING')
+            isAnyBidJumpShift = getIsAnyBidJumpShift(username, playersBids, allBids)
+
+
         except:
             pass
         #endregion
         #region Debugging (remove when done)
         print('username = {0}'.format(username))
         print('currentContractBid = {0}'.format(currentContractBid))
+        print('players = {0}'.format(allBids[indexOfUsersFirstBid][1]))
         print('biddingObjectRelative = {0}'.format(biddingObjRelative))
         print('firstBid = {0}'.format(firstBid))    
         print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
-        print('isJumpShift = {0}'.format(isJumpShift))
+        print('isFirstBidJumpShift = {0}'.format(isFirstBidJumpShift))
+        print('isLastBidJumpShift = {0}'.format(isLastBidJumpShift))
         print('isTeamsFirstBidOpportunity = {0}'.format(isTeamsFirstBidOpportunity))
         #endregion
         #region Logic
@@ -240,7 +267,6 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
             print(2)
             haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative['right']) == 0 or re.search('pass' , biddingObjRelative['right'][0], re.IGNORECASE)
-            lastBid = biddingObjRelative[location][-1]
 
             if re.search('trump', lastBid, re.IGNORECASE):
                 #partner = []

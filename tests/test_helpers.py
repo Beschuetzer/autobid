@@ -562,25 +562,25 @@ class getDistributionPoints(unittest.TestCase):
 class getCurrentActualBid(unittest.TestCase):
     def test_Normal(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
-        expected = helpers.getCurrentActualBid(bids)
+        expected = helpers.getCurrentContractBid(bids)
         actual = ['Ann', '3 Club']
         self.assertListEqual(expected, actual)
     
     def test_LowerCase(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', '2 No Trump'], ['Tim', 'double'], ['Ann', 'pass'], ['Andrew', 'pass']]
-        expected = helpers.getCurrentActualBid(bids)
+        expected = helpers.getCurrentContractBid(bids)
         actual = ['Adam', '2 No Trump']
         self.assertListEqual(expected, actual)
 
     def test_UpperCase(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', '2 NO TRUMP'], ['Tim', 'DOUBLE'], ['Ann', 'PASS'], ['Andrew', 'PASS']]
-        expected = helpers.getCurrentActualBid(bids)
+        expected = helpers.getCurrentContractBid(bids)
         actual = ['Adam', '2 NO TRUMP']
         self.assertListEqual(expected, actual)
 
     def test_Empty(self):
         bids = []
-        expected = helpers.getCurrentActualBid(bids)
+        expected = helpers.getCurrentContractBid(bids)
         actual = None
         self.assertEqual(expected, actual)
 class getBiddingObjAbsolute(unittest.TestCase):
@@ -2565,6 +2565,12 @@ class getIsJumpShift(unittest.TestCase):
         self.assertEqual(actual, expected)
     def test_True_3(self):
         currentContractBid = ['Tim','Three Spade']
+        usersBid = 'Five No Trump'
+        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_currentContractBidIsString(self):
+        currentContractBid = 'Three Spade'
         usersBid = 'Five No Trump'
         actual = helpers.getIsJumpShift(currentContractBid, usersBid)
         expected = True
