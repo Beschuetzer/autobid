@@ -223,36 +223,75 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         minToUse = -1;
         maxToUse = -1;
         
-        #if player has team's first turn and they pass -> a
         if isTeamsFirstBidOpportunity is True and firstBidIsPass:
+            minToUse = values.isTeamsFirstBid.playerPasses.min
+            maxToUse = values.isTeamsFirstBid.playerPasses.max
+        #if player has team's firt turn and they bid -> b
+        elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
+            haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative['right']) == 0 or re.search('pass' , biddingObjRelative['right'][0], re.IGNORECASE)
+            lastBid = biddingUpToThisPoint[-1]
+
+            if re.search('trump', lastBid, re.IGNORECASE):
+                #partner = []
+                #player =['One NT']
+                minToUse = values.isTeamsFirstBid.playerBidsNoTrump.min
+                maxToUse = values.isTeamsFirstBid.playerBidsNoTrump.max
+
+            elif re.search('two club', lastBid, re.IGNORECASE) and haveOpponentsNotHadTurnOrPassed:
+                #partner = []
+                #player =['Two Club']
+                maxToUse = values.special.twoClubs.max
+                minToUse = values.special.twoClubs.min
+
+            elif re.search('double', lastBid, re.IGNORECASE):
+                #partner = []
+                #player =['Double']
+                minToUse = values.isTeamsFirstBid.playerDoubles.min
+                maxToUse = values.isTeamsFirstBid.playerDoubles.max
+
+            elif re.search('two', lastBid, re.IGNORECASE):
+                #partner = []
+                #player =['Two Diamond']
+                minToUse = values.special.weakTwo.min
+                maxToUse = values.special.weakTwo.max
+
+            elif re.search('three', lastBid, re.IGNORECASE):
+                  #partner = []
+                #player =['Three Club']
+                minToUse = values.special.weakThree.min
+                maxToUse = values.special.weakThree.max
+
+            else:
+                #partner = []
+                #player =['One Club']
+                minToUse = values.isTeamsFirstBid.playerBidsSuit.min
+                maxToUse = values.isTeamsFirstBid.playerBidsSuit.max
+
+
+        #if player has team's second turn, parter bids, and they pass -> c
+        elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
+            #partner = []
+            #player =['pass']
             playerBids = biddingObjRelative[location]
             playerHasOnlyPassed = getPlayerHasOnlyPassed(playerBids);
             
             if playerHasOnlyPassed:
-                #player passed first then passed everytime thereafter
-                if hasPartnerOpened:
-                    minToUse = values.partnerBidsFirst.playerPass
-
-                else:
-                    pass
+                #partner = [...]
+                #player =['pass','pass','pass','pass','pass'...]
+                minToUse = values.isTeamsFirstBid.playerPasses.min
+                maxToUse = values.isTeamsFirstBid.playerPasses.max              
             else:
-                #player passed first then bid something at some point later
-
                 #case partner opened:
                 if hasPartnerOpened:
-                    pass
-
-                #partner did not open
+                    #partner = ['One NT', ...]
+                    #player =['pass','two diamonds', ...]
+                    minToUse = values.partnerPassesFirst.playerPasses.min
+                    maxToUse = values.partnerPassesFirst.playerPasses.max
                 else:
-                    pass
-
-        #if player has team's firt turn and they bid -> b
-        elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
-            print(2)
-
-        #if player has team's second turn, parter bids, and they pass -> c
-        elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
-            print(3)
+                    #partner = ['pass', ...]
+                    #player =['pass','two diamonds', ...]
+                    minToUse = values.partnerBidsFirst.playerPasses.min
+                    maxToUse = values.partnerBidsFirst.playerPasses.max
         
         #if player has team's second turn, partner bids, and they bid -> d
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
