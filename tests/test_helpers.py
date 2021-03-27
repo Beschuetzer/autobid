@@ -1279,6 +1279,47 @@ class getBiddingHistory(unittest.TestCase):
         actual = helpers.getBiddingHistory(bids)
         expected = ['2 No Trump', 'Double', '3 Club', 'Pass', 'Double']
         self.assertListEqual(expected, actual)
+class getIsTeamsFirstBidOpportunity(unittest.TestCase):
+    def test_top(self): 
+        biddingObjRelative = {
+            "left": [],
+            "top": ['pass'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'top')
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_bottom(self): 
+        biddingObjRelative = {
+            "left": [],
+            "top": ['pass'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'bottom')
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_right(self): 
+        biddingObjRelative = {
+            "left": ['pass'],
+            "top": ['pass'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'right')
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_left(self): 
+        biddingObjRelative = {
+            "left": ['pass'],
+            "top": ['pass'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'left')
+        expected = True
+        self.assertEqual(actual, expected)
 class getEstimatedPointsModule(unittest.TestCase):
     def test_no_bids(self):
         biddingObjRelative = {

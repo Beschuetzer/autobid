@@ -455,4 +455,7 @@ def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
         partnersLocation = locations['left']
     elif location == locations['left']:
         partnersLocation = locations['right']
+    else:
+        raise ValueError('location must be top bottom left of right')
+        
     return len(biddingObjRelative[partnersLocation]) == 0
