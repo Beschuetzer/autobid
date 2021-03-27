@@ -19,6 +19,8 @@ PARTNER_PASSES_FIRST_AND_PLAYER_PASSES_MAX = 12
 PARTNER_PASSES_FIRST_AND_PLAYER_PASSES_MIN = 0
 PARTNER_PASSES_FIRST_AND_PLAYER_DOUBLES_MAX = 18
 PARTNER_PASSES_FIRST_AND_PLAYER_DOUBLES_MIN = 13
+PARTNER_PASSES_FIRST_AND_PLAYER_BIDS_SUIT_MAX = 15
+PARTNER_PASSES_FIRST_AND_PLAYER_BIDS_SUIT_MIN = 13
 PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_JUMPSHIFT_MAX = -1
 PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_JUMPSHIFT_MIN = 13
 PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_NOT_JUMPSHIFT_MAX = 12
@@ -166,7 +168,6 @@ values = {
     },
 }
 
-values.partnerBidsFirst.playerBidsSuit.isJumpshift.min
 def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, currentContractBid):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
@@ -191,7 +192,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
     for location, bids in biddingObjRelative.items():
         #region Skipping to Next Player if no bids made
         numberOfBidsMade = len(biddingObjRelative[location])
-        if numberOfBidsMade < 1:
+        if numberOfBidsMade < 1 or re.search('bottom', location, re.IGNORECASE):
             continue
         #endregion
         #region Setup
@@ -212,22 +213,24 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         #endregion
         #region Debugging (remove when done)
         print('username = {0}'.format(username))
+        print('biddingObjectRelative = {0}'.format(biddingObjRelative))
+        print('biddingUpToThisPoint = {0}'.format(biddingUpToThisPoint))
         print('firstBid = {0}'.format(firstBid))    
         print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
         print('isJumpShift = {0}'.format(isJumpShift))
-        print('isTeamsFirstBid = {0}'.format(isTeamsFirstBidOpportunity))
+        print('isTeamsFirstBidOpportunity = {0}'.format(isTeamsFirstBidOpportunity))
         #endregion
         #region Logic
-
-
         minToUse = -1;
         maxToUse = -1;
         
         if isTeamsFirstBidOpportunity is True and firstBidIsPass:
-            minToUse = values.isTeamsFirstBid.playerPasses.min
-            maxToUse = values.isTeamsFirstBid.playerPasses.max
-        #if player has team's first turn and they bid -> b
+            print(1)
+            minToUse = values['isTeamsFirstBid']['playerPasses']['min']
+            maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
+
         elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
+            print(2)
             haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative['right']) == 0 or re.search('pass' , biddingObjRelative['right'][0], re.IGNORECASE)
             lastBid = biddingUpToThisPoint[-1]
 
@@ -266,35 +269,29 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                 #player =['One Club']
                 minToUse = values.isTeamsFirstBid.playerBidsSuit.min
                 maxToUse = values.isTeamsFirstBid.playerBidsSuit.max
-        #if player has team's second turn, parter bids, and they pass -> c
+
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
             print(3)
             #partner = ['something', ...]
             #player =['pass', ...]
             
-        
-        #if player has team's second turn, partner bids, and they bid -> d
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
             print(4)
             #partner = ['something', ...]
             #player =['One Club', ...]
 
-        #if player has team's second turn, parter passes, and they pass -> e
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
             print(5)
             #partner = ['pass', ...]
             #player =['One Club', ...]
 
-        #if player has team's second turn, parter passes, and they bid -> f
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
             print(6)
             #partner = ['Pass', ...]
             #player =['Pass', ...]
         #endregion
-
         estimatedScoring[location]['min'] = minToUse
         estimatedScoring[location]['max'] = maxToUse
-
 
         #region Not sure 
         # #partner = ['something']
@@ -320,7 +317,6 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         #         minToUse = values.partnerBidsFirst.playerPasses.min
         #         maxToUse = values.partnerBidsFirst.playerPasses.max
         #endregion
-
         #region Adam's Not Working Code
         # if re.search('pass', firstBid, re.IGNORECASE):
         #     print('pass')
