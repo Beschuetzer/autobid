@@ -1320,6 +1320,56 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
         actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'left')
         expected = True
         self.assertEqual(actual, expected)
+    def test_left_2(self): 
+        biddingObjRelative = {
+            "left": ['pass', 'pass'],
+            "top": ['pass', 'two diamond'],
+            "right": ['pass', 'pass'],
+            "bottom": ['two club'],
+        }
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'left')
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_top_2(self): 
+        biddingObjRelative = {
+            "left": ['pass', 'pass'],
+            "top": ['pass', 'two diamond'],
+            "right": ['pass', 'pass'],
+            "bottom": ['two club'],
+        }
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'top')
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_bottom_2(self): 
+        biddingObjRelative = {
+            "left": ['pass', 'pass'],
+            "top": ['pass', 'two diamond'],
+            "right": ['pass', 'pass'],
+            "bottom": ['two club'],
+        }
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'bottom')
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_right_2(self): 
+        biddingObjRelative = {
+            "left": ['pass', 'pass'],
+            "top": ['pass', 'two diamond'],
+            "right": ['pass', 'pass'],
+            "bottom": ['two club'],
+        }
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'right')
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_right_3(self): 
+        biddingObjRelative = {
+            "left": [],
+            "top": ['pass'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'right')
+        expected = True
+        self.assertEqual(actual, expected)
 class getEstimatedPointsModule(unittest.TestCase):
     def test_no_bids(self):
         biddingObjRelative = {
@@ -2275,9 +2325,6 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-    
-
-
 class getHasPartnerOpened(unittest.TestCase):
     def setUp(self):
         self.seatingRelative = {
