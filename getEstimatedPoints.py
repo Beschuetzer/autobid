@@ -226,7 +226,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         if isTeamsFirstBidOpportunity is True and firstBidIsPass:
             minToUse = values.isTeamsFirstBid.playerPasses.min
             maxToUse = values.isTeamsFirstBid.playerPasses.max
-        #if player has team's firt turn and they bid -> b
+        #if player has team's first turn and they bid -> b
         elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
             haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative['right']) == 0 or re.search('pass' , biddingObjRelative['right'][0], re.IGNORECASE)
             lastBid = biddingUpToThisPoint[-1]
@@ -266,49 +266,60 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
                 #player =['One Club']
                 minToUse = values.isTeamsFirstBid.playerBidsSuit.min
                 maxToUse = values.isTeamsFirstBid.playerBidsSuit.max
-
-
         #if player has team's second turn, parter bids, and they pass -> c
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
-            #partner = []
-            #player =['pass']
-            playerBids = biddingObjRelative[location]
-            playerHasOnlyPassed = getPlayerHasOnlyPassed(playerBids);
+            print(3)
+            #partner = ['something', ...]
+            #player =['pass', ...]
             
-            if playerHasOnlyPassed:
-                #partner = [...]
-                #player =['pass','pass','pass','pass','pass'...]
-                minToUse = values.isTeamsFirstBid.playerPasses.min
-                maxToUse = values.isTeamsFirstBid.playerPasses.max              
-            else:
-                #case partner opened:
-                if hasPartnerOpened:
-                    #partner = ['One NT', ...]
-                    #player =['pass','two diamonds', ...]
-                    minToUse = values.partnerPassesFirst.playerPasses.min
-                    maxToUse = values.partnerPassesFirst.playerPasses.max
-                else:
-                    #partner = ['pass', ...]
-                    #player =['pass','two diamonds', ...]
-                    minToUse = values.partnerBidsFirst.playerPasses.min
-                    maxToUse = values.partnerBidsFirst.playerPasses.max
         
         #if player has team's second turn, partner bids, and they bid -> d
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
             print(4)
+            #partner = ['something', ...]
+            #player =['One Club', ...]
 
         #if player has team's second turn, parter passes, and they pass -> e
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
             print(5)
+            #partner = ['pass', ...]
+            #player =['One Club', ...]
 
         #if player has team's second turn, parter passes, and they bid -> f
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
             print(6)
+            #partner = ['Pass', ...]
+            #player =['Pass', ...]
         #endregion
 
         estimatedScoring[location]['min'] = minToUse
         estimatedScoring[location]['max'] = maxToUse
 
+
+        #region Not sure 
+        # #partner = ['something']
+        # #player =['pass']
+        # playerBids = biddingObjRelative[location]
+        # playerHasOnlyPassed = getPlayerHasOnlyPassed(playerBids);
+        
+        # if playerHasOnlyPassed:
+        #     #partner = [...]
+        #     #player =['pass','pass','pass','pass','pass'...]
+        #     minToUse = values.isTeamsFirstBid.playerPasses.min
+        #     maxToUse = values.isTeamsFirstBid.playerPasses.max              
+        # else:
+        #     #case partner opened:
+        #     if hasPartnerOpened:
+        #         #partner = ['One NT', ...]
+        #         #player =['pass','two diamonds', ...]
+        #         minToUse = values.partnerPassesFirst.playerPasses.min
+        #         maxToUse = values.partnerPassesFirst.playerPasses.max
+        #     else:
+        #         #partner = ['pass', ...]
+        #         #player =['pass','two diamonds', ...]
+        #         minToUse = values.partnerBidsFirst.playerPasses.min
+        #         maxToUse = values.partnerBidsFirst.playerPasses.max
+        #endregion
 
         #region Adam's Not Working Code
         # if re.search('pass', firstBid, re.IGNORECASE):
