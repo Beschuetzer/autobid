@@ -123,23 +123,14 @@ def getIndexOfNthBid(username, incomingBids, nthBid):
     
     return None
 
-def getIsJumpShift(biddingUpToThisPoint, usersBid):
+def getIsJumpShift(currentContractBid, usersBid):
     #inputs:
         #currentActualBid and usersBid = string representing bid
     #returns True/False whether usersBid is a jumpshift of currentActualBid
-    if biddingUpToThisPoint == None:
-        return False
-
-    currentActualBid = None
-    if len(biddingUpToThisPoint) >= 1:
-        currentActualBid = getCurrentActualBid(biddingUpToThisPoint)[1]
-    else:
-        return False
-
-    if not currentActualBid or currentActualBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
+    if not currentContractBid or currentContractBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
         return False
     
-    indexOfCurrentActualBid = autoBid.contracts.index(currentActualBid)
+    indexOfCurrentActualBid = autoBid.contracts.index(currentContractBid[1])
     indexOfUsersBid = autoBid.contracts.index(usersBid)
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 

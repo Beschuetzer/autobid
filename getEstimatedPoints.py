@@ -215,15 +215,14 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
 
         isJumpShift = False
         try: 
-            biddingUpToThisPoint = incomingBids[:indexOfUsersFirstBid]
-            isJumpShift = helpers.getIsJumpShift(biddingUpToThisPoint, incomingBids[indexOfUsersFirstBid][1])
+            isJumpShift = helpers.getIsJumpShift(currentContractBid, incomingBids[indexOfUsersFirstBid][1])
         except:
             pass
         #endregion
         #region Debugging (remove when done)
         print('username = {0}'.format(username))
+        print('currentContractBid = {0}'.format(currentContractBid))
         print('biddingObjectRelative = {0}'.format(biddingObjRelative))
-        print('biddingUpToThisPoint = {0}'.format(biddingUpToThisPoint))
         print('firstBid = {0}'.format(firstBid))    
         print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
         print('isJumpShift = {0}'.format(isJumpShift))
@@ -241,7 +240,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
             print(2)
             haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative['right']) == 0 or re.search('pass' , biddingObjRelative['right'][0], re.IGNORECASE)
-            lastBid = biddingUpToThisPoint[-1]
+            lastBid = biddingObjRelative[location][-1]
 
             if re.search('trump', lastBid, re.IGNORECASE):
                 #partner = []
@@ -457,10 +456,8 @@ def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
     else:
         raise ValueError('location must be top bottom left of right')
 
-    playersBids = biddingObjRelative[location]
     partnersBids = biddingObjRelative[partnersLocation]
 
-    print('location = {0}'.format(location))
     #this is for the test case 'test_left'
     if location == locations['left'] and len(partnersBids) == 1:
         return True
