@@ -2177,8 +2177,8 @@ class getEstimatedPointsModule(unittest.TestCase):
             "right": "RightPlayer",
             "bottom": "BottomPlayer",
         }
-        bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Pass'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        bids = [['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, '')
         print(getEstimatedPoints.values['isTeamsFirstBid'])
         expected = {
            "left": {
@@ -2202,7 +2202,7 @@ class getEstimatedPointsModule(unittest.TestCase):
     def test_2_pass(self):
         biddingObjRelative = {
             "left": [],
-            "top": [],
+            "top": ['pass'],
             "right": ['pass'],
             "bottom": [],
         }
@@ -2212,17 +2212,17 @@ class getEstimatedPointsModule(unittest.TestCase):
             "right": "RightPlayer",
             "bottom": "BottomPlayer",
         }
-        bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Pass'], ['RightPlayer', 'Pass']]
+        bids = [['TopPlayer', 'Pass'], ['RightPlayer', 'Pass']]
         actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
-        print(getEstimatedPoints.values['isTeamsFirstBid'])
         expected = {
            "left": {
                 "min": None,
                 "max": None,
             },
             "top": {
-                "min": None,
-                "max": None,
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max']
+                 
             },
             "right": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],

@@ -390,7 +390,7 @@ def getCurrentActualBid(incomingBids):
     print('incomingBids = {0}'.format(incomingBids))
     for bid in reversed(incomingBids):
         if len(bid) <= 0:
-            return ''
+            return None
         if re.search('pass', bid[1], re.IGNORECASE) is None and re.search('double', bid[1], re.IGNORECASE) is None:
             return bid
 

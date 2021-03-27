@@ -4,6 +4,15 @@
 #TODO: make sure suit count estimates from bidding is complete
 import helpers, re
 
+locations = {
+    "bottom": 'bottom',
+    "left": 'left',
+    "right": 'right',
+    "top": 'top',
+}
+    
+
+
 PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX = 5
 PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MIN = 0
 PARTNER_BIDS_FIRST_AND_PLAYER_DOUBLES_MAX = 18
@@ -201,7 +210,7 @@ def getEstimatedPoints(biddingObjRelative, incomingBids, seatingRelative, curren
         hasPartnerOpened = helpers.getHasPartnerOpened(incomingBids, username)
         firstBid = biddingObjRelative[location][0]
         firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
-        isTeamsFirstBidOpportunity = len(biddingObjRelative["top"]) == 0
+        isTeamsFirstBidOpportunity = getIsTeamsFirstBidOpportunity(biddingObjRelative, location)
         isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(biddingObjRelative)
 
         isJumpShift = False
@@ -433,3 +442,17 @@ def getPlayerHasOnlyPassed(playerBids):
             return False;
 
     return True
+
+def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
+    partnersLocation = ''
+    print('location = {0}'.format(location))
+    print('Locations = {0}'.format(locations['top']))
+    if location == locations['top']:
+        partnersLocation = locations['bottom'] 
+    elif location == locations['bottom']:
+        partnersLocation = locations['top']
+    elif location == locations['right']:
+        partnersLocation = locations['left']
+    elif location == locations['left']:
+        partnersLocation = locations['right']
+    return len(biddingObjRelative[partnersLocation]) == 0
