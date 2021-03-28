@@ -2432,7 +2432,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-    def test_2_TwoClub_1(self):
+    def test_2_TwoClub_2(self):
         biddingObjRelative = {
             "left": [],
             "top": ['pass'],

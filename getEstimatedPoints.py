@@ -262,7 +262,9 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
             print(2)
-            haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative['right']) == 0 or re.search('Pass' , biddingObjRelative['right'][0], re.IGNORECASE)
+            locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
+            haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingObjRelative[locationsRightLocation][0], re.IGNORECASE)
+            
             print('lastBid = {0}'.format(lastBid))
             print('biddingObjRelative["right"][0] = {0}'.format(biddingObjRelative['right'][0]))
             print('haveOpponentsNotHadTurnOrPassed = {0}'.format(haveOpponentsNotHadTurnOrPassed))
