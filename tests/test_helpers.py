@@ -2714,146 +2714,6 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-    def test_2_Weak_Three_Bid_1(self):
-        biddingObjRelative = {
-            "left": [],
-            "top": ['Three Diamond'],
-            "right": ['pass'],
-            "bottom": [],
-        }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
-        bids = [['TopPlayer', 'Three Diamond'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
-        print('actual = {0}'.format(actual))
-        expected = {
-           "left": {
-                "min": None,
-                "max": None,
-            },
-            "top": {
-                "min": getEstimatedPoints.values['special']['weakThree']['min'],
-                "max": getEstimatedPoints.values['special']['weakThree']['max']
-            },
-            "right": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-        self.assertDictEqual(actual, expected)
-    def test_2_Weak_Three_Bid_2(self):
-        biddingObjRelative = {
-            "left": [],
-            "top": ['pass'],
-            "right": ['Three Diamond'],
-            "bottom": [],
-        }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
-        bids = [['TopPlayer', 'pass'], ['RightPlayer', 'Three Diamond']]
-        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-1])
-        print('actual = {0}'.format(actual))
-        expected = {
-           "left": {
-                "min": None,
-                "max": None,
-            },
-            "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
-            },
-            "right": {
-                "min": getEstimatedPoints.values['special']['weakThree']['min'],
-                "max": getEstimatedPoints.values['special']['weakThree']['max']
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-        self.assertDictEqual(actual, expected)
-    def test_2_Weak_Three_Bid_3(self):
-        biddingObjRelative = {
-            "left": ['pass'],
-            "top": ['pass'],
-            "right": ['Three Diamond'],
-            "bottom": [],
-        }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
-        bids = [['LeftPlayer', 'pass'],['TopPlayer', 'pass'], ['RightPlayer', 'Three Diamond']]
-        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-1])
-        print('actual = {0}'.format(actual))
-        expected = {
-           "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
-            },
-            "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
-            },
-            "right": {
-                "min": getEstimatedPoints.values['special']['weakThree']['min'],
-                "max": getEstimatedPoints.values['special']['weakThree']['max']
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-        self.assertDictEqual(actual, expected)
-    def test_2_Weak_Three_Bid_4(self):
-        biddingObjRelative = {
-            "left": ['One Diamond'],
-            "top": ['Three Heart'],
-            "right": ['pass'],
-            "bottom": [],
-        }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
-        bids = [['LeftPlayer', 'One Diamond'], ['TopPlayer', 'Three Heart'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
-        print('actual = {0}'.format(actual))
-        expected = {
-           "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max']
-            },
-            "top": {
-                "min": getEstimatedPoints.values['special']['weakThree']['min'],
-                "max": getEstimatedPoints.values['special']['weakThree']['max']
-            },
-            "right": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-        self.assertDictEqual(actual, expected)
     def test_2_WeakTwo_1(self):
         biddingObjRelative = {
             "left": [],
@@ -3029,7 +2889,146 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-    
+    def test_2_Weak_Three_Bid_1(self):
+        biddingObjRelative = {
+            "left": [],
+            "top": ['Three Diamond'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['TopPlayer', 'Three Diamond'], ['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakThree']['min'],
+                "max": getEstimatedPoints.values['special']['weakThree']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_2_Weak_Three_Bid_2(self):
+        biddingObjRelative = {
+            "left": [],
+            "top": ['pass'],
+            "right": ['Three Diamond'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['TopPlayer', 'pass'], ['RightPlayer', 'Three Diamond']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-1])
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['weakThree']['min'],
+                "max": getEstimatedPoints.values['special']['weakThree']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_2_Weak_Three_Bid_3(self):
+        biddingObjRelative = {
+            "left": ['pass'],
+            "top": ['pass'],
+            "right": ['Three Diamond'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['LeftPlayer', 'pass'],['TopPlayer', 'pass'], ['RightPlayer', 'Three Diamond']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-1])
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['weakThree']['min'],
+                "max": getEstimatedPoints.values['special']['weakThree']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_2_Weak_Three_Bid_4(self):
+        biddingObjRelative = {
+            "left": ['One Diamond'],
+            "top": ['Three Heart'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['LeftPlayer', 'One Diamond'], ['TopPlayer', 'Three Heart'], ['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakThree']['min'],
+                "max": getEstimatedPoints.values['special']['weakThree']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
 
 
 

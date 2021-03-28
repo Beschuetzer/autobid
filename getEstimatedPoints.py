@@ -264,19 +264,19 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
             print(2)
-            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid)
+            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid, hasPartnerOpened)
 
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
             #partner = ['something', ...]
             #player =['pass', ...]
             print(3)
-            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid)
+            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid, hasPartnerOpened)
             
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
             print(4)
             #partner = ['something', ...]
             #player =['One Club', ...]
-            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid)
+            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid, hasPartnerOpened)
 
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
             print(5)
@@ -285,7 +285,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
             print(6)
-            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid)
+            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid, hasPartnerOpened)
 
             #partner = ['Pass', ...]
             #player =['Pass', ...]
@@ -435,7 +435,7 @@ def getPlayerHasOnlyPassed(playerBids):
 
     return True
 
-def checkRegularCases(location, biddingObjRelative, lastBid):
+def checkRegularCases(location, biddingObjRelative, lastBid, hasPartnerOpened):
     locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
     haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingObjRelative[locationsRightLocation][0], re.IGNORECASE)
     
@@ -482,6 +482,14 @@ def checkRegularCases(location, biddingObjRelative, lastBid):
         #player =['Three Club']
         minToUse = values['special']['weakThree']['min']
         maxToUse = values['special']['weakThree']['max']
+
+    elif re.search('pass', lastBid, re.IGNORECASE):
+        if hasPartnerOpened:
+            minToUse = values['partnerBidsFirst']['playerPasses']['min']
+            maxToUse = values['partnerBidsFirst']['playerPasses']['max']
+        else: 
+            minToUse = values['isTeamsFirstBid']['playerPasses']['min']
+            maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
 
     else:
         print('else branch')
