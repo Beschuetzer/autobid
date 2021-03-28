@@ -2502,6 +2502,112 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
+    def test_2_Double_1(self):
+        biddingObjRelative = {
+            "left": [],
+            "top": ['Double'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['TopPlayer', 'Double'], ['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerDoubles']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerDoubles']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_2_Double_2(self):
+        biddingObjRelative = {
+            "left": [],
+            "top": ['pass'],
+            "right": ['Double'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['TopPlayer', 'pass'], ['RightPlayer', 'Double']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerDoubles']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerDoubles']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_2_Double_3(self):
+        biddingObjRelative = {
+            "left": ['pass'],
+            "top": ['pass'],
+            "right": ['Double'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['LeftPlayer', 'pass'],['TopPlayer', 'pass'], ['RightPlayer', 'Double']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    
 
 class getHasPartnerOpened(unittest.TestCase):
     def setUp(self):
