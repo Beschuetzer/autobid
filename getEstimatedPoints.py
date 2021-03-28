@@ -237,11 +237,9 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative):
 
         isFirstBidJumpshift = False
         isLastBidJumpshift = False
-        print('before----------------')
         try: 
             isFirstBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser, firstBid)
             isLastBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser, lastBid)
-            print('after----------------')
 
             #TODO: do we need to check if the user made a bid that is a jumpshift ever and then have entirely separate logic in that case?
             isAnyBidJumpshift = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
@@ -273,6 +271,15 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative):
             estimatedScoring[location]['max'] = maxToUse
             continue
         #else
+
+        #region when the first bid is pass but the second bid is an actual bid
+        if secondBid != '' and firstBidIsPass and not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
+            print('first bid pass second not')
+            estimatedScoring[location]['min'] = 11
+            estimatedScoring[location]['max'] = 13
+            continue
+
+        #endregion
         
         if isTeamsFirstBidOpportunity is True and firstBidIsPass:
             print(1)
