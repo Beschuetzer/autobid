@@ -123,7 +123,7 @@ def getIndexOfNthBid(username, allBids, nthBid):
     
     return None
 
-def getHasPlayerJumpShifted(username, playersBids, allBids):
+def getHasPlayerJumpshifted(username, playersBids, allBids):
     #inputs:
         #username as string
         #playersBids as a list of strings
@@ -134,7 +134,7 @@ def getHasPlayerJumpShifted(username, playersBids, allBids):
         indexOfUsersBid = getIndexOfNthBid(username, allBids, i + 1)
         biddingUpToThisPoint = allBids[:indexOfUsersBid]
         contractBidAtThisPoint = getCurrentContractBid(biddingUpToThisPoint)
-        isAnyBidJumpShift = getIsJumpShift(contractBidAtThisPoint, bid)
+        isAnyBidJumpShift = getIsJumpshift(contractBidAtThisPoint, bid)
 
         print('bids = {0}'.format(playersBids))
         print('indexOfUsersBid = {0}'.format(indexOfUsersBid))
@@ -146,7 +146,7 @@ def getHasPlayerJumpShifted(username, playersBids, allBids):
             return True
     return False
 
-def getIsJumpShift(currentContractBid, usersBid):
+def getIsJumpshift(currentContractBid, usersBid):
     #inputs:
         #currentActualBid and usersBid = string representing bid
     #returns True/False whether usersBid is a jumpshift of currentActualBid

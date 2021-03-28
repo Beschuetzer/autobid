@@ -2229,7 +2229,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             "left": ['One Diamond'],
             "top": ['Pass'],
             "right": ['Two No Trump'],
-            "bottom": ['Pass'],
+            "bottom": [],
         }
         seatingRelative = {
             "left": "LeftPlayer",
@@ -2237,24 +2237,24 @@ class getEstimatedPointsModule(unittest.TestCase):
             "right": "RightPlayer",
             "bottom": "BottomPlayer",
         }
-        bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Pass'],['RightPlayer', 'Two No Trump'], ['BottomPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Pass'],['RightPlayer', 'Two No Trump']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-1])
         expected = {
            "left": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN,
-                "max": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX,
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBids']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBids']['max']
             },
             "top": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MAX,
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
             },
             "right": {
-                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MIN,
-                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MAX,
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isJumpshift']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isJumpshift']['max']
             },
             "bottom": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MAX,
+                "min": None,
+                "max": None,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -3191,61 +3191,61 @@ class getIsJumpShift(unittest.TestCase):
     def test_pass(self):
         currentContractBid = ['Tim','Two Club']
         usersBid = 'Pass'
-        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_double(self):
         currentContractBid = ['Tim','Two Club']
         usersBid = 'Double'
-        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_noActualBid(self):
         currentContractBid = []
         usersBid = 'Three Club'
-        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_False_1(self):
         currentContractBid = ['Tim','Two Club']
         usersBid = 'Three Club'
-        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_False_2(self):
         currentContractBid = ['Tim','Two Club']
         usersBid = 'Two Diamond'
-        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_False_3(self):
         currentContractBid = ['Tim','One Spade']
         usersBid = 'One No Trump'
-        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_True_1(self):
         currentContractBid = ['Tim','One Club']
         usersBid = 'Three Club'
-        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = True
         self.assertEqual(actual, expected)
     def test_True_2(self):
         currentContractBid = ['Tim','One No Trump']
         usersBid = 'Three Club'
-        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = True
         self.assertEqual(actual, expected)
     def test_True_3(self):
         currentContractBid = ['Tim','Three Spade']
         usersBid = 'Five No Trump'
-        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = True
         self.assertEqual(actual, expected)
     def test_currentContractBidIsString(self):
         currentContractBid = 'Three Spade'
         usersBid = 'Five No Trump'
-        actual = helpers.getIsJumpShift(currentContractBid, usersBid)
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = True
         self.assertEqual(actual, expected)
 class getHasPlayerJumpShifted(unittest.TestCase):
@@ -3253,28 +3253,28 @@ class getHasPlayerJumpShifted(unittest.TestCase):
         username = 'You'
         allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
         playersBids = ['Pass','Two Heart']
-        actual = helpers.getHasPlayerJumpShifted(username, playersBids, allBids)
+        actual = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
         expected = True
         self.assertEqual(actual, expected)
     def test_True_2(self):
         username = 'You'
         allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'One Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass'], ['You', 'Three Club'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
         playersBids = ['Pass', 'One Heart', 'Three Club']
-        actual = helpers.getHasPlayerJumpShifted(username, playersBids, allBids)
+        actual = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
         expected = True
         self.assertEqual(actual, expected)
     def test_False_1(self):
         username = 'You'
         allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
         playersBids = ['Pass','One Heart']
-        actual = helpers.getHasPlayerJumpShifted(username, playersBids, allBids)
+        actual = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
         expected = False
         self.assertEqual(actual, expected)
     def test_False_2(self):
         username = 'You'
         allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'One Heart'],['Tim', 'Two Spade'],['Tom', 'Pass'],['James', 'Pass'], ['You', 'Three Club'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
         playersBids = ['Pass', 'One Heart', 'Three Club']
-        actual = helpers.getHasPlayerJumpShifted(username, playersBids, allBids)
+        actual = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
         expected = False
         self.assertEqual(actual, expected)
 class getHasSomeOneOpenedBefore(unittest.TestCase):
