@@ -1429,7 +1429,7 @@ class getEstimatedPointsModule(unittest.TestCase):
                 "max": None,
             },
             "right": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
+                "min": getEstimatedPoints.values['is'],
                 "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
             },
         }
@@ -1602,38 +1602,145 @@ class getEstimatedPointsModule(unittest.TestCase):
         }
         self.assertDictEqual(actual, expected)
     #TODO: need to add cases for double second round?
-
-    def test_open_nt(self):
+    def test_ambiguous_WeakTwo_REVISIT(self):
+        #TODO: what is the max value in this scenario for top?
+        #TODO: how do we adjust the max given top's next bid?
         biddingObjRelative = {
-            "right": ['One No Trump'],
-            "left": ['Two Diamond'],
-            "bottom": ['Double'],
-            "top": ['Pass'],
+            "left": ['One No Trump'],
+            "top": ['Two Diamond'],
+            "right": ['Pass'],
+            "bottom": [],
         }
         seatingRelative = {
-            "top": "Adam",
-            "bottom": "Tim",
-            "left": "Andrew",
-            "right": "Ann",
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
         }
-        bids = [['Adam', 'Pass'],['Ann', 'One No Trump'], ['Tim', 'Double'],['Andrew', 'Two Diamond']]
-        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative)
+        bids = [['LeftPlayer', "One No Trump"],['TopPlayer', 'Two Diamond'],['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative)
+
         expected = {
-            "top": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
-            },
-            "bottom": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MIN,
-                "max": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MAX,
-            },
             "left": {
-                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_MIN,
-                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_MAX,
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['special']['twoClubs']['max']
             },
             "right": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MIN,
-                "max": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MAX,
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_ambiguous_WeakTwo_Second_Same_Suit_REVISIT(self):
+        biddingObjRelative = {
+            "left": ['One No Trump', 'Two No Trump'],
+            "top": ['Two Diamond', 'Three Diamond'],
+            "right": ['Pass', 'Pass'],
+            "bottom": ['Pass'],
+        }
+        seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+        bids = [['LeftPlayer', "One No Trump"],['TopPlayer', 'Two Diamond'],['RightPlayer', 'Pass'], ['BottomPlayer', "Pass"], ['LeftPlayer', "Two No Trump"],['TopPlayer', 'Three Diamond'],['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative)
+
+        expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['special']['twoClubs']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_ambiguous_WeakTwo_Second_Different_Suit_REVISIT(self):
+        biddingObjRelative = {
+            "left": ['One No Trump', 'Two No Trump'],
+            "top": ['Two Diamond', 'Three Club'],
+            "right": ['Pass', 'Pass'],
+            "bottom": ['Pass'],
+        }
+        seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+        bids = [['LeftPlayer', "One No Trump"],['TopPlayer', 'Two Diamond'],['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative)
+
+        expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['special']['twoClubs']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_ambiguous_WeakTwo_Second__Pass__REVISIT(self):
+        biddingObjRelative = {
+            "left": ['One No Trump', 'Pass'],
+            "top": ['Two Diamond', 'Pass'],
+            "right": ['Two No Trump', 'Three No Trump'],
+            "bottom": ['Pass'],
+        }
+        seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+        bids = [['LeftPlayer', "One No Trump"],['TopPlayer', 'Two Diamond'],['RightPlayer', 'Pass'], ['BottomPlayer', "Pass"], ['LeftPlayer', "Two No Trump"],['TopPlayer', 'Pass'],['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative)
+
+        expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['special']['weakTwo']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
             },
         }
         self.assertDictEqual(actual, expected)
@@ -2186,7 +2293,6 @@ class getEstimatedPointsModule(unittest.TestCase):
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max']
             },
         }
-
         self.assertDictEqual(actual, expected)
     def test_only_pass_partner_passes_first(self):
         biddingObjRelative = {

@@ -184,7 +184,7 @@ values = {
 
 
 
-def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative):
+def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seatingRelative):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
         "top": {
@@ -259,64 +259,70 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative):
         print('isTeamsFirstBidOpportunity = {0}'.format(isTeamsFirstBidOpportunity))
 
         #endregion
-        #region Logic
-        minToUse = None;
-        maxToUse = None;
+        #region Setting Initial Bounds Logic
+        if secondBid == '':
 
-        #if first bid is pass, partner passes, and any bid is close to opening points or a mistake?
-        if not re.search('pass', firstBid, re.IGNORECASE):
-            print('exit early----')
-            minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+            minToUse = None;
+            maxToUse = None;
+
+            #if first bid is pass, partner passes, and any bid is close to opening points or a mistake?
+            if not re.search('pass', firstBid, re.IGNORECASE):
+                print('exit early----')
+                minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                estimatedScoring[location]['min'] = minToUse
+                estimatedScoring[location]['max'] = maxToUse
+                continue
+            #else
+
+            #region when the first bid is pass but the second bid is an actual bid
+            if secondBid != '' and firstBidIsPass and not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
+                print('first bid pass second not')
+                estimatedScoring[location]['min'] = 11
+                estimatedScoring[location]['max'] = 13
+                continue
+
+            #endregion
+            
+            if isTeamsFirstBidOpportunity is True and firstBidIsPass:
+                print(1)
+                minToUse = values['isTeamsFirstBid']['playerPasses']['min']
+                maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
+
+            elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
+                print(2)
+                minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+
+            elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
+                #partner = ['something', ...]
+                #player =['pass', ...]
+                print(3)
+                minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                
+            elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
+                print(4)
+                #partner = ['something', ...]
+                #player =['One Club', ...]
+                minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+
+
+            elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
+                print(5)
+                #partner = ['pass', ...]
+                #player =['One Club', ...]
+
+            elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
+                print(6)
+                minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+
+                #partner = ['Pass', ...]
+                #player =['Pass', ...]
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
-            continue
-        #else
-
-        #region when the first bid is pass but the second bid is an actual bid
-        if secondBid != '' and firstBidIsPass and not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
-            print('first bid pass second not')
-            estimatedScoring[location]['min'] = 11
-            estimatedScoring[location]['max'] = 13
-            continue
-
         #endregion
-        
-        if isTeamsFirstBidOpportunity is True and firstBidIsPass:
-            print(1)
-            minToUse = values['isTeamsFirstBid']['playerPasses']['min']
-            maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
+        else:
+            #updating bounds using estimatedScoringBounds
+            pass
 
-        elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
-            print(2)
-            minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
-
-        elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
-            #partner = ['something', ...]
-            #player =['pass', ...]
-            print(3)
-            minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
-            
-        elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
-            print(4)
-            #partner = ['something', ...]
-            #player =['One Club', ...]
-            minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
-
-
-        elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
-            print(5)
-            #partner = ['pass', ...]
-            #player =['One Club', ...]
-
-        elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
-            print(6)
-            minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
-
-            #partner = ['Pass', ...]
-            #player =['Pass', ...]
-        #endregion
-        estimatedScoring[location]['min'] = minToUse
-        estimatedScoring[location]['max'] = maxToUse
 
         #region Not sure 
         # #partner = ['something']

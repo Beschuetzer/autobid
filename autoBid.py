@@ -89,7 +89,24 @@ scoring = {
 }
 bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', 'Three Club']]
 # bids = [['Adam', 'Pass'], ['Dan', 'Two Club'], ['Ann', 'pass']]
-
+estimatedScoringBounds = {
+    "top": {
+        "min": None,
+        "max": None,
+    },
+    "bottom": {
+        "min": None,
+        "max": None,
+    },
+    "left": {
+        "min": None,
+        "max": None,
+    },
+    "right": {
+        "min": None,
+        "max": None,
+    },
+}
 hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40,42]]
       
 import re, math, getEstimatedPoints, helpers
@@ -114,7 +131,7 @@ def autoBid(allBids, hand, scoring, seating, spot, clientPointCountingConvention
 
     biddingHistory = helpers.getBiddingHistory(allBids)
     seatingRelative = helpers.getSeatingRelative(seating, spot)
-    estimatedPoints = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, allBids, seatingRelative)
+    estimatedPoints = getEstimatedPoints.getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seatingRelative)
     estimatedSuitCounts = helpers.getEstimatedSuitCounts(biddingObjRelative, allBids, seatingRelative)
     partnersBids = biddingObjRelative['top']
     #endregion
