@@ -1,4 +1,5 @@
 import unittest
+from unittest.case import TestCase
 import autoBid 
 import helpers
 import getEstimatedPoints
@@ -2187,7 +2188,7 @@ class getEstimatedPointsModule(unittest.TestCase):
         self.assertDictEqual(actual, expected)
     def test_only_pass_partner_passes_first(self):
         biddingObjRelative = {
-            "left": ['Pass', 'Two Diamond'],
+            "left": ['Pass', 'Three Diamond'],
             "top": ['One Heart', 'Two Heart'],
             "right": ['Pass', 'Pass'],
             "bottom": ['Pass'],
@@ -2306,7 +2307,7 @@ class getEstimatedPointsModule(unittest.TestCase):
         }
         bids = [['RightPlayer', 'Pass']]
         actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, '')
-        print(getEstimatedPoints.values['isTeamsFirstBid'])
+        print('actual = {0}'.format(actual))
         expected = {
            "left": {
                 "min": None,
@@ -2341,6 +2342,7 @@ class getEstimatedPointsModule(unittest.TestCase):
         }
         bids = [['TopPlayer', 'Pass'], ['RightPlayer', 'Pass']]
         actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        print('actual = {0}'.format(actual))
         expected = {
            "left": {
                 "min": None,
@@ -2375,6 +2377,7 @@ class getEstimatedPointsModule(unittest.TestCase):
         }
         bids = [['TopPlayer', 'One No Trump'], ['RightPlayer', 'Pass']]
         actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        print('actual = {0}'.format(actual))
         expected = {
            "left": {
                 "min": None,
@@ -2387,6 +2390,76 @@ class getEstimatedPointsModule(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_2_TwoClub_1(self):
+        biddingObjRelative = {
+            "left": [],
+            "top": ['Two Club'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['TopPlayer', 'Two Club'], ['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['twoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['twoClubs']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_2_TwoClub_1(self):
+        biddingObjRelative = {
+            "left": [],
+            "top": ['pass'],
+            "right": ['Two Club'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['TopPlayer', 'pass'], ['RightPlayer', 'Two Club']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['twoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['twoClubs']['max']
             },
             "bottom": {
                 "min": None,
@@ -2790,7 +2863,50 @@ class getPlayerHasOnlyPassed(unittest.TestCase):
         expected = False
         self.assertEqual(actual, expected)
 
-
+class getLocationAfterRotationsAround(unittest.TestCase):
+    def test_top(self):
+        location = 'top'
+        numberOfRotations = 1
+        actual = helpers.getLocationAfterRotationsAround(location, numberOfRotations)
+        expected = 'right'
+        self.assertEqual(actual, expected)
+    def test_top_1(self):
+        location = 'top'
+        numberOfRotations = 5
+        actual = helpers.getLocationAfterRotationsAround(location, numberOfRotations)
+        expected = 'right'
+        self.assertEqual(actual, expected)
+    def test_top_2(self):
+        location = 'top'
+        numberOfRotations = 9
+        actual = helpers.getLocationAfterRotationsAround(location, numberOfRotations)
+        expected = 'right'
+        self.assertEqual(actual, expected)
+    def test_right(self):
+        location = 'right'
+        numberOfRotations = 3
+        actual = helpers.getLocationAfterRotationsAround(location, numberOfRotations)
+        expected = 'top'
+        self.assertEqual(actual, expected)
+    def test_negative_1(self):
+        location = 'right'
+        numberOfRotations = -1
+        actual = helpers.getLocationAfterRotationsAround(location, numberOfRotations)
+        expected = 'top'
+        self.assertEqual(actual, expected)
+    def test_negative_2(self):
+        location = 'top'
+        numberOfRotations = -2
+        actual = helpers.getLocationAfterRotationsAround(location, numberOfRotations)
+        expected = 'bottom'
+        self.assertEqual(actual, expected)
+    def test_negative_3(self):
+        location = 'top'
+        numberOfRotations = -3
+        actual = helpers.getLocationAfterRotationsAround(location, numberOfRotations)
+        expected = 'right'
+        self.assertEqual(actual, expected)
+    
 
 
 

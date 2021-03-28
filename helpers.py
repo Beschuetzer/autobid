@@ -577,5 +577,18 @@ def getOpeningDistributionPoints(suitCounts):
         elif suitCounts[suit] > 4:
             points += suitCounts[suit] - 4
 
-    return points
+    return points    
 #endregion
+
+def getLocationAfterRotationsAround(location, numberOfRotations):
+    #inputs:
+        #location = a string representing relative locations: ('right', 'left',...)
+        #numberOfRotations = an int representing the number of clock-wise rotations
+    #returns a string representing relative locations: ('right', 'left',...)
+    #example location = 'right' and numberOfRotations = 1 => 'bottom'
+    #example location = 'right' and numberOfRotations = -1 => 'top'
+    locations = ['top', 'right', 'bottom', 'left']
+    indexOfLocation = locations.index(location)
+    return locations[(indexOfLocation + numberOfRotations) % 4]
+
+    locations[-1]

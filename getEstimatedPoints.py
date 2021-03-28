@@ -214,6 +214,9 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
         indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, allBids, 1)
         hasPartnerOpened = helpers.getHasPartnerOpened(allBids, username)
         firstBid = biddingObjRelative[location][0]
+        secondBid = None
+        if len(biddingObjRelative[location]) > 1:
+            secondBid = biddingObjRelative[location][1]
         lastBid = biddingObjRelative[location][-1]
 
         firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
@@ -247,6 +250,10 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
         #region Logic
         minToUse = -1;
         maxToUse = -1;
+
+        #if first bid is pass, partner passes, and any bid is close to opening points or a mistake?
+
+        #else
         
         if isTeamsFirstBidOpportunity is True and firstBidIsPass:
             print(1)
@@ -255,7 +262,11 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
             print(2)
-            haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative['right']) == 0 or re.search('pass' , biddingObjRelative['right'][0], re.IGNORECASE)
+            haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative['right']) == 0 or re.search('Pass' , biddingObjRelative['right'][0], re.IGNORECASE)
+            print('lastBid = {0}'.format(lastBid))
+            print('biddingObjRelative["right"][0] = {0}'.format(biddingObjRelative['right'][0]))
+            print('haveOpponentsNotHadTurnOrPassed = {0}'.format(haveOpponentsNotHadTurnOrPassed))
+            print('re:'.format(re.search('Pass' , biddingObjRelative['right'][0], re.IGNORECASE)))
 
             if re.search('trump', lastBid, re.IGNORECASE):
                 #partner = []
@@ -478,3 +489,7 @@ def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
         return True
 
     return len(biddingObjRelative[partnersLocation]) == 0
+
+
+
+
