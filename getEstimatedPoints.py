@@ -214,10 +214,11 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
         indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, allBids, 1)
         hasPartnerOpened = helpers.getHasPartnerOpened(allBids, username)
         firstBid = biddingObjRelative[location][0]
-        secondBid = None
+        secondBid = ''
+        lastBid = ''
         if len(biddingObjRelative[location]) > 1:
             secondBid = biddingObjRelative[location][1]
-        lastBid = biddingObjRelative[location][-1]
+            lastBid = biddingObjRelative[location][-1]
 
         firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
         isTeamsFirstBidOpportunity = getIsTeamsFirstBidOpportunity(biddingObjRelative, location)
@@ -255,7 +256,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         #if first bid is pass, partner passes, and any bid is close to opening points or a mistake?
         if not re.search('pass', firstBid, re.IGNORECASE):
-            minToUse, maxToUse = checkLastBid(location, biddingObjRelative, lastBid, hasPartnerOpened)
+            minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpShift, hasPartnerOpened, isPartnersFirstBidPass)
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
             continue
@@ -268,19 +269,19 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
             print(2)
-            minToUse, maxToUse = checkLastBid(location, biddingObjRelative, lastBid, hasPartnerOpened)
+            minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpShift, hasPartnerOpened, isPartnersFirstBidPass)
 
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
             #partner = ['something', ...]
             #player =['pass', ...]
             print(3)
-            minToUse, maxToUse = checkLastBid(location, biddingObjRelative, lastBid, hasPartnerOpened)
+            minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpShift, hasPartnerOpened, isPartnersFirstBidPass)
             
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
             print(4)
             #partner = ['something', ...]
             #player =['One Club', ...]
-            minToUse, maxToUse = checkLastBid(location, biddingObjRelative, lastBid, hasPartnerOpened)
+            minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpShift, hasPartnerOpened, isPartnersFirstBidPass)
 
 
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
@@ -290,7 +291,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
             print(6)
-            minToUse, maxToUse = checkLastBid(location, biddingObjRelative, lastBid, hasPartnerOpened)
+            minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpShift, hasPartnerOpened, isPartnersFirstBidPass)
 
             #partner = ['Pass', ...]
             #player =['Pass', ...]
@@ -503,6 +504,84 @@ def checkLastBid(location, biddingObjRelative, lastBid, hasPartnerOpened):
         #player =['One Club']
         minToUse = values['isTeamsFirstBid']['playerBidsSuit']['min']
         maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
+
+    return [minToUse, maxToUse]
+
+def checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpShift, hasPartnerOpened, isPartnersFirstBidPass):
+    locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
+    haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingObjRelative[locationsRightLocation][0], re.IGNORECASE)
+    
+    print('firstBid = {0}'.format(firstBid))
+    # print('biddingObjRelative["right"][0] = {0}'.format(biddingObjRelative['right'][0]))
+    # print('haveOpponentsNotHadTurnOrPassed = {0}'.format(haveOpponentsNotHadTurnOrPassed))
+    # print('re:'.format(re.search('Pass' , biddingObjRelative['right'][0], re.IGNORECASE)))
+
+    if re.search('trump', firstBid, re.IGNORECASE):
+        print('trump branch')
+        #partner = []
+        #player =['One NT']
+        minToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['min']
+        maxToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['max']
+
+    elif re.search('two club', firstBid, re.IGNORECASE) and haveOpponentsNotHadTurnOrPassed:
+        print('two branch')
+
+        #partner = []
+        #player =['Two Club']
+        maxToUse = values['special']['twoClubs']['max']
+        minToUse = values['special']['twoClubs']['min']
+
+    elif re.search('double', firstBid, re.IGNORECASE):
+        print('double branch')
+
+        #partner = []
+        #player =['Double']
+        minToUse = values['isTeamsFirstBid']['playerDoubles']['min']
+        maxToUse = values['isTeamsFirstBid']['playerDoubles']['max']
+
+    elif re.search('two', firstBid, re.IGNORECASE):
+        print('trump branch')
+
+        #partner = []
+        #player =['Two Diamond']
+        minToUse = values['special']['weakTwo']['min']
+        maxToUse = values['special']['weakTwo']['max']
+
+    elif re.search('three', firstBid, re.IGNORECASE):
+        print('three branch')
+
+            #partner = []
+        #player =['Three Club']
+        minToUse = values['special']['weakThree']['min']
+        maxToUse = values['special']['weakThree']['max']
+
+    elif re.search('pass', firstBid, re.IGNORECASE):
+        if hasPartnerOpened:
+            minToUse = values['partnerBidsFirst']['playerPasses']['min']
+            maxToUse = values['partnerBidsFirst']['playerPasses']['max']
+        else: 
+            minToUse = values['isTeamsFirstBid']['playerPasses']['min']
+            maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
+
+    else:
+        print('else branch')
+
+        #partner = []
+        #player =['One Club']
+        if hasPartnerOpened:
+            if isPartnersFirstBidPass:
+                minToUse = values['partnerPassesFirst']['playerBidsSuit']['min']
+                maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
+            else:
+                if isFirstBidJumpShift:
+                    minToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['min']
+                    maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['max']
+                else:
+                    minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
+                    maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
+        else:
+            minToUse = values['isTeamsFirstBid']['playerBidsSuit']['min']
+            maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
 
     return [minToUse, maxToUse]
 
