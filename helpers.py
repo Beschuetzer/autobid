@@ -596,15 +596,11 @@ def getLocationAfterRotationsAround(location, numberOfRotations):
     indexOfLocation = locations.index(location)
     return locations[(indexOfLocation + numberOfRotations) % 4]
 
-def getCurrentContractBidForUser(username, biddingUpToUsersLastTurn):
+def getCurrentContractBidFromBidding(bidding):
     #inputs:
-        #username as a string
-        #biddingUpToUsersLastTurn as list of all bids were made before the users last bid
-    #returns the currentContractBid for given user given the bidding up to that point
-    matchFound = False
-    for bid in reversed(biddingUpToUsersLastTurn):
-        if matchFound:
+        #bidding as list of all bids to consider
+    #returns the currentContractBid on the bidding
+    for bid in reversed(bidding):
+        if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return bid[1]
-        if bid[0] == username:
-            matchFound = True
 

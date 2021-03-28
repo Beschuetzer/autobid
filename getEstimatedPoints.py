@@ -216,7 +216,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative):
 
         #Getting the currentContractBid for the user in question
         biddingUpToUsersLastTurn = allBids[:helpers.getIndexOfNthBid(username, allBids, -1)]
-        currentContractBidForUser = helpers.getCurrentContractBidForUser(username, biddingUpToUsersLastTurn)
+        currentContractBidForUser = helpers.getCurrentContractBidFromBidding(biddingUpToUsersLastTurn)
         print('biddingUpToUsersTurn = {0}'.format(biddingUpToUsersLastTurn))
         print('currentContractBidForUser = {0}'.format(currentContractBidForUser))
 
