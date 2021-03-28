@@ -1637,9 +1637,9 @@ class getEstimatedPointsModule(unittest.TestCase):
     def test_open_Two_Club(self):
         biddingObjRelative = {
             "top": ['Two Club'],
-            "left": [],
-            "bottom": [],
             "right": ['Pass'],
+            "bottom": [],
+            "left": [],
         }
         seatingRelative = {
             "top": "Adam",
@@ -1648,11 +1648,11 @@ class getEstimatedPointsModule(unittest.TestCase):
             "right": "Ann",
         }
         bids = [['Adam', 'Two Club'],['Ann', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-1])
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative,bids, seatingRelative, bids[-2])
         expected = {
             "top": {
-                "min": getEstimatedPoints.OPENING_TWO_CLUB_FIRST_ROUND_MIN,
-                "max": getEstimatedPoints.OPENING_TWO_CLUB_FIRST_ROUND_MAX,
+                "min": getEstimatedPoints.values['special']['twoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['twoClubs']['max']
             },
             "bottom": {
                 "min": None,
@@ -1663,8 +1663,8 @@ class getEstimatedPointsModule(unittest.TestCase):
                 "max": None,
             },
             "right": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
             },
         }
         self.assertDictEqual(actual, expected)
@@ -2149,12 +2149,12 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-    def test_only_pass(self):
+    def test_only_pass_partner_open(self):
         biddingObjRelative = {
-            "top": ['Two Heart', 'Three Heart'],
             "left": ['One Diamond', 'Three Diamond'],
-            "bottom": ['Pass', 'Pass'],
-            "right": ['Two No Trump', 'Three No Trump'],
+            "top": ['Two Heart', 'Three Heart'],
+            "right": ['Pass', 'Pass'],
+            "bottom": ['Pass'],
         }
         seatingRelative = {
             "top": "TopPlayer",
@@ -2162,24 +2162,60 @@ class getEstimatedPointsModule(unittest.TestCase):
             "left": "LeftPlayer",
             "right": "RightPlayer",
         }
-        bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ['BottomPlayer', 'Pass'], ['LeftPlayer', "Three Diamond"],['TopPlayer', 'Three Heart'],['RightPlayer', 'Three No Trump'], ['BottomPlayer', 'Pass']]
+        bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Pass'], ['BottomPlayer', 'Pass'], ['LeftPlayer', "Three Diamond"],['TopPlayer', 'Three Heart'],['RightPlayer', 'Pass'], ['BottomPlayer', 'Pass']]
 
         expected = {
             "right": {
-                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MIN,
-                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MAX,
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
             },
             "bottom": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
+                "min": None,
+                "max": None,
             },
             "top": {
-                "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
-                "max": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['special']['weakTwo']['max']
             },
             "left": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN,
-                "max": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX,
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max']
+            },
+        }
+
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
+        self.assertDictEqual(actual, expected)
+    def test_only_pass_partner_passes_first(self):
+        biddingObjRelative = {
+            "left": ['Pass', 'Two Diamond'],
+            "top": ['One Heart', 'Two Heart'],
+            "right": ['Pass', 'Pass'],
+            "bottom": ['Pass'],
+        }
+        seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+        bids = [['LeftPlayer', "Pass"],['TopPlayer', 'One Heart'],['RightPlayer', 'Pass'], ['BottomPlayer', 'Pass'], ['LeftPlayer', "Two Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Pass'], ['BottomPlayer', 'Pass']]
+
+        expected = {
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max']
+            },
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
             },
         }
 
@@ -2337,7 +2373,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             "right": "RightPlayer",
             "bottom": "BottomPlayer",
         }
-        bids = [['TopPlayer', 'Pass'], ['RightPlayer', 'Pass']]
+        bids = [['TopPlayer', 'One No Trump'], ['RightPlayer', 'Pass']]
         actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
         expected = {
            "left": {
@@ -2575,7 +2611,7 @@ class getIsJumpShift(unittest.TestCase):
         actual = helpers.getIsJumpShift(currentContractBid, usersBid)
         expected = True
         self.assertEqual(actual, expected)
-class getIsAnyBidJumpShiftFunction(unittest.TestCase):
+class getHasPlayerJumpShifted(unittest.TestCase):
     def test_True_1(self):
         username = 'You'
         allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
@@ -2604,7 +2640,6 @@ class getIsAnyBidJumpShiftFunction(unittest.TestCase):
         actual = helpers.getHasPlayerJumpShifted(username, playersBids, allBids)
         expected = False
         self.assertEqual(actual, expected)
-
 class getHasSomeOneOpenedBefore(unittest.TestCase):
     def test_empty(self):
         indexOfUsersFirstBid = None

@@ -46,7 +46,6 @@ IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN = 13
 IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MAX = 18
 IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MIN = 16
 
-
 SPECIAL_WEAK_TWO_MAX = 12
 SPECIAL_WEAK_TWO_MIN = 9
 SPECIAL_WEAK_THREE_MAX = 12
@@ -92,6 +91,10 @@ OPENING_WEAK_THREE_AFTER_OPENERS_MIN = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
 
 #values convey all of the above information but in a more logically organized way
 values = {
+    #TODO: are there any cases where the point count isn't discernible from just the first two bids of each player?
+    #TODO: do we need to add values for cases like 'test_only_pass_partner_passes_first' left player case?
+    "passFirstBidSecond" : {
+    },
     "isTeamsFirstBid": {
         "playerPasses": {
             "min": IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
@@ -144,7 +147,7 @@ values = {
                 "min": PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_JUMPSHIFT_MIN,
                 "max": PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_JUMPSHIFT_MAX,
             },
-            "notJumpshift": {
+            "isNotJumpshift": {
                 "min": PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_NOT_JUMPSHIFT_MIN,
                 "max": PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_NOT_JUMPSHIFT_MAX,
             }
@@ -154,7 +157,7 @@ values = {
                 "min": PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_NT_IS_JUMPSHIFT_MIN,
                 "max": PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_NT_IS_JUMPSHIFT_MAX,
             },
-            "notJumpshift": {
+            "isNotJumpshift": {
                 "min": PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_NT_IS_NOT_JUMPSHIFT_MIN,
                 "max": PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_NT_IS_NOT_JUMPSHIFT_MAX,
             }
@@ -201,7 +204,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
     }
 
     for location, playersBids in biddingObjRelative.items():
-        #region Skipping to Next Player if no bids made
+        #region Skipping estimation if location is bottom (as that is your hand) or the player in question has made no bids
         numberOfBidsMade = len(biddingObjRelative[location])
         if numberOfBidsMade < 1 or re.search('bottom', location, re.IGNORECASE):
             continue
@@ -217,6 +220,8 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
         isTeamsFirstBidOpportunity = getIsTeamsFirstBidOpportunity(biddingObjRelative, location)
         isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(biddingObjRelative)
 
+        isFirstBidJumpShift = False
+        isLastBidJumpShift = False
         try: 
             isFirstBidJumpShift = helpers.getIsJumpShift(currentContractBid, firstBid)
             isLastBidJumpShift = helpers.getIsJumpShift(currentContractBid, lastBid)
@@ -255,38 +260,38 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
             if re.search('trump', lastBid, re.IGNORECASE):
                 #partner = []
                 #player =['One NT']
-                minToUse = values.isTeamsFirstBid.playerBidsNoTrump.min
-                maxToUse = values.isTeamsFirstBid.playerBidsNoTrump.max
+                minToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['min']
+                maxToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['max']
 
             elif re.search('two club', lastBid, re.IGNORECASE) and haveOpponentsNotHadTurnOrPassed:
                 #partner = []
                 #player =['Two Club']
-                maxToUse = values.special.twoClubs.max
-                minToUse = values.special.twoClubs.min
+                maxToUse = values['special']['twoClubs']['max']
+                minToUse = values['special']['twoClubs']['min']
 
             elif re.search('double', lastBid, re.IGNORECASE):
                 #partner = []
                 #player =['Double']
-                minToUse = values.isTeamsFirstBid.playerDoubles.min
-                maxToUse = values.isTeamsFirstBid.playerDoubles.max
+                minToUse = values['isTeamsFirstBid']['playerDoubles']['min']
+                maxToUse = values['isTeamsFirstBid']['playerDoubles']['max']
 
             elif re.search('two', lastBid, re.IGNORECASE):
                 #partner = []
                 #player =['Two Diamond']
-                minToUse = values.special.weakTwo.min
-                maxToUse = values.special.weakTwo.max
+                minToUse = values['special']['weakTwo']['min']
+                maxToUse = values['special']['weakTwo']['max']
 
             elif re.search('three', lastBid, re.IGNORECASE):
                   #partner = []
                 #player =['Three Club']
-                minToUse = values.special.weakThree.min
-                maxToUse = values.special.weakThree.max
+                minToUse = values['special']['weakThree']['min']
+                maxToUse = values['special']['weakThree']['max']
 
             else:
                 #partner = []
                 #player =['One Club']
-                minToUse = values.isTeamsFirstBid.playerBidsSuit.min
-                maxToUse = values.isTeamsFirstBid.playerBidsSuit.max
+                minToUse = values['isTeamsFirstBid']['playerBidsSuit']['min']
+                maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
 
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
             print(3)
