@@ -266,13 +266,11 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
             print(2)
             minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid)
 
-
-
-
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
-            print(3)
             #partner = ['something', ...]
             #player =['pass', ...]
+            print(3)
+            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid)
             
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
             print(4)
