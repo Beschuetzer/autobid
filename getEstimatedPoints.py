@@ -248,8 +248,8 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
         print('isTeamsFirstBidOpportunity = {0}'.format(isTeamsFirstBidOpportunity))
         #endregion
         #region Logic
-        minToUse = -1;
-        maxToUse = -1;
+        minToUse = None;
+        maxToUse = None;
 
         #if first bid is pass, partner passes, and any bid is close to opening points or a mistake?
 
@@ -262,49 +262,10 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
             print(2)
-            locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
-            haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingObjRelative[locationsRightLocation][0], re.IGNORECASE)
-            
-            print('lastBid = {0}'.format(lastBid))
-            print('biddingObjRelative["right"][0] = {0}'.format(biddingObjRelative['right'][0]))
-            print('haveOpponentsNotHadTurnOrPassed = {0}'.format(haveOpponentsNotHadTurnOrPassed))
-            print('re:'.format(re.search('Pass' , biddingObjRelative['right'][0], re.IGNORECASE)))
+            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid)
 
-            if re.search('trump', lastBid, re.IGNORECASE):
-                #partner = []
-                #player =['One NT']
-                minToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['min']
-                maxToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['max']
 
-            elif re.search('two club', lastBid, re.IGNORECASE) and haveOpponentsNotHadTurnOrPassed:
-                #partner = []
-                #player =['Two Club']
-                maxToUse = values['special']['twoClubs']['max']
-                minToUse = values['special']['twoClubs']['min']
 
-            elif re.search('double', lastBid, re.IGNORECASE):
-                #partner = []
-                #player =['Double']
-                minToUse = values['isTeamsFirstBid']['playerDoubles']['min']
-                maxToUse = values['isTeamsFirstBid']['playerDoubles']['max']
-
-            elif re.search('two', lastBid, re.IGNORECASE):
-                #partner = []
-                #player =['Two Diamond']
-                minToUse = values['special']['weakTwo']['min']
-                maxToUse = values['special']['weakTwo']['max']
-
-            elif re.search('three', lastBid, re.IGNORECASE):
-                  #partner = []
-                #player =['Three Club']
-                minToUse = values['special']['weakThree']['min']
-                maxToUse = values['special']['weakThree']['max']
-
-            else:
-                #partner = []
-                #player =['One Club']
-                minToUse = values['isTeamsFirstBid']['playerBidsSuit']['min']
-                maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
 
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
             print(3)
@@ -323,6 +284,8 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
             print(6)
+            minToUse, maxToUse = checkRegularCases(location, biddingObjRelative, lastBid)
+
             #partner = ['Pass', ...]
             #player =['Pass', ...]
         #endregion
@@ -469,6 +432,53 @@ def getPlayerHasOnlyPassed(playerBids):
             return False;
 
     return True
+
+def checkRegularCases(location, biddingObjRelative, lastBid):
+    locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
+    haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingObjRelative[locationsRightLocation][0], re.IGNORECASE)
+    
+    # print('lastBid = {0}'.format(lastBid))
+    # print('biddingObjRelative["right"][0] = {0}'.format(biddingObjRelative['right'][0]))
+    # print('haveOpponentsNotHadTurnOrPassed = {0}'.format(haveOpponentsNotHadTurnOrPassed))
+    # print('re:'.format(re.search('Pass' , biddingObjRelative['right'][0], re.IGNORECASE)))
+
+    if re.search('trump', lastBid, re.IGNORECASE):
+        #partner = []
+        #player =['One NT']
+        minToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['min']
+        maxToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['max']
+
+    elif re.search('two club', lastBid, re.IGNORECASE) and haveOpponentsNotHadTurnOrPassed:
+        #partner = []
+        #player =['Two Club']
+        maxToUse = values['special']['twoClubs']['max']
+        minToUse = values['special']['twoClubs']['min']
+
+    elif re.search('double', lastBid, re.IGNORECASE):
+        #partner = []
+        #player =['Double']
+        minToUse = values['isTeamsFirstBid']['playerDoubles']['min']
+        maxToUse = values['isTeamsFirstBid']['playerDoubles']['max']
+
+    elif re.search('two', lastBid, re.IGNORECASE):
+        #partner = []
+        #player =['Two Diamond']
+        minToUse = values['special']['weakTwo']['min']
+        maxToUse = values['special']['weakTwo']['max']
+
+    elif re.search('three', lastBid, re.IGNORECASE):
+            #partner = []
+        #player =['Three Club']
+        minToUse = values['special']['weakThree']['min']
+        maxToUse = values['special']['weakThree']['max']
+
+    else:
+        #partner = []
+        #player =['One Club']
+        minToUse = values['isTeamsFirstBid']['playerBidsSuit']['min']
+        maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
+
+    return [minToUse, maxToUse]
 
 def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
     partnersLocation = ''
