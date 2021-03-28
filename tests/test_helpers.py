@@ -2714,7 +2714,7 @@ class getEstimatedPointsModule(unittest.TestCase):
         self.assertDictEqual(actual, expected)
     def test_2_WeakTwo_4(self):
         biddingObjRelative = {
-            "left": [''],
+            "left": [],
             "top": ['One Club'],
             "right": ['Two Heart'],
             "bottom": [],
@@ -2726,6 +2726,41 @@ class getEstimatedPointsModule(unittest.TestCase):
             "bottom": "BottomPlayer",
         }
         bids = [['TopPlayer', 'One Club'], ['RightPlayer', 'Two Heart']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-1])
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['special']['weakTwo']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_2_WeakTwo_5(self):
+        biddingObjRelative = {
+            "left": ['Pass'],
+            "top": ['One Club'],
+            "right": ['Two Spade'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['LeftPlayer', 'Pass'], ['TopPlayer', 'One Club'], ['RightPlayer', 'Two Spade']]
         actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-1])
         print('actual = {0}'.format(actual))
         expected = {

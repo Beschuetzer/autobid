@@ -239,7 +239,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
         #region Debugging (remove when done)
         print('username = {0}'.format(username))
         print('currentContractBid = {0}'.format(currentContractBid))
-        print('players = {0}'.format(allBids[indexOfUsersFirstBid][1]))
+        # print('players = {0}'.format(allBids[indexOfUsersFirstBid][1]))
         print('biddingObjectRelative = {0}'.format(biddingObjRelative))
         print('firstBid = {0}'.format(firstBid))    
         print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
