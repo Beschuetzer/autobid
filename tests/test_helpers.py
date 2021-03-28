@@ -2165,7 +2165,8 @@ class getEstimatedPointsModule(unittest.TestCase):
             "left": "LeftPlayer",
             "right": "RightPlayer",
         }
-        bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Pass'], ['BottomPlayer', 'Pass'], ['LeftPlayer', "Three Diamond"],['TopPlayer', 'Three Heart'],['RightPlayer', 'Pass'], ['BottomPlayer', 'Pass']]
+        bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Pass'], ['BottomPlayer', 'Pass'], ['LeftPlayer', "Three Diamond"],['TopPlayer', 'Three Heart'],['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
 
         expected = {
             "right": {
@@ -2186,7 +2187,6 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
         }
 
-        actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-2])
         self.assertDictEqual(actual, expected)
     def test_only_pass_partner_passes_first(self):
         biddingObjRelative = {
