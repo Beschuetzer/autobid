@@ -94,6 +94,8 @@ values = {
     #TODO: are there any cases where the point count isn't discernible from just the first two bids of each player?
     #TODO: do we need to add values for cases like 'test_only_pass_partner_passes_first' left player case?
     "passFirstBidSecond" : {
+        "min": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN - 2,
+        "max": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX - 2,
     },
     "isTeamsFirstBid": {
         "playerPasses": {
