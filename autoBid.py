@@ -114,7 +114,7 @@ def autoBid(allBids, hand, scoring, seating, spot, clientPointCountingConvention
 
     biddingHistory = helpers.getBiddingHistory(allBids)
     seatingRelative = helpers.getSeatingRelative(seating, spot)
-    estimatedPoints = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentContractBid)
+    estimatedPoints = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, allBids, seatingRelative)
     estimatedSuitCounts = helpers.getEstimatedSuitCounts(biddingObjRelative, allBids, seatingRelative)
     partnersBids = biddingObjRelative['top']
     #endregion

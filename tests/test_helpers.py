@@ -2241,8 +2241,8 @@ class getEstimatedPointsModule(unittest.TestCase):
         actual = getEstimatedPoints.getEstimatedPoints(biddingObjRelative, bids, seatingRelative, bids[-1])
         expected = {
            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBids']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBids']['max']
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max']
             },
             "top": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],

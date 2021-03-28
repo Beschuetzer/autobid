@@ -182,7 +182,7 @@ values = {
 
 
 
-def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentContractBid):
+def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
         "top": {
@@ -211,6 +211,15 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
         #endregion
         #region Setup
         username = seatingRelative[location]
+        print('')
+        print('username = {0}'.format(username))
+
+        #Getting the currentContractBid for the user in question
+        biddingUpToUsersLastTurn = allBids[:helpers.getIndexOfNthBid(username, allBids, -1)]
+        currentContractBidForUser = helpers.getCurrentContractBidForUser(username, biddingUpToUsersLastTurn)
+        print('biddingUpToUsersTurn = {0}'.format(biddingUpToUsersLastTurn))
+        print('currentContractBidForUser = {0}'.format(currentContractBidForUser))
+
         indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, allBids, 1)
         hasPartnerOpened = helpers.getHasPartnerOpened(allBids, username)
         firstBid = biddingObjRelative[location][0]
@@ -226,9 +235,11 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         isFirstBidJumpshift = False
         isLastBidJumpshift = False
+        print('before----------------')
         try: 
-            isFirstBidJumpshift = helpers.getIsJumpshift(currentContractBid, firstBid)
-            isLastBidJumpshift = helpers.getIsJumpshift(currentContractBid, lastBid)
+            isFirstBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser, firstBid)
+            isLastBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser, lastBid)
+            print('after----------------')
 
             #TODO: do we need to check if the user made a bid that is a jumpshift ever and then have entirely separate logic in that case?
             isAnyBidJumpshift = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
@@ -238,9 +249,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
             pass
         #endregion
         #region Debugging (remove when done)
-        print('')
-        print('username = {0}'.format(username))
-        print('currentContractBid = {0}'.format(currentContractBid))
+        print('currentContractBid = {0}'.format(currentContractBidForUser))
         # print('players = {0}'.format(allBids[indexOfUsersFirstBid][1]))
         print('biddingObjectRelative = {0}'.format(biddingObjRelative))
         print('firstBid = {0}'.format(firstBid))    
@@ -256,6 +265,7 @@ def getEstimatedPoints(biddingObjRelative, allBids, seatingRelative, currentCont
 
         #if first bid is pass, partner passes, and any bid is close to opening points or a mistake?
         if not re.search('pass', firstBid, re.IGNORECASE):
+            print('exit early----')
             minToUse, maxToUse = checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
@@ -520,8 +530,13 @@ def checkFirstBid(location, biddingObjRelative, firstBid, isFirstBidJumpshift, h
         print('trump branch')
         #partner = []
         #player =['One NT']
-        minToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['min']
-        maxToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['max']
+        print('isFirstBidJumpshift = {0}'.format(isFirstBidJumpshift))
+        if isFirstBidJumpshift:
+            minToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isJumpshift']['min']
+            maxToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isJumpshift']['max']
+        else:
+            minToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['min']
+            maxToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['max']
 
     elif re.search('two club', firstBid, re.IGNORECASE) and haveOpponentsNotHadTurnOrPassed:
         print('two branch')

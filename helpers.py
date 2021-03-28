@@ -150,15 +150,20 @@ def getIsJumpshift(currentContractBid, usersBid):
     #inputs:
         #currentActualBid and usersBid = string representing bid
     #returns True/False whether usersBid is a jumpshift of currentActualBid
+    print('usersBid = {0}'.format(usersBid))
     if not currentContractBid or currentContractBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
         return False
     
     if isinstance(currentContractBid, list) and len(currentContractBid) > 1:
         currentContractBid = currentContractBid[1]
 
-    print('currentContractBid = {0}'.format(currentContractBid))
+    print('currentContractBid inside = {0}'.format(currentContractBid))
+    
     indexOfCurrentActualBid = autoBid.contracts.index(currentContractBid)
     indexOfUsersBid = autoBid.contracts.index(usersBid)
+
+    print('indexOfCurrentActualBid = {0}'.format(indexOfCurrentActualBid))
+    print('indexOfUsersBid = {0}'.format(indexOfUsersBid))
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
 def getHasPartnerOpened(allBids, username):
@@ -591,4 +596,15 @@ def getLocationAfterRotationsAround(location, numberOfRotations):
     indexOfLocation = locations.index(location)
     return locations[(indexOfLocation + numberOfRotations) % 4]
 
-    locations[-1]
+def getCurrentContractBidForUser(username, biddingUpToUsersLastTurn):
+    #inputs:
+        #username as a string
+        #biddingUpToUsersLastTurn as list of all bids were made before the users last bid
+    #returns the currentContractBid for given user given the bidding up to that point
+    matchFound = False
+    for bid in reversed(biddingUpToUsersLastTurn):
+        if matchFound:
+            return bid[1]
+        if bid[0] == username:
+            matchFound = True
+
