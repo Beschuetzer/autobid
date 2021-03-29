@@ -486,8 +486,8 @@ def setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift
             maxToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isJumpshift']['max']
         else:
             if hasPartnerOpened:
-                minToUse = values['partnerBidsFirst']['playerBidsNoTrump']['min']
-                maxToUse = values['partnerBidsFirst']['playerBidsNoTrump']['max']
+                minToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['min']
+                maxToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['max']
             else:
                 minToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['min']
                 maxToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['max']
