@@ -2675,7 +2675,7 @@ class getEstimatedPointsModule(unittest.TestCase):
         self.assertDictEqual(actual, expected)
     
     
-    def test_pass_first_bid_only_one_bid(self):
+    def test_0_exit_early(self):
         currentEstimatedPoints = {
             "left": None,
             "top": None,
@@ -2683,10 +2683,10 @@ class getEstimatedPointsModule(unittest.TestCase):
             "Bottom": None,
         }
         biddingObjRelative = {
-            "top": ['Two Heart'],
             "left": ['One Diamond'],
-            "bottom": ['Pass'],
+            "top": ['Two Heart'],
             "right": ['Two No Trump'],
+            "bottom": [],
         }
         seatingRelative = {
             "top": "TopPlayer",
@@ -2694,24 +2694,24 @@ class getEstimatedPointsModule(unittest.TestCase):
             "left": "LeftPlayer",
             "right": "RightPlayer",
         }
-        bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ['BottomPlayer', 'Pass']]
+        bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump']]
         actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
         expected = {
             "right": {
-                "min": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MIN,
-                "max": getEstimatedPoints.RESPONDING_NO_JUMPSHIFT_NT_MAX,
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['max']
             },
             "bottom": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN,
-                "max": getEstimatedPoints.PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX,
+                "min": None,
+                "max": None,
             },
             "top": {
-                "min": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN,
-                "max": getEstimatedPoints.OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX,
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['special']['weakTwo']['max'],
             },
             "left": {
-                "min": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN,
-                "max": getEstimatedPoints.IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX,
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max']
             },
         }
         self.assertDictEqual(actual, expected)
@@ -3745,42 +3745,45 @@ class getEstimatedPointsModule(unittest.TestCase):
 
 
 class getHasPartnerOpened(unittest.TestCase):
-    def setUp(self):
-        self.seatingRelative = {
-            "top": 'Adam',
-            "right": 'Tim',
-            "bottom": 'Ann',
-            "left": 'Andrew',
-        }
+    def test_incorrect_name(self):
+        bids = [['Adam', 'Pass'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        expected = helpers.getHasPartnerOpened(bids, 'Anns')
+        actual = None
+        self.assertEqual(expected, actual) 
     def test_false(self):
         bids = [['Adam', 'Pass'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
-        expected = helpers.getHasPartnerOpened(bids, self.seatingRelative)
+        expected = helpers.getHasPartnerOpened(bids, 'Ann')
+        actual = False
+        self.assertEqual(expected, actual) 
+    def test_false_2(self):
+        bids = [['Adam', 'Double'], ['Tim', 'Pass'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        expected = helpers.getHasPartnerOpened(bids, 'Andrew')
         actual = False
         self.assertEqual(expected, actual) 
     def test_true(self):
-        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Three Diamond'], ['Adam', 'Double']]
-        expected = helpers.getHasPartnerOpened(bids, self.seatingRelative)
+        bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Three Diamond'], ['Adam', 'Double']]
+        expected = helpers.getHasPartnerOpened(bids, 'Andrew')
         actual = True
         self.assertEqual(expected, actual) 
     def test_length_1(self):
         bids = [['Adam', '2 No Trump']]
-        expected = helpers.getHasPartnerOpened(bids, self.seatingRelative)
-        actual = False
+        expected = helpers.getHasPartnerOpened(bids, 'Andrew')
+        actual = None
         self.assertEqual(expected, actual) 
     def test_length_0(self):
         bids = []
-        expected = helpers.getHasPartnerOpened(bids, self.seatingRelative)
-        actual = False
+        expected = helpers.getHasPartnerOpened(bids, 'Andrew')
+        actual = None
         self.assertEqual(expected, actual) 
     def test_length_2(self):
         bids = [['Adam', '2 No Trump'],['Tim','Pass']]
-        expected = helpers.getHasPartnerOpened(bids, self.seatingRelative)
-        actual = True
+        expected = helpers.getHasPartnerOpened(bids, 'Tim')
+        actual = False
         self.assertEqual(expected, actual) 
     def test_true_2(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Three Diamond'], ['Adam', 'Double'], ['Tim', 'Three Heart']]
 
-        expected = helpers.getHasPartnerOpened(bids, self.seatingRelative)
+        expected = helpers.getHasPartnerOpened(bids, 'Ann')
         actual = True
         self.assertEqual(expected, actual) 
 class getIndexOfNthBid(unittest.TestCase):

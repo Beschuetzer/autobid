@@ -162,10 +162,13 @@ def getIsJumpshift(currentContractBid, usersBid):
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
 def getHasPartnerOpened(allBids, username):
-    #returns true or false depending on whether the player is responding to his/her partner
+    #returns true or false depending on whether the player is responding to his/her partner (partner didn't say pass 1st time)
     indexOfUsersFirstBid = getIndexOfNthBid(username, allBids, 1)
-    biddingUpToUsersFirstBid = allBids[:indexOfUsersFirstBid]
 
+    if indexOfUsersFirstBid is None:
+        return None
+
+    biddingUpToUsersFirstBid = allBids[:indexOfUsersFirstBid]
     if len(biddingUpToUsersFirstBid) <= 1:
         return False
         
