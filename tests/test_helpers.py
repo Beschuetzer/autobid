@@ -3744,6 +3744,7 @@ class getEstimatedPointsModule(unittest.TestCase):
         self.assertDictEqual(actual, expected)
     #endregion
     #region Updating Initial Bounds (when a player has bid twice)
+    #TODO: These tests are just copied over from setting intial section
     def test_update_1_exit_early(self):
         currentEstimatedPoints = {
             "left": None,
@@ -4235,7 +4236,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
-    def test_update_1_Rebular_Bid_3(self):
+    def test_update_1_Regular_Bid_3(self):
         currentEstimatedPoints = {
             "left": None,
             "top": None,
@@ -4645,10 +4646,11 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
+   
     #endregion
     #region updating bounds (when a player has bid more than twice?)
     #endregion
-    
+
 class getHasPartnerOpened(unittest.TestCase):
     def test_incorrect_name(self):
         bids = [['Adam', 'Pass'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
