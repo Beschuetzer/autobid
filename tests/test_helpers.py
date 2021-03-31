@@ -1671,7 +1671,37 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
         actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'right')
         expected = True
         self.assertEqual(actual, expected)
-
+class getIsBidGameBid(unittest.TestCase):
+    def test_empty(self):
+        bid = ''
+        actual = helpers.getIsBidGameBid(bid)
+        expected = None
+        self.assertEqual(actual, expected)
+    def test_none(self):
+        bid = None
+        actual = helpers.getIsBidGameBid(bid)
+        expected = None
+        self.assertEqual(actual, expected)
+    def test_lower(self):
+        bid = 'Four Diamond'
+        actual = helpers.getIsBidGameBid(bid)
+        expected = False
+        self.assertEqual(actual, expected)
+    def test_3NT(self):
+        bid = 'Three No Trump'
+        actual = helpers.getIsBidGameBid(bid)
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_Four_Hearts(self):
+        bid = 'Four Heart'
+        actual = helpers.getIsBidGameBid(bid)
+        expected = True
+        self.assertEqual(actual, expected)
+    def test_higher(self):
+        bid = 'Four Spade'
+        actual = helpers.getIsBidGameBid(bid)
+        expected = True
+        self.assertEqual(actual, expected)
 
 class getEstimatedPointsModule(unittest.TestCase):
     #region old test cases

@@ -604,11 +604,16 @@ def getCurrentContractBidFromBidding(bidding):
 
 def getIsBidGameBid(bid):
     #input bid as a string
-    #return true if bid is 3NT or greater than 4 Hearts otherwise false
-    if re.match('three no trump', bid, re.IGNORECASE):
-        return True
+    #return true if bid is 3NT or greater than 4 Hearts, None if error otherwise false
+    try:
+        if re.match('three no trump', bid, re.IGNORECASE):
+            return True
     
-    indexOfBid = autoBid.contracts.index(bid)
-    indexOfThreeHearts = autoBid.contracts.index('Three Heart')
-    
+        indexOfBid = autoBid.contracts.index(bid)
+        indexOfThreeHearts = autoBid.contracts.index('Four Heart')
+        if indexOfBid >= indexOfThreeHearts:
+            return True
+    except:
+        return None
+
     return False
