@@ -1705,7 +1705,20 @@ class getIsBidGameBid(unittest.TestCase):
 
 
 
-class getEstimatedPointsModule(unittest.TestCase):
+class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
+    def setUp(self):
+        self.currentEstimatedPoints = {
+            "left": None,
+            "top": None,
+            "right": None,
+            "Bottom": None,
+        }
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
     #region old test cases
     # def test_no_bids(self):
     #     currentEstimatedPoints = {
@@ -2874,26 +2887,14 @@ class getEstimatedPointsModule(unittest.TestCase):
     #endregion
     #region Setting Initial Bounds (when a player has only bid once)
     def test_set_exit_early(self):
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingObjRelative = {
             "left": ['One Diamond'],
             "top": ['Two Heart'],
             "right": ['Two No Trump'],
             "bottom": [],
         }
-        seatingRelative = {
-            "top": "TopPlayer",
-            "bottom": "BottomPlayer",
-            "left": "LeftPlayer",
-            "right": "RightPlayer",
-        }
         bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         expected = {
             "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['min'],
@@ -3753,6 +3754,48 @@ class getEstimatedPointsModule(unittest.TestCase):
             "bottom": "BottomPlayer",
         }
         bids = [['LeftPlayer', 'One Diamond'], ['TopPlayer', 'Three Heart'], ['RightPlayer', 'Pass']]
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        print('actual = {0}'.format(actual))
+        expected = {
+           "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakThree']['min'],
+                "max": getEstimatedPoints.values['special']['weakThree']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(actual, expected)
+    def test_bottom_is_dealer(self):
+        #TODO: when bottom is dealer, 
+        currentEstimatedPoints = {
+            "left": None,
+            "top": None,
+            "right": None,
+            "Bottom": None,
+        }
+        biddingObjRelative = {
+            "left": ['pass'],
+            "top": ['pass'],
+            "right": ['pass'],
+            "bottom": ['Four Heart'],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        bids = [['LeftPlayer', 'pass'], ['TopPlayer', 'pass'], ['RightPlayer', 'Pass'], ['BottomPlayer', 'Four Heart']]
         actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
@@ -4678,6 +4721,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             },
         }
         self.assertDictEqual(actual, expected)
+    
    
     #endregion
     #region updating bounds (when a player has bid more than twice?)
@@ -5162,7 +5206,7 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
         estimated = 'top'
         actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
         self.assertEqual(actual, estimated)
-    def test_bottom(self):
+    def test_right(self):
         biddingObjRelative = {
             "left": [],
             "top": [],
@@ -5170,6 +5214,16 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
             "bottom": [],
         }
         estimated = 'right'
+        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        self.assertEqual(actual, estimated)
+    def test_bottom(self):
+        biddingObjRelative = {
+            "left": ['p'],
+            "top": ['p'],
+            "right": ['pass'],
+            "bottom": ['pass'],
+        }
+        estimated = 'bottom'
         actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
         self.assertEqual(actual, estimated)
     def test_two_1(self):
@@ -5203,7 +5257,7 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
         actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
         self.assertEqual(actual, estimated)
 
-class getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelative):
+class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
     def test_none(self):
         biddingObjRelative = None
         seatingRelative = {

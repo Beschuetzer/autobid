@@ -637,6 +637,7 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelat
         #get new order based on dealer
         locationOrderToUse = locationOrder
         if dealer != locations['left']:
+            #TODO: Finish this here to get locationOrderToUse
             pass
 
         #iterate through each location n times where n is the # of opportunities the dealer has had to bid and add bids in order they were made 
@@ -660,7 +661,7 @@ def getDealerFromBiddingObjRelative(biddingObjRelative):
         currentMax = 0
         dealer = None
         locations = getEstimatedPoints.locations
-        locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
+        locationOrder = [locations['bottom'], locations['left'], locations['top'],locations['right']]
         for location in locationOrder:
             lengthOfLocationsBidding = len(biddingObjRelative[location])
             if lengthOfLocationsBidding > currentMax:
