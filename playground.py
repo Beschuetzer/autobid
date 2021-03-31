@@ -21,8 +21,16 @@
 #         break
 
 # print('isAnyBidJumpShift = {0}'.format(isAnyBidJumpShift))
+import getEstimatedPoints
 
 
-locations = ['top', 'right', 'bottom', 'left']
-locations.append('test')
-print('locations = {0}'.format(locations))
+locations = getEstimatedPoints.locations
+locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
+
+#get new order based on dealer
+locationOrderToUse = locationOrder
+
+index = locationOrder.index(locations['bottom'])
+locationOrderToUse = locationOrder[index:] + locationOrder[:index]
+
+print('locationOrderToUse = {0}'.format(locationOrderToUse))

@@ -632,21 +632,25 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelat
         locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
 
         dealer = getDealerFromBiddingObjRelative(biddingObjRelative)
-        print('dealer = {0}'.format(dealer))    
 
         #get new order based on dealer
         locationOrderToUse = locationOrder
         if dealer != locations['left']:
-            #TODO: Finish this here to get locationOrderToUse
-            pass
+            index = locationOrder.index(locations[dealer])
+            locationOrderToUse = locationOrder[index:] + locationOrder[:index]
 
         #iterate through each location n times where n is the # of opportunities the dealer has had to bid and add bids in order they were made 
         bids = []
+
+        print('dealer = {0}'.format(dealer))    
+        print('locationOrderToUse = {0}'.format(locationOrderToUse))
         for i in range(0, len(biddingObjRelative[dealer])):
             
             for j in range(0, len(locationOrderToUse)):
                 locationToGet = locationOrderToUse[j]
                 bidInQuestion = biddingObjRelative[locationToGet]
+                print('locationToGet = {0}'.format(locationToGet))
+                print('bidInQuestion = {0}'.format(bidInQuestion))
                 if bidInQuestion is not None:
                     bids.append([seatingRelative[locationToGet], bidInQuestion])
                 else:
