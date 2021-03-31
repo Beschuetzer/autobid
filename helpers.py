@@ -627,10 +627,33 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelat
     #note: this is written to facilitate test case writing for getEstimatedPoints
     #input biddingObjRelative and seatingRelative dictionaries
     #returns the bidding array e.g. [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ...]
+    try:
+        locations = getEstimatedPoints.locations
+        locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
 
-    #figure out who is the dealer (first person with the most bids)
-    dealer = getDealerFromBiddingObjRelative(biddingObjRelative)
-    print('dealer = {0}'.format(dealer))    
+        dealer = getDealerFromBiddingObjRelative(biddingObjRelative)
+        print('dealer = {0}'.format(dealer))    
+
+        #get new order based on dealer
+        locationOrderToUse = locationOrder
+        if dealer != locations['left']:
+            pass
+
+        #iterate through each location n times where n is the # of opportunities the dealer has had to bid and add bids in order they were made 
+        bids = []
+        for i in range(0, len(biddingObjRelative[dealer])):
+            
+            for j in range(0, len(locationOrderToUse)):
+                locationToGet = locationOrderToUse[j]
+                bidInQuestion = biddingObjRelative[locationToGet]
+                if bidInQuestion is not None:
+                    bids.append([seatingRelative[locationToGet], bidInQuestion])
+                else:
+                    break
+
+        return bids
+    except:
+        return None
 
 def getDealerFromBiddingObjRelative(biddingObjRelative):
     try:

@@ -5202,6 +5202,53 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
         estimated = 'top'
         actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
         self.assertEqual(actual, estimated)
+
+class getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelative):
+    def test_none(self):
+        biddingObjRelative = None
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        expected = "test"
+        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelative)
+        self.assertListEqual(actual, expected)
+        
+    def test_empty(self):
+        biddingObjRelative = {
+            "left": [],
+            "top": [],
+            "right": [],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        expected = None
+        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelative)
+        self.assertListEqual(actual, expected)
+
+    def test_1(self):
+        biddingObjRelative = {
+            "left": ['One Diamond'],
+            "top": ['Three Heart'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        seatingRelative = {
+            "left": "LeftPlayer",
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+        }
+        expected = [['LeftPlayer', 'One Diamond'], ['TopPlayer', 'Three Heart'], ['RightPlayer', 'Pass']]
+        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelative)
+        self.assertListEqual(actual, expected)
 #endregion
 
 

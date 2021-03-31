@@ -24,5 +24,5 @@
 
 
 locations = ['top', 'right', 'bottom', 'left']
-indexOfLocation = locations.index('location')
-print('indexOfLocation = {0}'.format(indexOfLocation))
+locations.append('test')
+print('locations = {0}'.format(locations))
