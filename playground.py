@@ -33,4 +33,4 @@ locationOrderToUse = locationOrder
 index = locationOrder.index(locations['bottom'])
 locationOrderToUse = locationOrder[index:] + locationOrder[:index]
 
-print('locationOrderToUse = {0}'.format(locationOrderToUse))
+print('locationOrderToUse = {0}'.format(locationOrderToUse[:-1]))

@@ -648,16 +648,27 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelat
             
             for j in range(0, len(locationOrderToUse)):
                 locationToGet = locationOrderToUse[j]
-                bidInQuestion = biddingObjRelative[locationToGet]
                 print('locationToGet = {0}'.format(locationToGet))
-                print('bidInQuestion = {0}'.format(bidInQuestion))
+
+                try:
+                    bidInQuestion = biddingObjRelative[locationToGet][i]   
+                except:
+                    break      
+
                 if bidInQuestion is not None:
+                    print('bidInQuestion = {0}'.format(bidInQuestion))
+                    print('seatingRelative[locationToGet] = {0}'.format(seatingRelative[locationToGet]))
                     bids.append([seatingRelative[locationToGet], bidInQuestion])
+                    print('bids = {0}'.format(bids))
                 else:
                     break
-
+                
+        if re.search('bottom', bids[-1][0], re.IGNORECASE):
+            bids = bids[:-1]
         return bids
+
     except:
+        print('error-----------')
         return None
 
 def getDealerFromBiddingObjRelative(biddingObjRelative):
@@ -669,8 +680,10 @@ def getDealerFromBiddingObjRelative(biddingObjRelative):
         for location in locationOrder:
             lengthOfLocationsBidding = len(biddingObjRelative[location])
             if lengthOfLocationsBidding > currentMax:
+
                 currentMax = lengthOfLocationsBidding
                 dealer = location
+
         return dealer
     except:
         return None
