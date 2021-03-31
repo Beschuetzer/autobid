@@ -3818,7 +3818,15 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.assertDictEqual(actual, expected)
     #endregion
-    #region Updating Initial Bounds (when a player has bid twice)
+
+class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
+    def setUp(self):
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
     #TODO: These tests are just copied over from setting intial section
     def test_update_1_exit_early(self):
         currentEstimatedPoints = {
@@ -3833,14 +3841,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Two No Trump'],
             "bottom": ['Pass'],
         }
-        seatingRelative = {
-            "top": "TopPlayer",
-            "bottom": "BottomPlayer",
-            "left": "LeftPlayer",
-            "right": "RightPlayer",
-        }
         bids = [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         expected = {
             "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['min'],
@@ -3873,14 +3875,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['pass'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -3914,14 +3910,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['pass'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'Pass'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -3955,14 +3945,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['pass'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'One No Trump'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -3996,14 +3980,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['pass'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'Two Club'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4037,14 +4015,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Two Club'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'pass'], ['RightPlayer', 'Two Club']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4078,14 +4050,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Two Club'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['LeftPlayer', 'pass'],['TopPlayer', 'pass'], ['RightPlayer', 'Two Club']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4119,14 +4085,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['pass'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'Double'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4160,14 +4120,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Double'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'pass'], ['RightPlayer', 'Double']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4201,14 +4155,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Double'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['LeftPlayer', 'pass'],['TopPlayer', 'pass'], ['RightPlayer', 'Double']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4242,14 +4190,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['pass'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'One Diamond'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4283,14 +4225,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['One Diamond'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'pass'], ['RightPlayer', 'One Diamond']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4324,14 +4260,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['One Spade'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['LeftPlayer', 'pass'],['TopPlayer', 'pass'], ['RightPlayer', 'One Spade']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4365,14 +4295,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['pass'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'Two Diamond'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4406,14 +4330,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Two Spade'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'pass'], ['RightPlayer', 'Two Spade']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4447,14 +4365,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Two Heart'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['LeftPlayer', 'pass'],['TopPlayer', 'pass'], ['RightPlayer', 'Two Heart']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4488,14 +4400,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Two Heart'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'One Club'], ['RightPlayer', 'Two Heart']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4529,14 +4435,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Two Spade'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['LeftPlayer', 'Pass'], ['TopPlayer', 'One Club'], ['RightPlayer', 'Two Spade']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4570,14 +4470,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['pass'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'Three Diamond'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4611,14 +4505,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Three Diamond'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['TopPlayer', 'pass'], ['RightPlayer', 'Three Diamond']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4652,14 +4540,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['Three Diamond'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['LeftPlayer', 'pass'],['TopPlayer', 'pass'], ['RightPlayer', 'Three Diamond']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4693,14 +4575,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": ['pass'],
             "bottom": [],
         }
-        seatingRelative = {
-            "left": "LeftPlayer",
-            "top": "TopPlayer",
-            "right": "RightPlayer",
-            "bottom": "BottomPlayer",
-        }
         bids = [['LeftPlayer', 'One Diamond'], ['TopPlayer', 'Three Heart'], ['RightPlayer', 'Pass']]
-        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, seatingRelative)
+        actual = getEstimatedPoints.getEstimatedPoints(currentEstimatedPoints, biddingObjRelative, bids, self.seatingRelative)
         print('actual = {0}'.format(actual))
         expected = {
            "left": {
@@ -4723,7 +4599,6 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         self.assertDictEqual(actual, expected)
     
    
-    #endregion
     #region updating bounds (when a player has bid more than twice?)
     #endregion
 
