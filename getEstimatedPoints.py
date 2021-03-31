@@ -263,10 +263,11 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
             minToUse = None;
             maxToUse = None;
 
-            if firstBidIsPass:
+            if isTeamsFirstBidOpportunity and firstBidIsPass:
                 print('one opportunity first bid pass-----------')
                 minToUse = values['isTeamsFirstBid']['playerPasses']['min']
                 maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
+                
             else: 
                 print('one opportunity else-----------')
                 minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)

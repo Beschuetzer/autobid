@@ -776,6 +776,36 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
     def test_set_NT_1(self):
         biddingObjRelative = {
+            "left": ['One No Trump'],
+            "top": ['pass'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        
+        self.expected = {
+           "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max']
+            },
+            "top": {
+               "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(self.actual, self.expected)
+    def test_set_NT_2(self):
+        biddingObjRelative = {
             "left": [],
             "top": ['One No Trump'],
             "right": ['pass'],
@@ -804,6 +834,38 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             },
         }
         self.assertDictEqual(self.actual, self.expected)
+    def test_set_NT_3(self):
+        biddingObjRelative = {
+            "left": ['pass'],
+            "top": ['pass'],
+            "right": ['One No Trump'],
+            "bottom": [],
+        }
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        
+        self.expected = {
+           "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'] 
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+               
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsNoTrump']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(self.actual, self.expected)
+   
     def test_set_TwoClub_1(self):
         biddingObjRelative = {
             "left": [],
@@ -1345,6 +1407,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.assertDictEqual(self.actual, self.expected)
     def test_bottom_is_dealer(self):
+      #my assumption that bottom would always have one fewer bids than the others was incorrect as it will be the same if it is bottom's deal:
         biddingObjRelative = {
             "left": ['pass'],
             "top": ['pass'],
@@ -1354,15 +1417,14 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
 
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
-        
         self.expected = {
            "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
             },
             "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
             },
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsNoTrump']['min'],
@@ -1375,4 +1437,12 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.assertDictEqual(self.actual, self.expected)
 
-#TODO: These tests are just copied over from setting above section
+class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
+  #TODO: add tests for two bid opportunity cases...
+  pass
+
+
+class getEstimatedPointsMoreThanTwoBidOpportunities(unittest.TestCase):
+  #TODO: add tests for more than two bid opportunity cases...
+  #Can just rely on the TwoBidOpportunity evaluations unless there are certain behaviors like bidding the same suit every time or jumpshifts?
+  pass
