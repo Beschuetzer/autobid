@@ -669,7 +669,7 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelat
 
     except:
         print('error-----------')
-        return None
+        return []
 
 def getDealerFromBiddingObjRelative(biddingObjRelative):
     try:

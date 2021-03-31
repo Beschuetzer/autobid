@@ -2243,7 +2243,7 @@ class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
         }
     def test_none(self):
         biddingObjRelative = None
-        expected = None
+        expected = []
         actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
         self.assertEqual(actual, expected)
         
@@ -2255,7 +2255,7 @@ class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
             "bottom": [],
         }
         
-        expected = None
+        expected = []
         actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
         self.assertEqual(actual, expected)
     def test_bottom_dealer(self):
