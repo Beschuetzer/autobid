@@ -275,7 +275,6 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
             #else
             #endregion
             else: 
-                #region TODO: THis logic is a bit redundant here as we only need to handle cases where there is one bid made at most for each player and the player's bid is a pass?:
                 if isTeamsFirstBidOpportunity is True and firstBidIsPass:
                     print(1)
                     minToUse = values['isTeamsFirstBid']['playerPasses']['min']
@@ -291,174 +290,84 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
                     print(3)
                     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
                     
-                elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
-                    print(4)
-                    #partner = ['something', ...]
-                    #player =['One Club', ...]
-                    minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                #region TODO: 4-6 are not being hit by test cases.  Do we need them here as we only need to handle cases where there is one bid made at most for each player and the player's bid is a pass?:
+                
+
+                # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
+                #     print(4)
+                #     #partner = ['something', ...]
+                #     #player =['One Club', ...]
+                #     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
 
 
-                elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
-                    print(5)
-                    #partner = ['pass', ...]
-                    #player =['One Club', ...]
+                # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
+                #TODO: write a case for this logic
+                #     print(5)
+                #     #partner = ['pass', ...]
+                #     #player =['One Club', ...]
 
-                elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
-                    print(6)
-                    minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
+                #     print(6)
+                #     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
 
                     #partner = ['Pass', ...]
                     #player =['Pass', ...]
+                #endregion
+                
                 estimatedScoring[location]['min'] = minToUse
                 estimatedScoring[location]['max'] = maxToUse
-                #endregion
         #endregion
+        #region updating bounds using estimatedScoringBounds
         else:
-            #updating bounds using estimatedScoringBounds
-            #region when the first bid is pass but the second bid is an actual bid
-            if firstBidIsPass:
-                if not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
-                    print('first bid pass second not')
-                    estimatedScoring[location]['min'] = 11
-                    estimatedScoring[location]['max'] = 13
-                    continue
-            else: 
+            #region when the opportunities to bid is two long
+            if len(playersBids) == 2: 
+                #region when the first bid is pass and 2nd bid is not pass or double
+                if firstBidIsPass:
+                    if not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
+                        print('first bid pass second not')
+                        estimatedScoring[location]['min'] = 11
+                        estimatedScoring[location]['max'] = 13
+                        continue
+                    else:
+                        #update min/max if two passes in a row?
+                        pass
+
+                else:
+                    #when opportunities to bid is two and first bid is not pass?
+
+                    #when do we need to consider partners bids?
+                    #pass
+                    pass
+                #endregion
+
+
+                    #did they pass first time?
+
+                    #did they bid a suit or nt first time?
+                        #did their partner pass or bid? 
+
+                #bid suit
+                    #did you bid same suit for first bid?
+
+                #bid nt
+                    #did you bid NT for first bid?
+
+
+                #bid same suit
                 pass
+            #endregion
+            #region When the opportunities to bid is longer than 2
+            else:
+                #did they say the same suit multiple times?
+                #did they pass first then jumpshift?
+                pass
+            #endregion
 
-
-        #region Not sure 
-        # #partner = ['something']
-        # #player =['pass']
-        # playerBids = biddingObjRelative[location]
-        # playerHasOnlyPassed = getPlayerHasOnlyPassed(playerBids);
-        
-        # if playerHasOnlyPassed:
-        #     #partner = [...]
-        #     #player =['pass','pass','pass','pass','pass'...]
-        #     minToUse = values.isTeamsFirstBid.playerPasses.min
-        #     maxToUse = values.isTeamsFirstBid.playerPasses.max              
-        # else:
-        #     #case partner opened:
-        #     if hasPartnerOpened:
-        #         #partner = ['One NT', ...]
-        #         #player =['pass','two diamonds', ...]
-        #         minToUse = values.partnerPassesFirst.playerPasses.min
-        #         maxToUse = values.partnerPassesFirst.playerPasses.max
-        #     else:
-        #         #partner = ['pass', ...]
-        #         #player =['pass','two diamonds', ...]
-        #         minToUse = values.partnerBidsFirst.playerPasses.min
-        #         maxToUse = values.partnerBidsFirst.playerPasses.max
+            #returning the values that are already present if no other cases hit
+            estimatedScoring[location]['min'] = estimatedScoringBounds[location]['min']
+            estimatedScoring[location]['max'] = estimatedScoringBounds[location]['max']
         #endregion
-        #region Adam's Not Working Code
-        # if re.search('pass', firstBid, re.IGNORECASE):
-        #     print('pass')
-        #     currentBidsForThisPlayer = biddingObjRelative[location]
-        #     #TODO: remember to check whether you length of partners bidding array is 0
-        #     #if it is, it is the same case as partner passes first
-        #     if len(currentBidsForThisPlayer) > 1:
-        #         secondBid = currentBidsForThisPlayer[1]
-        #         indexOfUsersSecondBid = getIndexOfNthBid(username, allBids, 2)
-                
-        #         secondBidIsJumpShift = getIsJumpShift(allBids[:indexOfUsersSecondBid], secondBid)
-
-        #         print('secondBid = {0}'.format(secondBid))
-        #         print('indexOfUsersSecondBid = {0}'.format(indexOfUsersSecondBid))
-        #         print('secondBidIsJumpShift = {0}'.format(secondBidIsJumpShift))
-
-        #         if secondBidIsJumpShift:
-        #             print('here')
-        #             estimatedScoring[location]['min'] = RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN
-        #             estimatedScoring[location]['max'] = RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX
-        #         else:
-        #             if re.search('trump', secondBid, re.IGNORECASE):
-        #                 estimatedScoring[location]['min'] = PASS_FIRST_NT_SECOND_ROUND_MIN
-        #                 estimatedScoring[location]['max'] = PASS_FIRST_NT_SECOND_ROUND_MAX
-        #             elif re.search('double', secondBid, re.IGNORECASE):
-        #                 estimatedScoring[location]['min'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MIN
-        #                 estimatedScoring[location]['max'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MAX
-        #             elif re.search('pass', secondBid, re.IGNORECASE):
-        #                 #this is needed to handle cases when # of bids is > 1 and 1st and 2nd bids are pass
-        #                 estimatedScoring[location]['min'] = PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN
-        #                 estimatedScoring[location]['max'] = PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX
-        #             else:
-        #                 estimatedScoring[location]['min'] = PASS_FIRST_BID_SECOND_ROUND_MIN
-        #                 estimatedScoring[location]['max'] = PASS_FIRST_BID_SECOND_ROUND_MAX
-        #     else:
-        #         estimatedScoring[location]['min'] = PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN
-        #         estimatedScoring[location]['max'] = PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX
-        # elif not hasPartnerOpened:
-        #     print('opening')
-        #     if re.search('trump', firstBid, re.IGNORECASE):
-        #         estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
-        #         estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
-        #     elif re.search('double', firstBid, re.IGNORECASE):
-        #         estimatedScoring[location]['min'] = OPENING_DOUBLE_FIRST_ROUND_MIN
-        #         estimatedScoring[location]['max'] = OPENING_DOUBLE_FIRST_ROUND_MAX
-        #     elif re.search('Two Club', firstBid, re.IGNORECASE):
-        #         estimatedScoring[location]['min'] = OPENING_TWO_CLUB_FIRST_ROUND_MIN
-        #         estimatedScoring[location]['max'] = OPENING_TWO_CLUB_FIRST_ROUND_MAX
-        #     else:
-        #         hasSomeOneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
-        #         if re.search('Two', firstBid, re.IGNORECASE):
-        #             if not hasSomeOneOpenedBefore:
-        #                 estimatedScoring[location]['min'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
-        #                 estimatedScoring[location]['max'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX
-        #             else:
-        #                 if not isJumpShift:
-        #                     estimatedScoring[location]['min'] = OPENING_WEAK_TWO_AFTER_OPENERS_MIN
-        #                     estimatedScoring[location]['max'] = OPENING_WEAK_TWO_AFTER_OPENERS_MAX
-        #                 elif isJumpShift:
-        #                     estimatedScoring[location]['min'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
-        #                     estimatedScoring[location]['max'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX
-                       
-        #         elif re.search('Three', firstBid, re.IGNORECASE):
-        #             if not hasSomeOneOpenedBefore:
-        #                 estimatedScoring[location]['min'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
-        #                 estimatedScoring[location]['max'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
-        #             else:
-        #                 if not isJumpShift:
-        #                     estimatedScoring[location]['min'] = OPENING_WEAK_THREE_AFTER_OPENERS_MIN
-        #                     estimatedScoring[location]['max'] = OPENING_WEAK_THREE_AFTER_OPENERS_MAX
-        #                 elif isJumpShift:
-        #                     estimatedScoring[location]['min'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
-        #                     estimatedScoring[location]['max'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
-                        
-        #         else:
-        #             estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
-        #             estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
-        # else:
-            # print('responding')
-            # if re.search('double', firstBid, re.IGNORECASE):
-            #     estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
-            #     estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX            
-            # else:
-            #     partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
-            #     partnersLastBid = allBids[helpers.getIndexOfNthBid(seatingRelative[partnersLocation], allBids, -1)][1]
-
-            #     print('partnersLastBid = {0}'.format(partnersLastBid))
-                
-            #     if isJumpShift:
-            #             if re.search('trump', firstBid, re.IGNORECASE):
-            #                 estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
-            #                 estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
-            #             else:
-            #                 estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
-            #                 estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
-            #     else:
-            #         if re.search('three', firstBid, re.IGNORECASE):                     
-            #             estimatedScoring[location]['min'] = OPENING_WEAK_THREE_AFTER_OPENERS_MIN
-            #             estimatedScoring[location]['max'] = OPENING_WEAK_THREE_AFTER_OPENERS_MAX
-            #         else:
-            #             if re.search('trump', firstBid, re.IGNORECASE):
-            #                 estimatedScoring[location]['min'] = RESPONDING_NO_JUMPSHIFT_NT_MIN
-            #                 estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_NT_MAX
-            #             else: 
-            #                 estimatedScoring[location]['min'] =    RESPONDING_NO_JUMPSHIFT_MIN
-            #                 estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_MAX
-        #endregion 
     print('')
-
     return estimatedScoring
 
 def getPlayerHasOnlyPassed(playerBids):
@@ -575,3 +484,137 @@ def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
 
 
 
+
+
+
+#region Not sure 
+# #partner = ['something']
+# #player =['pass']
+# playerBids = biddingObjRelative[location]
+# playerHasOnlyPassed = getPlayerHasOnlyPassed(playerBids);
+
+# if playerHasOnlyPassed:
+#     #partner = [...]
+#     #player =['pass','pass','pass','pass','pass'...]
+#     minToUse = values.isTeamsFirstBid.playerPasses.min
+#     maxToUse = values.isTeamsFirstBid.playerPasses.max              
+# else:
+#     #case partner opened:
+#     if hasPartnerOpened:
+#         #partner = ['One NT', ...]
+#         #player =['pass','two diamonds', ...]
+#         minToUse = values.partnerPassesFirst.playerPasses.min
+#         maxToUse = values.partnerPassesFirst.playerPasses.max
+#     else:
+#         #partner = ['pass', ...]
+#         #player =['pass','two diamonds', ...]
+#         minToUse = values.partnerBidsFirst.playerPasses.min
+#         maxToUse = values.partnerBidsFirst.playerPasses.max
+#endregion
+#region Adam's Not Working Code
+# if re.search('pass', firstBid, re.IGNORECASE):
+#     print('pass')
+#     currentBidsForThisPlayer = biddingObjRelative[location]
+#     #TODO: remember to check whether you length of partners bidding array is 0
+#     #if it is, it is the same case as partner passes first
+#     if len(currentBidsForThisPlayer) > 1:
+#         secondBid = currentBidsForThisPlayer[1]
+#         indexOfUsersSecondBid = getIndexOfNthBid(username, allBids, 2)
+    
+#         secondBidIsJumpShift = getIsJumpShift(allBids[:indexOfUsersSecondBid], secondBid)
+
+#         print('secondBid = {0}'.format(secondBid))
+#         print('indexOfUsersSecondBid = {0}'.format(indexOfUsersSecondBid))
+#         print('secondBidIsJumpShift = {0}'.format(secondBidIsJumpShift))
+
+#         if secondBidIsJumpShift:
+#             print('here')
+#             estimatedScoring[location]['min'] = RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN
+#             estimatedScoring[location]['max'] = RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX
+#         else:
+#             if re.search('trump', secondBid, re.IGNORECASE):
+#                 estimatedScoring[location]['min'] = PASS_FIRST_NT_SECOND_ROUND_MIN
+#                 estimatedScoring[location]['max'] = PASS_FIRST_NT_SECOND_ROUND_MAX
+#             elif re.search('double', secondBid, re.IGNORECASE):
+#                 estimatedScoring[location]['min'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MIN
+#                 estimatedScoring[location]['max'] = PASS_FIRST_DOUBLE_SECOND_ROUND_MAX
+#             elif re.search('pass', secondBid, re.IGNORECASE):
+#                 #this is needed to handle cases when # of bids is > 1 and 1st and 2nd bids are pass
+#                 estimatedScoring[location]['min'] = PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN
+#                 estimatedScoring[location]['max'] = PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX
+#             else:
+#                 estimatedScoring[location]['min'] = PASS_FIRST_BID_SECOND_ROUND_MIN
+#                 estimatedScoring[location]['max'] = PASS_FIRST_BID_SECOND_ROUND_MAX
+#     else:
+#         estimatedScoring[location]['min'] = PASS_FIRST_ROUND_WITH_PARTNER_PASS_MIN
+#         estimatedScoring[location]['max'] = PASS_FIRST_ROUND_WITH_PARTNER_OPEN_MAX
+# elif not hasPartnerOpened:
+#     print('opening')
+#     if re.search('trump', firstBid, re.IGNORECASE):
+#         estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
+#         estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
+#     elif re.search('double', firstBid, re.IGNORECASE):
+#         estimatedScoring[location]['min'] = OPENING_DOUBLE_FIRST_ROUND_MIN
+#         estimatedScoring[location]['max'] = OPENING_DOUBLE_FIRST_ROUND_MAX
+#     elif re.search('Two Club', firstBid, re.IGNORECASE):
+#         estimatedScoring[location]['min'] = OPENING_TWO_CLUB_FIRST_ROUND_MIN
+#         estimatedScoring[location]['max'] = OPENING_TWO_CLUB_FIRST_ROUND_MAX
+#     else:
+#         hasSomeOneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+#         if re.search('Two', firstBid, re.IGNORECASE):
+#             if not hasSomeOneOpenedBefore:
+#                 estimatedScoring[location]['min'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
+#                 estimatedScoring[location]['max'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX
+#             else:
+#                 if not isJumpShift:
+#                     estimatedScoring[location]['min'] = OPENING_WEAK_TWO_AFTER_OPENERS_MIN
+#                     estimatedScoring[location]['max'] = OPENING_WEAK_TWO_AFTER_OPENERS_MAX
+#                 elif isJumpShift:
+#                     estimatedScoring[location]['min'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
+#                     estimatedScoring[location]['max'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MAX
+            
+#         elif re.search('Three', firstBid, re.IGNORECASE):
+#             if not hasSomeOneOpenedBefore:
+#                 estimatedScoring[location]['min'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
+#                 estimatedScoring[location]['max'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
+#             else:
+#                 if not isJumpShift:
+#                     estimatedScoring[location]['min'] = OPENING_WEAK_THREE_AFTER_OPENERS_MIN
+#                     estimatedScoring[location]['max'] = OPENING_WEAK_THREE_AFTER_OPENERS_MAX
+#                 elif isJumpShift:
+#                     estimatedScoring[location]['min'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN
+#                     estimatedScoring[location]['max'] = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MAX
+            
+#         else:
+#             estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
+#             estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
+# else:
+# print('responding')
+# if re.search('double', firstBid, re.IGNORECASE):
+#     estimatedScoring[location]['min'] = RESPONDING_DOUBLE_FIRST_ROUND_MIN
+#     estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX            
+# else:
+#     partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
+#     partnersLastBid = allBids[helpers.getIndexOfNthBid(seatingRelative[partnersLocation], allBids, -1)][1]
+
+#     print('partnersLastBid = {0}'.format(partnersLastBid))
+    
+#     if isJumpShift:
+#             if re.search('trump', firstBid, re.IGNORECASE):
+#                 estimatedScoring[location]['min'] = OPENING_NT_FIRST_ROUND_MIN
+#                 estimatedScoring[location]['max'] = OPENING_NT_FIRST_ROUND_MAX
+#             else:
+#                 estimatedScoring[location]['min'] = OPENING_BID_SUIT_FIRST_ROUND_MIN
+#                 estimatedScoring[location]['max'] = OPENING_BID_SUIT_FIRST_ROUND_MAX
+#     else:
+#         if re.search('three', firstBid, re.IGNORECASE):                     
+#             estimatedScoring[location]['min'] = OPENING_WEAK_THREE_AFTER_OPENERS_MIN
+#             estimatedScoring[location]['max'] = OPENING_WEAK_THREE_AFTER_OPENERS_MAX
+#         else:
+#             if re.search('trump', firstBid, re.IGNORECASE):
+#                 estimatedScoring[location]['min'] = RESPONDING_NO_JUMPSHIFT_NT_MIN
+#                 estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_NT_MAX
+#             else: 
+#                 estimatedScoring[location]['min'] =    RESPONDING_NO_JUMPSHIFT_MIN
+#                 estimatedScoring[location]['max'] = RESPONDING_NO_JUMPSHIFT_MAX
+#endregion 

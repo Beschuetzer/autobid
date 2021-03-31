@@ -3756,7 +3756,7 @@ class getEstimatedPointsModule(unittest.TestCase):
             "left": ['One Diamond'],
             "top": ['Two Heart'],
             "right": ['Two No Trump'],
-            "bottom": [],
+            "bottom": ['Pass'],
         }
         seatingRelative = {
             "top": "TopPlayer",
