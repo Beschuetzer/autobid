@@ -1703,6 +1703,8 @@ class getIsBidGameBid(unittest.TestCase):
         expected = True
         self.assertEqual(actual, expected)
 
+
+
 class getEstimatedPointsModule(unittest.TestCase):
     #region old test cases
     # def test_no_bids(self):
@@ -5078,7 +5080,6 @@ class getPlayerHasOnlyPassed(unittest.TestCase):
         actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
         expected = False
         self.assertEqual(actual, expected)
-
 class getLocationAfterRotationsAround(unittest.TestCase):
     def test_top(self):
         location = 'top'
@@ -5124,7 +5125,84 @@ class getLocationAfterRotationsAround(unittest.TestCase):
         self.assertEqual(actual, expected)
     
 
-
+#region Testing Test Case Helpers
+class getDealerFromBiddingObjRelative(unittest.TestCase):
+    def test_empty_dict(self):
+        biddingObjRelative = {
+            "left": [],
+            "top": [],
+            "right": [],
+            "bottom": [],
+        }
+        estimated = None
+        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        self.assertEqual(actual, estimated)
+    def test_none(self):
+        biddingObjRelative = None
+        estimated = None
+        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        self.assertEqual(actual, estimated)
+    def test_left(self):
+        biddingObjRelative = {
+            "left": ['One Diamond'],
+            "top": ['Three Heart'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        estimated = 'left'
+        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        self.assertEqual(actual, estimated)
+    def test_top(self):
+        biddingObjRelative = {
+            "left": [],
+            "top": ['Three Heart'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        estimated = 'top'
+        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        self.assertEqual(actual, estimated)
+    def test_bottom(self):
+        biddingObjRelative = {
+            "left": [],
+            "top": [],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        estimated = 'right'
+        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        self.assertEqual(actual, estimated)
+    def test_two_1(self):
+        biddingObjRelative = {
+            "left": ['Pass','Two Club'],
+            "top": ['Three Heart'],
+            "right": ['pass'],
+            "bottom": ['pass'],
+        }
+        estimated = 'left'
+        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        self.assertEqual(actual, estimated)
+    def test_three(self):
+        biddingObjRelative = {
+            "left": ['Pass','Two Club'],
+            "top": ['Three Heart', 'T'],
+            "right": ['pass', 'p'],
+            "bottom": ['pass', 'p', 'p'],
+        }
+        estimated = 'bottom'
+        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        self.assertEqual(actual, estimated)
+    def test_four(self):
+        biddingObjRelative = {
+            "left": ['Pass','Two Club', 'p'],
+            "top": ['Three Heart', 'T', 'p', 'p'],
+            "right": ['pass', 'p', 'p'],
+            "bottom": ['pass', 'p', 'p'],
+        }
+        estimated = 'top'
+        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        self.assertEqual(actual, estimated)
+#endregion
 
 
 

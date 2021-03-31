@@ -1,4 +1,5 @@
-import re, autoBid, math
+import getEstimatedPoints, autoBid
+import re, math
 
 def getSeatingRelative(seating, spot):
     directions = ['north','east','south','west']
@@ -617,3 +618,32 @@ def getIsBidGameBid(bid):
         return None
 
     return False
+
+
+
+
+#region Test Case Helpers
+def getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelative):
+    #note: this is written to facilitate test case writing for getEstimatedPoints
+    #input biddingObjRelative and seatingRelative dictionaries
+    #returns the bidding array e.g. [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ...]
+
+    #figure out who is the dealer (first person with the most bids)
+    dealer = getDealerFromBiddingObjRelative(biddingObjRelative)
+    print('dealer = {0}'.format(dealer))    
+
+def getDealerFromBiddingObjRelative(biddingObjRelative):
+    try:
+        currentMax = 0
+        dealer = None
+        locations = getEstimatedPoints.locations
+        locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
+        for location in locationOrder:
+            lengthOfLocationsBidding = len(biddingObjRelative[location])
+            if lengthOfLocationsBidding > currentMax:
+                currentMax = lengthOfLocationsBidding
+                dealer = location
+        return dealer
+    except:
+        return None
+#endregion

@@ -10,8 +10,6 @@ locations = {
     "right": 'right',
     "top": 'top',
 }
-    
-
 
 PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX = 5
 PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MIN = 0
