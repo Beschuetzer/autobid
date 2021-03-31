@@ -263,22 +263,13 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
             minToUse = None;
             maxToUse = None;
 
-            #if first bid is pass, partner passes, and any bid is close to opening points or a mistake?
-            if not re.search('pass', firstBid, re.IGNORECASE):
-                print('exit early----')
-                minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
-                estimatedScoring[location]['min'] = minToUse
-                estimatedScoring[location]['max'] = maxToUse
-                continue
-            #else
-            #endregion
+            if firstBidIsPass:
+                print('one opportunity first bid pass-----------')
+                minToUse = values['isTeamsFirstBid']['playerPasses']['min']
+                maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
             else: 
-                if isTeamsFirstBidOpportunity is True and firstBidIsPass:
-                    print(1)
-                    minToUse = values['isTeamsFirstBid']['playerPasses']['min']
-                    maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
-                else: 
-                    minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                print('one opportunity else-----------')
+                minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
 
                 #region TODO: 4-6 are not being hit by test cases.  Do we need them here as we only need to handle cases where there is one bid made at most for each player and the player's bid is a pass?:
 
@@ -315,8 +306,8 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
                 #     # player =['Pass', ...]
                 #endregion
                 
-                estimatedScoring[location]['min'] = minToUse
-                estimatedScoring[location]['max'] = maxToUse
+            estimatedScoring[location]['min'] = minToUse
+            estimatedScoring[location]['max'] = maxToUse
         #endregion
         #region updating bounds using estimatedScoringBounds
         else:
