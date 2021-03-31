@@ -15,6 +15,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "right": "RightPlayer",
         }
         self.actual = None
+        self.expected = None
+
     def tearDown(self) -> None:
       print('bids = {0}'.format(self.bids))
       print('self.actual ={0}'.format(self.actual))
@@ -1768,8 +1770,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         biddingObjRelative = {
             "left": ['pass'],
             "top": ['pass'],
-            "right": ['pass'],
-            "bottom": ['Two Heart'],
+            "right": ['One No Trump'],
+            "bottom": ['One Heart'],
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
@@ -1777,16 +1779,16 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         
         self.expected = {
            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max']
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
             },
             "top": {
-                "min": getEstimatedPoints.values['special']['weakThree']['min'],
-                "max": getEstimatedPoints.values['special']['weakThree']['max']
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
             },
             "right": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max']
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsNoTrump']['max']
             },
             "bottom": {
                 "min": None,

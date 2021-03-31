@@ -277,18 +277,21 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
                     print(1)
                     minToUse = values['isTeamsFirstBid']['playerPasses']['min']
                     maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
-
-                elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
-                    print(2)
+                else: 
                     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
 
-                elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
-                    #partner = ['something', ...]
-                    #player =['pass', ...]
-                    print(3)
-                    minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
-                    
                 #region TODO: 4-6 are not being hit by test cases.  Do we need them here as we only need to handle cases where there is one bid made at most for each player and the player's bid is a pass?:
+
+                # elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
+                #     print(2)
+                #     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+
+                # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
+                #     #partner = ['something', ...]
+                #     #player =['pass', ...]
+                #     print(3)
+                #     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                    
                 
 
                 # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
@@ -299,7 +302,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
 
 
                 # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
-                #TODO: write a case for this logic
+                # # TODO: write a case for this logic
                 #     print(5)
                 #     #partner = ['pass', ...]
                 #     #player =['One Club', ...]
@@ -308,8 +311,8 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
                 #     print(6)
                 #     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
 
-                    #partner = ['Pass', ...]
-                    #player =['Pass', ...]
+                #     # partner = ['Pass', ...]
+                #     # player =['Pass', ...]
                 #endregion
                 
                 estimatedScoring[location]['min'] = minToUse

@@ -642,13 +642,13 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelat
         #iterate through each location n times where n is the # of opportunities the dealer has had to bid and add bids in order they were made 
         bids = []
 
-        print('dealer = {0}'.format(dealer))    
-        print('locationOrderToUse = {0}'.format(locationOrderToUse))
+        # print('dealer = {0}'.format(dealer))    
+        # print('locationOrderToUse = {0}'.format(locationOrderToUse))
         for i in range(0, len(biddingObjRelative[dealer])):
             
             for j in range(0, len(locationOrderToUse)):
                 locationToGet = locationOrderToUse[j]
-                print('locationToGet = {0}'.format(locationToGet))
+                # print('locationToGet = {0}'.format(locationToGet))
 
                 try:
                     bidInQuestion = biddingObjRelative[locationToGet][i]   
@@ -656,10 +656,10 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, seatingRelat
                     break      
 
                 if bidInQuestion is not None:
-                    print('bidInQuestion = {0}'.format(bidInQuestion))
-                    print('seatingRelative[locationToGet] = {0}'.format(seatingRelative[locationToGet]))
+                    # print('bidInQuestion = {0}'.format(bidInQuestion))
+                    # print('seatingRelative[locationToGet] = {0}'.format(seatingRelative[locationToGet]))
                     bids.append([seatingRelative[locationToGet], bidInQuestion])
-                    print('bids = {0}'.format(bids))
+                    # print('bids = {0}'.format(bids))
                 else:
                     break
                 
