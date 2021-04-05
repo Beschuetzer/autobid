@@ -2,12 +2,7 @@ import getEstimatedPoints, helpers, unittest
 
 class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
     def setUp(self) -> None:
-      self.currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-      }
+   
       self.seatingRelative = {
           "top": "TopPlayer",
           "bottom": "BottomPlayer",
@@ -30,7 +25,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
     #         "bottom": [],
     #         "top": [],
     #     }
-    #     self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative,[], "")
+    #     self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative,[], "")
     #     self.expected = {
     #         "top": {
     #             "min": None,
@@ -693,7 +688,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             "bottom": ['Pass'],
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         self.expected = {
             "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['min'],
@@ -723,7 +718,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -753,7 +748,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -783,7 +778,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -813,7 +808,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -843,7 +838,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -875,7 +870,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -905,7 +900,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -935,7 +930,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -965,7 +960,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -995,7 +990,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1025,7 +1020,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1055,7 +1050,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1085,7 +1080,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1115,7 +1110,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1145,7 +1140,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1175,7 +1170,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1205,7 +1200,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1235,7 +1230,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1265,7 +1260,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1295,7 +1290,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1325,7 +1320,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1355,7 +1350,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1385,7 +1380,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         
         self.expected = {
            "left": {
@@ -1416,7 +1411,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
 
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.currentEstimatedPoints, biddingObjRelative, self.bids, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         self.expected = {
            "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
@@ -1438,9 +1433,82 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
 class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
-  #TODO: add tests for two bid opportunity cases...
-  pass
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+        self.actual = None
+        self.expected = None
 
+    def tearDown(self) -> None:
+        print('bids = {0}'.format(self.bids))
+        print('self.actual ={0}'.format(self.actual))
+        print('expected = {0}'.format(self.expected))
+
+    def test_update_Double_First_Pass_Second(self):
+        biddingObjRelative = {
+            "left": ['pass', 'pass'],
+            "top": ['One Club', 'pass'],
+            "right": ['Double', 'pass'],
+            "bottom": ['One Diamond'],
+        }
+
+        self.estimatedScoringBounds = {
+            "left": None,
+            "top": {},
+            "right": None,
+            "Bottom": None,
+        }
+        
+
+        self.expected = {
+            "left": {
+                "min": None,
+                "max": None,
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerDoubles']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerDoubles']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+    def test_update_Double_First_Bid_Suit_Second(self):
+        pass
+
+    def test_update_NT_First_Pass_Second(self):
+        pass
+
+    def test_update_NT_First_Bid_Suit_Second(self):
+        pass
+
+    def test_update_Pass_First_Bid_Suit_Second(self):
+        pass
+
+    def test_update_Pass_First_NT_Second(self):
+        pass
+
+    def test_update_Pass_First_Double_Second(self):
+        pass
+
+    def test_update_Pass_First_Pass_Second(self):
+        pass
 
 class getEstimatedPointsMoreThanTwoBidOpportunities(unittest.TestCase):
   #TODO: add tests for more than two bid opportunity cases...
