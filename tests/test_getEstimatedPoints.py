@@ -21,9 +21,11 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         self.expected = None
 
     def tearDown(self) -> None:
-      print('bids = {0}'.format(self.bids))
-      print('self.actual ={0}'.format(self.actual))
-      print('expected = {0}'.format(self.expected))
+        print('')
+        print('bids = {0}'.format(self.   bids))
+        print('self.actual ={0}'.format   (self.actual))
+        print('expected = {0}'.format(self.expected))
+        print('')
 
     #region old test cases
     # def test_no_bids(self):
