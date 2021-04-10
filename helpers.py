@@ -74,6 +74,7 @@ def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute):
     for bid in bidsUpToUsersFirstBid:
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return True
+            
     return False
 
 def getPartnersLocation(username, seatingRelative):

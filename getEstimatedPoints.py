@@ -409,7 +409,8 @@ def getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelativ
 
     for location in biddingRelative: 
         if len(biddingRelative[location]) == 0:
-            return falseTuple
+            continue
+
         firstBid = biddingRelative[location][0]
         if re.search('two club', firstBid, re.IGNORECASE):
             twoClubBid = [seatingRelative[location], firstBid]
@@ -420,9 +421,8 @@ def getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelativ
     if shouldContinue is True:
         indexOfTwoClubBid = biddingAbsolute.index(twoClubBid)
         hasSomeoneOpenedBefore = helpers.getHasSomeOneOpenedBefore(indexOfTwoClubBid, biddingAbsolute)
-        if hasSomeoneOpenedBefore is True:
+        if hasSomeoneOpenedBefore is False:
             return (True, twoClubBid[0])
-
     return falseTuple
 
 def getPlayerHasOnlyPassed(playerBids):
