@@ -195,7 +195,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
     #         },
     #         "top": {
     #             "min": getEstimatedPoints.values['special']['weakTwo']['min'],
-    #             "max": getEstimatedPoints.values['special']['twoClubs']['max']
+    #             "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
     #         },
     #         "right": {
     #             "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
@@ -218,7 +218,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
     #         },
     #         "top": {
     #             "min": getEstimatedPoints.values['special']['weakTwo']['min'],
-    #             "max": getEstimatedPoints.values['special']['twoClubs']['max']
+    #             "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
     #         },
     #         "right": {
     #             "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
@@ -241,7 +241,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
     #         },
     #         "top": {
     #             "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
-    #             "max": getEstimatedPoints.values['special']['twoClubs']['max']
+    #             "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
     #         },
     #         "right": {
     #             "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
@@ -891,8 +891,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
                 "max": None,
             },
             "top": {
-                "min": getEstimatedPoints.values['special']['twoClubs']['min'],
-                "max": getEstimatedPoints.values['special']['twoClubs']['max']
+                "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
             },
             "right": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
@@ -926,8 +926,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
             },
             "right": {
-                "min": getEstimatedPoints.values['special']['twoClubs']['min'],
-                "max": getEstimatedPoints.values['special']['twoClubs']['max']
+                "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
             },
             "bottom": {
                 "min": None,
@@ -957,8 +957,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
             },
             "right": {
-                "min": getEstimatedPoints.values['special']['twoClubs']['min'],
-                "max": getEstimatedPoints.values['special']['twoClubs']['max']
+                "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
             },
             "bottom": {
                 "min": None,
@@ -1433,7 +1433,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
     
     def test_bottom_is_dealer(self):
-      #my assumption that bottom would always have one fewer bids than the others was incorrect as it will be the same if it is bottom's deal:
+        #my assumption that bottom would always have one fewer bids than the others was incorrect as it will be the same if it is bottom's deal:
         biddingObjRelative = {
             "left": ['pass'],
             "top": ['pass'],
@@ -1444,7 +1444,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
         self.expected = {
-           "left": {
+            "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
             },
@@ -1462,21 +1462,156 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
             },
         }
         self.assertDictEqual(self.actual, self.expected)
-    
+
+    def test_set_Partner_Opens_Two_Clubs_Two_Diamond_Response(self):
+        biddingObjRelative = {
+            "left": ['Two Club'],
+            "top": ['pass'],
+            "right": ['Two Diamond'],
+            "bottom": [],
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['min'],
+                "max": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(self.actual, self.expected)
+
+    def test_set_Partner_Opens_Two_Clubs_Two_Heart_Response(self):
+        biddingObjRelative = {
+            "left": ['Two Club'],
+            "top": ['pass'],
+            "right": ['Two Heart'],
+            "bottom": [],
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['respondTwoClubs']['twoBidAbove']['min'],
+                "max": getEstimatedPoints.values['special']['respondTwoClubs']['twoBidAbove']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(self.actual, self.expected)
+
+    def test_set_Partner_Opens_Two_Clubs_Two_Spade_Response(self):
+        biddingObjRelative = {
+            "left": ['Two Club'],
+            "top": ['pass'],
+            "right": ['Two Spade'],
+            "bottom": [],
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['respondTwoClubs']['threeBidAbove']['min'],
+                "max": getEstimatedPoints.values['special']['respondTwoClubs']['threeBidAbove']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(self.actual, self.expected)
+
+    def test_set_Partner_Opens_Two_Clubs_Two_NT_Response(self):
+        biddingObjRelative = {
+            "left": ['Two Club'],
+            "top": ['pass'],
+            "right": ['Two No Trump'],
+            "bottom": [],
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['respondTwoClubs']['fourBidAbove']['min'],
+                "max": getEstimatedPoints.values['special']['respondTwoClubs']['fourBidAbove']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(self.actual, self.expected)
+
     def test_set_Partner_Opens_Two_Clubs_Three_Club_Response(self):
-        pass
+        biddingObjRelative = {
+            "left": ['Two Club'],
+            "top": ['pass'],
+            "right": ['Three Club'],
+            "bottom": [],
+        }
 
-    def test_set_Partner_Opens_Two_Clubs_Three_Diamond_Response(self):
-        pass
-
-    def test_set_Partner_Opens_Two_Clubs_Three_Heart_Response(self):
-        pass
-
-    def test_set_Partner_Opens_Two_Clubs_Three_Spade_Response(self):
-        pass
-
-    def test_set_Partner_Opens_Two_Clubs_Three_NT_Response(self):
-        pass
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingObjRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
+                "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['respondTwoClubs']['fiveBidAbove']['min'],
+                "max": getEstimatedPoints.values['special']['respondTwoClubs']['fiveBidAbove']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(self.actual, self.expected)
 
 class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
     def setUp(self) -> None:
@@ -1585,8 +1720,6 @@ class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
 
     def test_update_Pass_First_Jumpshift_NT_Second(self):
         pass
-    
-
     
 
 class getEstimatedPointsMoreThanTwoBidOpportunities(unittest.TestCase):

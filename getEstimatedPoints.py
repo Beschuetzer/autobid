@@ -173,7 +173,37 @@ values = {
             "min": SPECIAL_WEAK_THREE_MIN,
             "max": SPECIAL_WEAK_THREE_MAX,
         },
-        "twoClubs": {
+        "respondTwoClubs": {
+            "oneBidAbove": {
+                "min": 0,
+                "max": 3,
+            },
+            "twoBidAbove": {
+                "min": 4,
+                "max": 6,
+            },
+            "threeBidAbove": {
+                "min": 7,
+                "max": 9,
+            },
+            "fourBidAbove": {
+                "min": 10,
+                "max": 12,
+            },
+            "fiveBidAbove": {
+                "min": 13,
+                "max": 15,
+            },
+            "sixBidAbove": {
+                "min": 16,
+                "max": 18,
+            },
+            "sevenAndMoreAbove": {
+                "min": 19,
+                "max": -1,
+            },
+        },
+        "openTwoClubs": {
             "min": SPECIAL_WEAK_TWO_CLUBS_MIN,
             "max": SPECIAL_WEAK_TWO_CLUBS_MAX,
         },
@@ -398,8 +428,8 @@ def setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift
         #partner = []
         #player =['Two Club']
         print('two branch')
-        maxToUse = values['special']['twoClubs']['max']
-        minToUse = values['special']['twoClubs']['min']
+        maxToUse = values['special']['openTwoClubs']['max']
+        minToUse = values['special']['openTwoClubs']['min']
 
     elif re.search('double', firstBid, re.IGNORECASE):
         #partner = []
