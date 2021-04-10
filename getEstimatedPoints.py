@@ -303,7 +303,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                 #TODO: figure out how many bids higher the players bid is and the return min and max
                 indexOfTwoClubBid = biddingAbsolute.index([partner, 'Two Club'])
                 contractAtThisPoint = helpers.getCurrentContractBidFromBidding(biddingAbsolute[:indexOfTwoClubBid])
-                numberOfBidsAbove = getNumberOfBidsAbove(contractAtThisPoint, firstBid)
+                numberOfBidsAbove = helpers.getIndexDifferenceOfBids(contractAtThisPoint, firstBid)
                 
                 if numberOfBidsAbove == 1:
                     minToUse = 0

@@ -1,3 +1,4 @@
+from logging import error
 import getEstimatedPoints, autoBid
 import re, math
 
@@ -74,7 +75,7 @@ def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute):
     for bid in bidsUpToUsersFirstBid:
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return True
-            
+
     return False
 
 def getPartnersLocation(username, seatingRelative):
@@ -597,7 +598,7 @@ def getLocationAfterRotationsAround(location, numberOfRotations):
 def getCurrentContractBidFromBidding(bidding):
     #inputs:
         #bidding as list of all bids to consider
-    #returns the currentContractBid on the bidding
+    #returns the currentContractBid on the bidding as a string
     for bid in reversed(bidding):
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return bid[1]
@@ -618,8 +619,15 @@ def getIsBidGameBid(bid):
 
     return False
 
-
-
+def getIndexDifferenceOfBids(bid1, bid2):
+    #input: lowerBid as string and higherBid as string
+    #output: an int representing how many bids higher the higher bid is 
+    try:
+        bid1Index = autoBid.contracts.index(bid1)
+        bid2Index = autoBid.contracts.index(bid2)
+        return abs(bid2Index - bid1Index)
+    except:
+        raise TypeError('Error in getIndexDifferenceOfBids;  Probably incorrect parameter passed in.')
 
 #region Test Case Helpers
 def getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):

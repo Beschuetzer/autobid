@@ -721,13 +721,12 @@ class getBiddingObjAbsolute(unittest.TestCase):
         }
         actual = helpers.getBiddingObjAbsolute(bids, seating)
         self.assertDictEqual(expected, actual)
-class getRotationsAround(unittest.TestCase):
+class getSpotAfterNRotations(unittest.TestCase):
     def test_negative(self):
         spot = 'north'
         numberOfRotations = -1
-        with self.assertRaises(TypeError) as context:
+        with self.assertRaises(TypeError) as cm:
             helpers.getSpotAfterNRotations(spot, numberOfRotations)
-            self.assertTrue('Invalid numberOfRotations' in context.exception)
 
     def test_none(self):
         spot = 'north'
@@ -2256,6 +2255,33 @@ class getHasSomeoneOpenedTwoClubs(unittest.TestCase):
         self.expected = (True, "LeftPlayer")
         self.assertTupleEqual(self.actual, self.expected)
 
+class getIndexDifferenceOfBids(unittest.TestCase):
+    def test_invalid(self):
+        with self.assertRaises(TypeError) as context:
+            helpers.getIndexDifferenceOfBids('Two Diamonds', 'Two Club')
+     
+    def test_invalid_2(self):
+        with self.assertRaises(TypeError) as context:
+            helpers.getIndexDifferenceOfBids('', '')
+
+    def test_valid_1(self):
+        actual = helpers.getIndexDifferenceOfBids('Two Diamond', 'Two Club')
+        expected = 1
+        self.assertEqual(actual, expected)
+    def test_valid_2(self):
+        actual = helpers.getIndexDifferenceOfBids('Two Diamond', 'Two Spade')
+        expected = 2
+        self.assertEqual(actual, expected)
+
+    def test_valid_3(self):
+        actual = helpers.getIndexDifferenceOfBids('Two Diamond', 'Three Diamond')
+        expected = 5
+        self.assertEqual(actual, expected)
+
+    def test_valid_4(self):
+        actual = helpers.getIndexDifferenceOfBids('Four No Trump', 'Six No Trump')
+        expected = 10
+        self.assertEqual(actual, expected)
 
 
 #region Testing Test Case Helpers
