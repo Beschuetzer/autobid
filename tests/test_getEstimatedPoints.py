@@ -1493,6 +1493,7 @@ class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
         print('bids = {0}'.format(self.bids))
         print('self.actual ={0}'.format(self.actual))
         print('expected = {0}'.format(self.expected))
+        print('estimatedScoringBounds = {0}'.format(self.estimatedScoringBounds))
 
     def test_update_Double_First_Pass_Second(self):
         biddingObjRelative = {
@@ -1503,25 +1504,36 @@ class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
         }
 
         self.estimatedScoringBounds = {
-            "left": None,
-            "top": {},
-            "right": None,
-            "Bottom": None,
-        }
-        
-
-        self.expected = {
             "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['max'],
+            },
+            "bottom": {
                 "min": None,
                 "max": None,
             },
+        }
+
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
+            },
             "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerDoubles']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerDoubles']['max']
+                "min": self.estimatedScoringBounds['top']['min'],
+                "max": self.estimatedScoringBounds['top']['max']
             },
             "right": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+                "min": self.estimatedScoringBounds['right']['min'],
+                "max": self.estimatedScoringBounds['right']['max']
             },
             "bottom": {
                 "min": None,
