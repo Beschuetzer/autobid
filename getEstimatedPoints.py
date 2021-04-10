@@ -113,7 +113,6 @@ values = {
             "max": IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MAX,
         },
     },    
-
     "partnerPassesFirst": {
         "playerPasses": {
             "min": PARTNER_PASSES_FIRST_AND_PLAYER_PASSES_MIN,
@@ -132,7 +131,6 @@ values = {
             "max": PARTNER_PASSES_FIRST_AND_PLAYER_BIDS_NT_MAX,
         },
     },
-
     "partnerBidsFirst": {
         "playerPasses": {
             "min": PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MIN,
@@ -163,7 +161,6 @@ values = {
             }
         },
     },
-
     "special": {
         "weakTwo": {
             "min": SPECIAL_WEAK_TWO_MIN,
@@ -209,8 +206,6 @@ values = {
         },
     },
 }
-
-
 
 def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seatingRelative):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
