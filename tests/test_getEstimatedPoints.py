@@ -1463,19 +1463,19 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.assertDictEqual(self.actual, self.expected)
     
-    def test_update_Partner_Opens_Two_Clubs_Three_Club_Response(self):
+    def test_set_Partner_Opens_Two_Clubs_Three_Club_Response(self):
         pass
 
-    def test_update_Partner_Opens_Two_Clubs_Three_Diamond_Response(self):
+    def test_set_Partner_Opens_Two_Clubs_Three_Diamond_Response(self):
         pass
 
-    def test_update_Partner_Opens_Two_Clubs_Three_Heart_Response(self):
+    def test_set_Partner_Opens_Two_Clubs_Three_Heart_Response(self):
         pass
 
-    def test_update_Partner_Opens_Two_Clubs_Three_Spade_Response(self):
+    def test_set_Partner_Opens_Two_Clubs_Three_Spade_Response(self):
         pass
 
-    def test_update_Partner_Opens_Two_Clubs_Three_NT_Response(self):
+    def test_set_Partner_Opens_Two_Clubs_Three_NT_Response(self):
         pass
 
 class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
