@@ -58,8 +58,6 @@ def getEstimatedSuitCounts(biddingObjRelative, allBids, seatingRelative):
 
     return suitCounts
 
-
-
 def getIsPartnersFirstBidPass(biddingObjRelative):
     partnersBidding = biddingObjRelative["top"] 
     if len(partnersBidding) > 0:

@@ -2,7 +2,7 @@
     Getting the estimated points of each player based on their first two bids
 '''
 #TODO: make sure suit count estimates from bidding is complete
-import helpers, re
+import helpers, re, helpers
 
 locations = {
     "bottom": 'bottom',
@@ -286,6 +286,10 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
         print('isTeamsFirstBidOpportunity = {0}'.format(isTeamsFirstBidOpportunity))
 
         #endregion
+
+        #TODO: need a helper to determine if any person in the game has opened with two club convention
+        personWhoOpenedTwoClub, hasSomeoneOpenedTwoClubs = getHasSomeoneOpenedTwoClubs(allBids);
+
         #region Setting Initial Bounds Logic
         if secondBid == '':
 
@@ -363,9 +367,9 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
                 #endregion
 
 
-                    #did they pass first time?
+                #did they pass first time?
 
-                    #did they bid a suit or nt first time?
+                #did they bid a suit or nt first time?
                         #did their partner pass or bid? 
 
                 #bid suit
@@ -378,6 +382,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
                 #bid same suit
                 pass
             #endregion
+
             #region When the opportunities to bid is longer than 2
             else:
                 #did they say the same suit multiple times?
@@ -391,6 +396,16 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
         #endregion
     print('')
     return estimatedScoring
+
+def getHasSomeoneOpenedTwoClubs(allBids):
+    for location in biddingObjRelative:
+        firstBid = biddingObjRelative[location][0]
+        if re.search('two club', firstBid, re.IGNORECASE):
+            #todo: check has anyone opened before this bid?
+            hasSomeoneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+
+
+    return False
 
 def getPlayerHasOnlyPassed(playerBids):
     for bid in playerBids:

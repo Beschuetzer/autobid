@@ -1873,7 +1873,7 @@ class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
     def test_update_Pass_First_Jumpshift_NT_Second(self):
         pass
 
-    def test_set_Partner_Opens_Two_Clubs_Interference_Three_Level_Two_Above_Bid(self):
+    def test_update_Partner_Opens_Two_Clubs_Interference_Two_Level_One_Above_Bid(self):
         biddingObjRelative = {
             "left": ['Two Club','Two Spade'],
             "top": ['pass', 'pass'],
@@ -1922,7 +1922,7 @@ class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
         }
         self.assertDictEqual(self.actual, self.expected)
 
-    def test_set_Partner_Opens_Two_Clubs_Interference_Three_Level_Two_Above_Bid(self):
+    def test_update_Partner_Opens_Two_Clubs_Interference_Three_Level_One_Above_Bid(self):
         biddingObjRelative = {
             "left": ['Two Club','Two Spade'],
             "top": ['pass', 'Three Heart'],
