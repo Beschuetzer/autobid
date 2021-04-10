@@ -263,14 +263,14 @@ class getDistributionPoints(unittest.TestCase):
         hearts = []
         spades = []
         hand = [clubs, diamonds, hearts, spades]
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -283,7 +283,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": 0,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 18)
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 18)
     def test_Opening_None(self):
         clubLength = 4
         diamondLength = 4
@@ -295,14 +295,14 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -315,7 +315,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 0)
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 0)
     def test_Opening_Void(self):
         clubLength = 0
         diamondLength = 4
@@ -327,14 +327,14 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -347,7 +347,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 3)
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 3)
     def test_Opening_Singleton(self):
         clubLength = 4
         diamondLength = 1
@@ -359,14 +359,14 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -379,7 +379,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 2)
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 2)
     def test_Opening_Doubleton(self):
         clubLength = 4
         diamondLength = 2
@@ -391,14 +391,14 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -411,7 +411,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 1)
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 1)
     def test_Opening_FiveLong(self):
         clubLength = 5
         diamondLength = 4
@@ -424,14 +424,14 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
 
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -443,7 +443,7 @@ class getDistributionPoints(unittest.TestCase):
             "hearts": heartLength,
             "spades": spadeLength,
         }
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 1)
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 1)
 
     def test_Responding_AllOneSuit(self):
         clubs = [i for i in range(0, 13)]
@@ -451,14 +451,14 @@ class getDistributionPoints(unittest.TestCase):
         hearts = []
         spades = []
         hand = [clubs, diamonds, hearts, spades]
-        allBids = [["Adam", 'One Club'],['Tim', 'Pass']]
+        biddingAbsolute = [["Adam", 'One Club'],['Tim', 'Pass']]
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['One Club'],
             "bottom": [],
             "left": [],
@@ -471,7 +471,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": 0,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 'Not Done')
     def test_Responding_None(self):
         clubLength = 4
         diamondLength = 4
@@ -483,14 +483,14 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -503,7 +503,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 'Not Done')
     def test_Responding_Void(self):
         clubLength = 0
         diamondLength = 4
@@ -515,14 +515,14 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -535,7 +535,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 'Not Done')
     def test_Responding_Singleton(self):
         clubLength = 4
         diamondLength = 1
@@ -547,14 +547,14 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -567,7 +567,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 'Not Done')
     def test_Responding_Doubleton(self):
         clubLength = 4
         diamondLength = 2
@@ -579,14 +579,14 @@ class getDistributionPoints(unittest.TestCase):
         hearts = [i for i in range(26, 26 + heartLength)]
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -599,7 +599,7 @@ class getDistributionPoints(unittest.TestCase):
             "spades": spadeLength,
         }
 
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 'Not Done')
     def test_Responding_FiveLong(self):
         clubLength = 5
         diamondLength = 4
@@ -612,14 +612,14 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
 
-        allBids = []
+        biddingAbsolute = []
         currentEstimatedPoints = {
             "left": None,
             "top": None,
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": [],
             "bottom": [],
             "left": [],
@@ -631,7 +631,7 @@ class getDistributionPoints(unittest.TestCase):
             "hearts": heartLength,
             "spades": spadeLength,
         }
-        self.assertEqual(helpers.getDistributionPoints(hand, allBids, biddingObjRelative, self.seatingRelative, suitCounts), 'Not Done')
+        self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 'Not Done')
 class getCurrentActualBid(unittest.TestCase):
     def test_Normal(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
@@ -980,13 +980,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club'],
             "left": ['One Diamond'],
         }
         totalOpeningPoints = 0
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Pass'
         self.assertEqual(actual, expected)
     def test_initial_zero(self):
@@ -996,13 +996,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club'],
             "left": ['Pass'],
         }
         totalOpeningPoints = 0
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Two Diamond'
         self.assertEqual(actual, expected)
     def test_initial_3(self):
@@ -1012,13 +1012,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club'],
             "left": ['Pass'],
         }
         totalOpeningPoints = 3
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Two Diamond'
         self.assertEqual(actual, expected)
     def test_initial_6(self):
@@ -1028,13 +1028,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club'],
             "left": ['Pass'],
         }
         totalOpeningPoints = 6
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Two Heart'
         self.assertEqual(actual, expected)
     def test_initial_9(self):
@@ -1044,13 +1044,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club'],
             "left": ['Pass'],
         }
         totalOpeningPoints = 9
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Two Spade'
         self.assertEqual(actual, expected)
     def test_initial_12(self):
@@ -1060,13 +1060,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club'],
             "left": ['Pass'],
         }
         totalOpeningPoints = 12
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Two No Trump'
         self.assertEqual(actual, expected)
     def test_initial_15(self):
@@ -1076,13 +1076,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club'],
             "left": ['Pass'],
         }
         totalOpeningPoints = 15
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Three Club'
         self.assertEqual(actual, expected)
     def test_second_true(self):
@@ -1093,13 +1093,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Diamond'],
             "left": ['Pass', 'Pass'],
         }
         totalOpeningPoints = 15
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Four Club'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_one(self):
@@ -1110,13 +1110,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Diamond', 'Four No Trump'],
             "left": ['Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Five Diamond'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_two(self):
@@ -1127,13 +1127,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Diamond', 'Four No Trump'],
             "left": ['Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Five Heart'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_three(self):
@@ -1144,13 +1144,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Diamond', 'Four No Trump'],
             "left": ['Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Five Spade'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_four(self):
@@ -1161,13 +1161,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Diamond', 'Four No Trump'],
             "left": ['Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Five Club'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_none(self):
@@ -1178,13 +1178,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Diamond', 'Four No Trump'],
             "left": ['Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Five Club'
         self.assertEqual(actual, expected)
 
@@ -1197,13 +1197,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Diamond', 'Four No Trump', 'Five Diamond'],
             "left": ['Pass', 'Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five Club']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Pass'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_pass_NT(self):
@@ -1214,13 +1214,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three No Trump', 'Four No Trump', 'Five No Trump'],
             "left": ['Pass', 'Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Pass'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_one(self):
@@ -1231,13 +1231,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Club', 'Four No Trump', 'Five Diamond'],
             "left": ['Pass', 'Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five Diamond']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Five Spade'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_two(self):
@@ -1248,13 +1248,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Club', 'Four No Trump', 'Five Heart'],
             "left": ['Pass', 'Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five Heart']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Six Club'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_three(self):
@@ -1265,13 +1265,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Club', 'Four No Trump', 'Five Spade'],
             "left": ['Pass', 'Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five Spade']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Six Heart'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_four(self):
@@ -1282,13 +1282,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Club', 'Four No Trump', 'Five No Trump'],
             "left": ['Pass', 'Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Six Club'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_none(self):
@@ -1299,13 +1299,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Club', 'Four No Trump', 'Four Diamond'],
             "left": ['Pass', 'Pass', 'Pass', 'Pass'],
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four Diamond']
-        actual = helpers.getTwoClubResponse(hand, biddingObjRelative, totalOpeningPoints, currentActualBid)
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Four Heart'
         self.assertEqual(actual, expected)
 class getSuitFromBid(unittest.TestCase):
@@ -1342,11 +1342,11 @@ class getStrongestSuit(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Diamond'],
             "left": ['Pass', 'Pass'],
         }
-        actual = helpers.getStrongestSuit(hand, biddingObjRelative)
+        actual = helpers.getStrongestSuit(hand, biddingRelative)
         expected = 'Four Club'
         self.assertEqual(actual, expected)
     def test_length(self):
@@ -1357,13 +1357,13 @@ class getStrongestSuit(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Diamond'],
             "left": ['Pass', 'Pass'],
         }
         totalOpeningPoints = 0
         currentActualBid = ['Adam', 'Three Diamond']
-        actual = helpers.getStrongestSuit(hand, biddingObjRelative)
+        actual = helpers.getStrongestSuit(hand, biddingRelative)
         expected = 'Three Heart'
         self.assertEqual(actual, expected)
     def test_pointCountOverLength(self):
@@ -1374,13 +1374,13 @@ class getStrongestSuit(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "top": ['Two Club', 'Three Diamond'],
             "left": ['Pass', 'Pass'],
         }
         totalOpeningPoints = 0
         currentActualBid = ['Adam', 'Three Diamond']
-        actual = helpers.getStrongestSuit(hand, biddingObjRelative)
+        actual = helpers.getStrongestSuit(hand, biddingRelative)
         expected = 'Three Spade'
         self.assertEqual(actual, expected)
 class getSuitsMentionedByOpponents(unittest.TestCase):
@@ -1391,13 +1391,13 @@ class getSuitsMentionedByOpponents(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "right": ['Two Club', 'Three Diamond', 'Four No Trump'],
             "left": ['Two Heart', 'Three Spade'],
             "bottom": ['Pass', 'Pass'],
             "top": ['Pass', 'Pass'],
         }
-        actual = helpers.getSuitsMentionedByOpponents(biddingObjRelative)
+        actual = helpers.getSuitsMentionedByOpponents(biddingRelative)
         expected = {
             "clubs": True,
             "diamonds": True,
@@ -1413,13 +1413,13 @@ class getSuitsMentionedByOpponents(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "right": ['Pass', 'Three Diamond', 'Four No Trump'],
             "left": ['Two Heart', 'Three Spade'],
             "bottom": ['Two Club', 'Pass'],
             "top": ['Pass', 'Three Club'],
         }
-        actual = helpers.getSuitsMentionedByOpponents(biddingObjRelative)
+        actual = helpers.getSuitsMentionedByOpponents(biddingRelative)
         expected = {
             "clubs": False,
             "diamonds": True,
@@ -1435,13 +1435,13 @@ class getSuitsMentionedByOpponents(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "right": ['Pass', 'Three Diamond', 'Pass'],
             "left": ['Two Heart', 'Three Spade'],
             "bottom": ['Two Club', 'Pass'],
             "top": ['Three No Trump', 'Three Club'],
         }
-        actual = helpers.getSuitsMentionedByOpponents(biddingObjRelative)
+        actual = helpers.getSuitsMentionedByOpponents(biddingRelative)
         expected = {
             "clubs": False,
             "diamonds": True,
@@ -1457,13 +1457,13 @@ class getSuitsMentionedByOpponents(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "right": ['Pass', 'Three Diamond', 'Double'],
             "left": ['Double', 'Three Spade'],
             "bottom": ['Two Club', 'Pass'],
             "top": ['Three No Trump', 'Three Club'],
         }
-        actual = helpers.getSuitsMentionedByOpponents(biddingObjRelative)
+        actual = helpers.getSuitsMentionedByOpponents(biddingRelative)
         expected = {
             "clubs": False,
             "diamonds": True,
@@ -1479,13 +1479,13 @@ class getSuitsMentionedByOpponents(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "right": ['Pass', 'Three Club', 'Pass'],
             "left": ['Double', 'Four Club'],
             "bottom": ['Two Club', 'Pass'],
             "top": ['Three No Trump', 'Three Club'],
         }
-        actual = helpers.getSuitsMentionedByOpponents(biddingObjRelative)
+        actual = helpers.getSuitsMentionedByOpponents(biddingRelative)
         expected = {
             "clubs": True,
             "diamonds": False,
@@ -1501,13 +1501,13 @@ class getSuitsMentionedByOpponents(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "right": ['Pass', 'Double', 'Pass'],
             "left": ['Double', 'Pass'],
             "bottom": ['Two Club', 'Three Diamond'],
             "top": ['Three No Trump', 'Three Club'],
         }
-        actual = helpers.getSuitsMentionedByOpponents(biddingObjRelative)
+        actual = helpers.getSuitsMentionedByOpponents(biddingRelative)
         expected = {
             "clubs": False,
             "diamonds": False,
@@ -1535,13 +1535,13 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "left": [],
             "top": ['pass'],
             "right": ['pass'],
             "bottom": [],
         }
-        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'top')
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingRelative, 'top')
         expected = True
         self.assertEqual(actual, expected)
     def test_bottom(self): 
@@ -1551,13 +1551,13 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "left": [],
             "top": ['pass'],
             "right": ['pass'],
             "bottom": [],
         }
-        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'bottom')
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingRelative, 'bottom')
         expected = False
         self.assertEqual(actual, expected)
     def test_right(self): 
@@ -1567,13 +1567,13 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['pass'],
             "top": ['pass'],
             "right": ['pass'],
             "bottom": [],
         }
-        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'right')
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingRelative, 'right')
         expected = False
         self.assertEqual(actual, expected)
     def test_left(self): 
@@ -1583,13 +1583,13 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['pass'],
             "top": ['pass'],
             "right": ['pass'],
             "bottom": [],
         }
-        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'left')
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingRelative, 'left')
         expected = True
         self.assertEqual(actual, expected)
     def test_left_2(self): 
@@ -1599,13 +1599,13 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['pass', 'pass'],
             "top": ['pass', 'two diamond'],
             "right": ['pass', 'pass'],
             "bottom": ['two club'],
         }
-        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'left')
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingRelative, 'left')
         expected = False
         self.assertEqual(actual, expected)
     def test_top_2(self): 
@@ -1615,13 +1615,13 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['pass', 'pass'],
             "top": ['pass', 'two diamond'],
             "right": ['pass', 'pass'],
             "bottom": ['two club'],
         }
-        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'top')
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingRelative, 'top')
         expected = False
         self.assertEqual(actual, expected)
     def test_bottom_2(self): 
@@ -1631,13 +1631,13 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['pass', 'pass'],
             "top": ['pass', 'two diamond'],
             "right": ['pass', 'pass'],
             "bottom": ['two club'],
         }
-        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'bottom')
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingRelative, 'bottom')
         expected = False
         self.assertEqual(actual, expected)
     def test_right_2(self): 
@@ -1647,13 +1647,13 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['pass', 'pass'],
             "top": ['pass', 'two diamond'],
             "right": ['pass', 'pass'],
             "bottom": ['two club'],
         }
-        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'right')
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingRelative, 'right')
         expected = False
         self.assertEqual(actual, expected)
     def test_right_3(self): 
@@ -1663,13 +1663,13 @@ class getIsTeamsFirstBidOpportunity(unittest.TestCase):
             "right": None,
             "Bottom": None,
         }
-        biddingObjRelative = {
+        biddingRelative = {
             "left": [],
             "top": ['pass'],
             "right": ['pass'],
             "bottom": [],
         }
-        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingObjRelative, 'right')
+        actual = getEstimatedPoints.getIsTeamsFirstBidOpportunity(biddingRelative, 'right')
         expected = True
         self.assertEqual(actual, expected)
 class getIsBidGameBid(unittest.TestCase):
@@ -1925,86 +1925,86 @@ class getIsJumpShift(unittest.TestCase):
 class getHasPlayerJumpShifted(unittest.TestCase):
     def test_True_1(self):
         username = 'You'
-        allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
+        biddingAbsolute = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
         playersBids = ['Pass','Two Heart']
-        actual = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
+        actual = helpers.getHasPlayerJumpshifted(username, playersBids, biddingAbsolute)
         expected = True
         self.assertEqual(actual, expected)
     def test_True_2(self):
         username = 'You'
-        allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'One Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass'], ['You', 'Three Club'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
+        biddingAbsolute = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'One Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass'], ['You', 'Three Club'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
         playersBids = ['Pass', 'One Heart', 'Three Club']
-        actual = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
+        actual = helpers.getHasPlayerJumpshifted(username, playersBids, biddingAbsolute)
         expected = True
         self.assertEqual(actual, expected)
     def test_False_1(self):
         username = 'You'
-        allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
+        biddingAbsolute = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
         playersBids = ['Pass','One Heart']
-        actual = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
+        actual = helpers.getHasPlayerJumpshifted(username, playersBids, biddingAbsolute)
         expected = False
         self.assertEqual(actual, expected)
     def test_False_2(self):
         username = 'You'
-        allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'One Heart'],['Tim', 'Two Spade'],['Tom', 'Pass'],['James', 'Pass'], ['You', 'Three Club'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
+        biddingAbsolute = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'One Heart'],['Tim', 'Two Spade'],['Tom', 'Pass'],['James', 'Pass'], ['You', 'Three Club'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
         playersBids = ['Pass', 'One Heart', 'Three Club']
-        actual = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
+        actual = helpers.getHasPlayerJumpshifted(username, playersBids, biddingAbsolute)
         expected = False
         self.assertEqual(actual, expected)
 class getHasSomeOneOpenedBefore(unittest.TestCase):
     def test_empty(self):
         indexOfUsersFirstBid = None
-        allBids = []
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+        biddingAbsolute = []
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
         expected = False
         self.assertEqual(actual, expected)
     def test_not_yet_bid_false_1(self):
         indexOfUsersFirstBid = None
-        allBids = [['Adam', 'Pass']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+        biddingAbsolute = [['Adam', 'Pass']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
         expected = False
         self.assertEqual(actual, expected)
     def test_not_yet_bid_false_2(self):
         indexOfUsersFirstBid = None
-        allBids = [['Adam', 'Pass'], ['Tim', 'Double']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+        biddingAbsolute = [['Adam', 'Pass'], ['Tim', 'Double']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
         expected = False
         self.assertEqual(actual, expected)
     def test_not_yet_bid_true_1(self):
         indexOfUsersFirstBid = None
-        allBids = [['Adam', 'Pass'], ['Tim', 'Two Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+        biddingAbsolute = [['Adam', 'Pass'], ['Tim', 'Two Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
         expected = True
         self.assertEqual(actual, expected)
     def test_not_yet_bid_true_2(self):
         indexOfUsersFirstBid = None
-        allBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+        biddingAbsolute = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
         expected = True
         self.assertEqual(actual, expected)
 
     def test_has_bid_false_1(self):
         indexOfUsersFirstBid = 2
-        allBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club'],['Andrew','Pass'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+        biddingAbsolute = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club'],['Andrew','Pass'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
         expected = False
         self.assertEqual(actual, expected)
     def test_has_bid_false_2(self):
         indexOfUsersFirstBid = 0
-        allBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Pass'],['Andrew','One Heart'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+        biddingAbsolute = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Pass'],['Andrew','One Heart'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
         expected = False
         self.assertEqual(actual, expected)
     def test_has_bid_true_1(self):
         indexOfUsersFirstBid = 3
-        allBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club'],['Andrew','Pass'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+        biddingAbsolute = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club'],['Andrew','Pass'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
         expected = True
         self.assertEqual(actual, expected)
     def test_has_bid_true_2(self):
         indexOfUsersFirstBid = 4
-        allBids = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Pass'],['Andrew','One Heart'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
-        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+        biddingAbsolute = [['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Pass'],['Andrew','One Heart'],['Adam', 'Pass'], ['Tim', 'Pass'], ['Ann', 'Three Club']]
+        actual = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
         expected = True
         self.assertEqual(actual, expected)
 class getPartnersLocation(unittest.TestCase):
@@ -2143,94 +2143,153 @@ class getLocationAfterRotationsAround(unittest.TestCase):
         actual = helpers.getLocationAfterRotationsAround(location, numberOfRotations)
         expected = 'right'
         self.assertEqual(actual, expected)
-    
+class getHasSomeoneOpenedTwoClubs(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+        self.actual = None
+        self.expected = None
+        self.bids = None
+
+    def tearDown(self) -> None:
+        print('actual ={0}'.format(self.actual))
+        print('expected = {0}'.format(self.expected))
+        print('bids = {0}'.format(self.bids))
+
+
+    def test_empty(self):
+        biddingRelative = {
+            "left": [],
+            "top": [],
+            "right": [],
+            "bottom": [],
+        }
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.expected = (False, None)
+        self.assertTupleEqual(self.actual, self.expected)
+
+    def test_overcall(self):
+        biddingRelative = {
+            "left": ['One Diamond'],
+            "top": ['Two Club'],
+            "right": ['Pass'],
+            "bottom": [],
+        }
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.expected = (True, "TopPlayer")
+        self.assertTupleEqual(self.actual, self.expected)
+    def test_is_actual_two_club_first_bidder_one_opportunity(self):
+        biddingRelative = {
+            "left": ['Pass'],
+            "top": ['Pass'],
+            "right": ['Two Club'],
+            "bottom": [],
+        }
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.expected = (True, "TopPlayer")
+        self.assertTupleEqual(self.actual, self.expected)
+    def test_is_actual_two_club_third_bidder_one_opportunity(self):
+        pass
+    def test_is_actual_two_club_first_bidder_multiple_opportunities(self):
+        pass
+    def test_is_actual_two_club_third_bidder_multiple_opportunities(self):
+        pass
+
+
 
 #region Testing Test Case Helpers
 class getDealerFromBiddingObjRelative(unittest.TestCase):
     def test_empty_dict(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": [],
             "top": [],
             "right": [],
             "bottom": [],
         }
         estimated = None
-        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_none(self):
-        biddingObjRelative = None
+        biddingRelative = None
         estimated = None
-        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_left(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['One Diamond'],
             "top": ['Three Heart'],
             "right": ['pass'],
             "bottom": [],
         }
         estimated = 'left'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_top(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['One Diamond'],
             "top": ['pass', 'Four Heart'],
             "right": ['pass', 'pass'],
             "bottom": ['pass'],
         }
         estimated = 'top'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_right(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": [],
             "top": [],
             "right": ['pass'],
             "bottom": [],
         }
         estimated = 'right'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_bottom(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['p'],
             "top": ['p'],
             "right": ['pass'],
             "bottom": ['pass'],
         }
         estimated = 'bottom'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_two(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['Pass','Two Club'],
             "top": ['Three Heart'],
             "right": ['pass'],
             "bottom": ['pass'],
         }
         estimated = 'left'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_three(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['Pass','Two Club'],
             "top": ['Three Heart', 'T'],
             "right": ['pass', 'p'],
             "bottom": ['pass', 'p', 'p'],
         }
         estimated = 'bottom'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_four(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['Pass','Two Club', 'p'],
             "top": ['Three Heart', 'T', 'p', 'p'],
             "right": ['pass', 'p', 'p'],
             "bottom": ['pass', 'p', 'p'],
         }
         estimated = 'top'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingObjRelative)
+        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
         self.assertEqual(actual, estimated)
 
 class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
@@ -2242,13 +2301,13 @@ class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
             "bottom": "BottomPlayer",
         }
     def test_none(self):
-        biddingObjRelative = None
+        biddingRelative = None
         expected = []
-        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.assertEqual(actual, expected)
         
     def test_empty(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": [],
             "top": [],
             "right": [],
@@ -2256,10 +2315,10 @@ class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
         }
         
         expected = []
-        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.assertEqual(actual, expected)
     def test_bottom_dealer(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['One Diamond'],
             "top": ['Three Heart'],
             "right": ['pass'],
@@ -2267,13 +2326,13 @@ class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
         }
         expected = [[self.seatingRelative['bottom'], 'pass'], [self.seatingRelative['left'], 'One Diamond'], [self.seatingRelative['top'], 'Three Heart'], [self.seatingRelative['right'], 'pass']]
 
-        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         print('actual = {0}'.format(actual))
         print('expected = {0}'.format(expected))
         self.actual = actual
         self.assertListEqual(actual, expected)
     def test_left_dealer(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['One Diamond', 'Two Diamond'],
             "top": ['Three Heart'],
             "right": ['pass'],
@@ -2281,13 +2340,13 @@ class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
         }
         expected = [[self.seatingRelative['left'], 'One Diamond'], [self.seatingRelative['top'], 'Three Heart'], [self.seatingRelative['right'], 'pass'], [self.seatingRelative['bottom'], 'pass'], [self.seatingRelative['left'], 'Two Diamond']]
 
-        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         print('actual = {0}'.format(actual))
         print('expected = {0}'.format(expected))
         self.actual = actual
         self.assertListEqual(actual, expected)
     def test_top_dealer(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['One Diamond'],
             "top": ['pass', 'Four Heart'],
             "right": ['pass', 'pass'],
@@ -2295,13 +2354,13 @@ class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
         }
         expected = [[self.seatingRelative['top'], 'pass'], [self.seatingRelative['right'], 'pass'], [self.seatingRelative['bottom'], 'pass'], [self.seatingRelative['left'], 'One Diamond'], [self.seatingRelative['top'], 'Four Heart'], [self.seatingRelative['right'], 'pass']]
 
-        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         print('actual = {0}'.format(actual))
         print('expected = {0}'.format(expected))
         self.actual = actual
         self.assertListEqual(actual, expected)
     def test_right_dealer(self):
-        biddingObjRelative = {
+        biddingRelative = {
             "left": ['One Diamond', 'Two Diamond'],
             "top": ['Three Heart', 'Four Heart'],
             "right": ['pass', 'pass', 'pass'],
@@ -2309,12 +2368,13 @@ class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
         }
         expected = [[self.seatingRelative['right'], 'pass'], [self.seatingRelative['bottom'], 'pass'], [self.seatingRelative['left'], 'One Diamond'], [self.seatingRelative['top'], 'Three Heart'], [self.seatingRelative['right'], 'pass'], [self.seatingRelative['bottom'], 'pass'], [self.seatingRelative['left'], 'Two Diamond'], [self.seatingRelative['top'], 'Four Heart'], [self.seatingRelative['right'], 'pass']]
 
-        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingObjRelative, self.seatingRelative)
+        actual = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         print('actual = {0}'.format(actual))
         print('expected = {0}'.format(expected))
         self.actual = actual
         self.assertListEqual(actual, expected)
 #endregion
+
 
 
 

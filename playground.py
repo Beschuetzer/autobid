@@ -1,13 +1,13 @@
 # import helpers
 # username = 'You'
-# allBids = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
+# biddingAbsolute = [['Tim', 'Pass'],['Tom', 'Pass'],['James', 'One Club'],['You', 'Pass'],['Tim', 'One Diamond'],['Tom', 'Pass'],['James', 'Pass'],['You', 'Two Heart'],['Tim', 'Pass'],['Tom', 'Pass'],['James', 'Pass']]
 # bids = ['Pass','Two Heart']
 
 # isAnyBidJumpShift = False
 # for i in range(0, len(bids)): 
 #     bid = bids[i]
-#     indexOfUsersBid = helpers.getIndexOfNthBid(username, allBids, i + 1)
-#     biddingUpToThisPoint = allBids[:indexOfUsersBid]
+#     indexOfUsersBid = helpers.getIndexOfNthBid(username, biddingAbsolute, i + 1)
+#     biddingUpToThisPoint = biddingAbsolute[:indexOfUsersBid]
 #     contractBidAtThisPoint = helpers.getCurrentContractBid(biddingUpToThisPoint)
 #     isAnyBidJumpShift = helpers.getIsJumpShift(contractBidAtThisPoint, bid)
 
@@ -34,3 +34,8 @@ index = locationOrder.index(locations['bottom'])
 locationOrderToUse = locationOrder[index:] + locationOrder[:index]
 
 print('locationOrderToUse = {0}'.format(locationOrderToUse[:-1]))
+
+
+bids = [['Adam', 'One Diamond'], ['Dan', 'Two Club'], ['Ann', 'Double'], ['Andrew', 'Three Club']]
+
+print(bids[:2])

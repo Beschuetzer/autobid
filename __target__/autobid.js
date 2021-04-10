@@ -139,8 +139,8 @@ export var bids = [
 	["Andrew", "Pass"],
 ];
 export var hand = [0, 1, 5, 7, 11, 13, 18, 19, 29, 30, 32, 40, 51];
-export var autoBid = function (allBids, hand, score) {
-	var partnersBids = getPartnersBids(allBids);
+export var autoBid = function (biddingAbsolute, hand, score) {
+	var partnersBids = getPartnersBids(biddingAbsolute);
 	var outgoingBid = null;
 	return outgoingBid;
 };
@@ -151,10 +151,10 @@ export var getSuitFromCardAsNumber = function (cardAsNumber) {
 	else if (cardAsNumber >= 39 && cardAsNumber <= 51) return "spade";
 	else return null;
 };
-export var getPartnersBids = function (allBids) {
+export var getPartnersBids = function (biddingAbsolute) {
 	var bids = [];
 	var i = 1;
-	for (var bid of py_reversed(allBids)) {
+	for (var bid of py_reversed(biddingAbsolute)) {
 		if (__mod__(i, 2) == 0 && __mod__(i, 4) != 0) bids.append(bid[1]);
 		i += 1;
 	}

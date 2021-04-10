@@ -1,7 +1,7 @@
 #Purpose: make best bid taking into account cards in hand, previous bids, possibly score
 '''
 Inputs:
-    allBids: 2D array
+    biddingAbsolute: 2D array
     hand: 2D array with four items (1st = clubs, 2nd = diamonds, 3rd = hearts, 4th = spades) containing integers from 0-51
         First index is name of bidder
         Second index is string representing the name of the bid i.e. 1 No Trump
@@ -112,40 +112,40 @@ hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40,42]]
 import re, math, getEstimatedPoints, helpers
 flatten = lambda t: [item for sublist in t for item in sublist]
 
-def autoBid(allBids, hand, scoring, seating, spot, clientPointCountingConvention):
+def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingConvention):
     global suitCounts
     global highCardPointValuesInEachSuit
 
     #region Initialization (Getting Values and Dicts to work with)
-    isFirstBid = len(allBids) < 4
-    partnerHasBid = len(allBids) >= 2
-    currentContractBid = helpers.getCurrentContractBid(allBids)
+    isFirstBid = len(biddingAbsolute) < 4
+    partnerHasBid = len(biddingAbsolute) >= 2
+    currentContractBid = helpers.getCurrentContractBid(biddingAbsolute)
     if suitCounts == None:
         suitCounts = helpers.getSuitCounts(hand)
     if highCardPointValuesInEachSuit == None:
         highCardPointValuesInEachSuit = helpers.getHighCardPointValuesInEachSuit(hand)
         
-    biddingObjAbsolute = helpers.getBiddingObjAbsolute(allBids, seating)    
-    biddingObjRelative = helpers.getBiddingObjRelative(biddingObjAbsolute, spot)
+    biddingObjAbsolute = helpers.getBiddingObjAbsolute(biddingAbsolute, seating)    
+    biddingRelative = helpers.getBiddingObjRelative(biddingObjAbsolute, spot)
 
 
-    biddingHistory = helpers.getBiddingHistory(allBids)
+    biddingHistory = helpers.getBiddingHistory(biddingAbsolute)
     seatingRelative = helpers.getSeatingRelative(seating, spot)
-    estimatedPoints = getEstimatedPoints.getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seatingRelative)
-    estimatedSuitCounts = helpers.getEstimatedSuitCounts(biddingObjRelative, allBids, seatingRelative)
-    partnersBids = biddingObjRelative['top']
+    estimatedPoints = getEstimatedPoints.getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute, seatingRelative)
+    estimatedSuitCounts = helpers.getEstimatedSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
+    partnersBids = biddingRelative['top']
     #endregion
 
     partnersEstimatedPointCount = helpers.getPartnersEstimatedPointCount(partnersBids)
 
     #get straight up point counts
     highCardPoints = helpers.getHighCardPoints(hand, clientPointCountingConvention)
-    distributionPoints = helpers.getDistributionPoints(hand, allBids, biddingObjRelative, seatingRelative, suitCounts)
+    distributionPoints = helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelative, suitCounts)
     totalPoints = highCardPoints + distributionPoints
 
     #region Check whether to double and return double if true
-    canDouble = getCanDouble(biddingObjRelative)
-    shouldDouble = getShouldDouble(scoring, biddingObjRelative, partnersEstimatedPointCount, hand, currentContractBid)
+    canDouble = getCanDouble(biddingRelative)
+    shouldDouble = getShouldDouble(scoring, biddingRelative, partnersEstimatedPointCount, hand, currentContractBid)
     if shouldDouble is True:
         return 'Double'
     #endregion    
@@ -153,16 +153,16 @@ def autoBid(allBids, hand, scoring, seating, spot, clientPointCountingConvention
     #handle partner 1 Club
 
     #handle partner 2 Club
-    if (isFirstBid and re.search('two club', biddingObjRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingObjRelative['left'][0], re.IGNORECASE)):
+    if (isFirstBid and re.search('two club', biddingRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingRelative['left'][0], re.IGNORECASE)):
         openDistributionPoints = helpers.getOpeningDistributionPoints(suitCounts)
-        return helpers.getTwoClubResponse(hand, biddingObjRelative, highCardPoints + openDistributionPoints, currentContractBid)
+        return helpers.getTwoClubResponse(hand, biddingRelative, highCardPoints + openDistributionPoints, currentContractBid)
     
 
     #handle weak bid: -> pass/3NT/game in their suit/your best suit if lots of points or 6+ of a suit depending on your points, cards in their suit, if you have stoppers
     #if 1 NT -> best suit
 
     #TODO: do you pass if partner doubles and the person before you doubles?
-    result = helpers.handlePartnerDouble(hand, allBids, biddingObjRelative, totalPoints) 
+    result = helpers.handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints) 
     if result is not None:
         return result
 

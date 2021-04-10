@@ -211,7 +211,7 @@ values = {
     },
 }
 
-def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seatingRelative):
+def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute, seatingRelative):
     #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
     estimatedScoring = {
         "top": {
@@ -232,9 +232,9 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
         },
     }
 
-    for location, playersBids in biddingObjRelative.items():
+    for location, playersBids in biddingRelative.items():
         #region Skipping estimation if location is bottom (as that is your hand) or the player in question has made no bids
-        numberOfBidsMade = len(biddingObjRelative[location])
+        numberOfBidsMade = len(biddingRelative[location])
         if numberOfBidsMade < 1 or re.search('bottom', location, re.IGNORECASE):
             continue
         #endregion
@@ -244,23 +244,23 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
         print('username = {0}'.format(username))
 
         #Getting the currentContractBid for the user in question
-        biddingUpToUsersLastTurn = allBids[:helpers.getIndexOfNthBid(username, allBids, -1)]
+        biddingUpToUsersLastTurn = biddingAbsolute[:helpers.getIndexOfNthBid(username, biddingAbsolute, -1)]
         currentContractBidForUser = helpers.getCurrentContractBidFromBidding(biddingUpToUsersLastTurn)
         print('biddingUpToUsersTurn = {0}'.format(biddingUpToUsersLastTurn))
         print('currentContractBidForUser = {0}'.format(currentContractBidForUser))
 
-        indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, allBids, 1)
-        hasPartnerOpened = helpers.getHasPartnerOpened(allBids, username)
-        firstBid = biddingObjRelative[location][0]
+        indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, biddingAbsolute, 1)
+        hasPartnerOpened = helpers.getHasPartnerOpened(biddingAbsolute, username)
+        firstBid = biddingRelative[location][0]
         secondBid = ''
         lastBid = ''
-        if len(biddingObjRelative[location]) > 1:
-            secondBid = biddingObjRelative[location][1]
-            lastBid = biddingObjRelative[location][-1]
+        if len(biddingRelative[location]) > 1:
+            secondBid = biddingRelative[location][1]
+            lastBid = biddingRelative[location][-1]
 
         firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
-        isTeamsFirstBidOpportunity = getIsTeamsFirstBidOpportunity(biddingObjRelative, location)
-        isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(biddingObjRelative)
+        isTeamsFirstBidOpportunity = getIsTeamsFirstBidOpportunity(biddingRelative, location)
+        isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(biddingRelative)
 
         isFirstBidJumpshift = False
         isLastBidJumpshift = False
@@ -269,7 +269,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
             isLastBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser, lastBid)
 
             #TODO: do we need to check if the user made a bid that is a jumpshift ever and then have entirely separate logic in that case?
-            isAnyBidJumpshift = helpers.getHasPlayerJumpshifted(username, playersBids, allBids)
+            isAnyBidJumpshift = helpers.getHasPlayerJumpshifted(username, playersBids, biddingAbsolute)
 
 
         except:
@@ -277,8 +277,8 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
         #endregion
         #region Debugging (remove when done)
         print('currentContractBid = {0}'.format(currentContractBidForUser))
-        # print('players = {0}'.format(allBids[indexOfUsersFirstBid][1]))
-        print('biddingObjectRelative = {0}'.format(biddingObjRelative))
+        # print('players = {0}'.format(biddingAbsolute[indexOfUsersFirstBid][1]))
+        print('biddingObjectRelative = {0}'.format(biddingRelative))
         print('firstBid = {0}'.format(firstBid))    
         print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
         print('isFirstBidJumpShift = {0}'.format(isFirstBidJumpshift))
@@ -289,7 +289,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
 
         #TODO: need a helper to determine if any person in the game has opened with two club convention
         
-        hasSomeoneOpenedTwoClubs, personWhoOpenedTwoClubs = getHasSomeoneOpenedTwoClubs(allBids, biddingObjRelative, seatingRelative);
+        hasSomeoneOpenedTwoClubs, personWhoOpenedTwoClubs = getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative);
 
         #region Setting Initial Bounds Logic
         if secondBid == '':
@@ -304,19 +304,19 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
                 
             else: 
                 print('one opportunity else-----------')
-                minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
 
                 #region TODO: 4-6 are not being hit by test cases.  Do we need them here as we only need to handle cases where there is one bid made at most for each player and the player's bid is a pass?:
 
                 # elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
                 #     print(2)
-                #     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                #     minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
 
                 # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
                 #     #partner = ['something', ...]
                 #     #player =['pass', ...]
                 #     print(3)
-                #     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                #     minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
                     
                 
 
@@ -324,7 +324,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
                 #     print(4)
                 #     #partner = ['something', ...]
                 #     #player =['One Club', ...]
-                #     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                #     minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
 
 
                 # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
@@ -335,7 +335,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
 
                 # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
                 #     print(6)
-                #     minToUse, maxToUse = setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                #     minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
 
                 #     # partner = ['Pass', ...]
                 #     # player =['Pass', ...]
@@ -398,31 +398,32 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
     print('')
     return estimatedScoring
 
-def getHasSomeoneOpenedTwoClubs(allBids, biddingObjRelative, seatingObjRelative):
-    #input: allBids made (is an array of arrays where first item is name of bidder and second is bid)
+def getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative):
+    #input: biddingAbsolute made (is an array of arrays where first item is name of bidder and second is bid)
     #return: tuple where first item is boolean decribing whether someone has bid two clubs and the second item is the name of that person as a string
     
     #region check whether anyone bid two clubs as their first bid
+    falseTuple = (False, None)
     shouldContinue = False;
-    for location in biddingObjRelative: 
-        firstBid = biddingObjRelative[location][0]
+    twoClubBid = None
+
+    for location in biddingRelative: 
+        if len(biddingRelative[location]) == 0:
+            return falseTuple
+        firstBid = biddingRelative[location][0]
         if re.search('two club', firstBid, re.IGNORECASE):
+            twoClubBid = [seatingRelative[location], firstBid]
             shouldContinue = True;
             break;
     #endregion
 
     if shouldContinue is True:
-        #region getting whether someone opened before this person bid 'two club'
-        for bid in allBids:
-            username = bid[0]
-            actualBid = bid[1]
-            firstBid = biddingObjRelative[location][0]
-            if re.search('two club', firstBid, re.IGNORECASE):
-                #todo: check has anyone opened before this bid?
-                hasSomeoneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
-        #endregion
+        indexOfTwoClubBid = biddingAbsolute.index(twoClubBid)
+        hasSomeoneOpenedBefore = helpers.getHasSomeOneOpenedBefore(indexOfTwoClubBid, biddingAbsolute)
+        if hasSomeoneOpenedBefore is True:
+            return (True, twoClubBid[0])
 
-    return (False, None)
+    return falseTuple
 
 def getPlayerHasOnlyPassed(playerBids):
     for bid in playerBids:
@@ -431,13 +432,13 @@ def getPlayerHasOnlyPassed(playerBids):
 
     return True
 
-def setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass):
+def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass):
     locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
-    haveOpponentsNotHadTurnOrPassed = len(biddingObjRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingObjRelative[locationsRightLocation][0], re.IGNORECASE)
+    haveOpponentsNotHadTurnOrPassed = len(biddingRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingRelative[locationsRightLocation][0], re.IGNORECASE)
     print('setInitialBounds-----------------')
-    # print('biddingObjRelative["right"][0] = {0}'.format(biddingObjRelative['right'][0]))
+    # print('biddingRelative["right"][0] = {0}'.format(biddingRelative['right'][0]))
     # print('haveOpponentsNotHadTurnOrPassed = {0}'.format(haveOpponentsNotHadTurnOrPassed))
-    # print('re:'.format(re.search('Pass' , biddingObjRelative['right'][0], re.IGNORECASE)))
+    # print('re:'.format(re.search('Pass' , biddingRelative['right'][0], re.IGNORECASE)))
 
     if re.search('trump', firstBid, re.IGNORECASE):
         #partner = []
@@ -513,7 +514,7 @@ def setInitialBounds(location, biddingObjRelative, firstBid, isFirstBidJumpshift
 
     return [minToUse, maxToUse]
 
-def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
+def getIsTeamsFirstBidOpportunity(biddingRelative, location):
     partnersLocation = ''
     
     if location == locations['top']:
@@ -527,13 +528,13 @@ def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
     else:
         raise ValueError('location must be top bottom left of right')
 
-    partnersBids = biddingObjRelative[partnersLocation]
+    partnersBids = biddingRelative[partnersLocation]
 
     #this is for the test case 'test_left'
     if location == locations['left'] and len(partnersBids) == 1:
         return True
 
-    return len(biddingObjRelative[partnersLocation]) == 0
+    return len(biddingRelative[partnersLocation]) == 0
 
 
 
@@ -544,7 +545,7 @@ def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
 #region Not sure 
 # #partner = ['something']
 # #player =['pass']
-# playerBids = biddingObjRelative[location]
+# playerBids = biddingRelative[location]
 # playerHasOnlyPassed = getPlayerHasOnlyPassed(playerBids);
 
 # if playerHasOnlyPassed:
@@ -568,14 +569,14 @@ def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
 #region Adam's Not Working Code
 # if re.search('pass', firstBid, re.IGNORECASE):
 #     print('pass')
-#     currentBidsForThisPlayer = biddingObjRelative[location]
+#     currentBidsForThisPlayer = biddingRelative[location]
 #     #TODO: remember to check whether you length of partners bidding array is 0
 #     #if it is, it is the same case as partner passes first
 #     if len(currentBidsForThisPlayer) > 1:
 #         secondBid = currentBidsForThisPlayer[1]
-#         indexOfUsersSecondBid = getIndexOfNthBid(username, allBids, 2)
+#         indexOfUsersSecondBid = getIndexOfNthBid(username, biddingAbsolute, 2)
     
-#         secondBidIsJumpShift = getIsJumpShift(allBids[:indexOfUsersSecondBid], secondBid)
+#         secondBidIsJumpShift = getIsJumpShift(biddingAbsolute[:indexOfUsersSecondBid], secondBid)
 
 #         print('secondBid = {0}'.format(secondBid))
 #         print('indexOfUsersSecondBid = {0}'.format(indexOfUsersSecondBid))
@@ -614,7 +615,7 @@ def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
 #         estimatedScoring[location]['min'] = OPENING_TWO_CLUB_FIRST_ROUND_MIN
 #         estimatedScoring[location]['max'] = OPENING_TWO_CLUB_FIRST_ROUND_MAX
 #     else:
-#         hasSomeOneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+#         hasSomeOneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
 #         if re.search('Two', firstBid, re.IGNORECASE):
 #             if not hasSomeOneOpenedBefore:
 #                 estimatedScoring[location]['min'] = OPENING_WEAK_TWO_NO_PRIOR_OPENERS_MIN
@@ -649,7 +650,7 @@ def getIsTeamsFirstBidOpportunity(biddingObjRelative, location):
 #     estimatedScoring[location]['max'] = RESPONDING_DOUBLE_FIRST_ROUND_MAX            
 # else:
 #     partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
-#     partnersLastBid = allBids[helpers.getIndexOfNthBid(seatingRelative[partnersLocation], allBids, -1)][1]
+#     partnersLastBid = biddingAbsolute[helpers.getIndexOfNthBid(seatingRelative[partnersLocation], biddingAbsolute, -1)][1]
 
 #     print('partnersLastBid = {0}'.format(partnersLastBid))
     
