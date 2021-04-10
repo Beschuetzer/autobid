@@ -288,7 +288,8 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
         #endregion
 
         #TODO: need a helper to determine if any person in the game has opened with two club convention
-        personWhoOpenedTwoClub, hasSomeoneOpenedTwoClubs = getHasSomeoneOpenedTwoClubs(allBids);
+        
+        hasSomeoneOpenedTwoClubs, personWhoOpenedTwoClubs = getHasSomeoneOpenedTwoClubs(allBids, biddingObjRelative, seatingRelative);
 
         #region Setting Initial Bounds Logic
         if secondBid == '':
@@ -397,15 +398,31 @@ def getEstimatedPoints(estimatedScoringBounds, biddingObjRelative, allBids, seat
     print('')
     return estimatedScoring
 
-def getHasSomeoneOpenedTwoClubs(allBids):
-    for location in biddingObjRelative:
+def getHasSomeoneOpenedTwoClubs(allBids, biddingObjRelative, seatingObjRelative):
+    #input: allBids made (is an array of arrays where first item is name of bidder and second is bid)
+    #return: tuple where first item is boolean decribing whether someone has bid two clubs and the second item is the name of that person as a string
+    
+    #region check whether anyone bid two clubs as their first bid
+    shouldContinue = False;
+    for location in biddingObjRelative: 
         firstBid = biddingObjRelative[location][0]
         if re.search('two club', firstBid, re.IGNORECASE):
-            #todo: check has anyone opened before this bid?
-            hasSomeoneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+            shouldContinue = True;
+            break;
+    #endregion
 
+    if shouldContinue is True:
+        #region getting whether someone opened before this person bid 'two club'
+        for bid in allBids:
+            username = bid[0]
+            actualBid = bid[1]
+            firstBid = biddingObjRelative[location][0]
+            if re.search('two club', firstBid, re.IGNORECASE):
+                #todo: check has anyone opened before this bid?
+                hasSomeoneOpenedBefore = getHasSomeOneOpenedBefore(indexOfUsersFirstBid, allBids)
+        #endregion
 
-    return False
+    return (False, None)
 
 def getPlayerHasOnlyPassed(playerBids):
     for bid in playerBids:
