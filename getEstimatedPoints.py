@@ -2,6 +2,7 @@
     Getting the estimated points of each player based on their first two bids
 '''
 #TODO: make sure suit count estimates from bidding is complete
+from tests.test_helpers import getCurrentActualBid
 import helpers, re, helpers
 
 locations = {
@@ -240,6 +241,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         #endregion
         #region Setup
         username = seatingRelative[location]
+        partner = seatingRelative[helpers.getLocationAfterRotationsAround(location, 2)]
         print('')
         print('username = {0}'.format(username))
 
@@ -291,8 +293,39 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         
         hasSomeoneOpenedTwoClubs, personWhoOpenedTwoClubs = getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative);
 
+        #region Handling Two Clubs Opener Scenario
+        if hasSomeoneOpenedTwoClubs:
+            print('partner opened two clubs')
+            print('personWhoOpenedTwoClubs = {0}'.format(personWhoOpenedTwoClubs))
+            print('partner = {0}'.format(partner))
+
+            if partner == personWhoOpenedTwoClubs:
+                #TODO: figure out how many bids higher the players bid is and the return min and max
+                indexOfTwoClubBid = biddingAbsolute.index([partner, 'Two Club'])
+                contractAtThisPoint = helpers.getCurrentContractBidFromBidding(biddingAbsolute[:indexOfTwoClubBid])
+                numberOfBidsAbove = getNumberOfBidsAbove(contractAtThisPoint, firstBid)
+                
+                if numberOfBidsAbove == 1:
+                    minToUse = 0
+                else:
+                    minToUse = numberOfBidsAbove * 3 + 1
+
+                maxToUse = numberOfBidsAbove * 3
+
+            else:
+                minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+
+                if secondBid == '':
+                    pass
+                else: 
+                    pass
+            
+            estimatedScoring[location]['min'] = minToUse
+            estimatedScoring[location]['max'] = maxToUse
+
+        #endregion
         #region Setting Initial Bounds Logic
-        if secondBid == '':
+        elif secondBid == '':
 
             minToUse = None;
             maxToUse = None;
