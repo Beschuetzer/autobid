@@ -204,6 +204,10 @@ values = {
             "min": SPECIAL_WEAK_TWO_CLUBS_MIN,
             "max": SPECIAL_WEAK_TWO_CLUBS_MAX,
         },
+        "wtf": {
+           "min": SPECIAL_WEAK_THREE_MIN,
+           "max": SPECIAL_WEAK_TWO_CLUBS_MAX,
+        },
     },
 }
 
