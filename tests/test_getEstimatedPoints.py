@@ -1,6 +1,6 @@
 import getEstimatedPoints, helpers, unittest
 
-class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
+class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
     def setUp(self) -> None:
         self.estimatedScoringBounds = {
             "left": None,
@@ -1762,7 +1762,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         }
         self.assertDictEqual(self.actual, self.expected)
 
-class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
+class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
     def setUp(self) -> None:
         self.seatingRelative = {
             "top": "TopPlayer",
@@ -1970,7 +1970,7 @@ class getEstimatedPointsTwoBidOpportunities(unittest.TestCase):
         }
         self.assertDictEqual(self.actual, self.expected)
 
-class getEstimatedPointsMoreThanTwoBidOpportunities(unittest.TestCase):
+class getEstimatedPoints_3_Or_More_Bid_Opportunities(unittest.TestCase):
   #TODO: add tests for more than two bid opportunity cases...
   #Can just rely on the TwoBidOpportunity evaluations unless there are certain behaviors like bidding the same suit every time or jumpshifts?
     def setUp(self) -> None:
