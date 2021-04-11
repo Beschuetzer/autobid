@@ -1691,8 +1691,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
                 "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
             },
             "top": {
-                "min": getEstimatedPoints.values['special']['weakThree']['min'],
-                "max": getEstimatedPoints.values['special']['weakThree']['max']
+                "min": getEstimatedPoints.values['special']['wtf']['min'],
+                "max": getEstimatedPoints.values['special']['wtf']['max']
             },
             "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],

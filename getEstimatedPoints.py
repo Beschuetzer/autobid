@@ -289,46 +289,36 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
 
         #endregion
 
-        #TODO: need a helper to determine if any person in the game has opened with two club convention
-        
+        #region Handling Two Clubs Opener Scenario
         hasSomeoneOpenedTwoClubs, personWhoOpenedTwoClubs = getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative);
 
-        #region Handling Two Clubs Opener Scenario
         if hasSomeoneOpenedTwoClubs:
             print('partner opened two clubs')
             print('personWhoOpenedTwoClubs = {0}'.format(personWhoOpenedTwoClubs))
             print('partner = {0}'.format(partner))
 
             if partner == personWhoOpenedTwoClubs:
-                indexOfTwoClubBid = biddingAbsolute.index([partner, 'Two Club'])
-                contractAtThisPoint = helpers.getCurrentContractBidFromBidding(biddingAbsolute[:indexOfTwoClubBid + 1])
-                numberOfBidsAbove = helpers.getIndexDifferenceOfBids(contractAtThisPoint, firstBid)
-                
-                if numberOfBidsAbove == 1:
-                    minToUse = 0
-                else:
-                    minToUse = (numberOfBidsAbove - 1) * 3 + 1
+                if not re.search('pass', firstBid, re.IGNORECASE):
+                    indexOfTwoClubBid = biddingAbsolute.index([partner, 'Two Club'])
+                    contractAtThisPoint = helpers.getCurrentContractBidFromBidding(biddingAbsolute[:indexOfTwoClubBid + 2])
+                    numberOfBidsAbove = helpers.getIndexDifferenceOfBids(contractAtThisPoint, firstBid)
 
-                maxToUse = numberOfBidsAbove * 3
+                    if numberOfBidsAbove == 1:
+                        minToUse = 0
+                    else:
+                        minToUse = (numberOfBidsAbove - 1) * 3 + 1
+
+                    maxToUse = numberOfBidsAbove * 3
+                
+                else: 
+                    minToUse = values['partnerBidsFirst']['playerPasses']['min']
+                    maxToUse = values['partnerBidsFirst']['playerPasses']['max']
 
             else:
                 minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, True)
 
-
-                #if you aren't the team that made two club bid interpret any non pass bid as wtf
-
-
-                # if secondBid == '':
-                #     minToUse =  values['special']['wtf']['min']
-                #     maxToUse =  values['special']['wtf']['max']
-                # else: 
-                #     minToUse =  values['special']['wtf']['min']
-                #     maxToUse =  values['special']['wtf']['max']
-                
-            
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
-
         #endregion
         #region Setting Initial Bounds Logic
         elif secondBid == '':
