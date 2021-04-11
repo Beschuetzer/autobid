@@ -2076,27 +2076,27 @@ class getPartnersLocation(unittest.TestCase):
 class getPlayerHasOnlyPassed(unittest.TestCase):
     def test_empty(self):
         bids = []
-        actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
+        actual = helpers.getPlayerHasOnlyPassed(bids)
         expected = True
         self.assertEqual(actual, expected)
     def test_only_pass_one(self):
         bids = ['Pass']
-        actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
+        actual = helpers.getPlayerHasOnlyPassed(bids)
         expected = True
         self.assertEqual(actual, expected)
     def test_only_pass_multiple(self):
         bids = ['Pass', 'pass', 'Pass']
-        actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
+        actual = helpers.getPlayerHasOnlyPassed(bids)
         expected = True
         self.assertEqual(actual, expected)
     def test_bid_one(self):
         bids = ['Two Club']
-        actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
+        actual = helpers.getPlayerHasOnlyPassed(bids)
         expected = False
         self.assertEqual(actual, expected)
     def test_bid_multiple(self):
         bids = ['Pass', 'Three Diamond', 'Pass']
-        actual = getEstimatedPoints.getPlayerHasOnlyPassed(bids)
+        actual = helpers.getPlayerHasOnlyPassed(bids)
         expected = False
         self.assertEqual(actual, expected)
 class getLocationAfterRotationsAround(unittest.TestCase):
@@ -2168,7 +2168,7 @@ class getHasSomeoneOpenedTwoClubs(unittest.TestCase):
             "bottom": [],
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
-        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
         self.expected = (False, None)
         self.assertTupleEqual(self.actual, self.expected)
 
@@ -2180,7 +2180,7 @@ class getHasSomeoneOpenedTwoClubs(unittest.TestCase):
             "bottom": [],
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
-        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
         self.expected = (False, None)
         self.assertTupleEqual(self.actual, self.expected)
 
@@ -2192,7 +2192,7 @@ class getHasSomeoneOpenedTwoClubs(unittest.TestCase):
             "bottom": ['Pass', 'Pass'],
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
-        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
         self.expected = (False, None)
         self.assertTupleEqual(self.actual, self.expected)
 
@@ -2204,7 +2204,7 @@ class getHasSomeoneOpenedTwoClubs(unittest.TestCase):
             "bottom": [],
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
-        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
         self.expected = (True, "RightPlayer")
         self.assertTupleEqual(self.actual, self.expected)
     def test_is_actual_two_club_fourth_bidder_one_opportunity(self):
@@ -2215,7 +2215,7 @@ class getHasSomeoneOpenedTwoClubs(unittest.TestCase):
             "bottom": ['Pass'],
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
-        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
         self.expected = (True, "LeftPlayer")
         self.assertTupleEqual(self.actual, self.expected)
 
@@ -2227,7 +2227,7 @@ class getHasSomeoneOpenedTwoClubs(unittest.TestCase):
             "bottom": ['Pass', 'Pass'],
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
-        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
         self.expected = (True, "LeftPlayer")
         self.assertTupleEqual(self.actual, self.expected)
     
@@ -2239,7 +2239,7 @@ class getHasSomeoneOpenedTwoClubs(unittest.TestCase):
             "bottom": ['Pass'],
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
-        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
         self.expected = (True, "LeftPlayer")
         self.assertTupleEqual(self.actual, self.expected)
 
@@ -2251,7 +2251,7 @@ class getHasSomeoneOpenedTwoClubs(unittest.TestCase):
             "bottom": ['Pass', 'Pass', 'Pass'],
         }
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
-        self.actual = getEstimatedPoints.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasSomeoneOpenedTwoClubs(self.bids, biddingRelative, self.seatingRelative)
         self.expected = (True, "LeftPlayer")
         self.assertTupleEqual(self.actual, self.expected)
 

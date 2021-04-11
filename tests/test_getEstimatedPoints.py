@@ -1,8 +1,5 @@
 import getEstimatedPoints, helpers, unittest
 
-
-#TODO: need tests to check if partner bid 2 clubs first then evaluate player's points based on that
-
 class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
     def setUp(self) -> None:
         self.estimatedScoringBounds = {
