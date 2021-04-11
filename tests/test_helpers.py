@@ -2264,6 +2264,16 @@ class getIndexDifferenceOfBids(unittest.TestCase):
         with self.assertRaises(TypeError) as context:
             helpers.getIndexDifferenceOfBids('', '')
 
+    def test_pass(self):
+        actual = helpers.getIndexDifferenceOfBids('Pass', 'Two Club')
+        expected = 0
+        self.assertEqual(actual, expected)
+
+    def test_pass(self):
+        actual = helpers.getIndexDifferenceOfBids('Double', 'Two Club')
+        expected = 0
+        self.assertEqual(actual, expected)
+
     def test_valid_1(self):
         actual = helpers.getIndexDifferenceOfBids('Two Diamond', 'Two Club')
         expected = 1

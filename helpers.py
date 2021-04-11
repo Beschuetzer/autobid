@@ -622,7 +622,11 @@ def getIsBidGameBid(bid):
 def getIndexDifferenceOfBids(bid1, bid2):
     #input: lowerBid as string and higherBid as string
     #output: an int representing how many bids higher the higher bid is 
+    print('bid1 = {0}'.format(bid1))
+    print('bid2 = {0}'.format(bid2))
     try:
+        if re.search('pass', bid1, re.IGNORECASE) or re.search('double', bid1, re.IGNORECASE) or re.search('pass', bid2, re.IGNORECASE) or re.search('double', bid2, re.IGNORECASE):
+            return 0
         bid1Index = autoBid.contracts.index(bid1)
         bid2Index = autoBid.contracts.index(bid2)
         return abs(bid2Index - bid1Index)

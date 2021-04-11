@@ -1739,7 +1739,7 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
         biddingRelative = {
             "left": ['Two Club'],
             "top": ['Four Diamond'],
-            "right": ['pass'],
+            "right": ['Pass'],
             "bottom": [],
         }
 
@@ -1751,8 +1751,8 @@ class getEstimatedPointsOneBidOpportunity(unittest.TestCase):
                 "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
             },
             "top": {
-                "min": getEstimatedPoints.values['special']['weakThree']['min'],
-                "max": getEstimatedPoints.values['special']['openTwoClubs']['max']
+                "min": getEstimatedPoints.values['special']['wtf']['min'],
+                "max": getEstimatedPoints.values['special']['wtf']['max'],
             },
             "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],

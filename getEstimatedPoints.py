@@ -300,7 +300,6 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
             print('partner = {0}'.format(partner))
 
             if partner == personWhoOpenedTwoClubs:
-                #TODO: figure out how many bids higher the players bid is and the return min and max
                 indexOfTwoClubBid = biddingAbsolute.index([partner, 'Two Club'])
                 contractAtThisPoint = helpers.getCurrentContractBidFromBidding(biddingAbsolute[:indexOfTwoClubBid + 1])
                 numberOfBidsAbove = helpers.getIndexDifferenceOfBids(contractAtThisPoint, firstBid)
@@ -313,12 +312,19 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                 maxToUse = numberOfBidsAbove * 3
 
             else:
-                minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, True)
 
-                if secondBid == '':
-                    pass
-                else: 
-                    pass
+
+                #if you aren't the team that made two club bid interpret any non pass bid as wtf
+
+
+                # if secondBid == '':
+                #     minToUse =  values['special']['wtf']['min']
+                #     maxToUse =  values['special']['wtf']['max']
+                # else: 
+                #     minToUse =  values['special']['wtf']['min']
+                #     maxToUse =  values['special']['wtf']['max']
+                
             
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
@@ -337,7 +343,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                 
             else: 
                 print('one opportunity else-----------')
-                minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
+                minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
 
                 #region TODO: 4-6 are not being hit by test cases.  Do we need them here as we only need to handle cases where there is one bid made at most for each player and the player's bid is a pass?:
 
@@ -465,7 +471,7 @@ def getPlayerHasOnlyPassed(playerBids):
 
     return True
 
-def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass):
+def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False):
     locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
     haveOpponentsNotHadTurnOrPassed = len(biddingRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingRelative[locationsRightLocation][0], re.IGNORECASE)
     print('setInitialBounds-----------------')
@@ -473,12 +479,17 @@ def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, h
     # print('haveOpponentsNotHadTurnOrPassed = {0}'.format(haveOpponentsNotHadTurnOrPassed))
     # print('re:'.format(re.search('Pass' , biddingRelative['right'][0], re.IGNORECASE)))
 
+
+            
     if re.search('trump', firstBid, re.IGNORECASE):
         #partner = []
         #player =['One NT']
         print('trump branch')
         print('isFirstBidJumpshift = {0}'.format(isFirstBidJumpshift))
-        if isFirstBidJumpshift:
+        if hasOtherTeamOpenedTwoClubs:
+            minToUse = values['special']['wtf']['min']
+            maxToUse = values['special']['wtf']['max']
+        elif isFirstBidJumpshift:
             minToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isJumpshift']['min']
             maxToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isJumpshift']['max']
         else:
@@ -503,19 +514,28 @@ def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, h
         minToUse = values['isTeamsFirstBid']['playerDoubles']['min']
         maxToUse = values['isTeamsFirstBid']['playerDoubles']['max']
 
+
     elif re.search('two', firstBid, re.IGNORECASE):
         #partner = []
         #player =['Two Diamond']
         print('trump branch')
-        minToUse = values['special']['weakTwo']['min']
-        maxToUse = values['special']['weakTwo']['max']
+        if hasOtherTeamOpenedTwoClubs:
+            minToUse = values['special']['weakTwo']['min']
+            maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
+        else: 
+            minToUse = values['special']['weakTwo']['min']
+            maxToUse = values['special']['weakTwo']['max']
 
     elif re.search('three', firstBid, re.IGNORECASE):
         #partner = []
         #player =['Three Club']
         print('three branch')
-        minToUse = values['special']['weakThree']['min']
-        maxToUse = values['special']['weakThree']['max']
+        if hasOtherTeamOpenedTwoClubs:
+            minToUse = values['special']['wtf']['min']
+            maxToUse = values['special']['wtf']['max']
+        else:
+            minToUse = values['special']['weakThree']['min']
+            maxToUse = values['special']['weakThree']['max']
 
     elif re.search('pass', firstBid, re.IGNORECASE):
         print('pass branch')
@@ -530,7 +550,10 @@ def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, h
         print('else branch')
         #partner = []
         #player =['One Club']
-        if hasPartnerOpened:
+        if hasOtherTeamOpenedTwoClubs:
+            minToUse = values['special']['wtf']['min']
+            maxToUse = values['special']['wtf']['max']
+        elif hasPartnerOpened:
             if isPartnersFirstBidPass:
                 minToUse = values['partnerPassesFirst']['playerBidsSuit']['min']
                 maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
