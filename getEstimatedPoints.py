@@ -3,7 +3,7 @@
 '''
 #TODO: make sure suit count estimates from bidding is complete
 from tests.test_helpers import getCurrentActualBid
-import helpers, re, helpers
+import helpers, re
 
 locations = {
     "bottom": 'bottom',
@@ -290,7 +290,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         #endregion
 
         #region Handling Two Clubs Opener Scenario
-        hasSomeoneOpenedTwoClubs, personWhoOpenedTwoClubs = getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative);
+        hasSomeoneOpenedTwoClubs, personWhoOpenedTwoClubs = helpers.getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative);
 
         if hasSomeoneOpenedTwoClubs:
             print('partner opened two clubs')
@@ -311,8 +311,12 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                     maxToUse = numberOfBidsAbove * 3
                 
                 else: 
-                    minToUse = values['partnerBidsFirst']['playerPasses']['min']
-                    maxToUse = values['partnerBidsFirst']['playerPasses']['max']
+                    if hasPartnerOpened:
+                        minToUse = values['partnerBidsFirst']['playerPasses']['min']
+                        maxToUse = values['partnerBidsFirst']['playerPasses']['max']
+                    else:
+                        minToUse = values['isTeamsFirstBid']['playerPasses']   ['min']
+                        maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
 
             else:
                 minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, True)
@@ -427,39 +431,6 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
     print('')
     return estimatedScoring
 
-def getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative):
-    #input: biddingAbsolute made (is an array of arrays where first item is name of bidder and second is bid)
-    #return: tuple where first item is boolean decribing whether someone has bid two clubs and the second item is the name of that person as a string
-    
-    #region check whether anyone bid two clubs as their first bid
-    falseTuple = (False, None)
-    shouldContinue = False;
-    twoClubBid = None
-
-    for location in biddingRelative: 
-        if len(biddingRelative[location]) == 0:
-            continue
-
-        firstBid = biddingRelative[location][0]
-        if re.search('two club', firstBid, re.IGNORECASE):
-            twoClubBid = [seatingRelative[location], firstBid]
-            shouldContinue = True;
-            break;
-    #endregion
-
-    if shouldContinue is True:
-        indexOfTwoClubBid = biddingAbsolute.index(twoClubBid)
-        hasSomeoneOpenedBefore = helpers.getHasSomeOneOpenedBefore(indexOfTwoClubBid, biddingAbsolute)
-        if hasSomeoneOpenedBefore is False:
-            return (True, twoClubBid[0])
-    return falseTuple
-
-def getPlayerHasOnlyPassed(playerBids):
-    for bid in playerBids:
-        if not re.search('pass', bid, re.IGNORECASE):
-            return False;
-
-    return True
 
 def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False):
     locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
@@ -592,7 +563,7 @@ def getIsTeamsFirstBidOpportunity(biddingRelative, location):
 # #partner = ['something']
 # #player =['pass']
 # playerBids = biddingRelative[location]
-# playerHasOnlyPassed = getPlayerHasOnlyPassed(playerBids);
+# playerHasOnlyPassed = helpers.getPlayerHasOnlyPassed(playerBids);
 
 # if playerHasOnlyPassed:
 #     #partner = [...]

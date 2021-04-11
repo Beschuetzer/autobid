@@ -699,3 +699,37 @@ def getDealerFromBiddingObjRelative(biddingRelative):
     except:
         return None
 #endregion
+
+def getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative):
+    #input: biddingAbsolute made (is an array of arrays where first item is name of bidder and second is bid)
+    #return: tuple where first item is boolean decribing whether someone has bid two clubs and the second item is the name of that person as a string
+    
+    #region check whether anyone bid two clubs as their first bid
+    falseTuple = (False, None)
+    shouldContinue = False;
+    twoClubBid = None
+
+    for location in biddingRelative: 
+        if len(biddingRelative[location]) == 0:
+            continue
+
+        firstBid = biddingRelative[location][0]
+        if re.search('two club', firstBid, re.IGNORECASE):
+            twoClubBid = [seatingRelative[location], firstBid]
+            shouldContinue = True;
+            break;
+    #endregion
+
+    if shouldContinue is True:
+        indexOfTwoClubBid = biddingAbsolute.index(twoClubBid)
+        hasSomeoneOpenedBefore = getHasSomeOneOpenedBefore(indexOfTwoClubBid, biddingAbsolute)
+        if hasSomeoneOpenedBefore is False:
+            return (True, twoClubBid[0])
+    return falseTuple
+
+def getPlayerHasOnlyPassed(playerBids):
+    for bid in playerBids:
+        if not re.search('pass', bid, re.IGNORECASE):
+            return False;
+
+    return True
