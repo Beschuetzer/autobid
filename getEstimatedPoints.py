@@ -379,6 +379,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         #endregion
         #region updating bounds using estimatedScoringBounds
         else:
+            #TODO: CHECK IF PLAYER HAS OPENED AND KEPT OVER CALLING WITHOUT PARTNER SUPPORT (adjust min and potentially max in that case?)
             #region when the opportunities to bid is two long
             if len(playersBids) == 2: 
                 #region when the first bid is pass and 2nd bid is not pass or double
@@ -430,7 +431,6 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         #endregion
     print('')
     return estimatedScoring
-
 
 def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False):
     locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);

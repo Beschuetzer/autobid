@@ -1762,6 +1762,9 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         }
         self.assertDictEqual(self.actual, self.expected)
 
+
+#NOTE: IS IT SAFE TO SAY WE ONLY WANT TO ADJUST BOUNDS WHEN ONLY 2 BID OPPOPUNITIES IF THE FIRST BID IS PASS?
+#note: MAYBE JUST WHEN THE PLAYER SAYS THE SAME SUIT AGAIN (ESPECIALLY IF NO PARTNER RESPONSE) WOULD WE ADJUST BOUNDS IN CASES WHERE FIRST BID IS NOT PASS?
 class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
     def setUp(self) -> None:
         self.seatingRelative = {
@@ -1777,9 +1780,9 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
 
     def tearDown(self) -> None:
         print('bids = {0}'.format(self.bids))
-        print('self.actual ={0}'.format(self.actual))
-        print('expected = {0}'.format(self.expected))
         print('estimatedScoringBounds = {0}'.format(self.estimatedScoringBounds))
+        print('expected = {0}'.format(self.expected))
+        print('self.actual ={0}'.format(self.actual))
 
     def test_update_Double_First_Pass_Second(self):
         biddingRelative = {
@@ -1833,23 +1836,374 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         
         self.assertDictEqual(self.actual, self.expected)
 
+    #NOTE: WOULD WE WANT TO ADJUST MAX FOR RIGHT HERE BECAUSE THEIR FIRST SUIT SAID WAS NOT NT AND DOUBLE MAX IS SAME AS NT MAX? 
     def test_update_Double_First_Bid_Suit_Second(self):
-        pass
+        biddingRelative = {
+            "left": ['pass', 'One Heart'],
+            "top": ['One Club', 'pass'],
+            "right": ['Double', 'Two Club'],
+            "bottom": ['One Diamond'],
+        }
 
+        self.estimatedScoringBounds = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.expected = {
+            "left": {
+                "min": self.estimatedScoringBounds['left']['min'],
+                "max": self.estimatedScoringBounds['left']['max'],
+            },
+            "top": {
+                "min": self.estimatedScoringBounds['top']['min'],
+                "max": self.estimatedScoringBounds['top']['max']
+            },
+            "right": {
+                "min": self.estimatedScoringBounds['right']['min'],
+                "max": self.estimatedScoringBounds['right']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+    #NOTE: WHAT WOULD WE EXPECT RIGHT TO HAVE HERE?
     def test_update_NT_First_Pass_Second(self):
-        pass
+        biddingRelative = {
+            "left": ['pass', 'Two Heart'],
+            "top": ['One No Trump', 'pass'],
+            "right": ['pass', 'pass'],
+            "bottom": ['Two Diamond'],
+        }
+
+        self.estimatedScoringBounds = {
+            "left": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['left']['max'],
+            },
+            "top": {
+                "min": self.estimatedScoringBounds['top']['min'],
+                "max": self.estimatedScoringBounds['top']['max']
+            },
+            "right": {
+                "min": self.estimatedScoringBounds['right']['min'],
+                "max": self.estimatedScoringBounds['right']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
 
     def test_update_NT_First_Bid_Suit_Second(self):
-        pass
+        biddingRelative = {
+            "left": ['pass', 'Two Heart'],
+            "top": ['One No Trump', 'Two Spade'],
+            "right": ['pass', 'Three Heart'],
+            "bottom": ['Two Diamond'],
+        }
 
+        self.estimatedScoringBounds = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['left']['max'],
+            },
+            "top": {
+                "min": self.estimatedScoringBounds['top']['min'],
+                "max": self.estimatedScoringBounds['top']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['right']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+    #NOTE: adjust top min here?
+    def test_update_NT_First_Bid_NT_Second(self):
+        biddingRelative = {
+            "left": ['pass', 'Two Heart'],
+            "top": ['One No Trump', 'Two No Trump'],
+            "right": ['Pass', 'Three Heart'],
+            "bottom": ['Two Diamond'],
+        }
+
+        self.estimatedScoringBounds = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['left']['max'],
+            },
+            "top": {
+                "min": self.estimatedScoringBounds['top']['min'],
+                "max": self.estimatedScoringBounds['top']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['right']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+    #NOTE: DO WE WANT TO HAVE THE ADJUSTED AMOUNT BE DEPENDENT ON THE LEVEL OF THE BID MADE IN PASS-THEN-BID-SOMETHING SCENARIOS?
     def test_update_Pass_First_Bid_Suit_Second(self):
-        pass
+        biddingRelative = {
+            "left": ['pass', 'Two Heart'],
+            "top": ['pass', 'Two Spade'],
+            "right": ['Pass', 'Three Heart'],
+            "bottom": ['Two Diamond'],
+        }
+
+        self.estimatedScoringBounds = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['left']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['top']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['right']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Pass_First_NT_Second(self):
-        pass
+        biddingRelative = {
+            "left": ['One Heart', 'pass'],
+            "top": ['pass', 'Two No Trump'],
+            "right": ['Pass', 'Three Heart'],
+            "bottom": ['Two Diamond'],
+        }
 
+        self.estimatedScoringBounds = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['top']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['right']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+    #NOTE: WHAT CAN WE SAY ABOUT RIGHT'S DOUBLE HERE?  CAN WE CAN GENERALIZE PASS-FIRST-DOUBLE-SECOND OR IS IT VERY CASE SPECIFIC?
     def test_update_Pass_First_Double_Second(self):
-        pass
+        biddingRelative = {
+            "left": ['One Heart', 'pass'],
+            "top": ['pass', 'Two No Trump'],
+            "right": ['Pass', 'double'],
+            "bottom": ['Two Diamond'],
+        }
+
+        self.estimatedScoringBounds = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['top']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": self.estimatedScoringBounds['right']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Pass_First_Pass_Second(self):
         pass
