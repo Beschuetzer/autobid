@@ -1229,12 +1229,8 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
     
     def test_set_Weak_Three_Bid_1(self):
-        biddingRelative = {
-            "left": [],
-            "top": ['Three Diamond'],
-            "right": ['pass'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['weakThree1']
+        
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
 
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
@@ -1260,12 +1256,8 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
     
     def test_set_Weak_Three_Bid_2(self):
-        biddingRelative = {
-            "left": [],
-            "top": ['pass'],
-            "right": ['Three Diamond'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['weakThree2']
+        
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
 
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
@@ -1291,12 +1283,8 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
     
     def test_set_Weak_Three_Bid_3(self):
-        biddingRelative = {
-            "left": ['pass'],
-            "top": ['pass'],
-            "right": ['Three Diamond'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['weakThree3']
+        
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
 
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
@@ -1322,12 +1310,8 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
     
     def test_set_Weak_Three_Bid_4(self):
-        biddingRelative = {
-            "left": ['One Diamond'],
-            "top": ['Three Heart'],
-            "right": ['pass'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['weakThree4']
+        
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
 
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
@@ -1354,13 +1338,8 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
     
     def test_bottom_is_dealer(self):
         #my assumption that bottom would always have one fewer bids than the others was incorrect as it will be the same if it is bottom's deal:
-        biddingRelative = {
-            "left": ['pass'],
-            "top": ['pass'],
-            "right": ['One No Trump'],
-            "bottom": ['One Heart'],
-        }
-
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['bottomIsDealer']
+        
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
         self.expected = {
@@ -1384,13 +1363,8 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_set_Partner_Opens_Two_Clubs_Two_Diamond_Response(self):
-        biddingRelative = {
-            "left": ['Two Club'],
-            "top": ['pass'],
-            "right": ['Two Diamond'],
-            "bottom": [],
-        }
-
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsTwoDiamondResponse']
+        
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
         self.expected = {
@@ -1414,12 +1388,7 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_set_Partner_Opens_Two_Clubs_Two_Heart_Response(self):
-        biddingRelative = {
-            "left": ['Two Club'],
-            "top": ['pass'],
-            "right": ['Two Heart'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsTwoHeartResponse']
 
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
@@ -1444,12 +1413,7 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_set_Partner_Opens_Two_Clubs_Two_Spade_Response(self):
-        biddingRelative = {
-            "left": ['Two Club'],
-            "top": ['pass'],
-            "right": ['Two Spade'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsSpadeResponse']
 
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
@@ -1474,12 +1438,7 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_set_Partner_Opens_Two_Clubs_Two_NT_Response(self):
-        biddingRelative = {
-            "left": ['Two Club'],
-            "top": ['pass'],
-            "right": ['Two No Trump'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsTwoNTResponse']
 
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
@@ -1504,13 +1463,8 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_set_Partner_Opens_Two_Clubs_Three_Club_Response(self):
-        biddingRelative = {
-            "left": ['Two Club'],
-            "top": ['pass'],
-            "right": ['Three Club'],
-            "bottom": [],
-        }
-
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsThreeClubResponse']
+        
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
         self.expected = {
@@ -1534,12 +1488,7 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_set_Partner_Opens_Two_Clubs_Interference_Double(self):
-        biddingRelative = {
-            "left": ['Two Club'],
-            "top": ['double'],
-            "right": ['Three Club'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsInterferenceDouble']
 
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
@@ -1564,12 +1513,7 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_set_Partner_Opens_Two_Clubs_Interference_Two_Level_Bid(self):
-        biddingRelative = {
-            "left": ['Two Club'],
-            "top": ['Two Spade'],
-            "right": ['Three Club'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsInterferenceTwoLevelBid']
 
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
@@ -1594,13 +1538,8 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_set_Partner_Opens_Two_Clubs_Interference_Three_Level_Pass_Bid(self):
-        biddingRelative = {
-            "left": ['Two Club'],
-            "top": ['Three Diamond'],
-            "right": ['pass'],
-            "bottom": [],
-        }
-
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsInterferenceThreeLevelPassBid']
+        
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
         self.expected = {
@@ -1624,12 +1563,7 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_set_Partner_Opens_Two_Clubs_Interference_Three_Level_Two_Above_Bid(self):
-        biddingRelative = {
-            "left": ['Two Club'],
-            "top": ['Three Diamond'],
-            "right": ['Three No Trump'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsInterferenceThreeLevelTwoAboveBid']
 
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
@@ -1654,12 +1588,7 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_set_Partner_Opens_Two_Clubs_Interference_Random_Bid(self):
-        biddingRelative = {
-            "left": ['Two Club'],
-            "top": ['Four Diamond'],
-            "right": ['Pass'],
-            "bottom": [],
-        }
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsInterferenceRandomBid']
 
         self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
