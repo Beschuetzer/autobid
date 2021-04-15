@@ -74,7 +74,55 @@ biddingRelatives = {
         "right": ['Double'],
         "bottom": [],
     },
-    
+    "suit1": {
+        "left": [],
+        "top": ['One Diamond'],
+        "right": ['pass'],
+        "bottom": [],
+    },
+    "suit2": {
+        "left": [],
+        "top": ['pass'],
+        "right": ['One Diamond'],
+        "bottom": [],
+    },
+    "suit3": {
+        "left": ['pass'],
+        "top": ['pass'],
+        "right": ['One Spade'],
+        "bottom": [],
+    },
+    "weakTwo1": {
+        "left": [],
+        "top": ['Two Diamond'],
+        "right": ['pass'],
+        "bottom": [],
+    },
+    "weakTwo2": {
+        "left": [],
+        "top": ['pass'],
+        "right": ['Two Spade'],
+        "bottom": [],
+    },
+    "weakTwo3": {
+        "left": ['pass'],
+        "top": ['pass'],
+        "right": ['Two Heart'],
+        "bottom": [],
+    },
+    "weakTwo4": {
+        "left": [],
+        "top": ['One Club'],
+        "right": ['Two Heart'],
+        "bottom": [],
+    },
+    "weakTwo5":  {
+        "left": ['Pass'],
+        "top": ['One Club'],
+        "right": ['Two Spade'],
+        "bottom": [],
+    },
+
   },
   "twoBidOpportunities": {
 
