@@ -570,7 +570,7 @@ def getHighCardPoints(hand, clientPointCountingConvention):
 
 def getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelative, suitCounts):
     '''
-    inputs: 
+    inputs: ------------------------------------------------- 
         hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
         
         biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
@@ -581,6 +581,8 @@ def getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelativ
 
         suitCounts = { "clubs": 3, "diamonds": 4, etc... }
     
+    returns: -------------------------------------------------
+        the estimated distribution points for hand
     '''
     if hand == None:
         return -1    
@@ -601,13 +603,21 @@ def getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelativ
     return distributionPoints
 
 def getPartnersMentionedSuits(partnersBids):
-    #incoming list of bids 
-    #return a list of suits that partner has bid
-
+    '''
+    inputs: 
+        partnersBids = ['pass', 'One Club', ... ]
+    returns:
+        a list of suits that the analyzing partner has bid (e.g. ['clubs', 'diamonds', 'hearts', 'spades', 'noTrump'])
+    '''
     pass
 
 def getShouldCalculateRespondingPoints(biddingAbsolute):
-    #determine whether or not to calculate opening distribution or responding distribution
+    '''
+    inputs: 
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+    returns: 
+        True if analyzing player 'should' calculate responding distribution points and False if responding distribution points
+    '''
 
     #if partner bids 1 Clubs, 2 Clubs or 1NT return false
 
@@ -615,12 +625,23 @@ def getShouldCalculateRespondingPoints(biddingAbsolute):
     pass
 
 def getRespondingDistributionPoints(suitCounts, partnersMentionedSuits):
-
+    '''
+    inputs-----------------------------------------------:
+        suitCounts = { "clubs": 3, "diamonds": 4, etc... }
+        
+        partnersMentionedSuits = array of suits that the analyzing partner has bid (e.g. ['clubs', 'diamonds', 'hearts', 'spades', 'noTrump'])
+    returns:-----------------------------------------------
+        the estimated responding distribution points of the analyzing player
+    '''
     return -1
 
 def getOpeningDistributionPoints(suitCounts):
-    #input: suitCounts as a dictionary where keys are suit names and values are ints representing how many of that suit
-    #return: int representing total distribution points in all 4 suits
+    '''
+    input:
+        suitCounts = { "clubs": 3, "diamonds": 4, etc... }
+    returns: 
+        an integer representing total opening distribution that the analyzing player has
+    '''
     points = 0
     for suit in suitCounts:
         if suitCounts[suit] == 0:
@@ -635,27 +656,37 @@ def getOpeningDistributionPoints(suitCounts):
     return points    
 
 def getLocationAfterRotationsAround(location, numberOfRotations):
-    #inputs: ------------------------------
-        #location = a string representing relative locations: ('right', 'left',...)
-        #numberOfRotations = an int representing the number of clock-wise rotations
-    #returns ------------------------------ a string representing relative locations: ('right', 'left',...)
-    #example location = 'right' and numberOfRotations = 1 => 'bottom'
-    #example location = 'right' and numberOfRotations = -1 => 'top'
+    '''
+    inputs: ------------------------------
+        location = a string representing relative locations: ('right', 'left',...)
+        numberOfRotations = an int representing the number of clock-wise rotations
+    returns ------------------------------ 
+        a string representing a relative location: ('right', 'left', 'top',  or 'bottom')
+        example - location = 'right' and numberOfRotations = 1 => 'bottom'
+        example - location = 'right' and numberOfRotations = -1 => 'top'
+    '''
     locations = ['top', 'right', 'bottom', 'left']
     indexOfLocation = locations.index(location)
     return locations[(indexOfLocation + numberOfRotations) % 4]
 
 def getCurrentContractBidFromBidding(bidding):
-    #inputs: ------------------------------
-        #bidding as list of all bids to consider
-    #returns ------------------------------ the currentContractBid on the bidding as a string
+    '''
+    inputs: ------------------------------
+        bidding = an array of arrays representing the bids to consider (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+    returns ------------------------------
+        a string representing the currentContractBid based on bidding (e.g. 'One Club', 'Two Heart', etc... )
+    '''
     for bid in reversed(bidding):
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return bid[1]
 
 def getIsBidGameBid(bid):
-    #input bid as a string
-    #return true if bid is 3NT or greater than 4 Hearts, None if error otherwise false
+    '''
+    inputs:
+        bid = a string ('One Club', "Two Heart', etc... )
+    returns:
+        True if bid is 3NT or greater than 4 Hearts, None if error, otherwise false
+    '''
     try:
         if re.match('three no trump', bid, re.IGNORECASE):
             return True
@@ -670,10 +701,13 @@ def getIsBidGameBid(bid):
     return False
 
 def getIndexDifferenceOfBids(bid1, bid2):
-    #input: lowerBid as string and higherBid as string
-    #output: an int representing how many bids higher the higher bid is 
-    print('bid1 = {0}'.format(bid1))
-    print('bid2 = {0}'.format(bid2))
+    '''
+    inputs: 
+        bid1 = a string representing a bid ('One Club', 'One Diamond', etc... )
+        bid2 = a string representing a bid ('One Club', 'One Diamond', etc... )
+    returns:
+        an int representing how many bids higher the higher bid is (e.g. 1, 2, 3, etc... )
+    '''
     try:
         if re.search('pass', bid1, re.IGNORECASE) or re.search('double', bid1, re.IGNORECASE) or re.search('pass', bid2, re.IGNORECASE) or re.search('double', bid2, re.IGNORECASE):
             return 0
@@ -685,9 +719,15 @@ def getIndexDifferenceOfBids(bid1, bid2):
 
 #region Test Case Helpers
 def getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):
-    #note: this is written to facilitate test case writing for getEstimatedPoints
-    #input biddingRelative and seatingRelative dictionaries
-    #returns ------------------------------ the bidding array e.g. [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ...]
+    '''
+    note: this is written to facilitate test case writing for getEstimatedPoints
+    inputs:------------------------------
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+        seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
+
+    returns:------------------------------
+        the bidding array e.g. [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ...] based on inputs
+    '''
     try:
         locations = getEstimatedPoints.locations
         locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
@@ -733,6 +773,12 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative
         return []
 
 def getDealerFromBiddingObjRelative(biddingRelative):
+    '''
+    inputs:
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+    returns:
+        a string representing the location of the dealer (e.g. 'top', 'left', etc... )
+    '''
     try:
         currentMax = 0
         dealer = None
