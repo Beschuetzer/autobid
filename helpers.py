@@ -232,6 +232,9 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
     return 'Pass'
 
 def getSuitFromBid(bid):
+    '''
+        returns the suit of bid (e.g. 'Heart', 'Spade', 'No Trump' etc)
+    '''
     split = bid.split()
     if split and len(split) > 1:
         return bid.split()[1]
@@ -239,10 +242,13 @@ def getSuitFromBid(bid):
     return None
 
 def getSpotAfterNRotations(spot, numberOfRotations):
-    #input: 
-    #   spot - string representing user's cardinal position
-    #   numberOfRotations - how many time to go clockwise until the desired position 
-    #return - string representing cardinal location n number of rotations from spot 
+    '''
+    inputs: 
+       spot - string representing user's cardinal position
+       numberOfRotations - how many time to go clockwise until the desired position 
+    returns:
+        string representing cardinal location n number of rotations from spot (e.g. 'north', 'south', etc...) 
+    '''
     if numberOfRotations < 0:
         raise TypeError('Invalid numberOfRotations')
     if numberOfRotations == 0:
@@ -253,10 +259,13 @@ def getSpotAfterNRotations(spot, numberOfRotations):
     return spots[(currentSpotIndex + numberOfRotations) % 4]
 
 def getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor):
-    #input -
-    #   usersSpot = string representing cardinal direction
-    #   spotToGetLocationFor = cardinal direction of spot to get
-    #return: the location (left, right, top, or bottom) of spotToGetLocationFor in relation to the usersSpot
+    '''
+    inputs
+       usersSpot = string representing cardinal direction ('north', 'south', etc...)
+       spotToGetLocationFor = cardinal direction of spot to get ('north', 'south', etc...)
+    returns: 
+        a location ('left','right', 'top', or 'bottom') representing the relative seating location of spotToGetLocationFor in relation to the usersSpot
+    '''
     spots = ['north', 'west', 'south', 'east']
     locations = ['bottom', 'left', 'top', 'right']
     usersSpotIndex = spots.index(usersSpot)
@@ -267,18 +276,25 @@ def getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor):
     return locations[difference]
 
 def getBiddingObjRelative(biddingObjAbsolute, spot):
-    #input: 
-    #   biddingObjAbsolute - dictionary of bids for each cardinal position
-    #   spot - string representing user's cardinal position
-    #return: dictionary with keys repsenting relative position to user (top, left, right, bottom (bottom being own bids))
+    '''
+    inputs: 
+        biddingObjAbsolute = dictionary of bids for each cardinal position
+        spot = string representing user's cardinal position
+    returns:
+        dictionary with keys representing relative locations to the analyzing player and values representing a list of bids the player in that location has made thus far (e.g. "top": ['One Club', 'pass', ...], "left": ['pass', 'Two Heart', ...], ...)
+    '''
     biddingRelative = {}
     for key, value in biddingObjAbsolute.items():
         biddingRelative[getRelativeLocationFromSpot(spot, key)] = value
     return biddingRelative
 
 def getBiddingObjAbsolute(biddingAbsolute, seating):
-#     #input: all bids made
-#     #return: a dictionary where the keys are cardinal directions (North South East West) and the values are arrays representing that persons bidding (['One Spade', 'Two Diamonds'])
+    '''
+    input: 
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+    returns: 
+        a dictionary where the keys are cardinal directions ('north', 'south', 'east', or 'west') and the values are arrays representing that persons bidding ("north": ['One Spade', 'Two Diamonds', ...], "east": ['pass', 'One No Trumo', ...], ... )
+    '''
     biddingObjAbsolute = {
         "north": [],
         "south": [],
@@ -295,9 +311,13 @@ def getBiddingObjAbsolute(biddingAbsolute, seating):
     return biddingObjAbsolute
 
 def getStrongestSuit(hand, biddingRelative, isResponding=False):
-    #input: hand as 2D array 
-    #return: 'club'/'diamond'/'heart'/'spade'/'no trump' depending on which one is the 'strongest' and which suits have already been mentioned
-
+    '''
+    input: 
+        hand as 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
+        (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
+    returns:
+        'club', 'diamond', 'heart', 'spade', or 'no trump' depending on which suit is the 'strongest' (considers which suits have already been mentioned, the number of points in that suit the analyzing player has, and how long the suit it for the analyzing player
+    '''
     suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingRelative)
 
     #global vars to use: 'suitCounts' and 'highCardPointValuesInEachSuit'
@@ -314,7 +334,12 @@ def getStrongestSuit(hand, biddingRelative, isResponding=False):
     pass
 
 def getSuitsMentionedByOpponents(biddingRelative):
-    #check already mentioned suits
+    '''
+        input:
+            biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+        returns: 
+            a dictionary obj representing whether that suit has been said by opponents or not (e.g. { "clubs": True, "diamonds": False, ... })
+    '''
     mentioned = {
         "clubs": False,
         "diamonds": False,
@@ -332,11 +357,6 @@ def getSuitsMentionedByOpponents(biddingRelative):
                     mentioned[key] = True
                
     return mentioned
-
-def getPartnersEstimatedPointCount(partnersBids):
-    #input: partnersBids in chronological order (1st index is most first bid they made)
-    #return: a list where the first index represents the lowest point count possible and the 2nd index the highest?
-    pass
 
 def getCanDouble(biddingRelative):
     #inputs: if opposing team bid

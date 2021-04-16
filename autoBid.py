@@ -136,7 +136,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     partnersBids = biddingRelative['top']
     #endregion
 
-    partnersEstimatedPointCount = helpers.getPartnersEstimatedPointCount(partnersBids)
+    partnersEstimatedPointCount = estimatedPoints['top']
 
     #get straight up point counts
     highCardPoints = helpers.getHighCardPoints(hand, clientPointCountingConvention)
@@ -154,7 +154,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
 
 
     #TODO: we don't have logic for opening two club then going through convention as opener 
-    
+
     #handle partner opens 2 Club
     if (isFirstBid and re.search('two club', biddingRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingRelative['left'][0], re.IGNORECASE)):
         openDistributionPoints = helpers.getOpeningDistributionPoints(suitCounts)
