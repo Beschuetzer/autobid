@@ -2,9 +2,43 @@ from logging import error
 import getEstimatedPoints, autoBid
 import re, math
 
+highCardPointValues = {
+    "hcp": {
+        "ace": 4,
+        "king": 3,
+        "queen": 2,
+        "jack": 1,
+    },
+    "alternative": {
+        "ace": 4.5,
+        "king": 3,
+        "queen": 1.5,
+        "jack": 0.75,
+        "ten": 0.25,
+    },
+}
+suitLengthRequiredToCount = {
+    "king": 2,
+    "queen": 3,
+    "jack": 4,
+    "ten": 5,
+}
+distributionPointValues = {
+    "shortness": {
+        "void": 3,
+        "singleton": 2,
+        "doubleton": 1,
+    },
+    "length": {
+        "fiveCardSuit": 1,
+        "sixCardsSuit": 2,
+        "sevenCardsSuit": 3,  
+    },
+}
+
 def getSeatingRelative(seating, spot):
     '''
-        returns the seating in terms of relative locations (e.g. 'top', 'left', 'right', 'bottom')
+        returns ------------------------------ the seating in terms of relative locations (e.g. 'top', 'left', 'right', 'bottom')
     '''
     directions = ['north','east','south','west']
     return {
@@ -16,7 +50,7 @@ def getSeatingRelative(seating, spot):
    
 def getIsPartnersFirstBidPass(biddingRelative):
     '''
-        returns whether the players partner passed for their first bid opportunity
+        returns ------------------------------ whether the players partner passed for their first bid opportunity
     '''
     partnersBidding = biddingRelative["top"] 
     if len(partnersBidding) > 0:
@@ -26,7 +60,7 @@ def getIsPartnersFirstBidPass(biddingRelative):
 
 def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute):
     '''
-       returns whether a player other than the user who made the bid at indexOfUsersFirstBid made an 'opening bid'
+       returns ------------------------------ whether a player other than the user who made the bid at indexOfUsersFirstBid made an 'opening bid'
     '''
     bidsUpToUsersFirstBid = biddingAbsolute
     if indexOfUsersFirstBid != None:
@@ -40,7 +74,7 @@ def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute):
 
 def getPartnersLocation(username, seatingRelative):
     '''
-    returns location of username's partner (e.g. 'top', 'left', 'right', etc...)
+    returns ------------------------------ location of username's partner (e.g. 'top', 'left', 'right', etc...)
     '''
     locationToUse = None
     for location, usernameInDict in seatingRelative.items():
@@ -58,11 +92,11 @@ def getPartnersLocation(username, seatingRelative):
 
 def getIndexOfNthBid(username, biddingAbsolute, nthBid):
     '''
-    inputs:
+    inputs: ------------------------------
         username - string
         biddingAbsolute - 2D array
         nthBid - an integer greater than or equal to 1 (1 = first bid) or less than or equal to -1 (-1 = last bid, -2 = 2nd to last bid...)
-    returns the index in biddingAbsolute of the nthBid that username made  
+    returns ------------------------------ the index in biddingAbsolute of the nthBid that username made  
     '''
     i = 0
     matchCount = 0
@@ -88,11 +122,11 @@ def getIndexOfNthBid(username, biddingAbsolute, nthBid):
 
 def getHasPlayerJumpshifted(username, playersBids, biddingAbsolute):
     '''
-    inputs:
+    inputs: ------------------------------
         username as string
         playersBids as a list of strings
         allbids is a list of lists representing bids (bidder, bid)
-    returns true if the player with username has made a jumpshift bid ever otherwise false
+    returns ------------------------------ true if the player with username has made a jumpshift bid ever otherwise false
     '''
     for i in range(0, len(playersBids)): 
         bid = playersBids[i]
@@ -113,9 +147,9 @@ def getHasPlayerJumpshifted(username, playersBids, biddingAbsolute):
 
 def getIsJumpshift(currentContractBid, usersBid):
     '''
-    inputs:
+    inputs: ------------------------------
         currentContractBid and usersBid are strings representing a bid ('One No Trump')
-    returns True if the usersBid's index is greater than the currentcontractBid's index by 5 or more (aka a 'jumpshift' of currentContractBid)
+    returns ------------------------------ True if the usersBid's index is greater than the currentcontractBid's index by 5 or more (aka a 'jumpshift' of currentContractBid)
     '''
     if not currentContractBid or currentContractBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
         return False
@@ -130,7 +164,7 @@ def getIsJumpshift(currentContractBid, usersBid):
 
 def getHasPartnerOpened(biddingAbsolute, username):
     '''
-    returns true if username's partner has mentioned a bid that is a suit, no trump, or a double and false otherwise
+    returns ------------------------------ true if username's partner has mentioned a bid that is a suit, no trump, or a double and false otherwise
     '''
     indexOfUsersFirstBid = getIndexOfNthBid(username, biddingAbsolute, 1)
 
@@ -148,7 +182,7 @@ def getHasPartnerOpened(biddingAbsolute, username):
 
 def getBiddingHistory(biddingAbsolute):
     '''
-    returns a list of strings representing the order in which the bids occured (same as incoming bids but is a 1D array of just bids rather than bids and bidder names)
+    returns ------------------------------ a list of strings representing the order in which the bids occured (same as incoming bids but is a 1D array of just bids rather than bids and bidder names)
     '''
     biddingHistory = []
     for bid in biddingAbsolute:
@@ -158,7 +192,7 @@ def getBiddingHistory(biddingAbsolute):
 
 def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid):
     '''
-        returns the the bid to say based on the two club convention when your partner has opened two clubs
+        returns ------------------------------ the the bid to say based on the two club convention when your partner has opened two clubs
     '''
     currentIndex = autoBid.contracts.index(currentActualBid[1])
 
@@ -233,7 +267,7 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
 
 def getSuitFromBid(bid):
     '''
-        returns the suit of bid (e.g. 'Heart', 'Spade', 'No Trump' etc)
+        returns ------------------------------ the suit of bid (e.g. 'Heart', 'Spade', 'No Trump' etc)
     '''
     split = bid.split()
     if split and len(split) > 1:
@@ -243,10 +277,10 @@ def getSuitFromBid(bid):
 
 def getSpotAfterNRotations(spot, numberOfRotations):
     '''
-    inputs: 
+    inputs: ------------------------------ 
        spot - string representing user's cardinal position
        numberOfRotations - how many time to go clockwise until the desired position 
-    returns:
+    returns ------------------------------:
         string representing cardinal location n number of rotations from spot (e.g. 'north', 'south', etc...) 
     '''
     if numberOfRotations < 0:
@@ -263,7 +297,7 @@ def getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor):
     inputs
        usersSpot = string representing cardinal direction ('north', 'south', etc...)
        spotToGetLocationFor = cardinal direction of spot to get ('north', 'south', etc...)
-    returns: 
+    returns ------------------------------: 
         a location ('left','right', 'top', or 'bottom') representing the relative seating location of spotToGetLocationFor in relation to the usersSpot
     '''
     spots = ['north', 'west', 'south', 'east']
@@ -277,10 +311,10 @@ def getRelativeLocationFromSpot(usersSpot, spotToGetLocationFor):
 
 def getBiddingObjRelative(biddingObjAbsolute, spot):
     '''
-    inputs: 
+    inputs: ------------------------------ 
         biddingObjAbsolute = dictionary of bids for each cardinal position
         spot = string representing user's cardinal position
-    returns:
+    returns ------------------------------:
         dictionary with keys representing relative locations to the analyzing player and values representing a list of bids the player in that location has made thus far (e.g. "top": ['One Club', 'pass', ...], "left": ['pass', 'Two Heart', ...], ...)
     '''
     biddingRelative = {}
@@ -292,7 +326,7 @@ def getBiddingObjAbsolute(biddingAbsolute, seating):
     '''
     input: 
         biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
-    returns: 
+    returns ------------------------------: 
         a dictionary where the keys are cardinal directions ('north', 'south', 'east', or 'west') and the values are arrays representing that persons bidding ("north": ['One Spade', 'Two Diamonds', ...], "east": ['pass', 'One No Trumo', ...], ... )
     '''
     biddingObjAbsolute = {
@@ -315,7 +349,7 @@ def getStrongestSuit(hand, biddingRelative, isResponding=False):
     input: 
         hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
         (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
-    returns:
+    returns ------------------------------:
         'club', 'diamond', 'heart', 'spade', or 'no trump' depending on which suit is the 'strongest' (considers which suits have already been mentioned, the number of points in that suit the analyzing player has, and how long the suit it for the analyzing player
     '''
     suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingRelative)
@@ -337,7 +371,7 @@ def getSuitsMentionedByOpponents(biddingRelative):
     '''
         input:
             biddingRelative = { "top": ['pass', 'one heart', ...], ... }
-        returns: 
+        returns ------------------------------: 
             a dictionary obj representing whether that suit has been said by opponents or not (e.g. { "clubs": True, "diamonds": False, ... })
     '''
     mentioned = {
@@ -358,13 +392,11 @@ def getSuitsMentionedByOpponents(biddingRelative):
                
     return mentioned
 
-
-a = 'test'
 def getCanDouble(biddingRelative):
     '''
-    inputs: 
+    inputs: ------------------------------ 
         biddingRelative = { "top": ['pass', 'one heart', ...], ... }
-    returns:
+    returns ------------------------------:
         True is analyzing player can double and false otherwise   
     '''
     if len(biddingRelative['left']) == 0 and len(biddingRelative['right']) == 0:
@@ -372,9 +404,10 @@ def getCanDouble(biddingRelative):
 
     return True
     
+#NOTE: this function will likley need a whole separate file due to its complexity
 def getShouldDouble(scoring, biddingRelative, estimatedPoints, hand, currentActualBid):
     '''
-    inputs: 
+    inputs: ------------------------------ 
     
     scoring = an obj/dictionary representing the scores 
     (e.g. 
@@ -396,7 +429,9 @@ def getShouldDouble(scoring, biddingRelative, estimatedPoints, hand, currentActu
     
     hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
 
-    returns: 
+    currentActualBid = string representing the bid that would be played (e.g. "One Heart")
+
+    returns ------------------------------: 
         True if analyzing player 'should' double otherwise False
     '''
 
@@ -412,8 +447,12 @@ def getShouldDouble(scoring, biddingRelative, estimatedPoints, hand, currentActu
     return False
 
 def getSuitNameFromCardAsNumber(cardAsNumber):
-    #input: integer 0 - 51
-    #return a suit ('clubs', 'diamonds', 'hearts' or 'spades')
+    '''
+    input: 
+        cardAsNumber = integer 0 - 51
+    returns:
+        a suit ('clubs', 'diamonds', 'hearts' or 'spades')
+    '''
     if cardAsNumber >= 0 and cardAsNumber <= 12:
         return 'clubs'
     elif cardAsNumber >= 13 and cardAsNumber <= 25:
@@ -426,9 +465,13 @@ def getSuitNameFromCardAsNumber(cardAsNumber):
         return None
 
 def getCurrentContractBid(biddingAbsolute):
-    #input: all bids up to now
-    #return: the last bid made that is not double or pass
-    print('biddingAbsolute = {0}'.format(biddingAbsolute))
+    '''
+    input: 
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+    return:
+        the last bid made that is not double or pass
+    '''
+
     for bid in reversed(biddingAbsolute):
         if len(bid) <= 0:
             return None
@@ -436,7 +479,9 @@ def getCurrentContractBid(biddingAbsolute):
             return bid
 
 def handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints):
-    #responding to takeout dbl if applicable otherwise passing if less than 6 points total and is first bid
+    '''
+        responding to takeout dbl if applicable otherwise passing if less than 6 points total and is first bid
+    '''
     if len(biddingRelative['top']) == 1 and re.search('Double', biddingRelative['top'][0], re.IGNORECASE): 
         mustBid = re.search('pass', biddingAbsolute[-1][1], re.IGNORECASE)
         if totalPoints < 6 and mustBid is None:
@@ -446,44 +491,11 @@ def handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints):
     else:
         #TODO: have to figure out when to trust partner's actual double bid and when to make a bid (e.g. you have a really nice suit with 18+ points?) or just always pass if partner doubles and it's not a takeout double?
         return 'Pass'
-#region Hand Counting Stuff
-#region Initialization (Hard Coding Stuff)
-highCardPointValues = {
-    "hcp": {
-        "ace": 4,
-        "king": 3,
-        "queen": 2,
-        "jack": 1,
-    },
-    "alternative": {
-        "ace": 4.5,
-        "king": 3,
-        "queen": 1.5,
-        "jack": 0.75,
-        "ten": 0.25,
-    },
-}
-suitLengthRequiredToCount = {
-    "king": 2,
-    "queen": 3,
-    "jack": 4,
-    "ten": 5,
-}
-distributionPointValues = {
-    "shortness": {
-        "void": 3,
-        "singleton": 2,
-        "doubleton": 1,
-    },
-    "length": {
-        "fiveCardSuit": 1,
-        "sixCardsSuit": 2,
-        "sevenCardsSuit": 3,  
-    },
-}
-#endregion
 
 def getHighCardPointValuesInEachSuit(hand):
+    '''
+        returns the high card point value of hand
+    '''
     global highCardPointValuesInEachSuit
     highCardPointValuesInEachSuit = {
         "clubs": 0,
@@ -503,6 +515,9 @@ def getHighCardPointValuesInEachSuit(hand):
     return highCardPointValuesInEachSuit
 
 def getSuitCounts(hand):
+    '''
+        returns the suit counts for hand (e.g. { "clubs": 3, "diamonds": 4, etc... })
+    '''
     suitCounts = {
         "clubs": 0,
         "diamonds":  0,
@@ -522,7 +537,7 @@ def getHighCardPoints(hand, clientPointCountingConvention):
     input:
         hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
         (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
-    returns:
+    returns ------------------------------:
         clientPointCountingConvention as a string (either 'Alternative' or 'HCP')
     '''
     try:
@@ -554,6 +569,19 @@ def getHighCardPoints(hand, clientPointCountingConvention):
         return -2
 
 def getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelative, suitCounts):
+    '''
+    inputs: 
+        hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
+        
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+            
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+
+        seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
+
+        suitCounts = { "clubs": 3, "diamonds": 4, etc... }
+    
+    '''
     if hand == None:
         return -1    
 
@@ -605,13 +633,12 @@ def getOpeningDistributionPoints(suitCounts):
             points += suitCounts[suit] - 4
 
     return points    
-#endregion
 
 def getLocationAfterRotationsAround(location, numberOfRotations):
-    #inputs:
+    #inputs: ------------------------------
         #location = a string representing relative locations: ('right', 'left',...)
         #numberOfRotations = an int representing the number of clock-wise rotations
-    #returns a string representing relative locations: ('right', 'left',...)
+    #returns ------------------------------ a string representing relative locations: ('right', 'left',...)
     #example location = 'right' and numberOfRotations = 1 => 'bottom'
     #example location = 'right' and numberOfRotations = -1 => 'top'
     locations = ['top', 'right', 'bottom', 'left']
@@ -619,9 +646,9 @@ def getLocationAfterRotationsAround(location, numberOfRotations):
     return locations[(indexOfLocation + numberOfRotations) % 4]
 
 def getCurrentContractBidFromBidding(bidding):
-    #inputs:
+    #inputs: ------------------------------
         #bidding as list of all bids to consider
-    #returns the currentContractBid on the bidding as a string
+    #returns ------------------------------ the currentContractBid on the bidding as a string
     for bid in reversed(bidding):
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return bid[1]
@@ -660,7 +687,7 @@ def getIndexDifferenceOfBids(bid1, bid2):
 def getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):
     #note: this is written to facilitate test case writing for getEstimatedPoints
     #input biddingRelative and seatingRelative dictionaries
-    #returns the bidding array e.g. [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ...]
+    #returns ------------------------------ the bidding array e.g. [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ...]
     try:
         locations = getEstimatedPoints.locations
         locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]

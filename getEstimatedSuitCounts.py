@@ -2,11 +2,11 @@ import helpers, re
 
 def getEstimatedSuitCounts(biddingRelative, biddingAbsolute, seatingRelative):
     '''
-    inputs: 
+    inputs: ------------------------------ 
         biddingRelative: dictionary where keys are relative positions and values are lists of strings representing that user's bids (in chronological order) 
         biddingAbsolute: list of bids as a list 
         seatingRelative: dictionary where keys are relative positions and values are strings representing user's name
-    returns:
+    returns ------------------------------:
          a dictionary representing the current "best guess" of how many of each suit a player has
     '''
     defaultValue = -1

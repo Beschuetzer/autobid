@@ -1,6 +1,6 @@
 #Purpose: make best bid taking into account cards in hand, previous bids, possibly score
 '''
-Inputs:
+inputs: ------------------------------
     biddingAbsolute: 2D array
     hand: 2D array with four items (1st = clubs, 2nd = diamonds, 3rd = hearts, 4th = spades) containing integers from 0-51
         First index is name of bidder
@@ -10,12 +10,12 @@ Inputs:
     seating: a dictionary with cardinal directions as keys and strings as keys
     spot: string representing seating position
     clientPointCountingConvention: string representing how client counts HCP points
-Returns: "best" bid for current situation in the form of a string
+returns ------------------------------: "best" bid for current situation in the form of a string
 
 '''
 
 
-suitCounts = None
+analyzingPlayerSuitCounts = None
 highCardPointValuesInEachSuit = None
 suits = {
     "clubs": 'club',
@@ -113,15 +113,15 @@ import re, math, getEstimatedPoints, helpers
 flatten = lambda t: [item for sublist in t for item in sublist]
 
 def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingConvention):
-    global suitCounts
+    global analyzingPlayerSuitCounts
     global highCardPointValuesInEachSuit
 
     #region Initialization (Getting Values and Dicts to work with)
     isFirstBid = len(biddingAbsolute) < 4
     partnerHasBid = len(biddingAbsolute) >= 2
     currentContractBid = helpers.getCurrentContractBid(biddingAbsolute)
-    if suitCounts == None:
-        suitCounts = helpers.getSuitCounts(hand)
+    if analyzingPlayerSuitCounts == None:
+        analyzingPlayerSuitCounts = helpers.getSuitCounts(hand)
     if highCardPointValuesInEachSuit == None:
         highCardPointValuesInEachSuit = helpers.getHighCardPointValuesInEachSuit(hand)
         
@@ -139,7 +139,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
 
     #get straight up point counts
     highCardPoints = helpers.getHighCardPoints(hand, clientPointCountingConvention)
-    distributionPoints = helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelative, suitCounts)
+    distributionPoints = helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelative, analyzingPlayerSuitCounts)
     totalPoints = highCardPoints + distributionPoints
 
     #region Check whether to double and return double if true
@@ -156,7 +156,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
 
     #handle partner opens 2 Club
     if (isFirstBid and re.search('two club', biddingRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingRelative['left'][0], re.IGNORECASE)):
-        openDistributionPoints = helpers.getOpeningDistributionPoints(suitCounts)
+        openDistributionPoints = helpers.getOpeningDistributionPoints(analyzingPlayerSuitCounts)
         return helpers.getTwoClubResponse(hand, biddingRelative, highCardPoints + openDistributionPoints, currentContractBid)
     
 
