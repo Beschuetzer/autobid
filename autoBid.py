@@ -1,8 +1,10 @@
-#Purpose: make best bid taking into account cards in hand, previous bids, possibly score
+#Purpose: make best bid that the humans we play with can understand, taking into account cards in hand, previous bids, and eventually score
 
+import re, math, getEstimatedPoints, helpers
+
+#region Globals
 analyzingPlayerSuitCounts = None
 highCardPointValuesInEachSuit = None
-
 suits = {
     "clubs": 'club',
     "diamonds": 'diamond',
@@ -47,8 +49,28 @@ contracts = [
   "Seven Spade",
   "Seven No Trump",
 ];
+estimatedScoringBounds = {
+    "top": {
+        "min": None,
+        "max": None,
+    },
+    "bottom": {
+        "min": None,
+        "max": None,
+    },
+    "left": {
+        "min": None,
+        "max": None,
+    },
+    "right": {
+        "min": None,
+        "max": None,
+    },
+}
+flatten = lambda t: [item for sublist in t for item in sublist]
+#endregion
 
-#Examples of inputs
+#region Examples of inputs
 clientPointCountingConvention = 'hcp'
 spot = 'west'
 seating = {
@@ -73,30 +95,11 @@ scoring = {
         "vulnerableTransitionIndex": None,
     },
 }
+
 bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', 'Three Club']]
 # bids = [['Adam', 'Pass'], ['Dan', 'Two Club'], ['Ann', 'pass']]
-estimatedScoringBounds = {
-    "top": {
-        "min": None,
-        "max": None,
-    },
-    "bottom": {
-        "min": None,
-        "max": None,
-    },
-    "left": {
-        "min": None,
-        "max": None,
-    },
-    "right": {
-        "min": None,
-        "max": None,
-    },
-}
 hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40,42]]
-      
-import re, math, getEstimatedPoints, helpers
-flatten = lambda t: [item for sublist in t for item in sublist]
+#endregion
 
 def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingConvention):
     '''
@@ -160,10 +163,17 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
         return 'Double'
     #endregion    
 
-    #TODO: handle partner opens 1 Club
+    #region handle partner opens 1 Club
+        #TODO:
+    #endregion
 
+    #region decide whether to open 2 clubs
+        #todo:
+    #endregion
 
-    #TODO: we don't have logic for opening two club then going through convention as opener 
+    #region handle responding when analyzing player opened 2 clubs
+        #todo:
+    #endregion
 
     #handle partner opens 2 Club
     if (isFirstBid and re.search('two club', biddingRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingRelative['left'][0], re.IGNORECASE)):
