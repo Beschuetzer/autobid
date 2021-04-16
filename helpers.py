@@ -724,7 +724,6 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative
     inputs:------------------------------
         biddingRelative = { "top": ['pass', 'one heart', ...], ... }
         seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
-
     returns:------------------------------
         the bidding array e.g. [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ...] based on inputs
     '''
@@ -732,7 +731,7 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative
         locations = getEstimatedPoints.locations
         locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
 
-        dealer = getDealerFromBiddingObjRelative(biddingRelative)
+        dealer = getDealerLocation(biddingRelative)
 
         #get new order based on dealer
         locationOrderToUse = locationOrder
@@ -772,7 +771,7 @@ def getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative
         print('error-----------')
         return []
 
-def getDealerFromBiddingObjRelative(biddingRelative):
+def getDealerLocation(biddingRelative):
     '''
     inputs:
         biddingRelative = { "top": ['pass', 'one heart', ...], ... }
@@ -797,8 +796,14 @@ def getDealerFromBiddingObjRelative(biddingRelative):
 #endregion
 
 def getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative):
-    #input: biddingAbsolute made (is an array of arrays where first item is name of bidder and second is bid)
-    #return: tuple where first item is boolean decribing whether someone has bid two clubs and the second item is the name of that person as a string
+    '''
+    inputs:
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+        seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
+    returns:
+        a tuple where first item is boolean decribing whether someone has bid two clubs and the second item is the name of that person as a string (e.g. [ True, 'Adam'])
+    '''
     
     #region check whether anyone bid two clubs as their first bid
     falseTuple = (False, None)
@@ -824,6 +829,12 @@ def getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelativ
     return falseTuple
 
 def getPlayerHasOnlyPassed(playerBids):
+    '''
+    inputs:
+        playerBids = an array representing a player's bidding: ['pass', 'one heart', ...]
+    returns:
+        False if the player has bid anything other than 'pass' and True otherwise
+    '''
     for bid in playerBids:
         if not re.search('pass', bid, re.IGNORECASE):
             return False;

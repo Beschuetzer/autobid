@@ -2295,7 +2295,7 @@ class getIndexDifferenceOfBids(unittest.TestCase):
 
 
 #region Testing Test Case Helpers
-class getDealerFromBiddingObjRelative(unittest.TestCase):
+class getDealerLocation(unittest.TestCase):
     def test_empty_dict(self):
         biddingRelative = {
             "left": [],
@@ -2304,12 +2304,12 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
             "bottom": [],
         }
         estimated = None
-        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
+        actual = helpers.getDealerLocation(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_none(self):
         biddingRelative = None
         estimated = None
-        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
+        actual = helpers.getDealerLocation(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_left(self):
         biddingRelative = {
@@ -2319,7 +2319,7 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
             "bottom": [],
         }
         estimated = 'left'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
+        actual = helpers.getDealerLocation(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_top(self):
         biddingRelative = {
@@ -2329,7 +2329,7 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
             "bottom": ['pass'],
         }
         estimated = 'top'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
+        actual = helpers.getDealerLocation(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_right(self):
         biddingRelative = {
@@ -2339,7 +2339,7 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
             "bottom": [],
         }
         estimated = 'right'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
+        actual = helpers.getDealerLocation(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_bottom(self):
         biddingRelative = {
@@ -2349,7 +2349,7 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
             "bottom": ['pass'],
         }
         estimated = 'bottom'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
+        actual = helpers.getDealerLocation(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_two(self):
         biddingRelative = {
@@ -2359,7 +2359,7 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
             "bottom": ['pass'],
         }
         estimated = 'left'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
+        actual = helpers.getDealerLocation(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_three(self):
         biddingRelative = {
@@ -2369,7 +2369,7 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
             "bottom": ['pass', 'p', 'p'],
         }
         estimated = 'bottom'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
+        actual = helpers.getDealerLocation(biddingRelative)
         self.assertEqual(actual, estimated)
     def test_four(self):
         biddingRelative = {
@@ -2379,7 +2379,7 @@ class getDealerFromBiddingObjRelative(unittest.TestCase):
             "bottom": ['pass', 'p', 'p'],
         }
         estimated = 'top'
-        actual = helpers.getDealerFromBiddingObjRelative(biddingRelative)
+        actual = helpers.getDealerLocation(biddingRelative)
         self.assertEqual(actual, estimated)
 
 class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
