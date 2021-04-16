@@ -136,7 +136,6 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     partnersBids = biddingRelative['top']
     #endregion
 
-    partnersEstimatedPointCount = estimatedPoints['top']
 
     #get straight up point counts
     highCardPoints = helpers.getHighCardPoints(hand, clientPointCountingConvention)
@@ -144,8 +143,8 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     totalPoints = highCardPoints + distributionPoints
 
     #region Check whether to double and return double if true
-    canDouble = getCanDouble(biddingRelative)
-    shouldDouble = getShouldDouble(scoring, biddingRelative, partnersEstimatedPointCount, hand, currentContractBid)
+    canDouble = helpers.getCanDouble(biddingRelative)
+    shouldDouble = helpers.getShouldDouble(scoring, biddingRelative, estimatedPoints, hand, currentContractBid)
     if shouldDouble is True:
         return 'Double'
     #endregion    

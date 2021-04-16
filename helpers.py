@@ -313,7 +313,7 @@ def getBiddingObjAbsolute(biddingAbsolute, seating):
 def getStrongestSuit(hand, biddingRelative, isResponding=False):
     '''
     input: 
-        hand as 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
+        hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
         (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
     returns:
         'club', 'diamond', 'heart', 'spade', or 'no trump' depending on which suit is the 'strongest' (considers which suits have already been mentioned, the number of points in that suit the analyzing player has, and how long the suit it for the analyzing player
@@ -358,21 +358,47 @@ def getSuitsMentionedByOpponents(biddingRelative):
                
     return mentioned
 
+
+a = 'test'
 def getCanDouble(biddingRelative):
-    #inputs: if opposing team bid
-    # outputs: whether or not you can double
-    # if opposing team hasn't bid, can't double   
+    '''
+    inputs: 
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+    returns:
+        True is analyzing player can double and false otherwise   
+    '''
     if len(biddingRelative['left']) == 0 and len(biddingRelative['right']) == 0:
         return False
 
     return True
     
-def getShouldDouble(scoring, biddingRelative, partnersEstimatedPointCount, hand, currentActualBid):
-    #inputs: 
-    #   scoring - an obj/dictionary representing the scores
-    #   biddingRelative - all prior bids
+def getShouldDouble(scoring, biddingRelative, estimatedPoints, hand, currentActualBid):
+    '''
+    inputs: 
+    
+    scoring = an obj/dictionary representing the scores 
+    (e.g. 
+        {"northSouth: 
+            {
+                "aboveTheLine": 120, 
+                "belowTheLine": 80,
+                "totalBelowTheLineScore": 160,
+                "isVulnerable": False,
+                "vulnerableTransitionIndex": null,
+            }, 
+        "eastWest": {...} 
+        }
+    )
 
-    #returns: true or false representing whether it is better to double than to bid higher
+    biddingRelative = { "top": ['pass', 'One Heart', ...], ... }
+    
+    estimatedPoints = { "top": {"min": 6, "max": 12}, ... }
+    
+    hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
+
+    returns: 
+        True if analyzing player 'should' double otherwise False
+    '''
 
     #figure out a range of how many tricks partners could win based on estimated point count
     #evaluate if unsuccessful double results in game for opponents
@@ -492,9 +518,13 @@ def getSuitCounts(hand):
     return suitCounts
 
 def getHighCardPoints(hand, clientPointCountingConvention): 
-    #input:
-        #hand as 2d list (not flat)
-        #clientPointCountingConvention as a string (either 'Alternative' or 'HCP')
+    '''
+    input:
+        hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
+        (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
+    returns:
+        clientPointCountingConvention as a string (either 'Alternative' or 'HCP')
+    '''
     try:
         if hand == None or clientPointCountingConvention == None:
             return -1
