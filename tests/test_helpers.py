@@ -1,6 +1,4 @@
 import unittest
-from unittest.case import TestCase
-import autoBid 
 import helpers
 import getEstimatedPoints
 
@@ -921,7 +919,7 @@ class getBiddingObjRelative(unittest.TestCase):
 class getSuitCounts(unittest.TestCase):
     def test_empty(self):
         hand = []
-        actual = helpers.getSuitCounts(hand)
+        actual = helpers.getSuitCountsFromHand(hand)
         expected = {
             "clubs": 0,
             "diamonds":  0,
@@ -931,7 +929,7 @@ class getSuitCounts(unittest.TestCase):
         self.assertEqual(actual, expected)
     def test_one(self):
         hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
-        actual = helpers.getSuitCounts(hand)
+        actual = helpers.getSuitCountsFromHand(hand)
         expected = {
             "clubs": 5,
             "diamonds":  3,
@@ -941,7 +939,7 @@ class getSuitCounts(unittest.TestCase):
         self.assertEqual(actual, expected)
     def test_two(self):
         hand = [[0, 1, 5, 7, 8,9,10], [13, 19], [29], [40, 42,51]]
-        actual = helpers.getSuitCounts(hand)
+        actual = helpers.getSuitCountsFromHand(hand)
         expected = {
             "clubs": 7,
             "diamonds":  2,
@@ -951,7 +949,7 @@ class getSuitCounts(unittest.TestCase):
         self.assertEqual(actual, expected)
     def test_three(self):
         hand = [[0, 1, 2,3], [13,15,17,18, 19], [29,31,33,34], []]
-        actual = helpers.getSuitCounts(hand)
+        actual = helpers.getSuitCountsFromHand(hand)
         expected = {
             "clubs": 4,
             "diamonds":  5,
@@ -961,7 +959,7 @@ class getSuitCounts(unittest.TestCase):
         self.assertEqual(actual, expected)
     def test_four(self):
         hand = [[0, 1, 2,3,4,5,6,7,8,9,10,11,12], [],[], []]
-        actual = helpers.getSuitCounts(hand)
+        actual = helpers.getSuitCountsFromHand(hand)
         expected = {
             "clubs": 13,
             "diamonds":  0,
@@ -2291,6 +2289,188 @@ class getIndexDifferenceOfBids(unittest.TestCase):
     def test_valid_4(self):
         actual = helpers.getIndexDifferenceOfBids('Four No Trump', 'Six No Trump')
         expected = 10
+        self.assertEqual(actual, expected)
+
+class getHighCardPointValuesInEachSuit(unittest.TestCase):
+    def test_none(self):
+        hand = [
+            [0,1,3,4],
+            [13,14,16],
+            [27,28,29],
+            [40,41,42],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'hcp')
+        expected = {
+            "clubs": 0,
+            "diamonds": 0,
+            "hearts": 0,
+            "spades": 0,
+         }
+        self.assertEqual(actual, expected)
+    def test_HCP_Ace(self):
+        hand = [
+            [0,1,3,4,12],
+            [13,14,16],
+            [27,28,29],
+            [40,41,42],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'hcp')
+        expected = {
+            "clubs": 4,
+            "diamonds": 0,
+            "hearts": 0,
+            "spades": 0,
+         }
+        self.assertEqual(actual, expected)
+    def test_HCP_King(self):
+        hand = [
+            [0,1,3,4],
+            [13,14,24],
+            [27,28,29],
+            [40,41,42],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'hcp')
+        expected = {
+            "clubs": 0,
+            "diamonds": 3,
+            "hearts": 0,
+            "spades": 0,
+         }
+        self.assertEqual(actual, expected)
+    def test_HCP_Queen(self):
+        hand = [
+            [0,1,3,4],
+            [13,14,16],
+            [27,28,36],
+            [40,41,42],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'hcp')
+        expected = {
+            "clubs": 0,
+            "diamonds": 0,
+            "hearts": 2,
+            "spades": 0,
+         }
+        self.assertEqual(actual, expected)
+    def test_HCP_jack(self):
+        hand = [
+            [0,1,3,4],
+            [13,14,16],
+            [27,28,29],
+            [40,41,48],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'hcp')
+        expected = {
+            "clubs": 0,
+            "diamonds": 0,
+            "hearts": 0,
+            "spades": 1,
+         }
+        self.assertEqual(actual, expected)
+    def test_HCP_All(self):
+        hand = [
+            [12,11,10,9],
+            [25,24,23,22],
+            [38,37,36,35],
+            [51,50,49,48],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'hcp')
+        expected = {
+            "clubs": 10,
+            "diamonds": 10,
+            "hearts": 10,
+            "spades": 10,
+         }
+        self.assertEqual(actual, expected)
+    def test_Alternative_Ace(self):
+        hand = [
+            [0,1,3,4,12],
+            [13,14,16],
+            [27,28,29],
+            [40,41,42],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'Alternative')
+        expected = {
+            "clubs": 4.5,
+            "diamonds": 0,
+            "hearts": 0,
+            "spades": 0,
+         }
+        self.assertEqual(actual, expected)
+    def test_Alternative_King(self):
+        hand = [
+            [0,1,3,4],
+            [13,14,24],
+            [27,28,29],
+            [40,41,42],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'Alternative')
+        expected = {
+            "clubs": 0,
+            "diamonds": 3,
+            "hearts": 0,
+            "spades": 0,
+         }
+        self.assertEqual(actual, expected)
+    def test_Alternative_Queen(self):
+        hand = [
+            [0,1,3,4],
+            [13,14,16],
+            [27,28,36],
+            [40,41,42],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'Alternative')
+        expected = {
+            "clubs": 0,
+            "diamonds": 0,
+            "hearts": 1.5,
+            "spades": 0,
+         }
+        self.assertEqual(actual, expected)
+    def test_Alternative_jack(self):
+        hand = [
+            [0,1,3,4],
+            [13,14,16],
+            [27,28,29],
+            [40,41,48],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'Alternative')
+        expected = {
+            "clubs": 0,
+            "diamonds": 0,
+            "hearts": 0,
+            "spades": .75,
+         }
+        self.assertEqual(actual, expected)
+    def test_Alternative_ten(self):
+        hand = [
+            [0,1,3,4],
+            [13,14],
+            [27,28,29],
+            [40,41,42, 47],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'Alternative')
+        expected = {
+            "clubs": 0,
+            "diamonds": 0,
+            "hearts": 0,
+            "spades": .25,
+         }
+        self.assertEqual(actual, expected)
+    def test_Alternative_All(self):
+        hand = [
+            [12,11,10,9,8],
+            [25,24,23,22,21],
+            [38,37,36,35,34],
+            [51,50,49,48,47],
+         ]
+        actual = helpers.getHighCardPointValuesInEachSuit(hand, 'Alternative')
+        expected = {
+            "clubs": 10,
+            "diamonds": 10,
+            "hearts": 10,
+            "spades": 10,
+         }
         self.assertEqual(actual, expected)
 
 

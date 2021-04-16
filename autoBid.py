@@ -1,22 +1,8 @@
 #Purpose: make best bid taking into account cards in hand, previous bids, possibly score
-'''
-inputs: ------------------------------
-    biddingAbsolute: 2D array
-    hand: 2D array with four items (1st = clubs, 2nd = diamonds, 3rd = hearts, 4th = spades) containing integers from 0-51
-        First index is name of bidder
-        Second index is string representing the name of the bid i.e. 1 No Trump
-        Is in chronological order
-    scoring: a dictionary representing the current scoring
-    seating: a dictionary with cardinal directions as keys and strings as keys
-    spot: string representing seating position
-    clientPointCountingConvention: string representing how client counts HCP points
-returns ------------------------------: "best" bid for current situation in the form of a string
-
-'''
-
 
 analyzingPlayerSuitCounts = None
 highCardPointValuesInEachSuit = None
+
 suits = {
     "clubs": 'club',
     "diamonds": 'diamond',
@@ -113,6 +99,31 @@ import re, math, getEstimatedPoints, helpers
 flatten = lambda t: [item for sublist in t for item in sublist]
 
 def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingConvention):
+    '''
+    inputs: ------------------------------------------------------------------------
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+
+        hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
+
+         scoring = an obj/dictionary representing the scores (e.g. 
+            {"northSouth: 
+                {
+                    "aboveTheLine": 120, 
+                    "belowTheLine": 80,
+                    "totalBelowTheLineScore": 160,
+                    "isVulnerable": False,
+                    "vulnerableTransitionIndex": null,
+                }, 
+            "eastWest": {...} 
+            }
+        )
+
+        seating: a dictionary with cardinal directions as keys and strings as keys (e.g. { "north": "Adam", "south": "Tim", ... })
+        spot: string representing cardinal seating position (e.g. 'north', 'south', 'east', or 'west')
+        clientPointCountingConvention: string representing how client counts HCP points (e.g. 'Alternative' or 'HCP' )
+    returns -------------------------------------------------------------------------: 
+        "best" bid for current situation in the form of a string (e.g. 'One Club', 'Two No Trump', 'Pass', etc... )
+    '''
     global analyzingPlayerSuitCounts
     global highCardPointValuesInEachSuit
 
@@ -121,7 +132,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     partnerHasBid = len(biddingAbsolute) >= 2
     currentContractBid = helpers.getCurrentContractBid(biddingAbsolute)
     if analyzingPlayerSuitCounts == None:
-        analyzingPlayerSuitCounts = helpers.getSuitCounts(hand)
+        analyzingPlayerSuitCounts = helpers.getSuitCountsFromHand(hand)
     if highCardPointValuesInEachSuit == None:
         highCardPointValuesInEachSuit = helpers.getHighCardPointValuesInEachSuit(hand)
         

@@ -1,4 +1,3 @@
-from logging import error
 import getEstimatedPoints, autoBid
 import re, math
 
@@ -404,7 +403,7 @@ def getCanDouble(biddingRelative):
 
     return True
     
-#NOTE: this function will likley need a whole separate file due to its complexity
+#NOTE: this function will likely need a whole separate file due to its complexity
 def getShouldDouble(scoring, biddingRelative, estimatedPoints, hand, currentActualBid):
     '''
     inputs: ------------------------------ 
@@ -492,10 +491,17 @@ def handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints):
         #TODO: have to figure out when to trust partner's actual double bid and when to make a bid (e.g. you have a really nice suit with 18+ points?) or just always pass if partner doubles and it's not a takeout double?
         return 'Pass'
 
-def getHighCardPointValuesInEachSuit(hand):
+def getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention):
     '''
-        returns the high card point value of hand
+    inputs:
+        hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
+        clientPointCountingConvention = string representing method used to evaluate HCPs (either 'HCP' or 'Alternative)
+    returns: the high card point value of hand (e.g. { clubs: "8", 'diamonds': 3, "hearts": 0, spades: "4" })
     '''
+    conventionToUse = 'hcp'
+    if re.search('alternative', clientPointCountingConvention, re.IGNORECASE):
+        conventionToUse = 'alternative'
+
     global highCardPointValuesInEachSuit
     highCardPointValuesInEachSuit = {
         "clubs": 0,
@@ -509,12 +515,22 @@ def getHighCardPointValuesInEachSuit(hand):
         for cardAsNumber in suit:
             if len(suit) > 0:
                 suitName = getSuitNameFromCardAsNumber(cardAsNumber)
-            if cardAsNumber >=9 and cardAsNumber <=12:
-                highCardPointValuesInEachSuit[suitName] += 1
+                cardValue = cardAsNumber % 13
+
+                if cardValue == 12:
+                    highCardPointValuesInEachSuit[suitName] += highCardPointValues[conventionToUse]['ace']
+                if cardValue == 11:
+                    highCardPointValuesInEachSuit[suitName] += highCardPointValues[conventionToUse]['king']
+                if cardValue == 10:
+                    highCardPointValuesInEachSuit[suitName] += highCardPointValues[conventionToUse]['queen']
+                if cardValue == 9:
+                    highCardPointValuesInEachSuit[suitName] += highCardPointValues[conventionToUse]['jack']
+                if cardValue == 8 and conventionToUse == 'alternative':
+                    highCardPointValuesInEachSuit[suitName] += highCardPointValues[conventionToUse]['ten']
 
     return highCardPointValuesInEachSuit
 
-def getSuitCounts(hand):
+def getSuitCountsFromHand(hand):
     '''
         returns the suit counts for hand (e.g. { "clubs": 3, "diamonds": 4, etc... })
     '''
