@@ -213,7 +213,31 @@ values = {
 }
 
 def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute, seatingRelative):
-    '''return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)'''
+    '''
+    inputs: ----------------------------------------------------------
+        estimatedScoringBounds = {
+            "top": {
+                "min": 0,
+                "max": 5,
+            },
+            ...
+        }
+
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+
+        seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
+
+    returns: ----------------------------------------------------------
+        an obj that has the min and max estimated scores for each relative location e.g. (
+            "top": {
+                "min": 0,
+                "max": 5,
+            },
+            ...
+        )
+    '''
     estimatedScoring = {
         "top": {
             "min": None,
@@ -434,7 +458,16 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
 
 def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False):
     '''
-        sets the initial values for each player (only called if that player has had one bid opportunity)
+    inputs--------------------------------------------------:
+        location = a string representing relative locations: ('right', 'left',...)
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+        firstBid = a string representing the users first bid ('One Club', 'Pass', etc... )
+        isFirstBidJumpshift = boolean
+        hasPartnerOpened = boolean
+        isPartnersFirstBidPass = boolean
+        hasOtherTeamOpenedTwoClubs = boolean
+    returns--------------------------------------------------:
+        a min and max value to use e.g. [ minToUse, maxToUse ]
     '''
     locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
     haveOpponentsNotHadTurnOrPassed = len(biddingRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingRelative[locationsRightLocation][0], re.IGNORECASE)
@@ -442,8 +475,6 @@ def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, h
     # print('biddingRelative["right"][0] = {0}'.format(biddingRelative['right'][0]))
     # print('haveOpponentsNotHadTurnOrPassed = {0}'.format(haveOpponentsNotHadTurnOrPassed))
     # print('re:'.format(re.search('Pass' , biddingRelative['right'][0], re.IGNORECASE)))
-
-
             
     if re.search('trump', firstBid, re.IGNORECASE):
         #partner = []
@@ -536,7 +567,11 @@ def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, h
 
 def getIsTeamsFirstBidOpportunity(biddingRelative, location):
     '''
-        determines whether a player's bid is his/her team's first opportunity to bid
+    inputs:
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+        location = a string representing relative location to analyzing player (e.g. 'top', 'left', etc... )
+    returns: 
+        True if the biddingRelative[location]'s partner has not had an opportunity to bid, otherwise False
     '''
     partnersLocation = ''
     
