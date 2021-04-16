@@ -180,6 +180,10 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
         openDistributionPoints = helpers.getOpeningDistributionPoints(analyzingPlayerSuitCounts)
         return helpers.getTwoClubResponse(hand, biddingRelative, highCardPoints + openDistributionPoints, currentContractBid)
     
+    #region check if opposing team would win game and / or get a game if they made currentActualBid (assuming they made the currentActualBid)
+        #TODO: 
+    #endregion
+
 
     #handle weak bid: -> pass/3NT/game in their suit/your best suit if lots of points or 6+ of a suit depending on your points, cards in their suit, if you have stoppers
     #if 1 NT -> best suit
