@@ -213,7 +213,7 @@ values = {
 }
 
 def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute, seatingRelative):
-    #return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)
+    '''return an obj that has the min and max estimated scores for each relative location ('top'/'bottom'/etc)'''
     estimatedScoring = {
         "top": {
             "min": None,
@@ -433,6 +433,9 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
     return estimatedScoring
 
 def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False):
+    '''
+        sets the initial values for each player (only called if that player has had one bid opportunity)
+    '''
     locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
     haveOpponentsNotHadTurnOrPassed = len(biddingRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingRelative[locationsRightLocation][0], re.IGNORECASE)
     print('setInitialBounds-----------------')
@@ -532,6 +535,9 @@ def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, h
     return [minToUse, maxToUse]
 
 def getIsTeamsFirstBidOpportunity(biddingRelative, location):
+    '''
+        determines whether a player's bid is his/her team's first opportunity to bid
+    '''
     partnersLocation = ''
     
     if location == locations['top']:

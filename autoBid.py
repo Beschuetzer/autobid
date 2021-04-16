@@ -150,9 +150,12 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
         return 'Double'
     #endregion    
 
-    #handle partner 1 Club
+    #TODO: handle partner opens 1 Club
 
-    #handle partner 2 Club
+
+    #TODO: we don't have logic for opening two club then going through convention as opener 
+    
+    #handle partner opens 2 Club
     if (isFirstBid and re.search('two club', biddingRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingRelative['left'][0], re.IGNORECASE)):
         openDistributionPoints = helpers.getOpeningDistributionPoints(suitCounts)
         return helpers.getTwoClubResponse(hand, biddingRelative, highCardPoints + openDistributionPoints, currentContractBid)

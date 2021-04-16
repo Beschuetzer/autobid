@@ -3,6 +3,9 @@ import getEstimatedPoints, autoBid
 import re, math
 
 def getSeatingRelative(seating, spot):
+    '''
+        returns the seating in terms of relative locations (e.g. 'top', 'left', 'right', 'bottom')
+    '''
     directions = ['north','east','south','west']
     return {
         "left": seating[directions[(directions.index(spot) + 1) % 4]],
@@ -11,55 +14,10 @@ def getSeatingRelative(seating, spot):
         "bottom": seating[directions[(directions.index(spot) + 0) % 4]],
     }
    
-def getEstimatedSuitCounts(biddingRelative, biddingAbsolute, seatingRelative):
-    '''
-    inputs: 
-        biddingRelative: dictionary where keys are relative positions and values are lists of strings representing that user's bids (in chronological order) 
-        biddingAbsolute: list of bids as a list 
-        seatingRelative: dictionary where keys are relative positions and values are strings representing user's name
-    returns: a dictionary representing the current "best guess" of how many of each suit a player has
-    '''
-    defaultValue = -1
-    suitCounts = {
-        "top": {
-            "clubs": defaultValue,
-            "diamonds": defaultValue,
-            "hearts": defaultValue,
-            "spades": defaultValue,
-        },
-        "bottom": {
-            "clubs": defaultValue,
-            "diamonds": defaultValue,
-            "hearts": defaultValue,
-            "spades": defaultValue,
-        },
-        "left": {
-            "clubs": defaultValue,
-            "diamonds": defaultValue,
-            "hearts": defaultValue,
-            "spades": defaultValue,
-        },
-        "right": {
-            "clubs": defaultValue,
-            "diamonds": defaultValue,
-            "hearts": defaultValue,
-            "spades": defaultValue,
-        },
-    }
-
-    '''assumptions:
-    if a player says the same suit twice they likely have 1-2 more of that suit that would be assumed otherwise (5-6 for minors and 6-7 for majors?)
-
-    opening in no trump means no voids
-
-    responding to opening points in the same suit means you have at least 3 of that suit?
-
-    responding with a major means you have at least 5
-    '''
-
-    return suitCounts
-
 def getIsPartnersFirstBidPass(biddingRelative):
+    '''
+        returns whether the players partner passed for their first bid opportunity
+    '''
     partnersBidding = biddingRelative["top"] 
     if len(partnersBidding) > 0:
         return partnersBidding[0] == 'pass'
@@ -67,7 +25,9 @@ def getIsPartnersFirstBidPass(biddingRelative):
         return False
 
 def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute):
-    #returns whether someone has opened before the users first bid
+    '''
+       returns whether a player other than the user who made the bid at indexOfUsersFirstBid made an 'opening bid'
+    '''
     bidsUpToUsersFirstBid = biddingAbsolute
     if indexOfUsersFirstBid != None:
         bidsUpToUsersFirstBid = biddingAbsolute[:indexOfUsersFirstBid]
@@ -80,7 +40,7 @@ def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute):
 
 def getPartnersLocation(username, seatingRelative):
     '''
-    returns location of the partner for username using seatingRelative
+    returns location of username's partner (e.g. 'top', 'left', 'right', etc...)
     '''
     locationToUse = None
     for location, usernameInDict in seatingRelative.items():
@@ -97,11 +57,13 @@ def getPartnersLocation(username, seatingRelative):
     return locations[(indexOfUsersLocation + 2) % 4]
 
 def getIndexOfNthBid(username, biddingAbsolute, nthBid):
-    #inputs:
-        #username - string
-        #biddingAbsolute - 2D array
-        #nthBid - an integer greater than or equal to 1 (1 = first bid) or less than or equal to -1 (-1 = last bid, -2 = 2nd to last bid...)
-    #this returns the nthBid that username made
+    '''
+    inputs:
+        username - string
+        biddingAbsolute - 2D array
+        nthBid - an integer greater than or equal to 1 (1 = first bid) or less than or equal to -1 (-1 = last bid, -2 = 2nd to last bid...)
+    returns the index in biddingAbsolute of the nthBid that username made  
+    '''
     i = 0
     matchCount = 0
 
@@ -125,11 +87,13 @@ def getIndexOfNthBid(username, biddingAbsolute, nthBid):
     return None
 
 def getHasPlayerJumpshifted(username, playersBids, biddingAbsolute):
-    #inputs:
-        #username as string
-        #playersBids as a list of strings
-        #allbids is a list of lists representing bids (bidder, bid)
-    #returns true if the player with username has made a jumpshift bid ever otherwise false
+    '''
+    inputs:
+        username as string
+        playersBids as a list of strings
+        allbids is a list of lists representing bids (bidder, bid)
+    returns true if the player with username has made a jumpshift bid ever otherwise false
+    '''
     for i in range(0, len(playersBids)): 
         bid = playersBids[i]
         indexOfUsersBid = getIndexOfNthBid(username, biddingAbsolute, i + 1)
@@ -148,9 +112,11 @@ def getHasPlayerJumpshifted(username, playersBids, biddingAbsolute):
     return False
 
 def getIsJumpshift(currentContractBid, usersBid):
-    #inputs:
-        #currentActualBid and usersBid = string representing bid
-    #returns True/False whether usersBid is a jumpshift of currentActualBid
+    '''
+    inputs:
+        currentContractBid and usersBid are strings representing a bid ('One No Trump')
+    returns True if the usersBid's index is greater than the currentcontractBid's index by 5 or more (aka a 'jumpshift' of currentContractBid)
+    '''
     if not currentContractBid or currentContractBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
         return False
     
@@ -163,7 +129,9 @@ def getIsJumpshift(currentContractBid, usersBid):
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
 def getHasPartnerOpened(biddingAbsolute, username):
-    #returns true or false depending on whether the player is responding to his/her partner (partner didn't say pass 1st time)
+    '''
+    returns true if username's partner has mentioned a bid that is a suit, no trump, or a double and false otherwise
+    '''
     indexOfUsersFirstBid = getIndexOfNthBid(username, biddingAbsolute, 1)
 
     if indexOfUsersFirstBid is None:
@@ -179,7 +147,9 @@ def getHasPartnerOpened(biddingAbsolute, username):
     return False
 
 def getBiddingHistory(biddingAbsolute):
-    #returns a list of strings representing the order in which the bids occured (same as incoming bids but is a 1D array of just bids rather than bids and bidder names)
+    '''
+    returns a list of strings representing the order in which the bids occured (same as incoming bids but is a 1D array of just bids rather than bids and bidder names)
+    '''
     biddingHistory = []
     for bid in biddingAbsolute:
         biddingHistory.append(bid[1])
@@ -187,6 +157,9 @@ def getBiddingHistory(biddingAbsolute):
     return biddingHistory
 
 def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid):
+    '''
+        returns the the bid to say based on the two club convention when your partner has opened two clubs
+    '''
     currentIndex = autoBid.contracts.index(currentActualBid[1])
 
     #return early if left bids first
@@ -354,7 +327,7 @@ def getSuitsMentionedByOpponents(biddingRelative):
 
     for handToCheck in handsToCheck:
         for bid in biddingRelative[handToCheck]:
-            for key,suit in suits.items():
+            for key,suit in autoBid.suits.items():
                 if (re.search(suit, bid, re.IGNORECASE)):
                     mentioned[key] = True
                
