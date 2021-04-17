@@ -2628,27 +2628,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['special']['openTwoClubs']['max'],
             },
             "top": {
-                "min": getEstimatedPoints.values['special']['wtf']['min'],
-                "max": getEstimatedPoints.values['special']['wtf']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['min'],
-                "max": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
-                "max": getEstimatedPoints.values['special']['openTwoClubs']['max'],
-            },
-            "top": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
@@ -2661,6 +2640,29 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": None,
             },
         }
+
+        self.expected = {
+            "left": {
+                "min": self.estimatedScoringBounds['left']['min'],
+                "max": self.estimatedScoringBounds['left']['max'],
+            },
+             "top": {
+                "min": getEstimatedPoints.values['special']['wtf']['min'],
+                "max": getEstimatedPoints.values['special']['wtf']['max'],
+            },
+            "right": {
+                "min": self.estimatedScoringBounds['right']['min'],
+                "max": self.estimatedScoringBounds['right']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
         self.assertDictEqual(self.actual, self.expected)
 
 class getEstimatedPoints_3_Or_More_Bid_Opportunities(unittest.TestCase):
