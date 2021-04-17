@@ -2675,14 +2675,77 @@ class getEstimatedPoints_3_Or_More_Bid_Opportunities(unittest.TestCase):
             "left": "LeftPlayer",
             "right": "RightPlayer",
         }
+        self.bids = None
         self.actual = None
         self.expected = None
+        self.estimatedScoringBounds = None
 
     def tearDown(self) -> None:
         print('bids = {0}'.format(self.bids))
-        print('self.actual ={0}'.format(self.actual))
+        print('estimatedScoringBounds = {0}'.format(self.estimatedScoringBounds))
         print('expected = {0}'.format(self.expected))
+        print('self.actual ={0}'.format(self.actual))
 
+    #NOTE: the test below is not finished.  can you think of any other cases where the third bid would change our estimated points?
     def test_update_Say_Same_Suit_Three_Or_More_Time(self):
-        pass
+        biddingRelative = {
+            "left": ['pass', 'pass', 'pass'],
+            "top": ['One Club', 'Two Club', 'Three Club'],
+            "right": ['Double', 'Two Heart', 'pass'],
+            "bottom": ['One Diamond', 'Two Spade'],
+        }
+
+        self.estimatedScoringBounds = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
+            },
+            "top": {
+                "min": self.estimatedScoringBounds['top']['min'],
+                "max": self.estimatedScoringBounds['top']['max']
+            },
+            "right": {
+                "min": self.estimatedScoringBounds['right']['min'],
+                "max": self.estimatedScoringBounds['right']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+
+
+
+
+
+
+
+
+
 
