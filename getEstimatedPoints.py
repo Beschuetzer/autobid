@@ -92,26 +92,16 @@ values = {
     #TODO: are there any cases where the point count isn't discernible from just the first two bids of each player?
     #TODO: do we need to add values for cases like 'test_only_pass_partner_passes_first' left player case?
     "passFirstBidSecond" : {
-        "partnerHasOpened": {
-            "isJumpshift": {
+        "isJumpshift": {
+            "partnerHasOpened": {
                 "min": RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN,
                 "max": RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX,
             },
-            "isNotJumpshift": {
-                "min": RESPONDING_NO_JUMPSHIFT_MIN,
-                "max": RESPONDING_NO_JUMPSHIFT_MAX,
-            },
-        },
-        "partnerHasNotOpened": {
-            "isJumpshift": {
-                "min": RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN,
-                "max": RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX,
-            },
-            "isNotJumpshift": {
-                "min": RESPONDING_NO_JUMPSHIFT_MIN,
-                "max": RESPONDING_NO_JUMPSHIFT_MAX,
+            "partnerHasNotOpened": {
+                "min": SPECIAL_WEAK_THREE_MIN,
+                "max": SPECIAL_WEAK_TWO_CLUBS_MAX,
             }
-        }
+        },
     },
     "isTeamsFirstBid": {
         "playerPasses": {
