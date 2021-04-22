@@ -41,7 +41,7 @@ class Takeout_Double(unittest.TestCase):
         expected = 'Pass'
         self.assertEqual(actual, expected)
 
-class One_Club(unittest.TestCase):
+class Opening_No_Score(unittest.TestCase):
     def setUp(self):
         self.clientPointCountingConvention = 'hcp'
         self.spot = 'north'
@@ -74,15 +74,72 @@ class One_Club(unittest.TestCase):
         print(f"self.bids = {self.bids}")
         print(f"self.scoring = {self.scoring}")
 
-    def test_partner_opens_and_you_have_openers(self):
+    def test_One_Club(self):
         self.bids = [
-            ['SouthPlayer', 'One Club'],
+            ['SouthPlayer', 'pass'],
             ['WestPlayer', 'Pass'],
         ]
-        hand = [[0], [1,3,5], [38,36,35,34,33,30,27], [47, 43]]
-        actual = autoBid.autoBid(self.bids, hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
-        expected = 'Four Heart'
-        self.assertEqual(actual, expected)
+        self.handDictionary = {
+            "clubs": [12,11,8],
+            "diamonds": [12,11,7],
+            "hearts": [7,5,3,2],
+            "spades": [7,4,2]
+        }
+
+        self.expected = 'One Club'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+    def test_Two_Club(self):
+        self.bids = [
+            ['SouthPlayer', 'pass'],
+            ['WestPlayer', 'Pass'],
+        ]
+        self.handDictionary = {
+            "clubs": [12,11,10,9,8],
+            "diamonds": [12,11,10,9,8],
+            "hearts": [7],
+            "spades": [7,4]
+        }
+
+        self.expected = 'Two Club'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+
+    def test_One_NT(self):
+        self.bids = [
+            ['SouthPlayer', 'pass'],
+            ['WestPlayer', 'Pass'],
+        ]
+        self.handDictionary = {
+            "clubs": [12,11,9],
+            "diamonds": [12,11,8],
+            "hearts": [7,6,3,1],
+            "spades": [10,7,4,]
+        }
+
+        self.expected = 'One No Trump'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+
+    def test_Double(self):
+        self.bids = [
+            ['SouthPlayer', 'pass'],
+            ['WestPlayer', 'One Diamond'],
+        ]
+        self.handDictionary = {
+            "clubs": [10, 3],
+            "diamonds": [12,11,10,9,8],
+            "hearts": [7,6,3],
+            "spades": [11,7,4]
+        }
+
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.expected = 'Double'
+        self.assertEqual(self.actual, self.expected)
 
 class Special_Cases(unittest.TestCase):
     def setUp(self):
