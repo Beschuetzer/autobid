@@ -213,7 +213,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
 #logic for responding
 #TODO: if your partner takes it to game, pass (partner trust?)
 #your partner opened
-#special situations accounted for above (takeout double, 1/2 Clubs, 1 NT and weak bids)
+#special situations accounted for above (takeout double, 1+2 Clubs, 1 NT and weak bids)
 #if < 6 points pass
 #if > 5 points and < 10* points (high card? total?) plus 3 of partner's suit
 #   -> bid up 1 in partner's suit

@@ -419,8 +419,6 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     suitWithMostPoints = rightOpeningSuit
     suitToReturn = None
 
-   
-
     #region if you are getting strongest suit for opening 
     if re.search('pass', biddingRelative['top'][0], re.IGNORECASE): 
         highCardPointValuesInEachSuitLocal = getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention)
@@ -438,6 +436,12 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     #region getting responding strongest
     else:
         #TODO: change how the getHighCardPointValuesInEachSuit() call is made because the analyzing player needs to change how it evaluates the points in the suit its partner opened with.
+
+        #NOTE: length points  are (cardCount - 4) normally but if you partner opened a suit then use (cardCount -2): e.g. normally a 4 card suit gets 0 for length but if your partner opens that suit and you are responding, you count that as 1 for length?
+
+        #NOTE: Should we just respond with getStrongestSuit if it is the first bid and no special cases apply (i.e. Two Clubs, WeakTwo, WeakThree, 1 Club, or 1NT)?
+        #NOTE: If analyzing player doesn't have at least from of the partner's opening suit, say your best suit for the first bid?
+        #NOTE: if your partner puts it back into their opening suit, just pass if you don't have at least three?
         pass
 
     return suitToReturn
