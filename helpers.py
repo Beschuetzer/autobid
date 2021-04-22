@@ -282,24 +282,40 @@ def getNextBidInSuit(suit, currentActualBid):
         nextBid - string representing the next available bid in suit (e.g. 'Two Heart', 'Three Club', etc... )
     '''
     try:
-        currentActualBidIndex = autoBid.contracts.index(suit)
-        print(f"currentActualBidIndex = {currentActualBidIndex}")
+        suitsOrder = ['club', 'diamond', 'heart', 'spade', 'no trump']
+        
+        #region Normalizing Suit
+        if suit[-1] == 's': suit = suit[:-1]
+        suit = suit.lower()
+        #endregion
 
-        levelValue = 4 * (currentActualBidIndex / 5)
-        suitValue = None
+        #region Normalizing the currentActualBidSuit
+        currentActualBidSuit = currentActualBid.split(' ')
+        if len(currentActualBidSuit) == 3:
+            currentActualBidSuit = (f"{currentActualBidSuit[-2]} {currentActualBidSuit[-1]}").lower()
+        else:
+            currentActualBidSuit = currentActualBidSuit[-1].lower()
+        #endregion
+        
+        currentActualBidSuitsOrderIndex = suitsOrder.index(currentActualBidSuit)
+        targetSuitOrdersIndex = suitsOrder.index(suit)
 
-        if re.search('club', suit, re.IGNORECASE):
-            suitValue = 0
-        elif re.search('diamond', suit, re.IGNORECASE):
-            suitValue = 1
-        elif re.search('heart', suit, re.IGNORECASE):
-            suitValue = 2
-        elif re.search('spade', suit, re.IGNORECASE):
-            suitValue = 3
-        elif re.search('trump', suit, re.IGNORECASE):
-            suitValue = 4
+        #region Getting indexToUse
+        indexToUse = None
+        currentActualBidIndex = autoBid.contracts.index(currentActualBid)
+        if targetSuitOrdersIndex <= currentActualBidSuitsOrderIndex: 
+            indexToUse = currentActualBidIndex + 5 - (currentActualBidSuitsOrderIndex - targetSuitOrdersIndex)
+        else:
+            indexToUse = currentActualBidIndex + targetSuitOrdersIndex - currentActualBidSuitsOrderIndex 
+        #endregion
 
-        return autoBid.contracts[levelValue + suitValue]
+        # print(f"suit = {suit}")
+        # print(f"currentActualBid = {currentActualBid}")
+        # print(f"currentActualBidIndex = {currentActualBidIndex}")
+        # print(f"currentActualBidSuitsOrderIndex = {currentActualBidSuitsOrderIndex}")
+        # print(f"targetSuitOrdersIndex = {targetSuitOrdersIndex}")
+
+        return autoBid.contracts[indexToUse]
 
     except Exception as err:
         raise Exception(f"Error in getNextBidInSuit = {err}")

@@ -2480,9 +2480,53 @@ class getNextBidInSuit(unittest.TestCase):
         actual = helpers.getNextBidInSuit('diamonds', 'One Club')
         expected = 'One Diamond'
         self.assertEqual(actual, expected)
-    def test_next_level(self):
+    def test_same_level2(self):
+        actual = helpers.getNextBidInSuit('hearts', 'One Club')
+        expected = 'One Heart'
+        self.assertEqual(actual, expected)
+    def test_same_level3(self):
+        actual = helpers.getNextBidInSuit('Spades', 'One Club')
+        expected = 'One Spade'
+        self.assertEqual(actual, expected)
+    def test_same_level4(self):
+        actual = helpers.getNextBidInSuit('No Trump', 'One Club')
+        expected = 'One No Trump'
+        self.assertEqual(actual, expected)
+    def test_next_level_club(self):
+        actual = helpers.getNextBidInSuit('Clubs', 'Two Club')
+        expected = 'Three Club'
+        self.assertEqual(actual, expected)
+    def test_next_level_club2(self):
+        actual = helpers.getNextBidInSuit('Clubs', 'Two Diamond')
+        expected = 'Three Club'
+        self.assertEqual(actual, expected)
+    def test_next_level_club3(self):
         actual = helpers.getNextBidInSuit('Clubs', 'Two Heart')
         expected = 'Three Club'
+        self.assertEqual(actual, expected)
+    def test_next_level_club4(self):
+        actual = helpers.getNextBidInSuit('Clubs', 'Two Spade')
+        expected = 'Three Club'
+        self.assertEqual(actual, expected)
+    def test_next_level_club5(self):
+        actual = helpers.getNextBidInSuit('Clubs', 'Two No Trump')
+        expected = 'Three Club'
+        self.assertEqual(actual, expected)
+    def test_next_level_diamond(self):
+        actual = helpers.getNextBidInSuit('Clubs', 'Two Diamond')
+        expected = 'Three Club'
+        self.assertEqual(actual, expected)
+    def test_next_level_heart(self):
+        actual = helpers.getNextBidInSuit('Clubs', 'Two Heart')
+        expected = 'Three Club'
+        self.assertEqual(actual, expected)
+    def test_next_level_spade(self):
+        actual = helpers.getNextBidInSuit('Clubs', 'Two Spade')
+        expected = 'Three Club'
+        self.assertEqual(actual, expected)
+    def test_next_level_trump(self):
+        actual = helpers.getNextBidInSuit('Clubs', 'Three No Trump')
+        expected = 'Four Club'
         self.assertEqual(actual, expected)
 
 #region Testing Test Case Helpers
