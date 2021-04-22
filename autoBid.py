@@ -178,7 +178,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     #handle partner opens 2 Club
     if (re.search('two club', biddingRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingRelative['left'][0], re.IGNORECASE)):
         openDistributionPoints = helpers.getOpeningDistributionPoints(analyzingPlayerSuitCounts)
-        return helpers.getTwoClubResponse(hand, biddingRelative, highCardPoints + openDistributionPoints, currentContractBid)
+        return helpers.getTwoClubResponse(hand, biddingRelative, highCardPoints + openDistributionPoints, currentContractBid, clientPointCountingConvention)
     
     #region check if opposing team would win game and / or get a game if they made currentActualBid (assuming they made the currentActualBid)
         #TODO: 
@@ -189,7 +189,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     #if 1 NT -> best suit
 
     #TODO: do you pass if partner doubles and the person before you doubles?
-    result = helpers.handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints) 
+    result = helpers.handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints, clientPointCountingConvention) 
     if result is not None:
         return result
 

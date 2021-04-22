@@ -1,6 +1,6 @@
-from tests.test_helpers import getHighCardPointValuesInEachSuit
+
 import getEstimatedPoints, autoBid
-import re, math, copy
+import re, math
 
 highCardPointValues = {
     "hcp": {
@@ -190,7 +190,7 @@ def getBiddingHistory(biddingAbsolute):
 
     return biddingHistory
 
-def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid):
+def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, clientPointCountingConvention):
     '''
         returns ------------------------------ the the bid to say based on the two club convention when your partner has opened two clubs
     '''
@@ -227,7 +227,7 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
     #region second response
     elif len(biddingRelative['top']) == 2:
 
-        suit = getStrongestSuit(hand, biddingRelative)
+        suit = getStrongestSuit(hand, biddingRelative, clientPointCountingConvention)
         for i in range(1, 6):
             if re.search(suit, autoBid.contracts[currentActualBidIndex + i], re.IGNORECASE):
                 return autoBid.contracts[currentActualBidIndex + i]
@@ -400,7 +400,7 @@ def getBiddingObjAbsolute(biddingAbsolute, seating):
         biddingObjAbsolute[direction].append(bid[1])
     return biddingObjAbsolute
 
-def getStrongestSuit(hand, biddingRelative, isResponding=False):
+def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     '''
     input: 
         hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
@@ -413,13 +413,15 @@ def getStrongestSuit(hand, biddingRelative, isResponding=False):
 
     #global vars to use: 'suitCounts' and 'highCardPointValuesInEachSuit'
     #NOTE: respond with best suit that left and right didn't open with?
-    highCardPointValuesInEachSuitLocal = copy.copy(autoBid.highCardPointValuesInEachSuit)
+    highCardPointValuesInEachSuitLocal = getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention)
+    
     leftOpeningSuit = biddingRelative['left'][0]
     rightOpeningSuit = biddingRelative['right'][0]
     suitWithMostPoints = rightOpeningSuit
     suitToReturn = None
 
     print(f"highCardPointValuesInEachSuitLocal =    {highCardPointValuesInEachSuitLocal}")
+    print(f"highCardPointValuesInEachSuit =    {highCardPointValuesInEachSuit}")
     print(f"leftOpeningSuit = {leftOpeningSuit}")
     print(f"rightOpeningSuit = {rightOpeningSuit}")
 
@@ -549,7 +551,7 @@ def getCurrentContractBid(biddingAbsolute):
         if re.search('pass', bid[1], re.IGNORECASE) is None and re.search('double', bid[1], re.IGNORECASE) is None:
             return bid
 
-def handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints):
+def handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints, clientPointCountingConvention):
     '''
         responding to takeout dbl if applicable otherwise passing if less than 6 points total and is first bid
     '''
@@ -558,7 +560,7 @@ def handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints):
         if totalPoints < 6 and mustBid is None:
             return 'Pass'
         else:
-            return getStrongestSuit(hand, biddingRelative)
+            return getStrongestSuit(hand, biddingRelative, clientPointCountingConvention)
     else:
         #TODO: have to figure out when to trust partner's actual double bid and when to make a bid (e.g. you have a really nice suit with 18+ points?) or just always pass if partner doubles and it's not a takeout double?
         return 'Pass'
@@ -573,7 +575,6 @@ def getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention):
     if re.search('alternative', clientPointCountingConvention, re.IGNORECASE):
         conventionToUse = 'alternative'
 
-    global highCardPointValuesInEachSuit
     highCardPointValuesInEachSuit = {
         "clubs": 0,
         "diamonds": 0,
