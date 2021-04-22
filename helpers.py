@@ -421,7 +421,6 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     suitToReturn = None
 
     print(f"highCardPointValuesInEachSuitLocal =    {highCardPointValuesInEachSuitLocal}")
-    print(f"highCardPointValuesInEachSuit =    {highCardPointValuesInEachSuit}")
     print(f"leftOpeningSuit = {leftOpeningSuit}")
     print(f"rightOpeningSuit = {rightOpeningSuit}")
 
@@ -805,6 +804,54 @@ def getIndexDifferenceOfBids(bid1, bid2):
     except:
         raise TypeError('Error in getIndexDifferenceOfBids;  Probably incorrect parameter passed in.')
 
+def getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative):
+    '''
+    inputs:
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+        seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
+    returns:
+        a tuple where first item is boolean decribing whether someone has bid two clubs and the second item is the name of that person as a string (e.g. [ True, 'Adam'])
+    '''
+    
+    #region check whether anyone bid two clubs as their first bid
+    falseTuple = (False, None)
+    shouldContinue = False;
+    twoClubBid = None
+
+    for location in biddingRelative: 
+        if len(biddingRelative[location]) == 0:
+            continue
+
+        firstBid = biddingRelative[location][0]
+        if re.search('two club', firstBid, re.IGNORECASE):
+            twoClubBid = [seatingRelative[location], firstBid]
+            shouldContinue = True;
+            break;
+    #endregion
+
+    if shouldContinue is True:
+        indexOfTwoClubBid = biddingAbsolute.index(twoClubBid)
+        hasSomeoneOpenedBefore = getHasSomeOneOpenedBefore(indexOfTwoClubBid, biddingAbsolute)
+        if hasSomeoneOpenedBefore is False:
+            return (True, twoClubBid[0])
+    return falseTuple
+
+def getPlayerHasOnlyPassed(playerBids):
+    '''
+    inputs:
+        playerBids = an array representing a player's bidding: ['pass', 'one heart', ...]
+    returns:
+        False if the player has bid anything other than 'pass' and True otherwise
+    '''
+    for bid in playerBids:
+        if not re.search('pass', bid, re.IGNORECASE):
+            return False;
+
+    return True
+
+
+
 #region Test Case Helpers
 def getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):
     '''
@@ -881,50 +928,28 @@ def getDealerLocation(biddingRelative):
         return dealer
     except:
         return None
+
+def getHandFromHandDictionary(handsDictionary):
+    '''
+    inputs:
+        handsDictionary = {"clubs": [12,11,10], ... , "spades": [12,11,10, ...]}
+    returns:
+        hand = [ [12,11,10], [...], [...], [51,50,49,...] ]
+    '''
+    starts = {
+        "clubs": 0,
+        "diamonds": 13,
+        "hearts": 26,
+        "spades": 39,
+    }
+    hand = []
+    for suitName, suitArray in handsDictionary.items():
+        newSuitArray = []
+        for cardAsNumber in suitArray:
+            newSuitArray.append(cardAsNumber + starts[suitName])
+        hand.append(newSuitArray)
+
+    return hand
+
+
 #endregion
-
-def getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative):
-    '''
-    inputs:
-        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
-        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
-        seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
-    returns:
-        a tuple where first item is boolean decribing whether someone has bid two clubs and the second item is the name of that person as a string (e.g. [ True, 'Adam'])
-    '''
-    
-    #region check whether anyone bid two clubs as their first bid
-    falseTuple = (False, None)
-    shouldContinue = False;
-    twoClubBid = None
-
-    for location in biddingRelative: 
-        if len(biddingRelative[location]) == 0:
-            continue
-
-        firstBid = biddingRelative[location][0]
-        if re.search('two club', firstBid, re.IGNORECASE):
-            twoClubBid = [seatingRelative[location], firstBid]
-            shouldContinue = True;
-            break;
-    #endregion
-
-    if shouldContinue is True:
-        indexOfTwoClubBid = biddingAbsolute.index(twoClubBid)
-        hasSomeoneOpenedBefore = getHasSomeOneOpenedBefore(indexOfTwoClubBid, biddingAbsolute)
-        if hasSomeoneOpenedBefore is False:
-            return (True, twoClubBid[0])
-    return falseTuple
-
-def getPlayerHasOnlyPassed(playerBids):
-    '''
-    inputs:
-        playerBids = an array representing a player's bidding: ['pass', 'one heart', ...]
-    returns:
-        False if the player has bid anything other than 'pass' and True otherwise
-    '''
-    for bid in playerBids:
-        if not re.search('pass', bid, re.IGNORECASE):
-            return False;
-
-    return True

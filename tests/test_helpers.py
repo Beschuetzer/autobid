@@ -1357,7 +1357,7 @@ class getStrongestSuit(unittest.TestCase):
             "right": ['Pass'],
             "bottom": [],
         }
-        actual = helpers.getStrongestSuit(hand, biddingRelative)
+        actual = helpers.getStrongestSuit(hand, biddingRelative, 'hcp')
         expected = 'Four Club'
         self.assertEqual(actual, expected)
     def test_LengthOverPointCount(self):
@@ -1372,7 +1372,7 @@ class getStrongestSuit(unittest.TestCase):
             "top": ['Two Club', 'Three Diamond'],
             "left": ['Pass', 'Pass'],
         }
-        actual = helpers.getStrongestSuit(hand, biddingRelative)
+        actual = helpers.getStrongestSuit(hand, biddingRelative, 'hcp')
         expected = 'Four Club'
         self.assertEqual(actual, expected)
     def test_length(self):
@@ -1389,7 +1389,7 @@ class getStrongestSuit(unittest.TestCase):
         }
         totalOpeningPoints = 0
         currentActualBid = ['Adam', 'Three Diamond']
-        actual = helpers.getStrongestSuit(hand, biddingRelative)
+        actual = helpers.getStrongestSuit(hand, biddingRelative, 'hcp')
         expected = 'Three Heart'
         self.assertEqual(actual, expected)
     def test_pointCountOverLength(self):
@@ -2727,6 +2727,53 @@ class getBidArrayFromBiddingObjAndSeatingRelative(unittest.TestCase):
         print('actual = {0}'.format(actual))
         print('expected = {0}'.format(expected))
         self.actual = actual
+        self.assertListEqual(actual, expected)
+
+class getHandFromHandDictionary(unittest.TestCase):
+    def test_1(self):
+        hand = {
+            "clubs": [12,11,10],
+            "diamonds": [12,11,10],
+            "hearts": [12,11,10],
+            "spades": [12,11,10],
+        }
+        expected = [
+            [12,11,10],
+            [25,24,23],
+            [38,37,36],
+            [51,50,49],
+        ]
+        actual = helpers.getHandFromHandDictionary(hand)
+        self.assertListEqual(actual, expected)
+    def test_all(self):
+        hand = {
+            "clubs": [12,11,10,9,8,7,6,5,4,3,2,1,0],
+            "diamonds": [12,11,10,9,8,7,6,5,4,3,2,1,0],
+            "hearts": [12,11,10,9,8,7,6,5,4,3,2,1,0],
+            "spades": [12,11,10,9,8,7,6,5,4,3,2,1,0],
+        }
+        expected = [
+            [12,11,10,9,8,7,6,5,4,3,2,1,0],
+            [25,24,23,22,21,20,19,18,17,16,15,14,13],
+            [38,37,36,35,34,33,32,31,30,29,28,27,26],
+            [51,50,49,48,47,46,45,44,43,42,41,40,39],
+        ]
+        actual = helpers.getHandFromHandDictionary(hand)
+        self.assertListEqual(actual, expected)
+    def test_none(self):
+        hand = {
+            "clubs": [],
+            "diamonds":[],
+            "hearts":[],
+            "spades":[],
+        }
+        expected = [
+            [],
+            [],
+            [],
+            [],
+        ]
+        actual = helpers.getHandFromHandDictionary(hand)
         self.assertListEqual(actual, expected)
 #endregion
 
