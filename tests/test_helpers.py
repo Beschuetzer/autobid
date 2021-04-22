@@ -1349,66 +1349,71 @@ class getSuitFromBid(unittest.TestCase):
         expected = 'Spade'
         self.assertEqual(actual, expected)
 class getStrongestSuit(unittest.TestCase):
-    def test_pass(self):
-        hand = [[0, 1, 7, 8, 12], [13, 18, 23, 24], [29, 30, 32], [40,42]]
+    def tearDown(self):
+        print(f"self.hand = {self.hand}")
+
+    def test_partner_not_open_1(self):
+        handDictionary = {
+            "clubs": [0, 1, 7, 8, 12],
+            "diamonds": [0, 5, 10, 11],
+            "hearts": [3, 4, 6],
+            "spades": [1,3]
+        }
+        
         biddingRelative = {
             "left": ['Pass'],
             "top": ['Pass'],
             "right": ['Pass'],
             "bottom": [],
         }
-        actual = helpers.getStrongestSuit(hand, biddingRelative, 'hcp')
-        expected = 'Four Club'
-        self.assertEqual(actual, expected)
-    def test_LengthOverPointCount(self):
-        hand = [[0, 1, 7, 8,12], [13, 18, 23, 24], [29, 30, 32], [40,42]]
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'club'
+        self.assertEqual(self.actual, self.expected)
+    def test_partner_not_open_length(self):
+        handDictionary = {
+            "clubs": [0, 1, 7],
+            "diamonds": [0, 5, 12],
+            "hearts": [3,4,6,7,8],
+            "spades": [1,3]
         }
+        
         biddingRelative = {
-            "top": ['Two Club', 'Three Diamond'],
-            "left": ['Pass', 'Pass'],
+            "left": ['Pass'],
+            "top": ['Pass'],
+            "right": ['Pass'],
+            "bottom": [],
         }
-        actual = helpers.getStrongestSuit(hand, biddingRelative, 'hcp')
-        expected = 'Four Club'
-        self.assertEqual(actual, expected)
-    def test_length(self):
-        hand = [[0, 1, 7], [13, 18, 25], [29, 30, 32,33,34], [40,42]]
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'heart'
+        self.assertEqual(self.actual, self.expected)
+    def test_partner_not_open_points_over_length(self):
+        handDictionary = {
+            "clubs": [0, 1, 7],
+            "diamonds": [0],
+            "hearts": [3,4,6,7,8],
+            "spades": [9,10,11,12]
         }
+        
         biddingRelative = {
-            "top": ['Two Club', 'Three Diamond'],
-            "left": ['Pass', 'Pass'],
+            "left": ['Pass'],
+            "top": ['Pass'],
+            "right": ['Pass'],
+            "bottom": [],
         }
-        totalOpeningPoints = 0
-        currentActualBid = ['Adam', 'Three Diamond']
-        actual = helpers.getStrongestSuit(hand, biddingRelative, 'hcp')
-        expected = 'Three Heart'
-        self.assertEqual(actual, expected)
-    def test_pointCountOverLength(self):
-        hand = [[0, 1, 7], [13, 18, 25], [29, 30, 32,33,34], [48,49,50,51]]
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
-        biddingRelative = {
-            "top": ['Two Club', 'Three Diamond'],
-            "left": ['Pass', 'Pass'],
-        }
-        totalOpeningPoints = 0
-        currentActualBid = ['Adam', 'Three Diamond']
-        actual = helpers.getStrongestSuit(hand, biddingRelative)
-        expected = 'Three Spade'
-        self.assertEqual(actual, expected)
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'spade'
+        self.assertEqual(self.actual, self.expected)
+
+    #TODO: need tests for partner opens and you are responding based on his/her opening suit
+    
+    #TODO: is there another layer where we need to consider whether it is the first bid for analyzing player, because if partner has openers and it's in a diff. suit we 
+
 class getSuitsMentionedByOpponents(unittest.TestCase):
     def test_five(self):
         currentEstimatedPoints = {

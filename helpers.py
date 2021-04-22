@@ -413,28 +413,31 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
 
     #global vars to use: 'suitCounts' and 'highCardPointValuesInEachSuit'
     #NOTE: respond with best suit that left and right didn't open with?
-    highCardPointValuesInEachSuitLocal = getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention)
     
     leftOpeningSuit = biddingRelative['left'][0]
     rightOpeningSuit = biddingRelative['right'][0]
     suitWithMostPoints = rightOpeningSuit
     suitToReturn = None
 
-    print(f"highCardPointValuesInEachSuitLocal =    {highCardPointValuesInEachSuitLocal}")
-    print(f"leftOpeningSuit = {leftOpeningSuit}")
-    print(f"rightOpeningSuit = {rightOpeningSuit}")
+   
 
     #region if you are getting strongest suit for opening 
-    if re.search('pass', biddingRelative['top'][0], re.IGNORECASE):    
+    if re.search('pass', biddingRelative['top'][0], re.IGNORECASE): 
+        highCardPointValuesInEachSuitLocal = getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention)
+
         while suitWithMostPoints != rightOpeningSuit and suitWithMostPoints != leftOpeningSuit:
             suitWithMostPoints = max(highCardPointValuesInEachSuitLocal, key=highCardPointValuesInEachSuitLocal.get)
             highCardPointValuesInEachSuitLocal.pop(suitWithMostPoints, None)
             print(f"suitWithMostPoints = {suitWithMostPoints}")
+
+        print(f"highCardPointValuesInEachSuitLocal =    {highCardPointValuesInEachSuitLocal}")
+        print(f"leftOpeningSuit = {leftOpeningSuit}")
+        print(f"rightOpeningSuit = {rightOpeningSuit}")
             
     #endregion
     #region getting responding strongest
     else:
-        
+        #TODO: change how the getHighCardPointValuesInEachSuit() call is made because the analyzing player needs to change how it evaluates the points in the suit its partner opened with.
         pass
 
     return suitToReturn
