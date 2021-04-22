@@ -2473,9 +2473,8 @@ class getHighCardPointValuesInEachSuit(unittest.TestCase):
 
 class getNextBidInSuit(unittest.TestCase):
     def test_error(self):
-        actual = helpers.getNextBidInSuit('Thonfdh', 'One Club')
-        expected = ''
-        self.assertEqual(actual, expected)
+        with self.assertRaises(Exception) as context:
+            actual = helpers.getNextBidInSuit('Thonfdh', 'One Club')
     def test_same_level(self):
         actual = helpers.getNextBidInSuit('diamonds', 'One Club')
         expected = 'One Diamond'
