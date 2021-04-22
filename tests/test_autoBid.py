@@ -1,6 +1,44 @@
 import unittest
 import autoBid, helpers
 
+def setupSelfObject(self):
+    self.clientPointCountingConvention = 'hcp'
+    self.spot = 'north'
+    self.seating = {
+        "north": 'NorthPlayer',
+        "east": 'EastPlayer',
+        "south": 'SouthPlayer',
+        "west": "WestPlayer",
+    }
+    self.scoring = {
+        "northSouth": {
+            "aboveTheLine": 0,
+            "belowTheLine": 0,
+            "totalBelowTheLineScore": 0,
+            "isVulnerable": False,
+            "vulnerableTransitionIndex": None,
+        },
+        "eastWest": {
+            "aboveTheLine": 0, 
+            "belowTheLine": 0,
+            "totalBelowTheLineScore": 0,
+            "isVulnerable": False,
+            "vulnerableTransitionIndex": None,
+        },
+    }
+    return self
+
+def printSelfInfo(object):
+    print("\nTear Down-----------------")
+    print(f"self.spot = {object.spot}")
+    print(f"self.seating = {object.seating}")
+    print(f"self.bids = {object.bids}")
+    print(f"self.scoring = {object.scoring}")
+    print(f"self.actual = {object.actual}")
+    print(f"self.expected = {object.expected}")
+    print(f"self.hand = {object.hand}")
+    print("---------------------------")
+
 class takeout_double(unittest.TestCase):
     def setUp(self):
         self.clientPointCountingConvention = 'hcp'
@@ -43,41 +81,10 @@ class takeout_double(unittest.TestCase):
 
 class opening_no_score(unittest.TestCase):
     def setUp(self):
-        self.clientPointCountingConvention = 'hcp'
-        self.spot = 'north'
-        self.seating = {
-            "north": 'NorthPlayer',
-            "east": 'EastPlayer',
-            "south": 'SouthPlayer',
-            "west": "WestPlayer",
-        }
-        self.scoring = {
-            "northSouth": {
-                "aboveTheLine": 0,
-                "belowTheLine": 0,
-                "totalBelowTheLineScore": 0,
-                "isVulnerable": False,
-                "vulnerableTransitionIndex": None,
-            },
-            "eastWest": {
-                "aboveTheLine": 0, 
-                "belowTheLine": 0,
-                "totalBelowTheLineScore": 0,
-                "isVulnerable": False,
-                "vulnerableTransitionIndex": None,
-            },
-        }
+        self = setupSelfObject(self)
 
     def tearDown(self) -> None:
-        print("\nTear Down-----------------")
-        print(f"self.spot = {self.spot}")
-        print(f"self.seating = {self.seating}")
-        print(f"self.bids = {self.bids}")
-        print(f"self.scoring = {self.scoring}")
-        print(f"self.actual = {self.actual}")
-        print(f"self.expected = {self.expected}")
-        print(f"self.hand = {self.hand}")
-        print("---------------------------")
+        printSelfInfo(self)
 
     def test_one_club(self):
         self.bids = [
@@ -202,41 +209,10 @@ class opening_no_score(unittest.TestCase):
         
 class responding_with_openers_no_score(unittest.TestCase):
     def setUp(self):
-        self.clientPointCountingConvention = 'hcp'
-        self.spot = 'north'
-        self.seating = {
-            "north": 'NorthPlayer',
-            "east": 'EastPlayer',
-            "south": 'SouthPlayer',
-            "west": "WestPlayer",
-        }
-        self.scoring = {
-            "northSouth": {
-                "aboveTheLine": 0,
-                "belowTheLine": 0,
-                "totalBelowTheLineScore": 0,
-                "isVulnerable": False,
-                "vulnerableTransitionIndex": None,
-            },
-            "eastWest": {
-                "aboveTheLine": 0, 
-                "belowTheLine": 0,
-                "totalBelowTheLineScore": 0,
-                "isVulnerable": False,
-                "vulnerableTransitionIndex": None,
-            },
-        }
+        self = setupSelfObject(self)
 
     def tearDown(self) -> None:
-        print("\nTear Down-----------------")
-        print(f"self.spot = {self.spot}")
-        print(f"self.seating = {self.seating}")
-        print(f"self.bids = {self.bids}")
-        print(f"self.scoring = {self.scoring}")
-        print(f"self.actual = {self.actual}")
-        print(f"self.expected = {self.expected}")
-        print(f"self.hand = {self.hand}")
-        print("---------------------------")
+        printSelfInfo(self)
 
     def test_one_club_(self):
         self.bids = [
@@ -344,41 +320,10 @@ class responding_with_openers_no_score(unittest.TestCase):
             
 class responding_without_openers_no_score(unittest.TestCase):
     def setUp(self):
-        self.clientPointCountingConvention = 'hcp'
-        self.spot = 'north'
-        self.seating = {
-            "north": 'NorthPlayer',
-            "east": 'EastPlayer',
-            "south": 'SouthPlayer',
-            "west": "WestPlayer",
-        }
-        self.scoring = {
-            "northSouth": {
-                "aboveTheLine": 0,
-                "belowTheLine": 0,
-                "totalBelowTheLineScore": 0,
-                "isVulnerable": False,
-                "vulnerableTransitionIndex": None,
-            },
-            "eastWest": {
-                "aboveTheLine": 0, 
-                "belowTheLine": 0,
-                "totalBelowTheLineScore": 0,
-                "isVulnerable": False,
-                "vulnerableTransitionIndex": None,
-            },
-        }
+        self = setupSelfObject(self)
 
     def tearDown(self) -> None:
-        print("\nTear Down-----------------")
-        print(f"self.spot = {self.spot}")
-        print(f"self.seating = {self.seating}")
-        print(f"self.bids = {self.bids}")
-        print(f"self.scoring = {self.scoring}")
-        print(f"self.actual = {self.actual}")
-        print(f"self.expected = {self.expected}")
-        print(f"self.hand = {self.hand}")
-        print("---------------------------")
+        printSelfInfo(self)
 
     def test_better_off_suit(self):
         self.bids = [
@@ -450,41 +395,10 @@ class responding_without_openers_no_score(unittest.TestCase):
 
 class responding_without_responding_points_no_score(unittest.TestCase):
     def setUp(self):
-        self.clientPointCountingConvention = 'hcp'
-        self.spot = 'north'
-        self.seating = {
-            "north": 'NorthPlayer',
-            "east": 'EastPlayer',
-            "south": 'SouthPlayer',
-            "west": "WestPlayer",
-        }
-        self.scoring = {
-            "northSouth": {
-                "aboveTheLine": 0,
-                "belowTheLine": 0,
-                "totalBelowTheLineScore": 0,
-                "isVulnerable": False,
-                "vulnerableTransitionIndex": None,
-            },
-            "eastWest": {
-                "aboveTheLine": 0, 
-                "belowTheLine": 0,
-                "totalBelowTheLineScore": 0,
-                "isVulnerable": False,
-                "vulnerableTransitionIndex": None,
-            },
-        }
+        self = setupSelfObject(self)
 
     def tearDown(self) -> None:
-        print("\nTear Down-----------------")
-        print(f"self.spot = {self.spot}")
-        print(f"self.seating = {self.seating}")
-        print(f"self.bids = {self.bids}")
-        print(f"self.scoring = {self.scoring}")
-        print(f"self.actual = {self.actual}")
-        print(f"self.expected = {self.expected}")
-        print(f"self.hand = {self.hand}")
-        print("---------------------------")
+        printSelfInfo(self)
 
     def test_pass_with_0_points(self):
         self.bids = [
@@ -521,33 +435,33 @@ class responding_without_responding_points_no_score(unittest.TestCase):
         self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
         self.assertEqual(self.actual, self.expected)
 
+class two_clubs(unittest.TestCase):
+    def setUp(self):
+        self = setupSelfObject(self)
+
+    def tearDown(self) -> None:
+        printSelfInfo(self)
+
+    def test_respond_1(self):
+        self.bids = [
+            ['SouthPlayer', 'One Heart'],
+            ['WestPlayer', 'Pass'],
+        ]
+        self.handDictionary = {
+            "clubs": [12,8,3,1],
+            "diamonds": [12,9,7,6],
+            "hearts": [7,5],
+            "spades": [7,4,2]
+        }
+
+        self.expected = 'Two Diamond'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
 
 class special_cases(unittest.TestCase):
     def setUp(self):
-        self.clientPointCountingConvention = 'hcp'
-        self.spot = 'north'
-        self.seating = {
-            "north": 'NorthPlayer',
-            "east": 'EastPlayer',
-            "south": 'SouthPlayer',
-            "west": "WestPlayer",
-        }
-        self.scoring = {
-            "northSouth": {
-                "aboveTheLine": 0,
-                "belowTheLine": 0,
-                "totalBelowTheLineScore": 0,
-                "isVulnerable": False,
-                "vulnerableTransitionIndex": None,
-            },
-            "eastWest": {
-                "aboveTheLine": 0, 
-                "belowTheLine": 0,
-                "totalBelowTheLineScore": 0,
-                "isVulnerable": False,
-                "vulnerableTransitionIndex": None,
-            },
-        }
+        self = setupSelfObject(self)
 
     def tearDown(self) -> None:
         print(f"self.spot = {self.spot}")
