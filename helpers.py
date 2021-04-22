@@ -203,11 +203,12 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
     longestSuit = None
     longestLength = 0
     for suit in hand:
-        if len(suit) > longestLength: longestSuit = getSuitNameFromCardAsNumber(suit[0])
+        if len(suit) > longestLength: 
+            longestSuit = getSuitNameFromCardAsNumber(suit[0])
+            longestLength = len(suit)
 
-    print(f"longestSuit = {longestSuit}")
-    if totalOpeningPoints > 13 and longestSuit >= 7:
-        return getNextBidInSuit(longestSuit, currentActualBid)
+    if totalOpeningPoints >= 13 and longestLength >= 7:
+        return getNextBidInSuit(longestSuit, currentActualBid[1])
     #endregion
     #region first response
     bestSuitIsNoTrump = None 
@@ -283,7 +284,7 @@ def getNextBidInSuit(suit, currentActualBid):
     '''
     try:
         suitsOrder = ['club', 'diamond', 'heart', 'spade', 'no trump']
-        
+
         #region Normalizing Suit
         if suit[-1] == 's': suit = suit[:-1]
         suit = suit.lower()
