@@ -69,10 +69,15 @@ class Opening_No_Score(unittest.TestCase):
         }
 
     def tearDown(self) -> None:
+        print("\nTear Down-----------------")
         print(f"self.spot = {self.spot}")
         print(f"self.seating = {self.seating}")
         print(f"self.bids = {self.bids}")
         print(f"self.scoring = {self.scoring}")
+        print(f"self.actual = {self.actual}")
+        print(f"self.expected = {self.expected}")
+        print(f"self.hand = {self.hand}")
+        print("---------------------------")
 
     def test_One_Club(self):
         self.bids = [
@@ -90,6 +95,7 @@ class Opening_No_Score(unittest.TestCase):
         self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
         self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
         self.assertEqual(self.actual, self.expected)
+
     def test_Two_Club(self):
         self.bids = [
             ['SouthPlayer', 'pass'],
@@ -140,6 +146,63 @@ class Opening_No_Score(unittest.TestCase):
         self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
         self.expected = 'Double'
         self.assertEqual(self.actual, self.expected)
+
+    def test_One_Spade(self):
+        self.bids = [
+            ['SouthPlayer', 'pass'],
+            ['WestPlayer', 'Pass'],
+        ]
+        self.handDictionary = {
+            "clubs": [12,11,8],
+            "diamonds": [7,4,2],
+            "hearts": [7,5],
+            "spades": [12,11,7,5,2],
+        }
+
+        self.expected = 'One Spade'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+
+    def test_weak_two(self):
+        self.bids = [
+            ['EastPlayer', 'pass'],
+            ['SouthPlayer', 'pass'],
+            ['WestPlayer', 'Pass'],
+        ]
+        self.handDictionary = {
+            "clubs": [8,7],
+            "diamonds": [7,5,3],
+            "hearts": [12,11,7,5,3,1],
+            "spades": [7,4]
+        }
+
+        self.expected = 'Two Heart'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+
+    def test_weak_three(self):
+        self.bids = [
+            ['EastPlayer', 'pass'],
+            ['SouthPlayer', 'pass'],
+            ['WestPlayer', 'Pass'],
+        ]
+        self.handDictionary = {
+            "clubs": [12,9,7,5,3,2,1],
+            "diamonds": [7,5],
+            "hearts": [8,7],
+            "spades": [7,4]
+        }
+
+        self.expected = 'Three Club'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+        
+class Responding_No_Score(unittest.TestCase):
+    pass    
+
 
 class Special_Cases(unittest.TestCase):
     def setUp(self):
