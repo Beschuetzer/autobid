@@ -1,6 +1,4 @@
-import unittest
-import helpers
-import getEstimatedPoints
+import getEstimatedPoints, helpers, unittest
 
 class getSuitFromCardAsNumber(unittest.TestCase):
     def test_clubLow(self):
@@ -2473,6 +2471,19 @@ class getHighCardPointValuesInEachSuit(unittest.TestCase):
          }
         self.assertEqual(actual, expected)
 
+class getNextBidInSuit(unittest.TestCase):
+    def test_error(self):
+        actual = helpers.getNextBidInSuit('Thonfdh', 'One Club')
+        expected = ''
+        self.assertEqual(actual, expected)
+    def test_same_level(self):
+        actual = helpers.getNextBidInSuit('diamonds', 'One Club')
+        expected = 'One Diamond'
+        self.assertEqual(actual, expected)
+    def test_next_level(self):
+        actual = helpers.getNextBidInSuit('Clubs', 'Two Heart')
+        expected = 'Three Club'
+        self.assertEqual(actual, expected)
 
 #region Testing Test Case Helpers
 class getDealerLocation(unittest.TestCase):

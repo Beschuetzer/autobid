@@ -195,10 +195,20 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
     '''
     currentIndex = autoBid.contracts.index(currentActualBid[1])
 
-    #return early if left bids first
+    #region return early if left bids first
     if not re.search('pass', biddingRelative['left'][0], re.IGNORECASE) and not re.search('double', biddingRelative['left'][0], re.IGNORECASE):
         return 'Pass'
 
+    #region special case of taking partner out of game bid
+    longestSuit = None
+    longestLength = 0
+    for suit in hand:
+        if len(suit) > longestLength: longestSuit = getSuitNameFromCardAsNumber(suit[0])
+
+    print(f"longestSuit = {longestSuit}")
+    if totalOpeningPoints > 13 and longestSuit >= 7:
+        return getNextBidInSuit(longestSuit, currentActualBid)
+    #endregion
     #region first response
     bestSuitIsNoTrump = None 
     if len(biddingRelative['top']) > 2:
@@ -263,6 +273,36 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
     #handle second response
 
     return 'Pass'
+
+def getNextBidInSuit(suit, currentActualBid):
+    '''
+    inputs: 
+        suit - string representing suit (e.g. 'clubs', 'diamonds', 'hearts', 'spades', or 'no trump')
+    returns:
+        nextBid - string representing the next available bid in suit (e.g. 'Two Heart', 'Three Club', etc... )
+    '''
+    try:
+        currentActualBidIndex = autoBid.contracts.index(suit)
+        print(f"currentActualBidIndex = {currentActualBidIndex}")
+
+        levelValue = 4 * (currentActualBidIndex / 5)
+        suitValue = None
+
+        if re.search('club', suit, re.IGNORECASE):
+            suitValue = 0
+        elif re.search('diamond', suit, re.IGNORECASE):
+            suitValue = 1
+        elif re.search('heart', suit, re.IGNORECASE):
+            suitValue = 2
+        elif re.search('spade', suit, re.IGNORECASE):
+            suitValue = 3
+        elif re.search('trump', suit, re.IGNORECASE):
+            suitValue = 4
+
+        return autoBid.contracts[levelValue + suitValue]
+
+    except Exception as err:
+        raise Exception(f"Error in getNextBidInSuit = {err}")
 
 def getSuitFromBid(bid):
     '''
