@@ -3,8 +3,6 @@
 import re, math, getEstimatedPoints, getEstimatedSuitCounts, helpers
 
 #region Globals
-analyzingPlayerSuitCounts = None
-highCardPointValuesInEachSuit = None
 
 suits = {
     "clubs": 'club',
@@ -132,10 +130,8 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     isFirstBid = len(biddingAbsolute) < 4
     partnerHasBid = len(biddingAbsolute) >= 2
     currentContractBid = helpers.getCurrentContractBid(biddingAbsolute)
-    if analyzingPlayerSuitCounts == None:
-        analyzingPlayerSuitCounts = helpers.getSuitCountsFromHand(hand)
-    if highCardPointValuesInEachSuit == None:
-        highCardPointValuesInEachSuit = helpers.getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention)
+    analyzingPlayerSuitCounts = helpers.getSuitCountsFromHand(hand)
+    highCardPointValuesInEachSuit = helpers.getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention)
         
     biddingObjAbsolute = helpers.getBiddingObjAbsolute(biddingAbsolute, seating)    
     biddingRelative = helpers.getBiddingObjRelative(biddingObjAbsolute, spot)
