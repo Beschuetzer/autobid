@@ -1,6 +1,6 @@
 #Purpose: make best bid that the humans we play with can understand, taking into account cards in hand, previous bids, and eventually score
 
-import re, math, getEstimatedPoints, helpers
+import re, math, getEstimatedPoints, getEstimatedSuitCounts, helpers
 
 #region Globals
 analyzingPlayerSuitCounts = None
@@ -137,7 +137,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     if analyzingPlayerSuitCounts == None:
         analyzingPlayerSuitCounts = helpers.getSuitCountsFromHand(hand)
     if highCardPointValuesInEachSuit == None:
-        highCardPointValuesInEachSuit = helpers.getHighCardPointValuesInEachSuit(hand)
+        highCardPointValuesInEachSuit = helpers.getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention)
         
     biddingObjAbsolute = helpers.getBiddingObjAbsolute(biddingAbsolute, seating)    
     biddingRelative = helpers.getBiddingObjRelative(biddingObjAbsolute, spot)
@@ -146,7 +146,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     biddingHistory = helpers.getBiddingHistory(biddingAbsolute)
     seatingRelative = helpers.getSeatingRelative(seating, spot)
     estimatedPoints = getEstimatedPoints.getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute, seatingRelative)
-    estimatedSuitCounts = helpers.getEstimatedSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
+    estimatedSuitCounts = getEstimatedSuitCounts.getEstimatedSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
     partnersBids = biddingRelative['top']
     #endregion
 
