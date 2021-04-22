@@ -1072,30 +1072,13 @@ class partnerTwoClubResponse(unittest.TestCase):
             "Bottom": None,
         }
         biddingRelative = {
-            "top": ['Two Club'],
             "left": ['Pass'],
+            "top": ['Two Club'],
         }
         totalOpeningPoints = 15
-        currentActualBid = ['Adam', 'Two Club']
+        currentActualBid = ['Adam', biddingRelative['top'][0]]
         actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Three Club'
-        self.assertEqual(actual, expected)
-    def test_second_true(self):
-        hand = [[0, 1, 7, 8,12], [13, 18, 23, 24], [29, 30, 32], [40,42]]
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
-        biddingRelative = {
-            "top": ['Two Club', 'Three Diamond'],
-            "left": ['Pass', 'Pass'],
-        }
-        totalOpeningPoints = 15
-        currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
-        expected = 'Four Club'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_one(self):
         hand = [[0, 1, 7, 8,12], [13, 18, 23, 24], [29, 30, 32], [40,42]]
@@ -1303,6 +1286,43 @@ class partnerTwoClubResponse(unittest.TestCase):
         actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
         expected = 'Four Heart'
         self.assertEqual(actual, expected)
+
+    #TODO: These best_suit cases depend on a function not yet implemented called getStrongestSuit()
+    def test_best_suit_club(self):
+        hand = [[9,10,11,12], [13, 18, 21, 25], [29, 30, 32], [40,42]]
+        currentEstimatedPoints = {
+            "left": None,
+            "top": None,
+            "right": None,
+            "Bottom": None,
+        }
+        biddingRelative = {
+            "top": ['Two Club', 'Three Diamond'],
+            "left": ['Pass', 'Pass'],
+        }
+        totalOpeningPoints = 15
+        currentActualBid = ['Adam', biddingRelative['top'][1]]
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Four Club'
+        self.assertEqual(actual, expected)
+    def test_best_suit_diamond(self):
+        hand = [[3,4,5,12], [22,23,24,25], [29, 30, 32], [40,42]]
+        currentEstimatedPoints = {
+            "left": None,
+            "top": None,
+            "right": None,
+            "Bottom": None,
+        }
+        biddingRelative = {
+            "top": ['Two Club', 'Three Diamond'],
+            "left": ['Pass', 'Pass'],
+        }
+        totalOpeningPoints = 15
+        currentActualBid = ['Adam', biddingRelative['top'][1]]
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid)
+        expected = 'Four Diamond'
+        self.assertEqual(actual, expected)
+
 class getSuitFromBid(unittest.TestCase):
     def test_empty(self):
         actual = helpers.getSuitFromBid('')

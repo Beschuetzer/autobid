@@ -193,7 +193,7 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
     '''
         returns ------------------------------ the the bid to say based on the two club convention when your partner has opened two clubs
     '''
-    currentIndex = autoBid.contracts.index(currentActualBid[1])
+    currentActualBidIndex = autoBid.contracts.index(currentActualBid[1])
 
     #region return early if left bids first
     if not re.search('pass', biddingRelative['left'][0], re.IGNORECASE) and not re.search('double', biddingRelative['left'][0], re.IGNORECASE):
@@ -218,18 +218,18 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
 
     if re.search('two club', biddingRelative['top'][-1], re.IGNORECASE):
         if totalOpeningPoints == 0:
-            return autoBid.contracts[currentIndex + 1]
+            return autoBid.contracts[currentActualBidIndex + 1]
 
         wholeNumber = int(math.ceil(totalOpeningPoints / 3));
-        return autoBid.contracts[currentIndex + wholeNumber]
+        return autoBid.contracts[currentActualBidIndex + wholeNumber]
     #endregion
     #region second response
     elif len(biddingRelative['top']) == 2:
 
         suit = getStrongestSuit(hand, biddingRelative)
         for i in range(1, 6):
-            if re.search(suit, autoBid.contracts[currentIndex + i], re.IGNORECASE):
-                return autoBid.contracts[currentIndex + i]
+            if re.search(suit, autoBid.contracts[currentActualBidIndex + i], re.IGNORECASE):
+                return autoBid.contracts[currentActualBidIndex + i]
 
     #endregion
     #region handle slam Aces
@@ -247,7 +247,7 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
         else:
             indexAddition = aceCount + 1
 
-        return autoBid.contracts[currentIndex + indexAddition]
+        return autoBid.contracts[currentActualBidIndex + indexAddition]
     #endregion
     #region handle slam Kings
     #if their second bid's suit is the same as their 4th bid's suit then assume wants to stop otherwise assume asking for kings
@@ -266,13 +266,12 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
         else:
             indexAddition = kingCount + 1
 
-        return autoBid.contracts[currentIndex + indexAddition]
+        return autoBid.contracts[currentActualBidIndex + indexAddition]
     #endregion
     #handle stopping prematurely?
     #if opponent enter crazy bid, how to handle?
 
     #handle second response
-
     return 'Pass'
 
 def getNextBidInSuit(suit, currentActualBid):
@@ -405,6 +404,8 @@ def getStrongestSuit(hand, biddingRelative, isResponding=False):
     input: 
         hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
         (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+        isResponding = True or False depending on analyzing player is repsonding to a partners opening suit
     returns ------------------------------:
         'club', 'diamond', 'heart', 'spade', or 'no trump' depending on which suit is the 'strongest' (considers which suits have already been mentioned, the number of points in that suit the analyzing player has, and how long the suit it for the analyzing player
     '''
