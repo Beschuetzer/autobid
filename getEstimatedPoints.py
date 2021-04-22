@@ -329,9 +329,6 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
             print('partner = {0}'.format(partner))
 
             if partner == personWhoOpenedTwoClubs:
-                #TODO: Do we want to take our partner out of their game bid if we have a reason (think of the hand where Andrew had 7 hearts and no points in other suits and Adam bid to game at 3NT )
-                #if partner opens two clubs and they put it in no trump but analyzing player has 7 or more of a suit then say that suit
-                #TODO: if you are the opener and the above happens to you just trust your partner and pass.
                 if not re.search('pass', firstBid, re.IGNORECASE):
                     indexOfTwoClubBid = biddingAbsolute.index([partner, 'Two Club'])
                     contractAtThisPoint = helpers.getCurrentContractBidFromBidding(biddingAbsolute[:indexOfTwoClubBid + 2])

@@ -1,5 +1,5 @@
 import unittest
-import autoBid
+import autoBid, helpers
 
 class Takeout_Double(unittest.TestCase):
     def setUp(self):
@@ -40,4 +40,46 @@ class Takeout_Double(unittest.TestCase):
         actual = autoBid.autoBid(bids, hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
         expected = 'Pass'
         self.assertEqual(actual, expected)
+
+class Special_Cases(unittest.TestCase):
+    def setUp(self):
+        self.clientPointCountingConvention = 'hcp'
+        self.spot = 'north'
+        self.seating = {
+            "north": 'NorthPlayer',
+            "east": 'EastPlayer',
+            "south": 'SouthPlayer',
+            "west": "WestPlayer",
+        }
+        self.scoring = {
+            "northSouth": {
+                "aboveTheLine": 0,
+                "belowTheLine": 0,
+                "totalBelowTheLineScore": 0,
+                "isVulnerable": False,
+                "vulnerableTransitionIndex": None,
+            },
+            "eastWest": {
+                "aboveTheLine": 0, 
+                "belowTheLine": 0,
+                "totalBelowTheLineScore": 0,
+                "isVulnerable": False,
+                "vulnerableTransitionIndex": None,
+            },
+        }
+
+    def test_two_clubs_take_out_of_no_trump(self):
+        #TODO: Reference the picture but build test case from WestPlayer's perspective
+        #TODO: if partner opens two clubs and they put it in no trump but analyzing player has 7 or more of a suit then say that suit
+        #TODO: if you are the opener and the above happens to you just trust your partner and pass.
+        bids = [['NorthPlayer', 'Pass'], ['EastPlayer', 'One Diamond'], ['SouthPlayer', 'Double'], ['WestPlayer', 'Pass'], ['NorthPlayer', 'Two Diamond'], ['EastPlayer', 'Three No Trump'], ['SouthPlayer', 'Double'], ['westPlayer', 'Pass']]
+        hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
+        actual = autoBid.autoBid(bids, hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        expected = 'Four Heart'
+        self.assertEqual(actual, expected)
+
+    def test_two_clubs_took_out_of_game_but_partner_did_not_pass(self):
+        #TODO: this case is an extension of test_two_clubs_take_out_of_no_trump but assuming your partner bids after you take it out of no trump (just pass)
+        pass
+
 
