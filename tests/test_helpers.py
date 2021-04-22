@@ -968,6 +968,14 @@ class getSuitCounts(unittest.TestCase):
 
 #TODO: FINISH partnerTwoClubResponse
 class partnerTwoClubResponse(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+    
     def test_intervention(self):
         currentEstimatedPoints = {
             "left": None,
@@ -981,7 +989,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 0
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse([], biddingRelative, self.seatingRelative, totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Pass'
         self.assertEqual(actual, expected)
     def test_initial_zero(self):
@@ -997,7 +1005,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 0
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse([], biddingRelative, self.seatingRelative, totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Two Diamond'
         self.assertEqual(actual, expected)
     def test_initial_3(self):
@@ -1013,7 +1021,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 3
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse([], biddingRelative, self.seatingRelative, totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Two Diamond'
         self.assertEqual(actual, expected)
     def test_initial_6(self):
@@ -1029,7 +1037,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 6
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse([], biddingRelative, self.seatingRelative, totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Two Heart'
         self.assertEqual(actual, expected)
     def test_initial_9(self):
@@ -1045,7 +1053,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 9
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse([], biddingRelative, self.seatingRelative, totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Two Spade'
         self.assertEqual(actual, expected)
     def test_initial_12(self):
@@ -1061,7 +1069,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 12
         currentActualBid = ['Adam', 'Two Club']
-        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse([], biddingRelative, self.seatingRelative, totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Two No Trump'
         self.assertEqual(actual, expected)
     def test_initial_15(self):
@@ -1077,7 +1085,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 15
         currentActualBid = ['Adam', biddingRelative['top'][0]]
-        actual = helpers.getTwoClubResponse([], biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse([], biddingRelative, self.seatingRelative, totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Three Club'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_one(self):
@@ -1094,7 +1102,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Five Diamond'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_two(self):
@@ -1111,7 +1119,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Five Heart'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_three(self):
@@ -1128,7 +1136,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Five Spade'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_four(self):
@@ -1145,7 +1153,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Five Club'
         self.assertEqual(actual, expected)
     def test_ask_for_aces_none(self):
@@ -1162,7 +1170,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Five Club'
         self.assertEqual(actual, expected)
 
@@ -1181,7 +1189,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five Club']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Pass'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_pass_NT(self):
@@ -1198,7 +1206,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Pass'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_one(self):
@@ -1215,7 +1223,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five Diamond']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Five Spade'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_two(self):
@@ -1232,7 +1240,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five Heart']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Six Club'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_three(self):
@@ -1249,7 +1257,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five Spade']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Six Heart'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_four(self):
@@ -1266,7 +1274,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Five No Trump']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Six Club'
         self.assertEqual(actual, expected)
     def test_ask_for_kings_none(self):
@@ -1283,7 +1291,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 4
         currentActualBid = ['Adam', 'Four Diamond']
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Four Heart'
         self.assertEqual(actual, expected)
 
@@ -1302,7 +1310,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 15
         currentActualBid = ['Adam', biddingRelative['top'][1]]
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Four Club'
         self.assertEqual(actual, expected)
     def test_best_suit_diamond(self):
@@ -1319,7 +1327,7 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
         totalOpeningPoints = 15
         currentActualBid = ['Adam', biddingRelative['top'][1]]
-        actual = helpers.getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, 'hcp')
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Four Diamond'
         self.assertEqual(actual, expected)
 

@@ -5,6 +5,7 @@ import re, math, getEstimatedPoints, getEstimatedSuitCounts, helpers
 #region Globals
 analyzingPlayerSuitCounts = None
 highCardPointValuesInEachSuit = None
+
 suits = {
     "clubs": 'club',
     "diamonds": 'diamond',
@@ -127,9 +128,6 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     returns -------------------------------------------------------------------------: 
         "best" bid for current situation in the form of a string (e.g. 'One Club', 'Two No Trump', 'Pass', etc... )
     '''
-    global analyzingPlayerSuitCounts
-    global highCardPointValuesInEachSuit
-
     #region Initialization (Getting Values and Dicts to work with)
     isFirstBid = len(biddingAbsolute) < 4
     partnerHasBid = len(biddingAbsolute) >= 2
@@ -150,11 +148,11 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     partnersBids = biddingRelative['top']
     #endregion
 
-
-    #get straight up point counts
+    #region get hand points
     highCardPoints = helpers.getHighCardPoints(hand, clientPointCountingConvention)
     distributionPoints = helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelative, analyzingPlayerSuitCounts)
     totalPoints = highCardPoints + distributionPoints
+    #endregion
 
     #region Check whether to double and return double if true
     canDouble = helpers.getCanDouble(biddingRelative)
@@ -178,7 +176,7 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     #handle partner opens 2 Club
     if (re.search('two club', biddingRelative['top'][0], re.IGNORECASE) and re.search('pass', biddingRelative['left'][0], re.IGNORECASE)):
         openDistributionPoints = helpers.getOpeningDistributionPoints(analyzingPlayerSuitCounts)
-        return helpers.getTwoClubResponse(hand, biddingRelative, highCardPoints + openDistributionPoints, currentContractBid, clientPointCountingConvention)
+        return helpers.getTwoClubResponse(hand, biddingRelative, seatingRelative, highCardPoints + openDistributionPoints, currentContractBid, clientPointCountingConvention)
     
     #region check if opposing team would win game and / or get a game if they made currentActualBid (assuming they made the currentActualBid)
         #TODO: 

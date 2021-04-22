@@ -190,7 +190,7 @@ def getBiddingHistory(biddingAbsolute):
 
     return biddingHistory
 
-def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualBid, clientPointCountingConvention):
+def getTwoClubResponse(hand, biddingRelative, seatingRelative, totalOpeningPoints, currentActualBid, clientPointCountingConvention):
     '''
         returns ------------------------------ the the bid to say based on the two club convention when your partner has opened two clubs
     '''
@@ -209,6 +209,8 @@ def getTwoClubResponse(hand, biddingRelative, totalOpeningPoints, currentActualB
             longestLength = len(suit)
 
     if totalOpeningPoints >= 13 and longestLength >= 7:
+        hasTakenPartnerOutOfGameBid = getHasTakenPartnerOutOfGameBid(seatingRelative['bottom'], biddingRelative, seatingRelative)
+        if hasTakenPartnerOutOfGameBid: return 'Pass'
         return getNextBidInSuit(longestSuit, currentActualBid[1])
     #endregion
     #region first response
@@ -857,7 +859,19 @@ def getPlayerHasOnlyPassed(playerBids):
 
     return True
 
-
+def getHasTakenPartnerOutOfGameBid(username, biddingRelative, seatingRelative):
+    '''
+    inputs:
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+        username = string (e.g. "Adam" or "Andrew")
+    returns:
+        true if analyzing player's partner has made a game lvl bid and the analyzing player made a bid after that wasn't 'pass' otherwise false
+    '''
+    #determine whether username has made a game lvl bid
+    for bids in biddingRelative['top']:
+    #if they have, return true iff analyzing player has not bid pass after
+        pass
+    return False
 
 #region Test Case Helpers
 def getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):
