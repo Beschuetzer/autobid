@@ -1,5 +1,6 @@
+from tests.test_helpers import getHighCardPointValuesInEachSuit
 import getEstimatedPoints, autoBid
-import re, math
+import re, math, copy
 
 highCardPointValues = {
     "hcp": {
@@ -405,31 +406,44 @@ def getStrongestSuit(hand, biddingRelative, isResponding=False):
         hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
         (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
         biddingRelative = { "top": ['pass', 'one heart', ...], ... }
-        isResponding = True or False depending on analyzing player is repsonding to a partners opening suit
     returns ------------------------------:
         'club', 'diamond', 'heart', 'spade', or 'no trump' depending on which suit is the 'strongest' (considers which suits have already been mentioned, the number of points in that suit the analyzing player has, and how long the suit it for the analyzing player
     '''
-    suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingRelative)
+    # suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingRelative)
 
     #global vars to use: 'suitCounts' and 'highCardPointValuesInEachSuit'
+    #NOTE: respond with best suit that left and right didn't open with?
+    highCardPointValuesInEachSuitLocal = copy.copy(autoBid.highCardPointValuesInEachSuit)
+    leftOpeningSuit = biddingRelative['left'][0]
+    rightOpeningSuit = biddingRelative['right'][0]
+    suitWithMostPoints = rightOpeningSuit
+    suitToReturn = None
+
+    print(f"highCardPointValuesInEachSuitLocal =    {highCardPointValuesInEachSuitLocal}")
+    print(f"leftOpeningSuit = {leftOpeningSuit}")
+    print(f"rightOpeningSuit = {rightOpeningSuit}")
 
     #region if you are getting strongest suit for opening 
-    if isResponding:       
-        
-        pass
+    if re.search('pass', biddingRelative['top'][0], re.IGNORECASE):    
+        while suitWithMostPoints != rightOpeningSuit and suitWithMostPoints != leftOpeningSuit:
+            suitWithMostPoints = max(highCardPointValuesInEachSuitLocal, key=highCardPointValuesInEachSuitLocal.get)
+            highCardPointValuesInEachSuitLocal.pop(suitWithMostPoints, None)
+            print(f"suitWithMostPoints = {suitWithMostPoints}")
+            
     #endregion
     #region getting responding strongest
     else:
+        
         pass
 
-    pass
+    return suitToReturn
 
 def getSuitsMentionedByOpponents(biddingRelative):
     '''
         input:
             biddingRelative = { "top": ['pass', 'one heart', ...], ... }
         returns ------------------------------: 
-            a dictionary obj representing whether that suit has been said by opponents or not (e.g. { "clubs": True, "diamonds": False, ... })
+            a dictionary obj representing whether that suit has been said by opponents or not (e.g. { "clubs": True, "diamonds": False, "noTrump": True, ... })
     '''
     mentioned = {
         "clubs": False,
@@ -552,8 +566,7 @@ def handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints):
 def getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention):
     '''
     inputs:
-        hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
-        clientPointCountingConvention = string representing method used to evaluate HCPs (either 'HCP' or 'Alternative)
+        hand = 2D array where the items are arrays representing suits      clientPointCountingConvention = string representing method used to evaluate HCPs (either 'HCP' or 'Alternative)
     returns: the high card point value of hand (e.g. { clubs: "8", 'diamonds': 3, "hearts": 0, spades: "4" })
     '''
     conventionToUse = 'hcp'

@@ -39,3 +39,7 @@ print('locationOrderToUse = {0}'.format(locationOrderToUse[:-1]))
 bids = [['Adam', 'One Diamond'], ['Dan', 'Two Club'], ['Ann', 'Double'], ['Andrew', 'Three Club']]
 
 print(bids[:2])
+
+a_dictionary = {"a": 1, "b": 2, "c": 0, }
+max_key = max(a_dictionary, key=a_dictionary.get)
+print(max_key)
