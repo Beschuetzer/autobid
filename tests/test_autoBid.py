@@ -448,6 +448,80 @@ class responding_without_openers_no_score(unittest.TestCase):
         self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
         self.assertEqual(self.actual, self.expected)
 
+class responding_without_responding_points_no_score(unittest.TestCase):
+    def setUp(self):
+        self.clientPointCountingConvention = 'hcp'
+        self.spot = 'north'
+        self.seating = {
+            "north": 'NorthPlayer',
+            "east": 'EastPlayer',
+            "south": 'SouthPlayer',
+            "west": "WestPlayer",
+        }
+        self.scoring = {
+            "northSouth": {
+                "aboveTheLine": 0,
+                "belowTheLine": 0,
+                "totalBelowTheLineScore": 0,
+                "isVulnerable": False,
+                "vulnerableTransitionIndex": None,
+            },
+            "eastWest": {
+                "aboveTheLine": 0, 
+                "belowTheLine": 0,
+                "totalBelowTheLineScore": 0,
+                "isVulnerable": False,
+                "vulnerableTransitionIndex": None,
+            },
+        }
+
+    def tearDown(self) -> None:
+        print("\nTear Down-----------------")
+        print(f"self.spot = {self.spot}")
+        print(f"self.seating = {self.seating}")
+        print(f"self.bids = {self.bids}")
+        print(f"self.scoring = {self.scoring}")
+        print(f"self.actual = {self.actual}")
+        print(f"self.expected = {self.expected}")
+        print(f"self.hand = {self.hand}")
+        print("---------------------------")
+
+    def test_pass_with_0_points(self):
+        self.bids = [
+            ['SouthPlayer', 'One Heart'],
+            ['WestPlayer', 'Pass'],
+        ]
+
+        self.handDictionary = {
+            "clubs": [8,7,3,1],
+            "diamonds": [7,6,5],
+            "hearts": [7,5,4],
+            "spades": [7,4,2]
+        }
+
+        self.expected = 'Pass'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+    def test_pass_with_5_points(self):
+        self.bids = [
+            ['SouthPlayer', 'One Heart'],
+            ['WestPlayer', 'Pass'],
+        ]
+
+        self.handDictionary = {
+            "clubs": [7,6,3],
+            "diamonds": [12,9,5,4],
+            "hearts": [7,5,4],
+            "spades": [7,4,2]
+        }
+
+        self.expected = 'Pass'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+
+
 class special_cases(unittest.TestCase):
     def setUp(self):
         self.clientPointCountingConvention = 'hcp'
