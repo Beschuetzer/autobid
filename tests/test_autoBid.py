@@ -343,7 +343,110 @@ class responding_with_openers_no_score(unittest.TestCase):
         self.assertEqual(self.actual, self.expected)
             
 class responding_without_openers_no_score(unittest.TestCase):
-    pass
+    def setUp(self):
+        self.clientPointCountingConvention = 'hcp'
+        self.spot = 'north'
+        self.seating = {
+            "north": 'NorthPlayer',
+            "east": 'EastPlayer',
+            "south": 'SouthPlayer',
+            "west": "WestPlayer",
+        }
+        self.scoring = {
+            "northSouth": {
+                "aboveTheLine": 0,
+                "belowTheLine": 0,
+                "totalBelowTheLineScore": 0,
+                "isVulnerable": False,
+                "vulnerableTransitionIndex": None,
+            },
+            "eastWest": {
+                "aboveTheLine": 0, 
+                "belowTheLine": 0,
+                "totalBelowTheLineScore": 0,
+                "isVulnerable": False,
+                "vulnerableTransitionIndex": None,
+            },
+        }
+
+    def tearDown(self) -> None:
+        print("\nTear Down-----------------")
+        print(f"self.spot = {self.spot}")
+        print(f"self.seating = {self.seating}")
+        print(f"self.bids = {self.bids}")
+        print(f"self.scoring = {self.scoring}")
+        print(f"self.actual = {self.actual}")
+        print(f"self.expected = {self.expected}")
+        print(f"self.hand = {self.hand}")
+        print("---------------------------")
+
+    def test_better_off_suit(self):
+        self.bids = [
+            ['SouthPlayer', 'One Heart'],
+            ['WestPlayer', 'Pass'],
+        ]
+        self.handDictionary = {
+            "clubs": [12,8,3,1],
+            "diamonds": [12,9,7,6],
+            "hearts": [7,5],
+            "spades": [7,4,2]
+        }
+
+        self.expected = 'Two Diamond'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+
+    def test_same_suit(self):
+        self.bids = [
+            ['SouthPlayer', 'One Diamond'],
+            ['WestPlayer', 'Pass'],
+        ]
+        self.handDictionary = {
+            "clubs": [12,9,8],
+            "diamonds": [12,8,7,6],
+            "hearts": [7,2,1],
+            "spades": [7,4,1]
+        }
+
+        self.expected = 'Two Diamond'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+
+    def test_nt(self):
+        self.bids = [
+            ['SouthPlayer', 'One Spade'],
+            ['WestPlayer', 'Pass'],
+        ]
+        self.handDictionary = {
+            "clubs": [10,8,7],
+            "diamonds": [10,9,8],
+            "hearts": [10,6,3,1],
+            "spades": [9,7]
+        }
+
+        self.expected = 'One No Trump'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
+
+    def test_suit_1(self):
+        self.bids = [
+            ['SouthPlayer', 'One No Trump'],
+            ['WestPlayer', 'Pass'],
+        ]
+        self.handDictionary = {
+            "clubs": [12,8],
+            "diamonds": [7,4,2],
+            "hearts": [7,5],
+            "spades": [11,7,5,2,1],
+        }
+
+        self.expected = 'Two Spade'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.assertEqual(self.actual, self.expected)
 
 class special_cases(unittest.TestCase):
     def setUp(self):
