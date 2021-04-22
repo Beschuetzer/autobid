@@ -68,18 +68,50 @@ class Special_Cases(unittest.TestCase):
             },
         }
 
+    def tearDown(self) -> None:
+        print(f"self.spot = {self.spot}")
+        print(f"self.seating = {self.seating}")
+        print(f"self.bids = {self.bids}")
+        print(f"self.scoring = {self.scoring}")
+
     def test_two_clubs_take_out_of_no_trump(self):
-        #TODO: Reference the picture but build test case from WestPlayer's perspective
-        #TODO: if partner opens two clubs and they put it in no trump but analyzing player has 7 or more of a suit then say that suit
-        #TODO: if you are the opener and the above happens to you just trust your partner and pass.
-        bids = [['NorthPlayer', 'Pass'], ['EastPlayer', 'One Diamond'], ['SouthPlayer', 'Double'], ['WestPlayer', 'Pass'], ['NorthPlayer', 'Two Diamond'], ['EastPlayer', 'Three No Trump'], ['SouthPlayer', 'Double'], ['westPlayer', 'Pass']]
-        hand = [[0, 1, 5, 7, 8], [13, 18, 19], [29, 30, 32], [40, 42]]
-        actual = autoBid.autoBid(bids, hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        self.bids = [
+            ['SouthPlayer', 'Two Club'],
+            ['WestPlayer', 'Pass'],
+            ['NorthPlayer', 'Two Spade'],
+            ['EastPlayer', 'Pass'],
+            ['SouthPlayer', 'Three Club'],
+            ['WestPlayer', 'Pass'],
+            ['NorthPlayer', 'Three Heart'],
+            ['EastPlayer', 'Pass'],
+            ['NorthPlayer', 'Three No Trump'],
+            ['EastPlayer', 'Pass']
+        ]
+        hand = [[0], [1,3,5], [38,36,35,34,33,30,27], [47, 43]]
+        actual = autoBid.autoBid(self.bids, hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
         expected = 'Four Heart'
         self.assertEqual(actual, expected)
 
     def test_two_clubs_took_out_of_game_but_partner_did_not_pass(self):
-        #TODO: this case is an extension of test_two_clubs_take_out_of_no_trump but assuming your partner bids after you take it out of no trump (just pass)
-        pass
+        self.bids = [
+            ['SouthPlayer', 'Two Club'],
+            ['WestPlayer', 'Pass'],
+            ['NorthPlayer', 'Two Spade'],
+            ['EastPlayer', 'Pass'],
+            ['SouthPlayer', 'Three Club'],
+            ['WestPlayer', 'Pass'],
+            ['NorthPlayer', 'Three Heart'],
+            ['EastPlayer', 'Pass'],
+            ['NorthPlayer', 'Three No Trump'],
+            ['EastPlayer', 'Pass'],
+            ['NorthPlayer', 'Four Heart'],
+            ['EastPlayer', 'Pass'],
+            ['NorthPlayer', 'Four Spade'],
+            ['EastPlayer', 'Pass'],
+        ]
+        hand = [[0], [1,3,5], [38,36,35,34,33,30,27], [47, 43]]
+        actual = autoBid.autoBid(self.bids, hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
+        expected = 'Pass'
+        self.assertEqual(actual, expected)
 
 
