@@ -46,21 +46,21 @@ def getIsTeamsFirstBidOpportunity(biddingRelative, location):
     '''
     partnersLocation = ''
     
-    if location == locations['top']:
-        partnersLocation = locations['bottom'] 
-    elif location == locations['bottom']:
-        partnersLocation = locations['top']
-    elif location == locations['right']:
-        partnersLocation = locations['left']
-    elif location == locations['left']:
-        partnersLocation = locations['right']
+    if location == getEstimatedPoints.locations['top']:
+        partnersLocation = getEstimatedPoints.locations['bottom'] 
+    elif location == getEstimatedPoints.locations['bottom']:
+        partnersLocation = getEstimatedPoints.locations['top']
+    elif location == getEstimatedPoints.locations['right']:
+        partnersLocation = getEstimatedPoints.locations['left']
+    elif location == getEstimatedPoints.locations['left']:
+        partnersLocation = getEstimatedPoints.locations['right']
     else:
         raise ValueError('location must be top bottom left of right')
 
     partnersBids = biddingRelative[partnersLocation]
 
     #this is for the test case 'test_left'
-    if location == locations['left'] and len(partnersBids) == 1:
+    if location == getEstimatedPoints.locations['left'] and len(partnersBids) == 1:
         return True
 
     return len(biddingRelative[partnersLocation]) == 0
