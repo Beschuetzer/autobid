@@ -417,26 +417,39 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         #endregion
         #region updating bounds using estimatedScoringBounds
         else:
-            #TODO: CHECK IF PLAYER HAS OPENED AND KEPT OVER CALLING WITHOUT PARTNER SUPPORT (adjust min and potentially max in that case?)
             #region when the opportunities to bid is two long
             if len(playersBids) == 2: 
                 #region when the first bid is pass and 2nd bid is not pass or double
-                if firstBidIsPass:
-                    if not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
-                        print('first bid pass second not')
-                        estimatedScoring[location]['min'] = 11
-                        estimatedScoring[location]['max'] = 13
-                        continue
+                if hasPartnerOpened: 
+                    if firstBidIsPass:
+                        if not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
+                            print('first bid pass, partner open, second not')
+                            estimatedScoring[location]['min'] = values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min']
+                            estimatedScoring[location]['max'] = values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['max']
+                            continue
+                        else:
+                            #update min/max if two passes in a row?
+                            pass
+
                     else:
-                        #update min/max if two passes in a row?
                         pass
-
                 else:
-                    #when opportunities to bid is two and first bid is not pass?
+                    if firstBidIsPass:
+                        if not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
+                            print('first bid pass, partner pass, second not')
+                            estimatedScoring[location]['min'] = values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min']
+                            estimatedScoring[location]['max'] = values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['max']
+                            continue
+                        else:
+                            #update min/max if two passes in a row?
+                            pass
 
+                    else:
+                    #when opportunities to bid is two and first bid is not pass?
+                   
                     #when do we need to consider partners bids?
                     #pass
-                    pass
+                        pass
                 #endregion
 
 

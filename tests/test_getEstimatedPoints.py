@@ -1893,7 +1893,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         
         self.assertDictEqual(self.actual, self.expected)
     
-    def test_update_pass_first_nt_second_responding(self):
+    def test_update_pass_first_NT_second_responding(self):
         biddingRelative = {
             "left": ['pass', 'Two No Trump'],
             "top": ['One Club', 'pass'],
@@ -1923,7 +1923,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['max']
             },
             "top": {
                 "min": self.estimatedScoringBounds['top']['min'],
@@ -1997,7 +1997,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         
         self.assertDictEqual(self.actual, self.expected)
 
-    def test_update_pass_first_nt_second(self):
+    def test_update_pass_first_NT_second(self):
         biddingRelative = {
             "left": ['One Heart', 'pass'],
             "top": ['pass', 'Two No Trump'],
