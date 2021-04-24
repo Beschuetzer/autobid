@@ -199,14 +199,14 @@ def getHasPartnerOpened(biddingAbsolute, username):
     returns ------------------------------ 
         true if username's partner has mentioned a bid that is a suit, no trump, or a double and false otherwise
     '''
-    indexOfUsersFirstBid = getIndexOfNthBid(username, biddingAbsolute, -1)
+    indexOfUsersLastBid = getIndexOfNthBid(username, biddingAbsolute, -1)
 
-    if indexOfUsersFirstBid is None:
+    if indexOfUsersLastBid is None:
         return None
 
-    biddingUpToUsersFirstBid = biddingAbsolute[:indexOfUsersFirstBid]
+    biddingUpToUsersFirstBid = biddingAbsolute[:indexOfUsersLastBid]
 
-    print(f"indexOfUsersFirstBid = {indexOfUsersFirstBid}")
+    print(f"indexOfUsersFirstBid = {indexOfUsersLastBid}")
     print(f"biddingUpToUsersFirstBid = {biddingUpToUsersFirstBid}")
     if len(biddingUpToUsersFirstBid) <= 1:
         return False
