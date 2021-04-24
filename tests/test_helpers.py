@@ -2924,10 +2924,10 @@ class getBiddingAbsoluteFromBiddingObjAndSeatingRelative(unittest.TestCase):
 class getHandFromHandDictionary(unittest.TestCase):
     def test_1(self):
         hand = {
-            "clubs": [12,11,10],
-            "diamonds": [12,11,10],
-            "hearts": [12,11,10],
-            "spades": [12,11,10],
+            "clubs": "AKQ",
+            "diamonds": "AKQ",
+            "hearts": "AKQ",
+            "spades": "AKQ",
         }
         expected = [
             [12,11,10],
@@ -2939,10 +2939,10 @@ class getHandFromHandDictionary(unittest.TestCase):
         self.assertListEqual(actual, expected)
     def test_all(self):
         hand = {
-            "clubs": [12,11,10,9,8,7,6,5,4,3,2,1,0],
-            "diamonds": [12,11,10,9,8,7,6,5,4,3,2,1,0],
-            "hearts": [12,11,10,9,8,7,6,5,4,3,2,1,0],
-            "spades": [12,11,10,9,8,7,6,5,4,3,2,1,0],
+            "clubs": "AKQJT98765432",
+            "diamonds": "AKQJT98765432",
+            "hearts": "AKQJT98765432",
+            "spades": "AKQJT98765432",
         }
         expected = [
             [12,11,10,9,8,7,6,5,4,3,2,1,0],
@@ -2954,10 +2954,10 @@ class getHandFromHandDictionary(unittest.TestCase):
         self.assertListEqual(actual, expected)
     def test_none(self):
         hand = {
-            "clubs": [],
-            "diamonds":[],
-            "hearts":[],
-            "spades":[],
+            "clubs": "",
+            "diamonds":"",
+            "hearts":"",
+            "spades":"",
         }
         expected = [
             [],

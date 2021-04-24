@@ -92,10 +92,10 @@ class opening_no_score(unittest.TestCase):
             ['WestPlayer', 'Pass'],
         ]
         self.handDictionary = {
-            "clubs": [12,11,8],
-            "diamonds": [12,11,7],
-            "hearts": [7,5,3,2],
-            "spades": [7,4,2]
+            "clubs": "AKT",
+            "diamonds": "AK9",
+            "hearts": "9754",
+            "spades": "964",
         }
 
         self.expected = 'One Club'
@@ -109,10 +109,10 @@ class opening_no_score(unittest.TestCase):
             ['WestPlayer', 'Pass'],
         ]
         self.handDictionary = {
-            "clubs": [12,11,10,9,8],
-            "diamonds": [12,11,10,9,8],
-            "hearts": [7],
-            "spades": [7,4]
+            "clubs": "AKQJT",
+            "diamonds": "AKQJT",
+            "hearts": "9",
+            "spades": "96",
         }
 
         self.expected = 'Two Club'
@@ -126,10 +126,10 @@ class opening_no_score(unittest.TestCase):
             ['WestPlayer', 'Pass'],
         ]
         self.handDictionary = {
-            "clubs": [12,11,9],
-            "diamonds": [12,11,8],
-            "hearts": [7,6,3,1],
-            "spades": [10,7,4,]
+            "clubs": "AKJ",
+            "diamonds": "AKQ",
+            "hearts": "9853",
+            "spades": "Q96"
         }
 
         self.expected = 'One No Trump'
@@ -137,6 +137,7 @@ class opening_no_score(unittest.TestCase):
         self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
         self.assertEqual(self.actual, self.expected)
 
+    #TODO: all tests below here need to have handDictionary written as a string
     def test_double(self):
         self.bids = [
             ['SouthPlayer', 'pass'],

@@ -986,7 +986,7 @@ def getDealerLocation(biddingRelative):
 def getHandFromHandDictionary(handsDictionary):
     '''
     inputs:
-        handsDictionary = {"clubs": [12,11,10], ... , "spades": [12,11,10, ...]}
+        handsDictionary = {"clubs": ["AQJ..."], ... , "spades": ["AQJ...", ...]}
     returns:
         hand = [ [12,11,10], [...], [...], [51,50,49,...] ]
     '''
@@ -996,11 +996,28 @@ def getHandFromHandDictionary(handsDictionary):
         "hearts": 26,
         "spades": 39,
     }
+    charValues = {
+        "A": 12,
+        "K": 11,
+        "Q": 10,
+        "J": 9,
+        "T": 8,
+        "9": 7,
+        "8": 6,
+        "7": 5,
+        "6": 4,
+        "5": 3,
+        "4": 2,
+        "3": 1,
+        "2": 0,
+    }
     hand = []
-    for suitName, suitArray in handsDictionary.items():
+    for suitName, suitString in handsDictionary.items():
+        
         newSuitArray = []
-        for cardAsNumber in suitArray:
-            newSuitArray.append(cardAsNumber + starts[suitName])
+        for character in suitString:
+            print(f"character = {character}")
+            newSuitArray.append(charValues[character] + starts[suitName])
         hand.append(newSuitArray)
 
     return hand
