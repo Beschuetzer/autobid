@@ -193,7 +193,11 @@ def getIsJumpshift(currentContractBid, usersBid):
 
 def getHasPartnerOpened(biddingAbsolute, username):
     '''
-    returns ------------------------------ true if username's partner has mentioned a bid that is a suit, no trump, or a double and false otherwise
+    inputs:
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        username = string of the user whose partner is to be checked
+    returns ------------------------------ 
+        true if username's partner has mentioned a bid that is a suit, no trump, or a double and false otherwise
     '''
     indexOfUsersFirstBid = getIndexOfNthBid(username, biddingAbsolute, 1)
 

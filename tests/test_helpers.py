@@ -248,10 +248,10 @@ class tallyUpTotal(unittest.TestCase):
 class getDistributionPoints(unittest.TestCase):
     def setUp(self):
         self.seatingRelative = {
-            "top": "Adam",
-            "bottom": "Tim",
-            "left": "Andrew",
-            "right": "Ann",
+            "top": "topPlayer",
+            "bottom": "bottomPlayer",
+            "left": "leftPlayer",
+            "right": "rightPlayer",
         }
     def test_Opening_AllOneSuit(self):
         clubs = [i for i in range(0, 13)]
@@ -260,12 +260,6 @@ class getDistributionPoints(unittest.TestCase):
         spades = []
         hand = [clubs, diamonds, hearts, spades]
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -292,12 +286,6 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -324,12 +312,6 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -356,12 +338,6 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -388,12 +364,6 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -421,12 +391,6 @@ class getDistributionPoints(unittest.TestCase):
         hand = [clubs, diamonds, hearts, spades]
 
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -441,6 +405,14 @@ class getDistributionPoints(unittest.TestCase):
         }
         self.assertEqual(helpers.getDistributionPoints(hand, biddingAbsolute, biddingRelative, self.seatingRelative, suitCounts), 1)
 
+
+    def getBiddingAbsoluteFromBiddingRelative(biddingRelative, seatingRelative):
+        biddingAbsolute = []
+        for location, bids in biddingRelative.items():
+
+            biddingAbsolute.append()
+        return biddingAbsolute
+
     def test_Responding_AllOneSuit(self):
         clubs = [i for i in range(0, 13)]
         diamonds = []
@@ -448,17 +420,11 @@ class getDistributionPoints(unittest.TestCase):
         spades = []
         hand = [clubs, diamonds, hearts, spades]
         biddingAbsolute = [["Adam", 'One Club'],['Tim', 'Pass']]
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
+            "left": ['Pass'],
             "top": ['One Club'],
-            "bottom": [],
-            "left": [],
             "right": ['Pass'],
+            "bottom": ['Pass'],
         }
         suitCounts = {
             "clubs": 13,
@@ -480,12 +446,6 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -512,12 +472,6 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -544,12 +498,6 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -576,12 +524,6 @@ class getDistributionPoints(unittest.TestCase):
         spades = [i for i in range(39, 39 + spadeLength)]
         hand = [clubs, diamonds, hearts, spades]
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -609,12 +551,6 @@ class getDistributionPoints(unittest.TestCase):
         hand = [clubs, diamonds, hearts, spades]
 
         biddingAbsolute = []
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": [],
             "bottom": [],
@@ -977,12 +913,6 @@ class partnerTwoClubResponse(unittest.TestCase):
         }
     
     def test_intervention(self):
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         biddingRelative = {
             "top": ['Two Club'],
             "left": ['One Diamond'],
