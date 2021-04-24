@@ -1963,6 +1963,19 @@ class getHasPartnerOpened(unittest.TestCase):
         expected = helpers.getHasPartnerOpened(bids, 'Ann')
         actual = True
         self.assertEqual(expected, actual) 
+    def test_2nd_bid_open(self):
+        bids = [['Adam', 'pass'], ['Tim', 'One Club'], ['Ann', 'Pass'], ['Andrew', 'Two Diamond'], ['Adam', 'Two No Trump'],  ['Tim', 'pass'], ['Ann', 'Three heart']]
+
+        biddingRelative = {
+            "Adam": ['pass', 'Two No Trump'],
+            "Tim": ['One Club', 'pass'],
+            "Ann": ['Pass', 'Three Heart'],
+            "Andrew": ['Two Diamond'],
+        }
+
+        expected = helpers.getHasPartnerOpened(bids, 'Ann')
+        actual = True
+        self.assertEqual(expected, actual) 
 class getIndexOfNthBid(unittest.TestCase):
     def test_invalid(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
