@@ -1,0 +1,14 @@
+Things to consider when adding score considerations into the getEstimatedPoints function:
+  1.  North-south has 90 partial, north opens One Heart, if east and south pass, we can't say anything about souths points score
+
+
+  2.  Estimated Point Counts with Game Bid off a partial
+    biddingRelative = {
+        "left": ['pass', 'Two Heart'],
+        "top": ['One Spade', 'pass'],
+        "right": ['pass', 'pass'],  <---------------------- if 'lefts' bid is a game bid, right's 2nd pass  
+        "bottom": ['pass'],                           shouldn't bring the max down to 6 like it   
+                                                            normally would
+    }
+
+    in general:  if a player's partner makes game bid, any pass by that player doesn't change the min/max.

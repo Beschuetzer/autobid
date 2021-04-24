@@ -333,12 +333,10 @@ class responding_with_openers_no_score(unittest.TestCase):
             "spades": ["A8532"]
         }
 
-
         self.expected = 'Four Spade'
         self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
         self.actual = autoBid.autoBid(self.bids, self.hand, self.scoring, self.seating, self.spot, self.clientPointCountingConvention)
         self.assertEqual(self.actual, self.expected)
-     
         
 class responding_without_openers_no_score(unittest.TestCase):
     def setUp(self):
