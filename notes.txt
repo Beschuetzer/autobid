@@ -12,3 +12,22 @@ Things to consider when adding score considerations into the getEstimatedPoints 
     }
 
     in general:  if a player's partner makes game bid, any pass by that player doesn't change the min/max.
+
+
+Overall functions test cases:
+  -No biddable suit and team bids your closest to biddable suit:
+   biddingRelative = {
+        "left": ['pass'],
+        "top": ['pass'],
+        "right": ['One Heart'],  
+        "bottom": [],         
+    }
+    expected = "double"
+    handDictionary = {
+      "clubs": "54",
+      "diamonds": "974",
+      "hearts": "AQJT9",
+      "spades": "AQ9",
+    }
+
+  
