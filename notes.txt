@@ -13,6 +13,14 @@ Things to consider when adding score considerations into the getEstimatedPoints 
 
     in general:  if a player's partner makes game bid, any pass by that player doesn't change the min/max.
 
+  3. Is three diamond overcall indicitave of higher min points or just to prevent the other team from going out?
+    biddingRelative = {
+        "left": ['Pass', 'Two No Trump'],
+        "top": ['Two Diamond', 'Three Diamond'],
+        "right": ['Two Heart', 'pass'],
+        "bottom": ['pass'],
+    }
+
 
 Overall functions test cases:
   -No biddable suit and team bids your closest to biddable suit:
