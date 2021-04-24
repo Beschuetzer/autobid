@@ -907,7 +907,7 @@ def getHasTakenPartnerOutOfGameBid(username, biddingRelative, seatingRelative):
     return False
 
 #region Test Case Helpers
-def getBidArrayFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):
+def getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):
     '''
     note: this is written to facilitate test case writing for getEstimatedPoints
     inputs:------------------------------
