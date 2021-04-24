@@ -292,7 +292,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
             lastBid = biddingRelative[location][-1]
 
         firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
-        isTeamsFirstBidOpportunity = getIsTeamsFirstBidOpportunity(biddingRelative, location)
+        isTeamsFirstBidOpportunity = helpers.getIsTeamsFirstBidOpportunity(biddingRelative, location)
         isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(biddingRelative)
 
         isFirstBidJumpshift = False
@@ -571,36 +571,6 @@ def setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, h
             maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
 
     return [minToUse, maxToUse]
-
-def getIsTeamsFirstBidOpportunity(biddingRelative, location):
-    '''
-    inputs:
-        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
-        location = a string representing relative location to analyzing player (e.g. 'top', 'left', etc... )
-    returns: 
-        True if the biddingRelative[location]'s partner has not had an opportunity to bid, otherwise False
-    '''
-    partnersLocation = ''
-    
-    if location == locations['top']:
-        partnersLocation = locations['bottom'] 
-    elif location == locations['bottom']:
-        partnersLocation = locations['top']
-    elif location == locations['right']:
-        partnersLocation = locations['left']
-    elif location == locations['left']:
-        partnersLocation = locations['right']
-    else:
-        raise ValueError('location must be top bottom left of right')
-
-    partnersBids = biddingRelative[partnersLocation]
-
-    #this is for the test case 'test_left'
-    if location == locations['left'] and len(partnersBids) == 1:
-        return True
-
-    return len(biddingRelative[partnersLocation]) == 0
-
 
 
 
