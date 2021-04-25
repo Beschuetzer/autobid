@@ -1051,7 +1051,8 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max'],
+                "max": self.estimatedScoringBounds['left']['max']
+
             },
             "top": {
                 "min": self.estimatedScoringBounds['top']['min'],
