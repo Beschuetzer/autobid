@@ -193,7 +193,7 @@ def getIsJumpshift(currentContractBid, usersBid):
 
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
-def getWasForcedToBid(biddingAbsolute, username):
+def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
     '''
     inputs:
         biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
@@ -202,6 +202,32 @@ def getWasForcedToBid(biddingAbsolute, username):
         true if username's partner bid double as their first bid and the bid after that was pass otherwise false
     '''
 
+    #first get the user
+    
+    partnersUsername = getPartnerOfUsername(username, seatingRelative) 
+    indexOfPartnersFirstBid = getIndexOfNthBid(partnersUsername, biddingAbsolute, 1)
+    partnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid]
+    bidAfterPartnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid + 1]
+    if re.search('double', partnersFirstBid, re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid, re.IGNORECASE): return True
+    return False
+
+def getPartnerOfUsername(username, seatingRelative):
+    '''
+    inputs:
+        username = string of a player
+        seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
+    returns:
+        the name of username's partner as a string
+    '''
+    locations = ['top', 'right', 'bottom', 'left']
+    locationToUse = None
+    for location, usernameInSeating in seatingRelative.items():
+        print(f"location = {location}")
+        print(f"usernameInSeating = {usernameInSeating}")
+        if usernameInSeating == username: locationToUse = location
+
+    print(f"locationToUse = {locationToUse}")
+    return locations[(locations.index(locationToUse) + 2) % 4]
     
 
 def getHasPartnerOpened(biddingAbsolute, username):
