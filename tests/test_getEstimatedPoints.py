@@ -2163,7 +2163,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['special']['openTwoClubs']['max'],
             },
             "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
             },
             "right": {
