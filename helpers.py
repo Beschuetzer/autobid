@@ -117,7 +117,7 @@ def getPartnersLocation(username, seatingRelative):
 
     locations = ['left','top','right','bottom']
     indexOfUsersLocation = locations.index(locationToUse)
-    print('indexOfUsersLocation = {0}'.format(indexOfUsersLocation))
+    # print('indexOfUsersLocation = {0}'.format(indexOfUsersLocation))
     return locations[(indexOfUsersLocation + 2) % 4]
 
 def getIndexOfNthBid(username, biddingAbsolute, nthBid):
@@ -165,10 +165,10 @@ def getHasPlayerJumpshifted(username, playersBids, biddingAbsolute):
         contractBidAtThisPoint = getCurrentContractBid(biddingUpToThisPoint)
         isAnyBidJumpShift = getIsJumpshift(contractBidAtThisPoint[1], bid)
 
-        print('bids = {0}'.format(playersBids))
-        print('indexOfUsersBid = {0}'.format(indexOfUsersBid))
-        print('biddingUpToThisPoint = {0}'.format(biddingUpToThisPoint))
-        print('contractBidAtThisPoint = {0}'.format(contractBidAtThisPoint))
+        # print('bids = {0}'.format(playersBids))
+        # print('indexOfUsersBid = {0}'.format(indexOfUsersBid))
+        # print('biddingUpToThisPoint = {0}'.format(biddingUpToThisPoint))
+        # print('contractBidAtThisPoint = {0}'.format(contractBidAtThisPoint))
 
         i += 1
         if isAnyBidJumpShift is True:
@@ -181,8 +181,8 @@ def getIsJumpshift(currentContractBid, usersBid):
         currentContractBid and usersBid are strings representing a bid ('One No Trump')
     returns ------------------------------ True if the usersBid's index is greater than the currentcontractBid's index by 5 or more (aka a 'jumpshift' of currentContractBid)
     '''
-    print(f"currentContractBid = {currentContractBid}")
-    print(f"usersBid = {usersBid}")
+    # print(f"currentContractBid = {currentContractBid}")
+    # print(f"usersBid = {usersBid}")
     if not currentContractBid or currentContractBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE) or re.search('pass', currentContractBid, re.IGNORECASE) or re.search('double', currentContractBid, re.IGNORECASE):
         return False
     
@@ -209,13 +209,13 @@ def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
         partnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid]
         bidAfterPartnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid + 1]
 
-        print(f"username = {username}")
-        print(f"seatingRelative = {seatingRelative}")
-        print(f"partnersUsername = {partnersUsername}")
-        print(f"indexOfPartnersFirstBid = {indexOfPartnersFirstBid}")
-        print(f"biddingAbsolute = {biddingAbsolute}")
-        print(f"partnersFirstBid = {partnersFirstBid}")
-        print(f"bidAfterPartnersFirstBid = {bidAfterPartnersFirstBid}")
+        # print(f"username = {username}")
+        # print(f"seatingRelative = {seatingRelative}")
+        # print(f"partnersUsername = {partnersUsername}")
+        # print(f"indexOfPartnersFirstBid = {indexOfPartnersFirstBid}")
+        # print(f"biddingAbsolute = {biddingAbsolute}")
+        # print(f"partnersFirstBid = {partnersFirstBid}")
+        # print(f"bidAfterPartnersFirstBid = {bidAfterPartnersFirstBid}")
 
         if re.search('double', partnersFirstBid[1], re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid[1], re.IGNORECASE): return True
         return False
@@ -289,7 +289,7 @@ def getHasPartnerOpened(biddingAbsolute, seatingRelative, username):
                         break
                 i+=1
 
-            print(f"indexOfUsersFirstNonPassBid = {indexOfUsersFirstNonPassBid}")
+            # print(f"indexOfUsersFirstNonPassBid = {indexOfUsersFirstNonPassBid}")
 
             partnersNthBid = 0
             if indexOfUsersFirstNonPassBid == -1:
@@ -365,7 +365,7 @@ def getTwoClubResponse(hand, biddingRelative, seatingRelative, totalOpeningPoint
     bestSuitIsNoTrump = None 
     if len(biddingRelative['top']) > 2:
         bestSuitIsNoTrump = re.search('trump', biddingRelative['top'][1], re.IGNORECASE)
-    print('bestSuitIsNoTrump = {0}'.format(bestSuitIsNoTrump))
+    # print('bestSuitIsNoTrump = {0}'.format(bestSuitIsNoTrump))
 
     if re.search('two club', biddingRelative['top'][-1], re.IGNORECASE):
         if totalOpeningPoints == 0:
@@ -409,7 +409,6 @@ def getTwoClubResponse(hand, biddingRelative, seatingRelative, totalOpeningPoint
                 if cardAsNumber % 13 == 11:
                     kingCount += 1
 
-        print('kingCount = {0}'.format(kingCount))
         isAllOrNone = kingCount == 0 or kingCount == 4
         indexAddition = 0
         if isAllOrNone:
@@ -576,11 +575,11 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
         while suitWithMostPoints != rightOpeningSuit and suitWithMostPoints != leftOpeningSuit:
             suitWithMostPoints = max(highCardPointValuesInEachSuitLocal, key=highCardPointValuesInEachSuitLocal.get)
             highCardPointValuesInEachSuitLocal.pop(suitWithMostPoints, None)
-            print(f"suitWithMostPoints = {suitWithMostPoints}")
+            # print(f"suitWithMostPoints = {suitWithMostPoints}")
 
-        print(f"highCardPointValuesInEachSuitLocal =    {highCardPointValuesInEachSuitLocal}")
-        print(f"leftOpeningSuit = {leftOpeningSuit}")
-        print(f"rightOpeningSuit = {rightOpeningSuit}")
+        # print(f"highCardPointValuesInEachSuitLocal =    {highCardPointValuesInEachSuitLocal}")
+        # print(f"leftOpeningSuit = {leftOpeningSuit}")
+        # print(f"rightOpeningSuit = {rightOpeningSuit}")
             
     #endregion
     #region getting responding strongest
@@ -836,7 +835,6 @@ def getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelativ
     hasPartnerOpened = getHasPartnerOpened(biddingAbsolute, seatingRelative, seatingRelative['bottom'])
     
     getShouldCalculateRespondingPoints(biddingAbsolute)
-    print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
 
     if hasPartnerOpened:
         partnersMentionedSuits = getPartnersMentionedSuits(biddingRelative['top'])
@@ -951,7 +949,6 @@ def getWasFirstOpeningBidANthLevelBid(biddingAbsolute, bidLevel):
         ])
 
         for bid in biddingAbsolute:
-            print(f"bid[1] = {bid[1]}")
             if not re.search('pass', bid[1], re.IGNORECASE) and  not re.search('double', bid[1], re.IGNORECASE): 
                 if re.search(bidLevels[bidLevel], bid[1], re.IGNORECASE): return bid[0]
                 return False
@@ -992,7 +989,6 @@ def getIsUsernamesFirstContractBidTheFirstContractBid(username, biddingAbsolute)
 
     for bid in biddingAbsolute:
         isContractBid = getIsBidAContractBid(bid[1])
-        print(f"isContractBid = {isContractBid}")
         if isContractBid:
             if bid[0] == username:
                 return True
@@ -1174,7 +1170,7 @@ def getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, seatingR
         return bids
 
     except:
-        print('error-----------')
+        # print('error-----------')
         return []
 
 def getDealerLocation(biddingRelative):
@@ -1233,7 +1229,7 @@ def getHandFromHandDictionary(handsDictionary):
         
         newSuitArray = []
         for character in suitString:
-            print(f"character = {character}")
+            # print(f"character = {character}")
             newSuitArray.append(charValues[character] + starts[suitName])
         hand.append(newSuitArray)
 
