@@ -77,11 +77,13 @@ def getSeatingRelative(seating, spot):
         "bottom": seating[directions[(directions.index(spot) + 0) % 4]],
     }
    
-def getIsPartnersFirstBidPass(biddingRelative):
+def getIsPartnersFirstBidPass(biddingRelative, seatingRelative, username):
     '''
         returns ------------------------------ whether the players partner passed for their first bid opportunity
     '''
-    partnersBidding = biddingRelative["top"] 
+    partnersLocation = getPartnersLocation(username, seatingRelative)
+
+    partnersBidding = biddingRelative[partnersLocation] 
     if len(partnersBidding) > 0:
         return partnersBidding[0] == 'pass'
     else:

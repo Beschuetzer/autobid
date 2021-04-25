@@ -2894,7 +2894,60 @@ class getHighCardPointValuesInEachSuit(unittest.TestCase):
             "spades": 10,
          }
         self.assertEqual(actual, expected)
+class getIsPartnersFirstBidPass(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
 
+    def test_false_1(self):
+        self.username = 'LeftPlayer'
+        self.biddingRelative = {
+            "left": ['pass', 'One Heart'],
+            "top": ['One Club', 'pass'],
+            "right": ['Double', 'Two Club'],
+            "bottom": ['pass'],
+        }
+        self.actual = helpers.getIsPartnersFirstBidPass(self.biddingRelative, self.seatingRelative, self.username)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+    def test_false_2(self):
+        self.username = 'LeftPlayer'
+        self.biddingRelative = {
+            "left": ['pass', 'One Heart'],
+            "top": ['One Club', 'pass'],
+            "right": ['One Club', 'Two Club'],
+            "bottom": ['pass'],
+        }
+        self.actual = helpers.getIsPartnersFirstBidPass(self.biddingRelative, self.seatingRelative, self.username)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+    def test_true_1(self):
+        self.username = 'RightPlayer'
+        self.biddingRelative = {
+            "left": ['pass', 'One Heart'],
+            "top": ['One Club', 'pass'],
+            "right": ['One Club', 'Two Club'],
+            "bottom": ['pass'],
+        }
+        self.actual = helpers.getIsPartnersFirstBidPass(self.biddingRelative, self.seatingRelative, self.username)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    def test_true_2(self):
+        self.username = 'TopPlayer'
+        self.biddingRelative = {
+            "left": ['pass', 'One Heart'],
+            "top": ['One Club', 'pass'],
+            "right": ['One Club', 'Two Club'],
+            "bottom": ['pass'],
+        }
+        self.actual = helpers.getIsPartnersFirstBidPass(self.biddingRelative, self.seatingRelative, self.username)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    
 class getNextBidInSuit(unittest.TestCase):
     def test_error(self):
         with self.assertRaises(Exception) as context:

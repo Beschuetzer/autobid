@@ -301,7 +301,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
 
         firstBidIsPass = re.search('pass', firstBid, re.IGNORECASE)
         isTeamsFirstBidOpportunity = helpers.getIsTeamsFirstBidOpportunity(biddingRelative, location)
-        isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(biddingRelative)
+        isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(biddingRelative, seatingRelative, username)
 
         isFirstBidJumpshift = False
         isLastBidJumpshift = False
@@ -459,8 +459,13 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                             continue
                         else:
                             print('else clause')
-                            estimatedScoring[location]['min'] = values['partnerBidsFirst']['playerPasses']['min']
-                            estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerPasses']['max']
+                            print(f"isPartnersFirstBidPass = {isPartnersFirstBidPass}")
+                            if isPartnersFirstBidPass:
+                                estimatedScoring[location]['min'] = values['partnerPassesFirst']['playerPasses']['min']
+                                estimatedScoring[location]['max'] = values['partnerPassesFirst']['playerPasses']['max']
+                            else:
+                                estimatedScoring[location]['min'] = values['partnerBidsFirst']['playerPasses']['min']
+                                estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerPasses']['max']
                             continue
 
                     else:
@@ -475,8 +480,12 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                         print('first bid is pass')
                         if not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
                             print('second bid is not pass')
-                            estimatedScoring[location]['min'] = values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min']
-                            estimatedScoring[location]['max'] = values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['max']
+                            if isSecondBidJumpshift:
+                                estimatedScoring[location]['min'] = values['passFirstBidSecond']['isJumpshift']['partnerHasNotOpened']['min']
+                                estimatedScoring[location]['max'] = values['passFirstBidSecond']['isJumpshift']['partnerHasNotOpened']['max']
+                            else:
+                                estimatedScoring[location]['min'] = values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min']
+                                estimatedScoring[location]['max'] = values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['max']
                             continue
                         else:
                             print('second bid is pass')
