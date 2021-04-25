@@ -2770,6 +2770,44 @@ class getNextBidInSuit(unittest.TestCase):
         actual = helpers.getNextBidInSuit('Clubs', 'Three No Trump')
         expected = 'Four Club'
         self.assertEqual(actual, expected)
+class getUsernamesPartner(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+    def test_none(self):
+        username = ""
+        actual = helpers.getUsernamesPartner(username, self.seatingRelative)
+        expected = "Error in getUsernamesPartner"
+        self.assertEqual(actual, expected)
+    def test_typo(self):
+        username = "dfdfd"
+        actual = helpers.getUsernamesPartner(username, self.seatingRelative)
+        expected = "Error in getUsernamesPartner"
+        self.assertEqual(actual, expected)
+    def test_top(self):
+        username = "TopPlayer"
+        actual = helpers.getUsernamesPartner(username, self.seatingRelative)
+        expected = "BottomPlayer"
+        self.assertEqual(actual, expected)
+    def test_bottom(self):
+        username = "BottomPlayer"
+        actual = helpers.getUsernamesPartner(username, self.seatingRelative)
+        expected = "TopPlayer"
+        self.assertEqual(actual, expected)
+    def test_left(self):
+        username = "LeftPlayer"
+        actual = helpers.getUsernamesPartner(username, self.seatingRelative)
+        expected = "RightPlayer"
+        self.assertEqual(actual, expected)
+    def test_right(self):
+        username = "RightPlayer"
+        actual = helpers.getUsernamesPartner(username, self.seatingRelative)
+        expected = "LeftPlayer"
+        self.assertEqual(actual, expected)
 
 #region Testing Test Case Helpers
 class getDealerLocation(unittest.TestCase):

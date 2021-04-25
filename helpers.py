@@ -204,14 +204,14 @@ def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
 
     #first get the user
     
-    partnersUsername = getPartnerOfUsername(username, seatingRelative) 
+    partnersUsername = getUsernamesPartner(username, seatingRelative) 
     indexOfPartnersFirstBid = getIndexOfNthBid(partnersUsername, biddingAbsolute, 1)
     partnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid]
     bidAfterPartnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid + 1]
     if re.search('double', partnersFirstBid, re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid, re.IGNORECASE): return True
     return False
 
-def getPartnerOfUsername(username, seatingRelative):
+def getUsernamesPartner(username, seatingRelative):
     '''
     inputs:
         username = string of a player
@@ -219,15 +219,18 @@ def getPartnerOfUsername(username, seatingRelative):
     returns:
         the name of username's partner as a string
     '''
-    locations = ['top', 'right', 'bottom', 'left']
-    locationToUse = None
-    for location, usernameInSeating in seatingRelative.items():
-        print(f"location = {location}")
-        print(f"usernameInSeating = {usernameInSeating}")
-        if usernameInSeating == username: locationToUse = location
+    try:
+        locations = ['top', 'right', 'bottom', 'left']
+        locationToUse = None
+        for location, usernameInSeating in seatingRelative.items():
+            if usernameInSeating == username: 
+                locationToUse = location
+                break
 
-    print(f"locationToUse = {locationToUse}")
-    return locations[(locations.index(locationToUse) + 2) % 4]
+        indexToUse = (locations.index(locationToUse) + 2) % 4
+        return seatingRelative[locations[indexToUse]]
+    except:
+        return "Error in getUsernamesPartner"
     
 
 def getHasPartnerOpened(biddingAbsolute, username):
