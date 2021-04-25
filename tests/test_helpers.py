@@ -2112,6 +2112,28 @@ class getHasPartnerOpened(unittest.TestCase):
         self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'LeftPlayer')
         self.expected = False
         self.assertEqual(self.expected, self.actual)
+    def test_not_opened_3_opportunities_1(self):
+        self.biddingRelative = {
+            "left": ['pass', 'One Heart', 'pass'],
+            "top": ['One Club', 'pass', 'pass'],
+            "right": ['pass', 'double', 'Two Heart'],
+            "bottom": ['One Diamond','pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'LeftPlayer')
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+    def test_not_opened_3_opportunities_2(self):
+        self.biddingRelative = {
+            "left": ['pass', 'pass', 'One Heart'],
+            "top": ['One Club', 'pass', 'pass'],
+            "right": ['pass', 'double', 'Two Heart'],
+            "bottom": ['One Diamond','pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'RightPlayer')
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
 
 class getIndexOfNthBid(unittest.TestCase):
     def test_invalid(self):
