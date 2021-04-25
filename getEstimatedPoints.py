@@ -291,7 +291,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         print('currentContractBidForUser = {0}'.format(currentContractBidForUser))
 
         indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, biddingAbsolute, 1)
-        hasPartnerOpened = helpers.getHasPartnerOpened(biddingRelative, biddingAbsolute, seatingRelative, username)
+        hasPartnerOpened = helpers.getHasPartnerOpened(biddingAbsolute, seatingRelative, username)
         firstBid = biddingRelative[location][0]
         secondBid = ''
         lastBid = ''
@@ -338,6 +338,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
             print('partner = {0}'.format(partner))
 
             if partner == personWhoOpenedTwoClubs:
+                print('partner opened')
                 if not re.search('pass', firstBid, re.IGNORECASE):
                     indexOfTwoClubBid = biddingAbsolute.index([partner, 'Two Club'])
                     contractAtThisPoint = helpers.getCurrentContractBidFromBidding(biddingAbsolute[:indexOfTwoClubBid + 2])
@@ -351,6 +352,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                     maxToUse = numberOfBidsAbove * 3
                 
                 else: 
+                    print('first bid pass')
                     if hasPartnerOpened:
                         minToUse = values['partnerBidsFirst']['playerPasses']['min']
                         maxToUse = values['partnerBidsFirst']['playerPasses']['max']

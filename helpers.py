@@ -252,39 +252,64 @@ def getHasPartnerOpened(biddingAbsolute, seatingRelative, username):
         true if username's partner bid something other than pass before username did unless that bid was a double that wansn't their first bid
 
     '''
-    indexOfUsersLastBid = getIndexOfNthBid(username, biddingAbsolute, -1)
-    if indexOfUsersLastBid is None:
-        return None
-
-    indexOfUsersFirstNonPassBid = -1
-    i = 0
-    for bid in biddingAbsolute:
-        if bid[0] == username:
-            if not re.search('pass', bid[1], re.IGNORECASE):
-                indexOfUsersFirstNonPassBid = i
-                break
-        i+=1
-
-    partnersNthBid = 0
+    #figure out who bid first.  if partner bid first all the bottom applied otherwise different
     usernamesPartner = getUsernamesPartner(username, seatingRelative)
-    if indexOfUsersFirstNonPassBid == -1:
+    usernameWhoHadFirstOpportunityToBid = getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, usernamesPartner, username)
+    partnerBidFirst = usernamesPartner == usernameWhoHadFirstOpportunityToBid
+
+    if partnerBidFirst:
+        indexOfUsersLastBid = getIndexOfNthBid(username, biddingAbsolute, -1)
+        if indexOfUsersLastBid is None:
+            return None
+
+        indexOfUsersFirstNonPassBid = -1
+        i = 0
         for bid in biddingAbsolute:
-            if bid[0] == usernamesPartner:
-                partnersNthBid += 1
+            if bid[0] == username:
                 if not re.search('pass', bid[1], re.IGNORECASE):
-                    if partnersNthBid > 1 and re.search('double', bid[1], re.IGNORECASE): continue
+                    indexOfUsersFirstNonPassBid = i
+                    break
+            i+=1
 
-                    return True
-        return False
+        partnersNthBid = 0
+        if indexOfUsersFirstNonPassBid == -1:
+            for bid in biddingAbsolute:
+                if bid[0] == usernamesPartner:
+                    partnersNthBid += 1
+                    if not re.search('pass', bid[1], re.IGNORECASE):
+                        if partnersNthBid > 1 and re.search('double', bid[1], re.IGNORECASE): continue
 
+                        return True
+            return False
+
+        else:
+            biddingUpToUsersFirstNonPassBid = biddingAbsolute[:indexOfUsersFirstNonPassBid]
+
+            for bid in biddingUpToUsersFirstNonPassBid:
+                if bid[0] == usernamesPartner:
+                    if not re.search('pass', bid[1], re.IGNORECASE):
+                        return True
+            return False
     else:
-        biddingUpToUsersFirstNonPassBid = biddingAbsolute[:indexOfUsersFirstNonPassBid]
+        print('username bid first')
+        pass
 
-        for bid in biddingUpToUsersFirstNonPassBid:
-            if bid[0] == usernamesPartner:
-                if not re.search('pass', bid[1], re.IGNORECASE):
-                    return True
-        return False
+
+def getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, usernamesPartner, username):
+    '''
+    inputs:
+        biQddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        usernamesPartner = string 
+        username = string
+    returns: 
+        true if the usernamesPartner has the opportunity to bid before username otherwise false
+    '''
+    for bid in biddingAbsolute:
+        print(f"bid = {bid}")
+        if bid[0] == usernamesPartner: return usernamesPartner
+        elif bid[0] == username: return username
+
+    return None
 
 def getBiddingHistory(biddingAbsolute):
     '''

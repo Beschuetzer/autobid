@@ -1969,7 +1969,17 @@ class getHasPartnerOpened(unittest.TestCase):
         self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'BottomPlayer')
         self.expected = False
         self.assertEqual(self.expected, self.actual) 
-
+    def test_false_3(self):
+        self.biddingRelative = {
+            "left": ['pass'],
+            "top": ['pass'],
+            "right": ['Two Club'],
+            "bottom": [],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'LeftPlayer')
+        self.expected = False
+        self.assertEqual(self.expected, self.actual) 
     def test_true(self):
         self.biddingRelative = {
             "left": ['Two No Trump', 'double'],
@@ -2947,7 +2957,41 @@ class getWasForcedToBid(unittest.TestCase):
         actual = helpers.getWasForcedToBid(username, biddingAbsolute, self.seatingRelative)
         expected = 'Error in getWasForcedToBid'
         self.assertEqual(expected, actual)
+class getUsernameOfPlayerWhoHadFirstOpportunityToBid(unittest.TestCase):
+    def tearDown(self) -> None:
+        print(f"self.actual = {self.actual}")
+        print(f"self.expected = {self.expected}")
 
+    def test_1(self):
+        username = "TopPlayer"
+        usernamesPartner = 'BottomPlayer'
+        biddingAbsolute = [
+            ["TopPlayer", 'Pass'],
+            ["RightPlayer", 'Pass'],
+            ["BottomPlayer", 'Pass'],
+        ]
+        self.actual = helpers.getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, usernamesPartner, username);
+        self.expected = username
+        self.assertEqual(self.actual, self.expected)
+    def test_2(self):
+        username = "BottomPlayer"
+        usernamesPartner = 'TopPlayer'
+        biddingAbsolute = [
+            ["BottomPlayer", 'Pass'],
+            ["LeftPlayer", 'Pass'],
+            ["TopPlayer", 'Pass'],
+        ]
+        self.actual = helpers.getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, usernamesPartner, username);
+        self.expected = username
+        self.assertEqual(self.actual, self.expected)
+    def test_none(self):
+        username = "BottomPlayer"
+        usernamesPartner = 'TopPlayer'
+        biddingAbsolute = [
+        ]
+        self.actual = helpers.getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, usernamesPartner, username);
+        self.expected = None
+        self.assertEqual(self.actual, self.expected)
 #region Testing Test Case Helpers
 class getDealerLocation(unittest.TestCase):
     def test_empty_dict(self):
