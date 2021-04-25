@@ -1979,7 +1979,18 @@ class getHasPartnerOpened(unittest.TestCase):
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'LeftPlayer')
         self.expected = False
-        self.assertEqual(self.expected, self.actual) 
+        self.assertEqual(self.expected, self.actual)
+    def test_true_4(self):
+        self.biddingRelative = {
+            "left": ['pass', 'Two Diamond'],
+            "top": ['pass', 'pass'],
+            "right": ['Two Club', 'Two Heart'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'LeftPlayer')
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)  
     def test_false_4(self):
         self.biddingRelative = {
             "left": ['Two Club'],
@@ -2132,6 +2143,17 @@ class getHasPartnerOpened(unittest.TestCase):
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'RightPlayer')
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    def test_not_opened_4_opportunities_1(self):
+        self.biddingRelative = {
+            "left": ['pass', 'pass', 'pass', 'Two Club'],
+            "top": ['One Club', 'pass', 'pass', 'Three Diamond'],
+            "right": ['pass', 'pass', 'double', 'pass'],
+            "bottom": ['pass','pass', 'double', 'One Club'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'LeftPlayer')
         self.expected = True
         self.assertEqual(self.expected, self.actual)
 

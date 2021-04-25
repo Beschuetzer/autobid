@@ -257,6 +257,8 @@ def getHasPartnerOpened(biddingAbsolute, seatingRelative, username):
         usernamesPartner = getUsernamesPartner(username, seatingRelative)
         usernameWhoHadFirstOpportunityToBid = getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, usernamesPartner, username)
         partnerBidFirst = usernamesPartner == usernameWhoHadFirstOpportunityToBid
+
+
         userNamesFirstBidIndex = getIndexOfNthBid(username, biddingAbsolute, 1)
         usernamesFirstBid = biddingAbsolute[userNamesFirstBidIndex]
 
@@ -268,7 +270,8 @@ def getHasPartnerOpened(biddingAbsolute, seatingRelative, username):
 
         if bidsPartnerHasMade == 0: return False
         if not partnerBidFirst and re.search('pass', usernamesFirstBid[1], re.IGNORECASE) and bidsUserHasMade == 1:
-            if re.search('pass', partnerBidFirst[1], re.IGNORECASE): return False
+            # if re.search('pass', partnerBidFirst[1], re.IGNORECASE): 
+                return False
         else:
             indexOfUsersLastBid = getIndexOfNthBid(username, biddingAbsolute, -1)
             if indexOfUsersLastBid is None:
