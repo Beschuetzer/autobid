@@ -442,17 +442,14 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                     print('partner has opened')
                     if firstBidIsPass:
                         if not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
-                            print('first bid pass, partner open, second not')
+                            print('partner open, first bid pass')
                             if isSecondBidJumpshift:
                                 print('second bid is jumpshift')
-                                estimatedScoring[location]['min'] = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['min']
-                                estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['max']
+                                estimatedScoring[location]['min'] = values['passFirstBidSecond']['isJumpshift']['partnerHasOpened']['min']
+                                estimatedScoring[location]['max'] = values['passFirstBidSecond']['isJumpshift']['partnerHasOpened']['max']
                             else:
                                 print('second bid is not jumpshift')
-                                print(f"isTeamsFirstBidOpportunity = {isTeamsFirstBidOpportunity}")
                                 didPlayerHaveFirstBidOpportunity = helpers.getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, username, partner) == username
-
-                                print(f"didPlayerHaveFirstBidOpportunity = {didPlayerHaveFirstBidOpportunity}")
                                 
                                 if didPlayerHaveFirstBidOpportunity:
                                     estimatedScoring[location]['max'] =values['isTeamsFirstBid']['playerPasses']['max']
