@@ -960,6 +960,23 @@ def getWasFirstOpeningBidANthLevelBid(biddingAbsolute, bidLevel):
     except:
         return None
 
+def getUsersFirstContractBid(username, biddingAbsolute):
+    '''
+    inputs:
+        username = string
+        biddingAbsolute = an array of arrays representing the bids to consider (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+    returns:
+        the first bid that a user made that is not double or pass, None if user has never made a contract bid
+    '''
+    try:
+        for bid in biddingAbsolute:
+            if bid[0] == username: 
+                if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE): return bid[1]
+
+        return None
+    except:
+        return None
+
 def getPartnersCurrentContractBidFromBidding(username, biddingAbsolute, seatingRelative):
     '''
     inputs:

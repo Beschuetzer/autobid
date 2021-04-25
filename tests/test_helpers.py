@@ -3265,6 +3265,76 @@ class getWasForcedToBid(unittest.TestCase):
         actual = helpers.getWasForcedToBid(username, biddingAbsolute, self.seatingRelative)
         expected = 'Error in getWasForcedToBid'
         self.assertEqual(expected, actual)
+class getUsersFirstContractBid(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+
+    def test_none(self):
+        self.username = ""
+        self.biddingRelative = {
+            "left": ['pass', 'double'],
+            "top": ['double', 'pass'],
+            "right": ['three club', 'pass'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getUsersFirstContractBid(self.username, self.bids)
+        self.expected = None
+        self.assertEqual(self.expected, self.actual) 
+    def test_1(self):
+        self.username = "TopPlayer"
+        self.biddingRelative = {
+            "left": ['pass', 'double'],
+            "top": ['double', 'pass'],
+            "right": ['three club', 'pass'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getUsersFirstContractBid(self.username, self.bids)
+        self.expected = None
+        self.assertEqual(self.expected, self.actual) 
+    def test_2(self):
+        self.username = "RightPlayer"
+        self.biddingRelative = {
+            "left": ['pass', 'double'],
+            "top": ['double', 'pass'],
+            "right": ['three club', 'pass'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getUsersFirstContractBid(self.username, self.bids)
+        self.expected = 'three club'
+        self.assertEqual(self.expected, self.actual) 
+    def test_3(self):
+        self.username = "LeftPlayer"
+        self.biddingRelative = {
+            "left": ['pass', 'Three Heart'],
+            "top": ['double', 'pass'],
+            "right": ['three club', 'pass'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getUsersFirstContractBid(self.username, self.bids)
+        self.expected = 'Three Heart'
+        self.assertEqual(self.expected, self.actual) 
+    def test_4(self):
+        self.username = "LeftPlayer"
+        self.biddingRelative = {
+            "left": ['pass', 'pass'],
+            "top": ['double', 'pass'],
+            "right": ['three club', 'pass'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getUsersFirstContractBid(self.username, self.bids)
+        self.expected = None
+        self.assertEqual(self.expected, self.actual) 
+    
 class getUsernameOfPlayerWhoHadFirstOpportunityToBid(unittest.TestCase):
     def tearDown(self) -> None:
         print(f"self.actual = {self.actual}")
