@@ -312,18 +312,16 @@ def getHasPartnerOpened(biddingAbsolute, seatingRelative, username):
     except:
         return False
 
-
 def getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, usernamesPartner, username):
     '''
     inputs:
-        biQddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
         usernamesPartner = string 
         username = string
     returns: 
-        true if the usernamesPartner has the opportunity to bid before username otherwise false
+        returns username if username had teams first opportunity, otherwise usernamesPartner
     '''
     for bid in biddingAbsolute:
-        print(f"bid = {bid}")
         if bid[0] == usernamesPartner: return usernamesPartner
         elif bid[0] == username: return username
 

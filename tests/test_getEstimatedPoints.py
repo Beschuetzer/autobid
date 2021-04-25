@@ -950,7 +950,6 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
 
-#note: MAYBE JUST WHEN THE PLAYER SAYS THE SAME SUIT AGAIN (ESPECIALLY IF NO PARTNER RESPONSE) WOULD WE ADJUST BOUNDS IN CASES WHERE FIRST BID IS NOT PASS?
 class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
     def setUp(self) -> None:
         self.seatingRelative = {
@@ -1364,7 +1363,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
 
         self.expected = {
             "left": {
-               "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
                 "max": self.estimatedScoringBounds['left']['max'],
             },
             "top": {

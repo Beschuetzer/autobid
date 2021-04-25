@@ -449,8 +449,16 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                                 estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['max']
                             else:
                                 print('second bid is not jumpshift')
+                                print(f"isTeamsFirstBidOpportunity = {isTeamsFirstBidOpportunity}")
+                                didPlayerHaveFirstBidOpportunity = helpers.getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, username, partner) == username
+
+                                print(f"didPlayerHaveFirstBidOpportunity = {didPlayerHaveFirstBidOpportunity}")
+                                
+                                if didPlayerHaveFirstBidOpportunity:
+                                    estimatedScoring[location]['max'] =values['isTeamsFirstBid']['playerPasses']['max']
+                                else:
+                                    estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
                                 estimatedScoring[location]['min'] = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
-                                estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
                             continue
                         else:
                             print('else clause')
@@ -460,6 +468,8 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
 
                     else:
                         print('first bid is not pass')
+                        estimatedScoring[location]['min'] = estimatedScoringBounds[location]['min']
+                        estimatedScoring[location]['max'] = estimatedScoringBounds[location]['max']
                         continue
                 else:
                     print('partner has not opened')
@@ -477,31 +487,10 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
 
                     else:
                         print('first bid is not pass')
-
+                        estimatedScoring[location]['min'] = estimatedScoringBounds[location]['min']
+                        estimatedScoring[location]['max'] = estimatedScoringBounds[location]['max']
                         continue
-
-                    #when opportunities to bid is two and first bid is not pass?
-                   
-                    #when do we need to consider partners bids?
-                    #pass
-                        pass
                 #endregion
-
-
-                #did they pass first time?
-
-                #did they bid a suit or nt first time?
-                        #did their partner pass or bid? 
-
-                #bid suit
-                    #did you bid same suit for first bid?
-
-                #bid nt
-                    #did you bid NT for first bid?
-
-
-                #bid same suit
-                pass
             #endregion
 
             #region When the opportunities to bid is longer than 2
