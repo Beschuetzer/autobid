@@ -576,11 +576,9 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, first
             minToUse = values['special']['weakTwo']['min']
             maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
         else: 
+            wasFirstOpeningBidATwoLevelBid = helpers.getWasFirstOpeningBidATwoLevelBid(biddingAbsolute)
 
-            #TODO: need to check if someone has be a weak two prior to this person if so use 
-            wasFirstOpeningBidATwoLevelBid = helpers.getWasFirstOpeningBidATwoLevelBid(biddingAbsolute, username)
-
-            if wasFirstOpeningBidATwoLevelBid:
+            if wasFirstOpeningBidATwoLevelBid != False and  wasFirstOpeningBidATwoLevelBid != username:
                 minToUse = values['special']['weakTwo']['min']
                 maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
             else:
