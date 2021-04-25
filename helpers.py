@@ -85,9 +85,8 @@ def getIsPartnersFirstBidPass(biddingRelative, seatingRelative, username):
 
     partnersBidding = biddingRelative[partnersLocation] 
     if len(partnersBidding) > 0:
-        return partnersBidding[0] == 'pass'
-    else:
-        return False
+        if re.search('pass', partnersBidding[0], re.IGNORECASE): return True
+    return False
 
 def getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute):
     '''
@@ -924,6 +923,23 @@ def getCurrentContractBidFromBidding(bidding):
     for bid in reversed(bidding):
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return bid[1]
+
+def getPartnersCurrentContractBidFromBidding(username, biddingAbsolute, seatingRelative):
+    '''
+    inputs:
+        biddingAbsolute = an array of arrays representing the bids to consider (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        username = string
+    returns
+        the current contract bid that username's partner had when username's partner made their last bid
+    '''
+
+    usernamesPartner = getUsernamesPartner(username, seatingRelative)
+    indexOfPartnersLastBid = getIndexOfNthBid(usernamesPartner, biddingAbsolute, -1)
+    biddingUpToPartnersLastBid = biddingAbsolute[:indexOfPartnersLastBid]
+    for bid in reversed(biddingUpToPartnersLastBid):
+        if not re.search('pass', bid[1], re.IGNORECASE) and  not re.search('double', bid[1], re.IGNORECASE): return bid[1]
+
+    return None
 
 def getIsBidGameBid(bid):
     '''

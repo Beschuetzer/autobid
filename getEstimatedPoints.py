@@ -381,41 +381,6 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                 print('one opportunity else-----------')
                 minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
 
-                #region TODO: 4-6 are not being hit by test cases.  Do we need them here as we only need to handle cases where there is one bid made at most for each player and the player's bid is a pass?:
-
-                # elif isTeamsFirstBidOpportunity is True and not firstBidIsPass:
-                #     print(2)
-                #     minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
-
-                # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and firstBidIsPass:
-                #     #partner = ['something', ...]
-                #     #player =['pass', ...]
-                #     print(3)
-                #     minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
-                    
-                
-
-                # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is False and not firstBidIsPass:
-                #     print(4)
-                #     #partner = ['something', ...]
-                #     #player =['One Club', ...]
-                #     minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
-
-
-                # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and firstBidIsPass:
-                # # TODO: write a case for this logic
-                #     print(5)
-                #     #partner = ['pass', ...]
-                #     #player =['One Club', ...]
-
-                # elif isTeamsFirstBidOpportunity is False and isPartnersFirstBidPass is True and not firstBidIsPass:
-                #     print(6)
-                #     minToUse, maxToUse = setInitialBounds(location, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass)
-
-                #     # partner = ['Pass', ...]
-                #     # player =['Pass', ...]
-                #endregion
-                
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
         #endregion
@@ -461,8 +426,35 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                             print('else clause')
                             print(f"isPartnersFirstBidPass = {isPartnersFirstBidPass}")
                             if isPartnersFirstBidPass:
-                                estimatedScoring[location]['min'] = values['partnerPassesFirst']['playerPasses']['min']
-                                estimatedScoring[location]['max'] = values['partnerPassesFirst']['playerPasses']['max']
+                                partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
+                                partnersSecondBid = None
+
+                                try:
+                                    partnersSecondBid = biddingRelative[partnersLocation][1]
+                                except:
+                                    pass
+
+                                partnersSecondBidIsGameBid = helpers.getIsBidGameBid(partnersSecondBid)
+                                print(f"partnersSecondBidIsGameBid = {partnersSecondBidIsGameBid}")
+
+                                if partnersSecondBidIsGameBid:
+                                    estimatedScoring[location]['min'] = values['partnerPassesFirst']['playerPasses']['min']
+                                    estimatedScoring[location]['max'] = values['partnerPassesFirst']['playerPasses']['max']
+                                else:
+                                    currentContractBidForPartner = helpers.getPartnersCurrentContractBidFromBidding(username, biddingAbsolute, seatingRelative)
+
+                                    isPartnersSecondBidJumpshift = helpers.getIsJumpshift(currentContractBidForPartner, partnersSecondBid)
+
+                                    print(f"partnersSecondBid = {partnersSecondBid}")
+                                    print(f"currentContractBidForPartner = {currentContractBidForPartner}")
+                                    print(f"isPartnersSecondBidJumpshift = {isPartnersSecondBidJumpshift}")
+
+                                    if isPartnersSecondBidJumpshift:
+                                        estimatedScoring[location]['min'] = values['partnerPassesFirst']['playerPasses']['min']
+                                        estimatedScoring[location]['max'] = values['partnerPassesFirst']['playerPasses']['max']
+                                    else:
+                                        estimatedScoring[location]['min'] = values['partnerPassesFirst']['playerPasses']['min']
+                                        estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerPasses']['max']
                             else:
                                 estimatedScoring[location]['min'] = values['partnerBidsFirst']['playerPasses']['min']
                                 estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerPasses']['max']
