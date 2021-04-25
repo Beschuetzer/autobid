@@ -291,7 +291,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         print('currentContractBidForUser = {0}'.format(currentContractBidForUser))
 
         indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, biddingAbsolute, 1)
-        hasPartnerOpened = helpers.getHasPartnerOpened(biddingAbsolute, username)
+        hasPartnerOpened = helpers.getHasPartnerOpened(biddingRelative, biddingAbsolute, username)
         firstBid = biddingRelative[location][0]
         secondBid = ''
         lastBid = ''
@@ -475,7 +475,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
 
                     else:
                         print('first bid is not pass')
-                        
+
                         continue
 
                     #when opportunities to bid is two and first bid is not pass?

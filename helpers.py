@@ -241,9 +241,8 @@ def getUsernamesPartner(username, seatingRelative):
         return seatingRelative[locations[indexToUse]]
     except:
         return "Error in getUsernamesPartner"
-    
 
-def getHasPartnerOpened(biddingAbsolute, username):
+def getHasPartnerOpened(biddingRelative, biddingAbsolute, username):
     '''
     inputs:
         biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
@@ -251,14 +250,16 @@ def getHasPartnerOpened(biddingAbsolute, username):
     returns ------------------------------ 
         true if username's partner has mentioned a bid that is a suit, no trump, or a double and false otherwise
     '''
+    print(f"username = {username}")
+    print(f"biddingAbsolute = {biddingAbsolute}")
     indexOfUsersLastBid = getIndexOfNthBid(username, biddingAbsolute, -1)
-
+    print(f"indexOfUsersLastBid = {indexOfUsersLastBid}")
     if indexOfUsersLastBid is None:
         return None
 
     biddingUpToUsersFirstBid = biddingAbsolute[:indexOfUsersLastBid]
 
-    print(f"indexOfUsersFirstBid = {indexOfUsersLastBid}")
+    print(f"indexOfUsersLastBid = {indexOfUsersLastBid}")
     print(f"biddingUpToUsersFirstBid = {biddingUpToUsersFirstBid}")
     if len(biddingUpToUsersFirstBid) <= 1:
         return False
@@ -773,7 +774,7 @@ def getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelativ
 
     #otherwise use responding total
     distributionPoints = -1;
-    hasPartnerOpened = getHasPartnerOpened(biddingAbsolute, seatingRelative['bottom'])
+    hasPartnerOpened = getHasPartnerOpened(biddingRelative, biddingAbsolute, seatingRelative['bottom'])
     
     getShouldCalculateRespondingPoints(biddingAbsolute)
     print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
