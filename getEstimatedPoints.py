@@ -425,12 +425,16 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
             print(f"secondBid = {secondBid}")
             print(f"currentContractBidForUser = {currentContractBidForUser}")
             print(f"isSecondBidJumpshift = {isSecondBidJumpshift}")
+            print(f"wasPlayerForcedToBid = {wasPlayerForcedToBid}")
             #region when the opportunities to bid is two long
             if len(playersBids) == 2: 
                 #region when the first bid is pass and 2nd bid is not pass or double
 
                 #nothing more can be gleamed from second bid if they were forced to bid due to takeout double
-                if wasPlayerForcedToBid: continue
+                if wasPlayerForcedToBid: 
+                    estimatedScoring[location]['min'] = estimatedScoringBounds[location]['min']
+                    estimatedScoring[location]['max'] = estimatedScoringBounds[location]['max']
+                    continue
 
                 if hasPartnerOpened: 
                     print('partner has opened')
