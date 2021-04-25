@@ -208,6 +208,11 @@ def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
     indexOfPartnersFirstBid = getIndexOfNthBid(partnersUsername, biddingAbsolute, 1)
     partnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid]
     bidAfterPartnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid + 1]
+
+    print(f"username = {username}")
+    print(f"seatingRelative = {seatingRelative}")
+    print(f"partnersUsername = {partnersUsername}")
+
     if re.search('double', partnersFirstBid, re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid, re.IGNORECASE): return True
     return False
 

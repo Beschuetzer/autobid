@@ -2808,7 +2808,37 @@ class getUsernamesPartner(unittest.TestCase):
         actual = helpers.getUsernamesPartner(username, self.seatingRelative)
         expected = "LeftPlayer"
         self.assertEqual(actual, expected)
+class getWasForcedToBid(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
 
+    def test_wasForced(self):
+        biddingRelative = {
+            "left": ['pass', 'One Heart'],
+            "top": ['One Club', 'pass'],
+            "right": ['Double', 'Two Club'],
+            "bottom": ['pass'],
+        }
+        username = "left"
+        biddingAbsolute = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        actual = helpers.getWasForcedToBid(username, biddingAbsolute, self.seatingRelative)
+        expected = True
+    def test_wasNOTForced(self):
+        biddingRelative = {
+            "left": ['pass', 'One Heart'],
+            "top": ['One Club', 'pass'],
+            "right": ['Double', 'Two Club'],
+            "bottom": ['One Diamond'],
+        }
+        username = "left"
+        biddingAbsolute = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        actual = helpers.getWasForcedToBid(username, biddingAbsolute, self.seatingRelative)
+        expected = False
 #region Testing Test Case Helpers
 class getDealerLocation(unittest.TestCase):
     def test_empty_dict(self):
