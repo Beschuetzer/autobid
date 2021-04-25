@@ -193,6 +193,17 @@ def getIsJumpshift(currentContractBid, usersBid):
 
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
+def getWasForcedToBid(biddingAbsolute, username):
+    '''
+    inputs:
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        username = string of the user whose partner is to be checked
+    returns ------------------------------ 
+        true if username's partner bid double as their first bid and the bid after that was pass otherwise false
+    '''
+
+    
+
 def getHasPartnerOpened(biddingAbsolute, username):
     '''
     inputs:
