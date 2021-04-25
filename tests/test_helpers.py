@@ -3289,14 +3289,14 @@ class getUsersFirstContractBid(unittest.TestCase):
     def test_1(self):
         self.username = "TopPlayer"
         self.biddingRelative = {
-            "left": ['pass', 'double'],
+            "left": ['One club', 'double'],
             "top": ['double', 'pass'],
             "right": ['three club', 'pass'],
             "bottom": ['pass'],
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getUsersFirstContractBid(self.username, self.bids)
-        self.expected = None
+        self.expected = 'double'
         self.assertEqual(self.expected, self.actual) 
     def test_2(self):
         self.username = "RightPlayer"
@@ -3332,9 +3332,31 @@ class getUsersFirstContractBid(unittest.TestCase):
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getUsersFirstContractBid(self.username, self.bids)
-        self.expected = None
+        self.expected = 'pass'
         self.assertEqual(self.expected, self.actual) 
-    
+class getIsBidAContractBid(unittest.TestCase):
+    def test_true_1(self):
+        self.bid = 'One Club'
+        self.actual = helpers.getIsBidAContractBid(self.bid)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    def test_true_2(self):
+        self.bid = 'Seven Heart'
+        self.actual = helpers.getIsBidAContractBid(self.bid)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    def test_false_1(self):
+        self.bid = 'pass'
+        self.actual = helpers.getIsBidAContractBid(self.bid)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+    def test_false_2(self):
+        self.bid = 'double'
+        self.actual = helpers.getIsBidAContractBid(self.bid)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+
+
 class getUsernameOfPlayerWhoHadFirstOpportunityToBid(unittest.TestCase):
     def tearDown(self) -> None:
         print(f"self.actual = {self.actual}")

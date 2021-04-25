@@ -966,16 +966,48 @@ def getUsersFirstContractBid(username, biddingAbsolute):
         username = string
         biddingAbsolute = an array of arrays representing the bids to consider (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
     returns:
-        the first bid that a user made that is not double or pass, None if user has never made a contract bid
+        the first bid that a user made that is not double or pass. if user has never made a contract bid, returns first bid made
     '''
     try:
+        firstBid = None
+        count = 0
         for bid in biddingAbsolute:
             if bid[0] == username: 
+                if count == 0: firstBid = bid[1]
                 if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE): return bid[1]
+                count += 1
 
-        return None
+        return firstBid
     except:
         return None
+
+def getIsUsernamesFirstContractBidTheFirstContractBid(username, biddingAbsolute):
+    '''
+    inputs: 
+        username = string
+        biddingAbsolute = an array of arrays representing the bids to consider (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+    returns
+        true if the username's first contract bid is the first contract bid made, false otherwise
+    '''
+
+    for bid in biddingAbsolute:
+        isContractBid = getIsBidAContractBid(bid[1])
+        print(f"isContractBid = {isContractBid}")
+        if isContractBid:
+            if bid[0] == username:
+                return True
+            return False
+
+    return False
+
+def getIsBidAContractBid(bid):
+    '''
+    inputs:
+        bid = a string (e.g. 'one club')
+    returns 
+        true if bid is not double and not pass, false otherwise
+    '''
+    return not re.search('double', bid, re.IGNORECASE) and not re.search('pass', bid, re.IGNORECASE)
 
 def getPartnersCurrentContractBidFromBidding(username, biddingAbsolute, seatingRelative):
     '''

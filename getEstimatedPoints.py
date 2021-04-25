@@ -362,6 +362,8 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
 
             else:
                 if len(biddingRelative[location]) == 1 or username == personWhoOpenedTwoClubs:
+                    print('is person who opened or length greater than 1')
+                    print(f"firstBid = {firstBid}")
                     minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, True)
 
                 else:
@@ -370,7 +372,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
 
                     print(f"usersFirstContractBid = {usersFirstContractBid}")
 
-                    minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, usersFirstContractBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, True)
+                    minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, usersFirstContractBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
 
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
@@ -535,8 +537,9 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, first
     returns--------------------------------------------------:
         a min and max value to use e.g. [ minToUse, maxToUse ]
     '''
-    locationsRightLocation = helpers.getLocationAfterRotationsAround(location, -1);
-    haveOpponentsNotHadTurnOrPassed = len(biddingRelative[locationsRightLocation]) == 0 or re.search('Pass' , biddingRelative[locationsRightLocation][0], re.IGNORECASE)
+    IsUsernamesFirstContractBidTheFirstContractBid = helpers.getIsUsernamesFirstContractBidTheFirstContractBid(username, biddingAbsolute)
+
+    print(f"IsUsernamesFirstContractBidTheFirstContractBid = {IsUsernamesFirstContractBidTheFirstContractBid}")
     print('setInitialBounds-----------------')
     # print('biddingRelative["right"][0] = {0}'.format(biddingRelative['right'][0]))
     # print('haveOpponentsNotHadTurnOrPassed = {0}'.format(haveOpponentsNotHadTurnOrPassed))
@@ -561,10 +564,10 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, first
                 minToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['min']
                 maxToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['max']
 
-    elif re.search('two club', firstBid, re.IGNORECASE) and haveOpponentsNotHadTurnOrPassed:
+    elif re.search('two club', firstBid, re.IGNORECASE) and IsUsernamesFirstContractBidTheFirstContractBid:
         #partner = []
         #player =['Two Club']
-        print('two branch')
+        print('two club branch')
         maxToUse = values['special']['openTwoClubs']['max']
         minToUse = values['special']['openTwoClubs']['min']
 
@@ -574,7 +577,6 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, first
         print('double branch')
         minToUse = values['isTeamsFirstBid']['playerDoubles']['min']
         maxToUse = values['isTeamsFirstBid']['playerDoubles']['max']
-
 
     elif re.search('two', firstBid, re.IGNORECASE):
         #partner = []
