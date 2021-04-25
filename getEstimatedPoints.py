@@ -475,6 +475,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
 
                     else:
                         print('first bid is not pass')
+                        
                         continue
 
                     #when opportunities to bid is two and first bid is not pass?

@@ -1922,49 +1922,61 @@ class getIsBidGameBid(unittest.TestCase):
         expected = True
         self.assertEqual(actual, expected)
 class getHasPartnerOpened(unittest.TestCase):
-    def test_incorrect_name(self):
-        bids = [['Adam', 'Pass'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
-        expected = helpers.getHasPartnerOpened(bids, 'Anns')
-        actual = None
-        self.assertEqual(expected, actual) 
-    def test_false(self):
-        bids = [['Adam', 'Pass'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
-        expected = helpers.getHasPartnerOpened(bids, 'Ann')
-        actual = False
-        self.assertEqual(expected, actual) 
-    def test_false_2(self):
-        bids = [['Adam', 'Double'], ['Tim', 'Pass'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
-        expected = helpers.getHasPartnerOpened(bids, 'Andrew')
-        actual = False
-        self.assertEqual(expected, actual) 
-    def test_true(self):
-        bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Three Diamond'], ['Adam', 'Double']]
-        expected = helpers.getHasPartnerOpened(bids, 'Andrew')
-        actual = True
-        self.assertEqual(expected, actual) 
-    def test_length_1(self):
-        bids = [['Adam', '2 No Trump']]
-        expected = helpers.getHasPartnerOpened(bids, 'Andrew')
-        actual = None
-        self.assertEqual(expected, actual) 
-    def test_length_0(self):
-        bids = []
-        expected = helpers.getHasPartnerOpened(bids, 'Andrew')
-        actual = None
-        self.assertEqual(expected, actual) 
-    def test_length_2(self):
-        bids = [['Adam', '2 No Trump'],['Tim','Pass']]
-        expected = helpers.getHasPartnerOpened(bids, 'Tim')
-        actual = False
-        self.assertEqual(expected, actual) 
-    def test_true_2(self):
-        bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Three Diamond'], ['Adam', 'Double'], ['Tim', 'Three Heart']]
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+    def tearDown(self) -> None:
+        print('bids = {0}'.format(self.bids))
+        print('expected = {0}'.format(self.expected))
+        print('self.actual ={0}'.format(self.actual))
 
-        expected = helpers.getHasPartnerOpened(bids, 'Ann')
-        actual = True
-        self.assertEqual(expected, actual) 
+    def test_incorrect_name(self):
+        self.bids = [['Adam', 'Pass'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        self.expected = helpers.getHasPartnerOpened(self.bids, 'Anns')
+        self.actual = None
+        self.assertEqual(self.expected, self.actual) 
+    def test_false(self):
+        self.bids = [['Adam', 'Pass'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        self.expected = helpers.getHasPartnerOpened(self.bids, 'Ann')
+        self.actual = False
+        self.assertEqual(self.expected, self.actual) 
+    def test_false_2(self):
+        self.bids = [['Adam', 'Double'], ['Tim', 'Pass'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
+        self.expected = helpers.getHasPartnerOpened(self.bids, 'Andrew')
+        self.actual = False
+        self.assertEqual(self.expected, self.actual) 
+    def test_true(self):
+        self.bids = [['Adam', 'Two No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Three Diamond'], ['Adam', 'Double']]
+        self.expected = helpers.getHasPartnerOpened(self.bids, 'Andrew')
+        self.actual = True
+        self.assertEqual(self.expected, self.actual) 
+    def test_length_1(self):
+        self.bids = [['Adam', '2 No Trump']]
+        self.expected = helpers.getHasPartnerOpened(self.bids, 'Andrew')
+        self.actual = None
+        self.assertEqual(self.expected, self.actual) 
+    def test_length_0(self):
+        self.bids = []
+        self.expected = helpers.getHasPartnerOpened(self.bids, 'Andrew')
+        self.actual = None
+        self.assertEqual(self.expected, self.actual) 
+    def test_length_2(self):
+        self.bids = [['Adam', '2 No Trump'],['Tim','Pass']]
+        self.expected = helpers.getHasPartnerOpened(self.bids, 'Tim')
+        self.actual = False
+        self.assertEqual(self.expected, self.actual) 
+    def test_true_2(self):
+        self.bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Three Diamond'], ['Adam', 'Double'], ['Tim', 'Three Heart']]
+
+        self.expected = helpers.getHasPartnerOpened(self.bids, 'Ann')
+        self.actual = True
+        self.assertEqual(self.expected, self.actual) 
     def test_2nd_bid_open(self):
-        bids = [['Adam', 'pass'], ['Tim', 'One Club'], ['Ann', 'Pass'], ['Andrew', 'Two Diamond'], ['Adam', 'Two No Trump'],  ['Tim', 'pass'], ['Ann', 'Three heart']]
+        self.bids = [['Adam', 'pass'], ['Tim', 'One Club'], ['Ann', 'Pass'], ['Andrew', 'Two Diamond'], ['Adam', 'Two No Trump'],  ['Tim', 'pass'], ['Ann', 'Three heart']]
 
         biddingRelative = {
             "Adam": ['pass', 'Two No Trump'],
@@ -1973,9 +1985,20 @@ class getHasPartnerOpened(unittest.TestCase):
             "Andrew": ['Two Diamond'],
         }
 
-        expected = helpers.getHasPartnerOpened(bids, 'Ann')
-        actual = True
-        self.assertEqual(expected, actual) 
+        self.expected = helpers.getHasPartnerOpened(self.bids, 'Ann')
+        self.actual = True
+        self.assertEqual(self.expected, self.actual) 
+    def test_not_opened_2_opportunities_1(self):
+        biddingRelative = {
+            "left": ['pass', 'pass'],
+            "top": ['One Club', 'pass'],
+            "right": ['Double', 'pass'],
+            "bottom": ['One Diamond'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.expected = helpers.getHasPartnerOpened(self.bids, 'TopPlayer')
+        self.actual = False
+        self.assertEqual(self.expected, self.actual) 
 class getIndexOfNthBid(unittest.TestCase):
     def test_invalid(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]
