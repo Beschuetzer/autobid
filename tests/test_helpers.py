@@ -2094,55 +2094,62 @@ class getSeatingRelative(unittest.TestCase):
         self.assertDictEqual(expected, actual) 
 class getIsJumpShift(unittest.TestCase):
     def test_pass(self):
-        currentContractBid = ['Tim','Two Club']
+        currentContractBid = 'Two Club';
         usersBid = 'Pass'
         actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
+
+    def test_pass_2(self):
+        currentContractBid = 'Pass';
+        usersBid = 'Two Club'
+        actual = helpers.getIsJumpshift(currentContractBid, usersBid)
+        expected = False
+        self.assertEqual(actual, expected)
     def test_double(self):
-        currentContractBid = ['Tim','Two Club']
+        currentContractBid = 'Two Club';
         usersBid = 'Double'
         actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_noActualBid(self):
-        currentContractBid = []
-        usersBid = 'Three Club'
+        currentContractBid = "";
+        usersBid = 'Three Club';
         actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_False_1(self):
-        currentContractBid = ['Tim','Two Club']
+        currentContractBid = 'Two Club';
         usersBid = 'Three Club'
         actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_False_2(self):
-        currentContractBid = ['Tim','Two Club']
+        currentContractBid = 'Two Club';
         usersBid = 'Two Diamond'
         actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_False_3(self):
-        currentContractBid = ['Tim','One Spade']
+        currentContractBid = 'One Spade';
         usersBid = 'One No Trump'
         actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = False
         self.assertEqual(actual, expected)
     def test_True_1(self):
-        currentContractBid = ['Tim','One Club']
+        currentContractBid = 'One Club';
         usersBid = 'Three Club'
         actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = True
         self.assertEqual(actual, expected)
     def test_True_2(self):
-        currentContractBid = ['Tim','One No Trump']
+        currentContractBid = 'One No Trump';
         usersBid = 'Three Club'
         actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = True
         self.assertEqual(actual, expected)
     def test_True_3(self):
-        currentContractBid = ['Tim','Three Spade']
+        currentContractBid = 'Three Spade';
         usersBid = 'Five No Trump'
         actual = helpers.getIsJumpshift(currentContractBid, usersBid)
         expected = True

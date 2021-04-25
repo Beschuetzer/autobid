@@ -1895,8 +1895,8 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
     
     def test_update_pass_first_NT_second_responding(self):
         biddingRelative = {
-            "left": ['pass', 'Two No Trump'],
-            "top": ['One Club', 'pass'],
+            "left": ['Pass', 'Two No Trump'],
+            "top": ['One Club', 'Pass'],
             "right": ['Pass', 'Three Heart'],
             "bottom": ['Two Diamond'],
         }
@@ -1941,7 +1941,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
 
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
 
-        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        self.actual = getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
         
         self.assertDictEqual(self.actual, self.expected)
 

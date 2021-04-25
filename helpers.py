@@ -162,7 +162,7 @@ def getHasPlayerJumpshifted(username, playersBids, biddingAbsolute):
         indexOfUsersBid = getIndexOfNthBid(username, biddingAbsolute, i + 1)
         biddingUpToThisPoint = biddingAbsolute[:indexOfUsersBid]
         contractBidAtThisPoint = getCurrentContractBid(biddingUpToThisPoint)
-        isAnyBidJumpShift = getIsJumpshift(contractBidAtThisPoint, bid)
+        isAnyBidJumpShift = getIsJumpshift(contractBidAtThisPoint[1], bid)
 
         print('bids = {0}'.format(playersBids))
         print('indexOfUsersBid = {0}'.format(indexOfUsersBid))
@@ -180,7 +180,9 @@ def getIsJumpshift(currentContractBid, usersBid):
         currentContractBid and usersBid are strings representing a bid ('One No Trump')
     returns ------------------------------ True if the usersBid's index is greater than the currentcontractBid's index by 5 or more (aka a 'jumpshift' of currentContractBid)
     '''
-    if not currentContractBid or currentContractBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE):
+    print(f"currentContractBid = {currentContractBid}")
+    print(f"usersBid = {usersBid}")
+    if not currentContractBid or currentContractBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE) or re.search('pass', currentContractBid, re.IGNORECASE) or re.search('double', currentContractBid, re.IGNORECASE):
         return False
     
     if isinstance(currentContractBid, list) and len(currentContractBid) > 1:

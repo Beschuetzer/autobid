@@ -2,6 +2,7 @@
     Getting the estimated points of each player based on their first two bids
 '''
 #TODO: make sure suit count estimates from bidding is complete
+from tests.test_helpers import getCurrentActualBid, getIsJumpShift
 import helpers, re
 
 locations = {
@@ -305,8 +306,8 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         isFirstBidJumpshift = False
         isLastBidJumpshift = False
         try: 
-            isFirstBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser, firstBid)
-            isLastBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser, lastBid)
+            isFirstBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser[1], firstBid)
+            isLastBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser[1], lastBid)
 
             #TODO: do we need to check if the user made a bid that is a jumpshift ever and then have entirely separate logic in that case?
             isAnyBidJumpshift = helpers.getHasPlayerJumpshifted(username, playersBids, biddingAbsolute)
@@ -417,6 +418,10 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         #endregion
         #region updating bounds using estimatedScoringBounds
         else:
+            print(f"currentContractBidForUser = {currentContractBidForUser}")
+            print(f"secondBid = {secondBid}")
+            isSecondBidJumpshift = helpers.getIsJumpshift( currentContractBidForUser[1], secondBid)
+            print(f"isSecondBidJumpshift = {isSecondBidJumpshift}")
             #region when the opportunities to bid is two long
             if len(playersBids) == 2: 
                 #region when the first bid is pass and 2nd bid is not pass or double
@@ -424,8 +429,12 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                     if firstBidIsPass:
                         if not re.search('pass' , secondBid, re.IGNORECASE) and not re.search('double' , secondBid, re.IGNORECASE):
                             print('first bid pass, partner open, second not')
-                            estimatedScoring[location]['min'] = values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min']
-                            estimatedScoring[location]['max'] = values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['max']
+                            if isSecondBidJumpshift:
+                                estimatedScoring[location]['min'] = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['min'];
+                                estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['max'],
+                            else:
+                                estimatedScoring[location]['min'] = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'];
+                                estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max'],
                             continue
                         else:
                             #update min/max if two passes in a row?
