@@ -576,9 +576,9 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, first
             minToUse = values['special']['weakTwo']['min']
             maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
         else: 
-            wasFirstOpeningBidATwoLevelBid = helpers.getWasFirstOpeningBidATwoLevelBid(biddingAbsolute)
+            wasFirstOpeningBidANthLevelBid = helpers.getWasFirstOpeningBidANthLevelBid(biddingAbsolute, 2)
 
-            if wasFirstOpeningBidATwoLevelBid != False and  wasFirstOpeningBidATwoLevelBid != username:
+            if wasFirstOpeningBidANthLevelBid != False and  wasFirstOpeningBidANthLevelBid != username:
                 minToUse = values['special']['weakTwo']['min']
                 maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
             else:
@@ -593,8 +593,14 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, first
             minToUse = values['special']['wtf']['min']
             maxToUse = values['special']['wtf']['max']
         else:
+            wasFirstOpeningBidANthLevelBid = helpers.getWasFirstOpeningBidANthLevelBid(biddingAbsolute, 3)
+
+            if wasFirstOpeningBidANthLevelBid != False and  wasFirstOpeningBidANthLevelBid != username:
+                maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
+            else:
+                maxToUse = values['special']['weakThree']['max']
+
             minToUse = values['special']['weakThree']['min']
-            maxToUse = values['special']['weakThree']['max']
 
     elif re.search('pass', firstBid, re.IGNORECASE):
         print('pass branch')

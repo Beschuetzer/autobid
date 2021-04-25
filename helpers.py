@@ -924,20 +924,41 @@ def getCurrentContractBidFromBidding(bidding):
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return bid[1]
 
-def getWasFirstOpeningBidATwoLevelBid(biddingAbsolute):
+def getWasFirstOpeningBidANthLevelBid(biddingAbsolute, bidLevel):
     '''
     inputs:
         biddingAbsolute = an array of arrays representing the bids to consider (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        bidLevel = integer representing the level of bid to check for 
+            (e.g. 
+                1 = 'One Club', 'One Diamond', ... ; 
+                2 = 'Two Club', 'Two Diamond', ... ;
+                3 = 'Three Club', 'Three Diamond', ... ;
+                ...
+                7 (is highest)
+            )
     returns:
         the username who made the first non-pass, non-double bid if it was a two level bid (two club included), false otherwise
     '''
-    for bid in biddingAbsolute:
-        print(f"bid[1] = {bid[1]}")
-        if not re.search('pass', bid[1], re.IGNORECASE) and  not re.search('double', bid[1], re.IGNORECASE): 
-            if re.search('two', bid[1], re.IGNORECASE): return bid[0]
-            return False
+    try:
+        bidLevels = dict([
+            (1, 'one'),
+            (2, 'two'),
+            (3, 'three'),
+            (4, 'four'),
+            (5, 'five'),
+            (6, 'six'),
+            (7, 'seven'),
+        ])
 
-    return False
+        for bid in biddingAbsolute:
+            print(f"bid[1] = {bid[1]}")
+            if not re.search('pass', bid[1], re.IGNORECASE) and  not re.search('double', bid[1], re.IGNORECASE): 
+                if re.search(bidLevels[bidLevel], bid[1], re.IGNORECASE): return bid[0]
+                return False
+
+        return False
+    except:
+        return None
 
 def getPartnersCurrentContractBidFromBidding(username, biddingAbsolute, seatingRelative):
     '''

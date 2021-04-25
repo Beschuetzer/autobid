@@ -152,6 +152,12 @@ biddingRelatives = {
         "right": ['pass'],
         "bottom": [],
     },
+    "weakThree5": {
+        "left": ['Pass'],
+        "top": ['Three Heart'],
+        "right": ['Three Spade'],
+        "bottom": [],
+    },
     "bottomIsDealer":  {
         "left": ['pass'],
         "top": ['pass'],
