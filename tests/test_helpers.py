@@ -1945,7 +1945,7 @@ class getHasPartnerOpened(unittest.TestCase):
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'Anns')
-        self.expected = None
+        self.expected = False
         self.assertEqual(self.expected, self.actual) 
     def test_false(self):
         self.biddingRelative = {
@@ -1980,6 +1980,39 @@ class getHasPartnerOpened(unittest.TestCase):
         self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'LeftPlayer')
         self.expected = False
         self.assertEqual(self.expected, self.actual) 
+    def test_false_4(self):
+        self.biddingRelative = {
+            "left": ['Two Club'],
+            "top": ['pass'],
+            "right": ['pass'],
+            "bottom": [],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'LeftPlayer')
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+    def test_false_5(self):
+        self.biddingRelative = {
+            "left": ['Two Club'],
+            "top": ['pass'],
+            "right": ['Two Diamond'],
+            "bottom": [],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'LeftPlayer')
+        self.expected = False
+        self.assertEqual(self.expected, self.actual) 
+    def test_true_3(self):
+        self.biddingRelative = {
+            "left": ['Two Club'],
+            "top": ['pass'],
+            "right": ['Two Diamond'],
+            "bottom": [],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'RightPlayer')
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)   
     def test_true(self):
         self.biddingRelative = {
             "left": ['Two No Trump', 'double'],
@@ -2000,7 +2033,7 @@ class getHasPartnerOpened(unittest.TestCase):
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'TopPlayer')
-        self.expected = None
+        self.expected = False
         self.assertEqual(self.expected, self.actual) 
     def test_length_0(self):
         self.biddingRelative = {
@@ -2011,7 +2044,7 @@ class getHasPartnerOpened(unittest.TestCase):
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getHasPartnerOpened(self.bids, self.seatingRelative, 'TopPlayer')
-        self.expected = None
+        self.expected = False
         self.assertEqual(self.expected, self.actual) 
     def test_length_3(self):
         self.biddingRelative = {
