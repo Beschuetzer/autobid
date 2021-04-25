@@ -2904,8 +2904,11 @@ class getHasOtherTeamOpenedWithWeakTwo(unittest.TestCase):
             "right": "RightPlayer",
         }
     
+    def tearDown(self) -> None:
+        print(f"self.bids = {self.bids}")
+
+    
     def test_false_1(self):
-        self.username = 'RightPlayer'
         self.biddingRelative = {
             "left": ['One Club'],
             "top": ['Two Heart'],
@@ -2913,11 +2916,22 @@ class getHasOtherTeamOpenedWithWeakTwo(unittest.TestCase):
             "bottom": ['pass'],
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
-        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.username, self.bids, self.seatingRelative)
-        self.expected = True
+        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.bids)
+        self.expected = False
         self.assertEqual(self.expected, self.actual)
-    def test_false_1(self):
-        self.username = 'RightPlayer'
+    def test_false_2(self):
+        self.biddingRelative = {
+            "left": ['One No Trump', 'Two No Trump'],
+            "top": ['pass', 'pass'],
+            "right": ['Two Spade', 'Three Spade'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.bids)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+
+    def test_true_1(self):
         self.biddingRelative = {
             "left": ['pass'],
             "top": ['Two Club'],
@@ -2925,13 +2939,12 @@ class getHasOtherTeamOpenedWithWeakTwo(unittest.TestCase):
             "bottom": ['pass'],
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
-        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.username, self.bids, self.seatingRelative)
-        self.expected = True
+        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.bids)
+        self.expected = "TopPlayer"
         self.assertEqual(self.expected, self.actual)
         
 
-    def test_true_1(self):
-        self.username = 'RightPlayer'
+    def test_true_2(self):
         self.biddingRelative = {
             "left": ['pass'],
             "top": ['Two Heart'],
@@ -2939,8 +2952,19 @@ class getHasOtherTeamOpenedWithWeakTwo(unittest.TestCase):
             "bottom": ['pass'],
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
-        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.username, self.bids, self.seatingRelative)
-        self.expected = False
+        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.bids)
+        self.expected = "TopPlayer"
+        self.assertEqual(self.expected, self.actual)
+    def test_true_3(self):
+        self.biddingRelative = {
+            "left": ['pass', 'Two No Trump'],
+            "top": ['pass', 'pass'],
+            "right": ['Two Spade', 'Three Spade'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.bids)
+        self.expected = "RightPlayer"
         self.assertEqual(self.expected, self.actual)
 
 class getPartnersCurrentContractBidFromBidding(unittest.TestCase):

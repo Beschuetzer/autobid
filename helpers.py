@@ -924,12 +924,20 @@ def getCurrentContractBidFromBidding(bidding):
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return bid[1]
 
-def getWasFirstOpeningBidATwoLevelBid(biddingAbsolute, username):
+def getWasFirstOpeningBidATwoLevelBid(biddingAbsolute):
     '''
-
+    inputs:
+        biddingAbsolute = an array of arrays representing the bids to consider (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+    returns:
+        the username who made the first non-pass, non-double bid if it was a two level bid (two club included), false otherwise
     '''
+    for bid in biddingAbsolute:
+        print(f"bid[1] = {bid[1]}")
+        if not re.search('pass', bid[1], re.IGNORECASE) and  not re.search('double', bid[1], re.IGNORECASE): 
+            if re.search('two', bid[1], re.IGNORECASE): return bid[0]
+            return False
 
-    #check if any bids before username's first bid were a weak two bid
+    return False
 
 def getPartnersCurrentContractBidFromBidding(username, biddingAbsolute, seatingRelative):
     '''
