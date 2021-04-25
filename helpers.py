@@ -242,32 +242,49 @@ def getUsernamesPartner(username, seatingRelative):
     except:
         return "Error in getUsernamesPartner"
 
-def getHasPartnerOpened(biddingRelative, biddingAbsolute, username):
+def getHasPartnerOpened(biddingAbsolute, seatingRelative, username):
     '''
     inputs:
         biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
         username = string of the user whose partner is to be checked
     returns ------------------------------ 
-        true if username's partner has mentioned a bid that is a suit, no trump, or a double and false otherwise
+        true if username's partner bid something other than pass before username did unless that bid was a double that wansn't their first bid
+
     '''
-    print(f"username = {username}")
-    print(f"biddingAbsolute = {biddingAbsolute}")
     indexOfUsersLastBid = getIndexOfNthBid(username, biddingAbsolute, -1)
-    print(f"indexOfUsersLastBid = {indexOfUsersLastBid}")
     if indexOfUsersLastBid is None:
         return None
 
-    biddingUpToUsersFirstBid = biddingAbsolute[:indexOfUsersLastBid]
+    indexOfUsersFirstNonPassBid = -1
+    i = 0
+    for bid in biddingAbsolute:
+        if bid[0] == username:
+            if not re.search('pass', bid[1], re.IGNORECASE):
+                indexOfUsersFirstNonPassBid = i
+                break
+        i+=1
 
-    print(f"indexOfUsersLastBid = {indexOfUsersLastBid}")
-    print(f"biddingUpToUsersFirstBid = {biddingUpToUsersFirstBid}")
-    if len(biddingUpToUsersFirstBid) <= 1:
+    partnersNthBid = 0
+    usernamesPartner = getUsernamesPartner(username, seatingRelative)
+    if indexOfUsersFirstNonPassBid == -1:
+        for bid in biddingAbsolute:
+            if bid[0] == usernamesPartner:
+                partnersNthBid += 1
+                if not re.search('pass', bid[1], re.IGNORECASE):
+                    if partnersNthBid > 1 and re.search('double', bid[1], re.IGNORECASE): continue
+
+                    return True
         return False
-        
-    if len(biddingUpToUsersFirstBid) >=2 and not re.search('pass', biddingUpToUsersFirstBid[-2][1], re.IGNORECASE):
-        return True
 
-    return False
+    else:
+        biddingUpToUsersFirstNonPassBid = biddingAbsolute[:indexOfUsersFirstNonPassBid]
+
+        for bid in biddingUpToUsersFirstNonPassBid:
+            if bid[0] == usernamesPartner:
+                if not re.search('pass', bid[1], re.IGNORECASE):
+                    return True
+        return False
 
 def getBiddingHistory(biddingAbsolute):
     '''
@@ -774,7 +791,7 @@ def getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelativ
 
     #otherwise use responding total
     distributionPoints = -1;
-    hasPartnerOpened = getHasPartnerOpened(biddingRelative, biddingAbsolute, seatingRelative['bottom'])
+    hasPartnerOpened = getHasPartnerOpened(biddingAbsolute, seatingRelative, seatingRelative['bottom'])
     
     getShouldCalculateRespondingPoints(biddingAbsolute)
     print('hasPartnerOpened = {0}'.format(hasPartnerOpened))

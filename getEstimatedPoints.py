@@ -291,7 +291,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         print('currentContractBidForUser = {0}'.format(currentContractBidForUser))
 
         indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, biddingAbsolute, 1)
-        hasPartnerOpened = helpers.getHasPartnerOpened(biddingRelative, biddingAbsolute, username)
+        hasPartnerOpened = helpers.getHasPartnerOpened(biddingRelative, biddingAbsolute, seatingRelative, username)
         firstBid = biddingRelative[location][0]
         secondBid = ''
         lastBid = ''
