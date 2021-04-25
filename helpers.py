@@ -202,19 +202,24 @@ def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
         true if username's partner bid double as their first bid and the bid after that was pass otherwise false
     '''
 
-    #first get the user
-    
-    partnersUsername = getUsernamesPartner(username, seatingRelative) 
-    indexOfPartnersFirstBid = getIndexOfNthBid(partnersUsername, biddingAbsolute, 1)
-    partnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid]
-    bidAfterPartnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid + 1]
+    try:
+        partnersUsername = getUsernamesPartner(username, seatingRelative) 
+        indexOfPartnersFirstBid = getIndexOfNthBid(partnersUsername, biddingAbsolute, 1)
+        partnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid]
+        bidAfterPartnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid + 1]
 
-    print(f"username = {username}")
-    print(f"seatingRelative = {seatingRelative}")
-    print(f"partnersUsername = {partnersUsername}")
+        print(f"username = {username}")
+        print(f"seatingRelative = {seatingRelative}")
+        print(f"partnersUsername = {partnersUsername}")
+        print(f"indexOfPartnersFirstBid = {indexOfPartnersFirstBid}")
+        print(f"biddingAbsolute = {biddingAbsolute}")
+        print(f"partnersFirstBid = {partnersFirstBid}")
+        print(f"bidAfterPartnersFirstBid = {bidAfterPartnersFirstBid}")
 
-    if re.search('double', partnersFirstBid, re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid, re.IGNORECASE): return True
-    return False
+        if re.search('double', partnersFirstBid[1], re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid[1], re.IGNORECASE): return True
+        return False
+    except:
+        return 'Error in getWasForcedToBid'
 
 def getUsernamesPartner(username, seatingRelative):
     '''
