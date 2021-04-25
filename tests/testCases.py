@@ -122,6 +122,12 @@ biddingRelatives = {
         "right": ['Two Spade'],
         "bottom": [],
     },
+    "weakTwo6":  {
+        "left": ['Pass'],
+        "top": ['Two Diamond'],
+        "right": ['Two Spade'],
+        "bottom": [],
+    },
     "weakThree1": {
         "left": [],
         "top": ['Three Diamond'],

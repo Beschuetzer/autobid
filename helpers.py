@@ -924,6 +924,13 @@ def getCurrentContractBidFromBidding(bidding):
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return bid[1]
 
+def getWasFirstOpeningBidATwoLevelBid(biddingAbsolute, username):
+    '''
+
+    '''
+
+    #check if any bids before username's first bid were a weak two bid
+
 def getPartnersCurrentContractBidFromBidding(username, biddingAbsolute, seatingRelative):
     '''
     inputs:

@@ -2895,6 +2895,54 @@ class getHighCardPointValuesInEachSuit(unittest.TestCase):
          }
         self.assertEqual(actual, expected)
 
+class getHasOtherTeamOpenedWithWeakTwo(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+    
+    def test_false_1(self):
+        self.username = 'RightPlayer'
+        self.biddingRelative = {
+            "left": ['One Club'],
+            "top": ['Two Heart'],
+            "right": ['Two Spade'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.username, self.bids, self.seatingRelative)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    def test_false_1(self):
+        self.username = 'RightPlayer'
+        self.biddingRelative = {
+            "left": ['pass'],
+            "top": ['Two Club'],
+            "right": ['Two Spade'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.username, self.bids, self.seatingRelative)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+        
+
+    def test_true_1(self):
+        self.username = 'RightPlayer'
+        self.biddingRelative = {
+            "left": ['pass'],
+            "top": ['Two Heart'],
+            "right": ['Two Spade'],
+            "bottom": ['pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getWasFirstOpeningBidATwoLevelBid(self.username, self.bids, self.seatingRelative)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+
 class getPartnersCurrentContractBidFromBidding(unittest.TestCase):
     def setUp(self) -> None:
         self.seatingRelative = {

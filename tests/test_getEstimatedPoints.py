@@ -565,6 +565,33 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         }
         self.assertDictEqual(self.actual, self.expected)
     
+    def test_set_WeakTwo_6(self):
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['weakTwo6']
+        
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
+        self.expected = {
+           "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['special']['weakTwo']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(self.actual, self.expected)
+    
     def test_set_Weak_Three_Bid_1(self):
         biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['weakThree1']
         
