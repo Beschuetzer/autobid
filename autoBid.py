@@ -100,7 +100,7 @@ bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew
 hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40,42]]
 #endregion
 
-def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingConvention):
+def autoBid(biddingAbsolute, hand, scoring, seatingInput, spot, clientPointCountingConvention):
     '''
     inputs: ------------------------------------------------------------------------
         biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
@@ -127,6 +127,11 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
         "best" bid for current situation in the form of a string (e.g. 'One Club', 'Two No Trump', 'Pass', etc... )
     '''
     #region Initialization (Getting Values and Dicts to work with)
+    seating['north'] = seatingInput['north']
+    seating['south'] = seatingInput['south']
+    seating['east'] = seatingInput['east']
+    seating['west'] = seatingInput['west']
+    
     isFirstBid = len(biddingAbsolute) < 4
     partnerHasBid = len(biddingAbsolute) >= 2
     currentContractBid = helpers.getCurrentContractBid(biddingAbsolute)
@@ -142,6 +147,8 @@ def autoBid(biddingAbsolute, hand, scoring, seating, spot, clientPointCountingCo
     estimatedPoints = getEstimatedPoints.getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute, seatingRelative)
     estimatedSuitCounts = getEstimatedSuitCounts.getEstimatedSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
     partnersBids = biddingRelative['top']
+
+    print(estimatedPoints)
     #endregion
 
     #region get hand points

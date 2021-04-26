@@ -131,15 +131,15 @@ def getIndexOfNthBid(username, biddingAbsolute, nthBid):
     i = 0
     matchCount = 0
 
+  
     if nthBid < 0:
-        biddingAbsolute = biddingAbsolute[::-1]
-        for bid in biddingAbsolute:
-            if bid[0] == username:
-                matchCount += 1
-                nthBidToMatch = len(biddingAbsolute) - i -1
-                if matchCount == -nthBid:
-                    return nthBidToMatch
-            i += 1 
+        nthBidCounter = 0
+        for i in range(-1, -(len(biddingAbsolute) + 1), -1):
+            bid = biddingAbsolute[i]
+            if bid[0] == username: 
+                nthBidCounter += 1
+                if nthBidCounter == -nthBid: 
+                    return len(biddingAbsolute) + i
     else:
         for bid in biddingAbsolute:
             if bid[0] == username:
@@ -885,14 +885,14 @@ def getOpeningDistributionPoints(suitCounts):
         an integer representing total opening distribution that the analyzing player has
     '''
     points = 0
-    for suit in suitCounts:
-        if suitCounts[suit] == 0:
+    for suit, suitCount in suitCounts.items():
+        if suitCount == 0:
             points += distributionPointValues['shortness']['void']
-        elif suitCounts[suit] == 1:
+        elif suitCount == 1:
             points += distributionPointValues['shortness']['singleton']
-        elif suitCounts[suit] == 2:
+        elif suitCount == 2:
             points += distributionPointValues['shortness']['doubleton']
-        elif suitCounts[suit] > 4:
+        elif suitCount > 4:
             points += suitCounts[suit] - 4
 
     return points    

@@ -43,3 +43,6 @@ print(bids[:2])
 a_dictionary = {"a": 1, "b": 2, "c": 0, }
 max_key = max(a_dictionary, key=a_dictionary.get)
 print(max_key)
+
+test = [1,2,3,4,5,6]
+for i in range(-1, len(test))
