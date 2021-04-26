@@ -224,6 +224,12 @@ biddingRelatives = {
         "right": ['Pass'],
         "bottom": [],
     },
+    "bidSameAsOpponent": {
+        "left": ['pass'],
+        "top": ['One No Trump'],
+        "right": ['Two Heart'],
+        "bottom": ['One Heart'],
+    },
   },
 
   "twoBidOpportunities": {

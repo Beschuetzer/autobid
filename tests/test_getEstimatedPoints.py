@@ -753,6 +753,33 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         }
         self.assertDictEqual(self.actual, self.expected)
 
+    def test_bid_same_suit_as_opponent(self):
+        #my assumption that bottom would always have one fewer bids than the others was incorrect as it will be the same if it is bottom's deal:
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['bidSameAsOpponent']
+        
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max']
+            },
+            "top": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['max']
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        self.assertDictEqual(self.actual, self.expected)
+
+
     def test_set_Partner_Opens_Two_Clubs_Two_Diamond_Response(self):
         biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['twoClubsTwoDiamondResponse']
         

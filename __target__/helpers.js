@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-04-26 12:22:55
+// Transcrypt'ed from Python, 2021-04-26 12:39:47
 var autoBid = {};
 var getEstimatedPoints = {};
 var math = {};
@@ -88,13 +88,20 @@ export var getIndexOfNthBid = function (username, biddingAbsolute, nthBid) {
 	if (nthBid < 0) {
 		var nthBidCounter = 0;
 		for (var i of range (-(1), -(len (biddingAbsolute) + 1), -(1))) {
-			var bid = biddingAbsolute [i];
+			var adjustedI = len (biddingAbsolute) + i;
+			var bid = biddingAbsolute [adjustedI];
 			if (bid [0] == username) {
 				nthBidCounter += 1;
 				if (nthBidCounter == -(nthBid)) {
-					return len (biddingAbsolute) + i;
+					return adjustedI;
 				}
 			}
+		}
+		if (len (biddingAbsolute) == 0) {
+			return 0;
+		}
+		else {
+			return len (biddingAbsolute) - 1;
 		}
 	}
 	else {
@@ -743,7 +750,7 @@ export var getHasSomeoneOpenedTwoClubs = function (biddingAbsolute, biddingRelat
 	var falseTuple = tuple ([false, null]);
 	var shouldContinue = false;
 	var twoClubBid = null;
-	for (var location of biddingRelative) {
+	for (var [location, py_values] of biddingRelative.py_items ()) {
 		if (len (biddingRelative [location]) == 0) {
 			continue;
 		}

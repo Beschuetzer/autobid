@@ -135,11 +135,12 @@ def getIndexOfNthBid(username, biddingAbsolute, nthBid):
     if nthBid < 0:
         nthBidCounter = 0
         for i in range(-1, -(len(biddingAbsolute) + 1), -1):
-            bid = biddingAbsolute[i]
+            adjustedI = len(biddingAbsolute) + i
+            bid = biddingAbsolute[adjustedI]
             if bid[0] == username: 
                 nthBidCounter += 1
                 if nthBidCounter == -nthBid: 
-                    return len(biddingAbsolute) + i
+                    return adjustedI
         
         if len(biddingAbsolute) == 0: return 0
         else: return len(biddingAbsolute) - 1
@@ -1077,7 +1078,7 @@ def getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelativ
     shouldContinue = False;
     twoClubBid = None
 
-    for location in biddingRelative: 
+    for location, values in biddingRelative.items(): 
         if len(biddingRelative[location]) == 0:
             continue
 
