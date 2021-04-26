@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-04-26 11:59:09
+// Transcrypt'ed from Python, 2021-04-26 12:22:55
 var autoBid = {};
 var getEstimatedPoints = {};
 var math = {};
@@ -86,18 +86,15 @@ export var getIndexOfNthBid = function (username, biddingAbsolute, nthBid) {
 	var i = 0;
 	var matchCount = 0;
 	if (nthBid < 0) {
-		print ('{}{}'.format (biddingAbsolute));
-		biddingAbsolute.reverse ();
-		print ('{}{}'.format (biddingAbsolute));
-		for (var bid of biddingAbsolute) {
+		var nthBidCounter = 0;
+		for (var i of range (-(1), -(len (biddingAbsolute) + 1), -(1))) {
+			var bid = biddingAbsolute [i];
 			if (bid [0] == username) {
-				matchCount += 1;
-				var nthBidToMatch = (len (biddingAbsolute) - i) - 1;
-				if (matchCount == -(nthBid)) {
-					return nthBidToMatch;
+				nthBidCounter += 1;
+				if (nthBidCounter == -(nthBid)) {
+					return len (biddingAbsolute) + i;
 				}
 			}
-			i += 1;
 		}
 	}
 	else {

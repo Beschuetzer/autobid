@@ -140,6 +140,9 @@ def getIndexOfNthBid(username, biddingAbsolute, nthBid):
                 nthBidCounter += 1
                 if nthBidCounter == -nthBid: 
                     return len(biddingAbsolute) + i
+        
+        if len(biddingAbsolute) == 0: return 0
+        else: return len(biddingAbsolute) - 1
     else:
         for bid in biddingAbsolute:
             if bid[0] == username:

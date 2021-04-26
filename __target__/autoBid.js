@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-04-26 11:59:09
+// Transcrypt'ed from Python, 2021-04-26 12:22:54
 var getEstimatedPoints = {};
 var getEstimatedSuitCounts = {};
 var helpers = {};
