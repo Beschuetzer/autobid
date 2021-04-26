@@ -2,7 +2,6 @@
     Getting the estimated points of each player based on their first two bids
 '''
 #TODO: make sure suit count estimates from bidding is complete
-from tests.test_helpers import getCurrentActualBid, getIsJumpShift
 import helpers, re
 
 locations = {
