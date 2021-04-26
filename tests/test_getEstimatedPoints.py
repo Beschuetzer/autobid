@@ -1666,7 +1666,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['special']['weakTwo']['max'],
             },
             "right": {
-                "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['min'],
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max'],
             },
             "bottom": {
@@ -1716,7 +1716,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['special']['weakTwo']['max'],
             },
             "right": {
-                "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['min'],
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max'],
             },
             "bottom": {
@@ -1766,7 +1766,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['special']['weakThree']['max'],
             },
             "right": {
-                "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['min'],
+                "min": getEstimatedPoints.values['special']['weakThree']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max'],
             },
             "bottom": {
@@ -1816,7 +1816,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['special']['weakThree']['max'],
             },
             "right": {
-                "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['min'],
+                "min": getEstimatedPoints.values['special']['weakThree']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max'],
             },
             "bottom": {
