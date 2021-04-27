@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-04-26 19:34:04
+// Transcrypt'ed from Python, 2021-04-26 20:15:41
 var getEstimatedPoints = {};
 var getEstimatedSuitCounts = {};
 var helpers = {};
@@ -37,6 +37,7 @@ export var scoring = dict ([['northSouth', dict ([['aboveTheLine', 0], ['belowTh
 export var bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', 'Three Club']];
 export var hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40, 42]];
 export var autoBid = function (biddingAbsolute, hand, scoring, seatingInput, spot, clientPointCountingConvention) {
+	print ('{}{}'.format (estimatedScoringBounds));
 	seating ['north'] = seatingInput ['north'];
 	seating ['south'] = seatingInput ['south'];
 	seating ['east'] = seatingInput ['east'];
@@ -53,7 +54,7 @@ export var autoBid = function (biddingAbsolute, hand, scoring, seatingInput, spo
 	var estimatedPoints = getEstimatedPoints.getEstimatedPoints (estimatedScoringBounds, biddingRelative, biddingAbsolute, seatingRelative);
 	var estimatedSuitCounts = getEstimatedSuitCounts.getEstimatedSuitCounts (biddingRelative, biddingAbsolute, seatingRelative);
 	var partnersBids = biddingRelative ['top'];
-	print (estimatedPoints);
+	print ('{}{}'.format (estimatedPoints));
 	var highCardPoints = helpers.getHighCardPoints (hand, clientPointCountingConvention);
 	var distributionPoints = helpers.getDistributionPoints (hand, biddingAbsolute, biddingRelative, seatingRelative, analyzingPlayerSuitCounts);
 	var totalPoints = highCardPoints + distributionPoints;

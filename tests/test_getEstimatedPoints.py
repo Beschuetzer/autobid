@@ -1049,6 +1049,60 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         print('expected = {0}'.format(self.expected))
         print('self.actual ={0}'.format(self.actual))
 
+    #NOTE: This is an interesting case that we kind of overlooked
+    def test_update_two_club_response_check_issue(self):
+        biddingRelative = {
+            "right": ['One Spade', 'Two Diamond'],
+            "bottom": ['One No Trump'],
+            "left": ['pass'],
+            "top": ['Two Club'],
+        }
+
+        self.estimatedScoringBounds = {
+            "left": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": getEstimatedPoints.values['special']['weakTwo']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.expected = {
+            "left": {
+                "min": self.estimatedScoringBounds['left']['min'],
+                "max": self.estimatedScoringBounds['left']['max']
+            },
+            "top": {
+                "min": self.estimatedScoringBounds['top']['min'],
+                "max": self.estimatedScoringBounds['top']['max']
+            },
+            "right": {
+                "min": self.estimatedScoringBounds['right']['min'],
+                "max": self.estimatedScoringBounds['right']['max']
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+
     def test_update_One_Spade_first_two_NT_second(self):
         biddingRelative = {
             "right": ['One Spade', 'Two No Trump'],
@@ -1100,7 +1154,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.actual =getEstimatedPoints.getEstimatedPoints(self.estimatedScoringBounds, biddingRelative, self.bids, self.seatingRelative)
         
         self.assertDictEqual(self.actual, self.expected)
-
 
     def test_update_Double_First_Pass_Second(self):
         biddingRelative = {

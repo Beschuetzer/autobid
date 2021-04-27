@@ -1179,49 +1179,46 @@ def getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, seatingR
     returns:------------------------------
         the bidding array e.g. [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ...] based on inputs
     '''
-    try:
-        locations = getEstimatedPoints.locations
-        locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
+    # try:
+    print(f"biddingRelative = {biddingRelative}")
+    print(f"seatingRelative = {seatingRelative}")
+    locations = getEstimatedPoints.locations
+    locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
 
-        dealer = getDealerLocation(biddingRelative)
+    dealer = getDealerLocation(biddingRelative)
 
-        #get new order based on dealer
-        locationOrderToUse = locationOrder
-        if dealer != locations['left']:
-            index = locationOrder.index(locations[dealer])
-            locationOrderToUse = locationOrder[index:] + locationOrder[:index]
+    #get new order based on dealer
+    locationOrderToUse = locationOrder
+    if dealer != locations['left']:
+        index = locationOrder.index(locations[dealer])
+        locationOrderToUse = locationOrder[index:] + locationOrder[:index]
 
-        #iterate through each location n times where n is the # of opportunities the dealer has had to bid and add bids in order they were made 
-        bids = []
+    #iterate through each location n times where n is the # of opportunities the dealer has had to bid and add bids in order they were made 
+    print(f"dealer = {dealer}")
+    bids = []
+    for i in range(0, len(biddingRelative[dealer])):
+        print(1)
+        for j in range(0, len(locationOrderToUse)):
+            print(2)
+            locationToGet = locationOrderToUse[j]
+            try:
+                bidInQuestion = biddingRelative[locationToGet][i]   
+                print(3)
+            except:
+                break      
 
-        # print('dealer = {0}'.format(dealer))    
-        # print('locationOrderToUse = {0}'.format(locationOrderToUse))
-        for i in range(0, len(biddingRelative[dealer])):
+            if bidInQuestion is not None:
+                bids.append([seatingRelative[locationToGet], bidInQuestion])
+            else:
+                break
             
-            for j in range(0, len(locationOrderToUse)):
-                locationToGet = locationOrderToUse[j]
-                # print('locationToGet = {0}'.format(locationToGet))
+    if re.search('bottom', bids[-1][0], re.IGNORECASE):
+        bids = bids[:-1]
+    return bids
 
-                try:
-                    bidInQuestion = biddingRelative[locationToGet][i]   
-                except:
-                    break      
-
-                if bidInQuestion is not None:
-                    # print('bidInQuestion = {0}'.format(bidInQuestion))
-                    # print('seatingRelative[locationToGet] = {0}'.format(seatingRelative[locationToGet]))
-                    bids.append([seatingRelative[locationToGet], bidInQuestion])
-                    # print('bids = {0}'.format(bids))
-                else:
-                    break
-                
-        if re.search('bottom', bids[-1][0], re.IGNORECASE):
-            bids = bids[:-1]
-        return bids
-
-    except:
-        # print('error-----------')
-        return []
+    # except ValueError as error:
+    #     print('error-----------')
+    #     return []
 
 def getDealerLocation(biddingRelative):
     '''

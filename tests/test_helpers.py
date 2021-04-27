@@ -3731,7 +3731,26 @@ class getBiddingAbsoluteFromBiddingObjAndSeatingRelative(unittest.TestCase):
         print('expected = {0}'.format(expected))
         self.actual = actual
         self.assertListEqual(actual, expected)
+    def test_2(self):
+        self.biddingRelative = {
+            "right": ['One Spade', 'Two Heart'],
+            "bottom": ['One No Trump'],
+            "left": ['pass'],
+            "top": ['Two Diamond'],
+        }
 
+        self.expected = [
+            [self.seatingRelative['right'], 'One Spade'],
+            [self.seatingRelative['bottom'], 'One No Trump'],
+            [self.seatingRelative['left'], 'pass'],
+            [self.seatingRelative['top'], 'Two Diamond'],
+            [self.seatingRelative['right'], 'Two Heart'],
+        ]
+
+        self.actual = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        print('actual = {0}'.format(self.actual))
+        print('expected = {0}'.format(self.expected))
+        self.assertListEqual(self.actual, self.expected)
 class getHandFromHandDictionary(unittest.TestCase):
     def test_1(self):
         hand = {

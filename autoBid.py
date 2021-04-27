@@ -127,6 +127,7 @@ def autoBid(biddingAbsolute, hand, scoring, seatingInput, spot, clientPointCount
         "best" bid for current situation in the form of a string (e.g. 'One Club', 'Two No Trump', 'Pass', etc... )
     '''
     #region Initialization (Getting Values and Dicts to work with)
+    print(f"estimatedScoringBounds = {estimatedScoringBounds}")
     seating['north'] = seatingInput['north']
     seating['south'] = seatingInput['south']
     seating['east'] = seatingInput['east']
@@ -148,7 +149,7 @@ def autoBid(biddingAbsolute, hand, scoring, seatingInput, spot, clientPointCount
     estimatedSuitCounts = getEstimatedSuitCounts.getEstimatedSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
     partnersBids = biddingRelative['top']
 
-    print(estimatedPoints)
+    print(f"estimatedPoints = {estimatedPoints}")
     #endregion
 
     #region get hand points
