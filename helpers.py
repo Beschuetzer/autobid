@@ -1109,20 +1109,47 @@ def getPlayerHasOnlyPassed(playerBids):
 
     return True
 
-def getHasOtherTeamMentionedSameSuit(username, bid, biddingAbsolute, seatingRelative):
+def getHasOtherTeamMentionedSameSuit(location, usersBid, biddingAbsolute, seatingRelative):
     '''
     inputs:
+        location = string (e.g. 'top, 'left', 'right', or 'bottom')
+        usersBid = string (e.g. 'One Club', "Two Heart", etc)
         biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
-        bid = string (e.g. 'One Club', "Two Heart", etc)
-        username = string representing the name of the player being analyzed
+        seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
     returns:
         true if the other team has mentioned the same suit as bid's suit but at a lower level, false otherwise
     '''
-    
-    print(f"bid = {bid}")
+    try:
+        
+        print(f"bid = {bid}")
+        usernamesOpponents = getUsernamesOpponents(location, seatingRelative)
+        indexOfUserBid = autoBid.contracts.index(usersBid)
+        for i in range(len(biddingAbsolute)):
+            bid = biddingAbsolute[i]
+            indexOfBid = autoBid.contracts.index(bid)
+            if indexOfBid <  indexOfUserBid:
+                if bid[0] == username:
+                    return True
+    except:
+        return False
 
 
     return False
+
+def getUsernamesOpponents(location, seatingRelative):
+    '''
+    inputs:
+        location = string (e.g. 'top, 'left', 'right', or 'bottom')
+        seatingRelative = { "top": "TopPlayerName", "bottom": "BottomPlayerName", ... }
+    returns:
+        an array of location's opposing player usernames
+    '''
+    try:
+        leftUser = seatingRelative[getLocationAfterRotationsAround(location, 1)]
+        rightUser = seatingRelative[getLocationAfterRotationsAround(location, -1)]
+        return [leftUser, rightUser]
+    except:
+        return []
 
 def getHasTakenPartnerOutOfGameBid(username, biddingRelative, seatingRelative):
     '''

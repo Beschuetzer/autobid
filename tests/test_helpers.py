@@ -3403,6 +3403,7 @@ class getIsUsernamesFirstContractBidTheFirstContractBid(unittest.TestCase):
         self.assertEqual(self.expected, self.actual) 
     def test_true_1(self):
         self.username = "LeftPlayer"
+        self.location ="left"
         self.biddingRelative = {
             "left": ['One Diamond', 'pass'],
             "top": ['double', 'pass'],
@@ -3415,6 +3416,7 @@ class getIsUsernamesFirstContractBidTheFirstContractBid(unittest.TestCase):
         self.assertEqual(self.expected, self.actual)
     def test_true_2(self):
         self.username = "RightPlayer"
+        self.location = "right"
         self.biddingRelative = {
             "left": ['pass', 'pass'],
             "top": ['double', 'pass'],
@@ -3426,6 +3428,40 @@ class getIsUsernamesFirstContractBidTheFirstContractBid(unittest.TestCase):
         self.expected = True
         self.assertEqual(self.expected, self.actual)
 
+class getUsernamesOpponents(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "right": "RightPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+        }
+
+    def test_error(self):
+        self.location = "rights"
+        self.actual = helpers.getUsernamesOpponents(self.location, self.seatingRelative)
+        self.expected = []
+        self.assertListEqual(self.expected, self.actual) 
+    def test_1(self):
+        self.location = "right"
+        self.actual = helpers.getUsernamesOpponents(self.location, self.seatingRelative)
+        self.expected = ["BottomPlayer", "TopPlayer"]
+        self.assertListEqual(self.expected, self.actual) 
+    def test_2(self):
+        self.location = "bottom"
+        self.actual = helpers.getUsernamesOpponents(self.location, self.seatingRelative)
+        self.expected = ["LeftPlayer", "RightPlayer"]
+        self.assertListEqual(self.expected, self.actual) 
+    def test_3(self):
+        self.location = "left"
+        self.actual = helpers.getUsernamesOpponents(self.location, self.seatingRelative)
+        self.expected = ["TopPlayer", "BottomPlayer"]
+        self.assertListEqual(self.expected, self.actual) 
+    def test_4(self):
+        self.location = "right"
+        self.actual = helpers.getUsernamesOpponents(self.location, self.seatingRelative)
+        self.expected = ["BottomPlayer", "TopPlayer"]
+        self.assertListEqual(self.expected, self.actual) 
 class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
     def setUp(self) -> None:
         self.seatingRelative = {
@@ -3440,7 +3476,7 @@ class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
         print(f"self.bids = {self.bids}")
 
     def test_true_1(self):
-        self.username = "RightPlayer"
+        self.location = "right"
         self.bid = "Two Heart"
         self.biddingRelative = {
             "bottom": ['One Heart'],
@@ -3449,11 +3485,11 @@ class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
             "right": ['Two Heart'],
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
-        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.username, self.bid, self.bids, self.seatingRelative)
+        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.location, self.bid, self.bids, self.seatingRelative)
         self.expected = None
         self.assertEqual(self.expected, self.actual) 
     def test_true_2(self):
-        self.username = "RightPlayer"
+        self.location = "right"
         self.bid = "Two Heart"
         self.biddingRelative = {
             "bottom": ['One Heart', 'Two Spade'],
@@ -3462,11 +3498,11 @@ class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
             "right": ['Two Heart', 'pass'],
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
-        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.username, self.bid, self.bids, self.seatingRelative)
+        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.location, self.bid, self.bids, self.seatingRelative)
         self.expected = None
         self.assertEqual(self.expected, self.actual)
     def test_false_1(self):
-        self.username = "RightPlayer"
+        self.location = "right"
         self.bid = "Two Spade"
         self.biddingRelative = {
             "bottom": ['One Heart'],
@@ -3475,11 +3511,11 @@ class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
             "right": ['Two Heart'],
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
-        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.username, self.bid, self.bids, self.seatingRelative)
+        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.location, self.bid, self.bids, self.seatingRelative)
         self.expected = None
         self.assertEqual(self.expected, self.actual) 
     def test_false_2(self):
-        self.username = "TopPlayer"
+        self.location = "top"
         self.bid = "One Heart"
         self.biddingRelative = {
             "bottom": ['pass', 'Two Spade'],
@@ -3488,7 +3524,7 @@ class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
             "right": ['Two Heart', 'pass'],
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
-        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.username, self.bid, self.bids, self.seatingRelative)
+        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.location, self.bid, self.bids, self.seatingRelative)
         self.expected = None
         self.assertEqual(self.expected, self.actual)
 class getUsernameOfPlayerWhoHadFirstOpportunityToBid(unittest.TestCase):
