@@ -590,7 +590,7 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
             maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
         else: 
             wasFirstOpeningBidANthLevelBid = helpers.getWasFirstOpeningBidANthLevelBid(biddingAbsolute, 2)
-            hasOtherTeamMentionedSameSuit = helpers.getHasOtherTeamMentionedSameSuit(username, location, firstBid, biddingAbsolute, seatingRelative)
+            hasOtherTeamMentionedSameSuit = helpers.getHasOtherTeamMentionedSameSuit(location, firstBid, biddingAbsolute, seatingRelative)
 
             if (wasFirstOpeningBidANthLevelBid != False and  wasFirstOpeningBidANthLevelBid != username) or hasOtherTeamMentionedSameSuit:
                 minToUse = values['special']['weakTwo']['min']

@@ -361,6 +361,7 @@ def getTwoClubResponse(hand, biddingRelative, seatingRelative, totalOpeningPoint
             longestLength = len(suit)
 
     if totalOpeningPoints >= 13 and longestLength >= 7:
+        #TODO: need to finish implementing getHasTakenPartnerOutOfGameBid
         hasTakenPartnerOutOfGameBid = getHasTakenPartnerOutOfGameBid(seatingRelative['bottom'], biddingRelative, seatingRelative)
         if hasTakenPartnerOutOfGameBid: return 'Pass'
         return getNextBidInSuit(longestSuit, currentActualBid[1])
