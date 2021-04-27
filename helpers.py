@@ -1109,6 +1109,21 @@ def getPlayerHasOnlyPassed(playerBids):
 
     return True
 
+def getHasOtherTeamMentionedSameSuit(username, bid, biddingAbsolute, seatingRelative):
+    '''
+    inputs:
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        bid = string (e.g. 'One Club', "Two Heart", etc)
+        username = string representing the name of the player being analyzed
+    returns:
+        true if the other team has mentioned the same suit as bid's suit but at a lower level, false otherwise
+    '''
+    
+    print(f"bid = {bid}")
+
+
+    return False
+
 def getHasTakenPartnerOutOfGameBid(username, biddingRelative, seatingRelative):
     '''
     inputs:

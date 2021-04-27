@@ -3425,6 +3425,72 @@ class getIsUsernamesFirstContractBidTheFirstContractBid(unittest.TestCase):
         self.actual = helpers.getIsUsernamesFirstContractBidTheFirstContractBid(self.username, self.bids)
         self.expected = True
         self.assertEqual(self.expected, self.actual)
+
+class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+    def tearDown(self) -> None:
+        print(f"self.actual = {self.actual}")
+        print(f"self.expected = {self.expected}")
+        print(f"self.bids = {self.bids}")
+
+    def test_true_1(self):
+        self.username = "RightPlayer"
+        self.bid = "Two Heart"
+        self.biddingRelative = {
+            "bottom": ['One Heart'],
+            "left": ['pass'],
+            "top": ['One No Trump'],
+            "right": ['Two Heart'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.username, self.bid, self.bids, self.seatingRelative)
+        self.expected = None
+        self.assertEqual(self.expected, self.actual) 
+    def test_true_2(self):
+        self.username = "RightPlayer"
+        self.bid = "Two Heart"
+        self.biddingRelative = {
+            "bottom": ['One Heart', 'Two Spade'],
+            "left": ['pass', 'pass'],
+            "top": ['One No Trump', 'pass'],
+            "right": ['Two Heart', 'pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.username, self.bid, self.bids, self.seatingRelative)
+        self.expected = None
+        self.assertEqual(self.expected, self.actual)
+    def test_false_1(self):
+        self.username = "RightPlayer"
+        self.bid = "Two Spade"
+        self.biddingRelative = {
+            "bottom": ['One Heart'],
+            "left": ['pass'],
+            "top": ['One No Trump'],
+            "right": ['Two Heart'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.username, self.bid, self.bids, self.seatingRelative)
+        self.expected = None
+        self.assertEqual(self.expected, self.actual) 
+    def test_false_2(self):
+        self.username = "TopPlayer"
+        self.bid = "One Heart"
+        self.biddingRelative = {
+            "bottom": ['pass', 'Two Spade'],
+            "left": ['pass', 'pass'],
+            "top": ['One Heart', 'pass'],
+            "right": ['Two Heart', 'pass'],
+        }
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.username, self.bid, self.bids, self.seatingRelative)
+        self.expected = None
+        self.assertEqual(self.expected, self.actual)
 class getUsernameOfPlayerWhoHadFirstOpportunityToBid(unittest.TestCase):
     def tearDown(self) -> None:
         print(f"self.actual = {self.actual}")

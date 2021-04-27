@@ -363,7 +363,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                 if len(biddingRelative[location]) == 1 or username == personWhoOpenedTwoClubs:
                     print('is person who opened or length greater than 1')
                     print(f"firstBid = {firstBid}")
-                    minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, True)
+                    minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, True)
 
                 else:
                     print('more than 1 bid and not user who opened')
@@ -374,7 +374,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                         minToUse = values['isTeamsFirstBid']['playerPasses']['min']
                         maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
                     else:
-                        minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, usersFirstContractBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
+                        minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, usersFirstContractBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
 
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
@@ -392,7 +392,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
                 
             else: 
                 print('one opportunity else-----------')
-                minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
+                minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
 
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
@@ -526,7 +526,7 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
     print('')
     return estimatedScoring
 
-def setInitialBounds(username, location, biddingAbsolute, biddingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False):
+def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False):
     '''
     inputs--------------------------------------------------:
         location = a string representing relative locations: ('right', 'left',...)
@@ -590,8 +590,9 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, first
             maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
         else: 
             wasFirstOpeningBidANthLevelBid = helpers.getWasFirstOpeningBidANthLevelBid(biddingAbsolute, 2)
+            hasOtherTeamMentionedSameSuit = helpers.getHasOtherTeamMentionedSameSuit(username, firstBid, biddingAbsolute, seatingRelative)
 
-            if wasFirstOpeningBidANthLevelBid != False and  wasFirstOpeningBidANthLevelBid != username:
+            if (wasFirstOpeningBidANthLevelBid != False and  wasFirstOpeningBidANthLevelBid != username) or hasOtherTeamMentionedSameSuit:
                 minToUse = values['special']['weakTwo']['min']
                 maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
             else:
