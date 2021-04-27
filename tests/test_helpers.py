@@ -3486,7 +3486,7 @@ class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.location, self.bid, self.bids, self.seatingRelative)
-        self.expected = None
+        self.expected = True
         self.assertEqual(self.expected, self.actual) 
     def test_true_2(self):
         self.location = "right"
@@ -3499,11 +3499,11 @@ class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.location, self.bid, self.bids, self.seatingRelative)
-        self.expected = None
+        self.expected = True
         self.assertEqual(self.expected, self.actual)
     def test_false_1(self):
-        self.location = "right"
-        self.bid = "Two Spade"
+        self.location = "bottom"
+        self.bid = "One Heart"
         self.biddingRelative = {
             "bottom": ['One Heart'],
             "left": ['pass'],
@@ -3512,7 +3512,7 @@ class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.location, self.bid, self.bids, self.seatingRelative)
-        self.expected = None
+        self.expected = False
         self.assertEqual(self.expected, self.actual) 
     def test_false_2(self):
         self.location = "top"
@@ -3525,7 +3525,7 @@ class getHasOtherTeamMentionedSameSuit(unittest.TestCase):
         }
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getHasOtherTeamMentionedSameSuit(self.location, self.bid, self.bids, self.seatingRelative)
-        self.expected = None
+        self.expected = False
         self.assertEqual(self.expected, self.actual)
 class getUsernameOfPlayerWhoHadFirstOpportunityToBid(unittest.TestCase):
     def tearDown(self) -> None:

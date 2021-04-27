@@ -187,6 +187,8 @@ def getIsJumpshift(currentContractBid, usersBid):
     '''
     # print(f"currentContractBid = {currentContractBid}")
     # print(f"usersBid = {usersBid}")
+    print(f"currentContractBid = {currentContractBid}")
+    print(f"usersBid = {usersBid}")
     if not currentContractBid or currentContractBid == '' or re.search('pass', usersBid, re.IGNORECASE) or re.search('double', usersBid, re.IGNORECASE) or re.search('pass', currentContractBid, re.IGNORECASE) or re.search('double', currentContractBid, re.IGNORECASE):
         return False
     
@@ -196,6 +198,9 @@ def getIsJumpshift(currentContractBid, usersBid):
     indexOfCurrentActualBid = autoBid.contracts.index(currentContractBid)
     indexOfUsersBid = autoBid.contracts.index(usersBid)
 
+    print(f"indexOfCurrentActualBid = {indexOfCurrentActualBid}")
+    print(f"indexOfUsersBid = {indexOfUsersBid}")
+    print(f"abs(indexOfCurrentActualBid - indexOfUsersBid) = {abs(indexOfCurrentActualBid - indexOfUsersBid)}")
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
 def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
@@ -1120,22 +1125,20 @@ def getHasOtherTeamMentionedSameSuit(location, usersBid, biddingAbsolute, seatin
     returns:
         true if the other team has mentioned the same suit as bid's suit but at a lower level, false otherwise
     '''
-    try:
-        
-        print(f"bid = {bid}")
-        usernamesOpponents = getUsernamesOpponents(location, seatingRelative)
-        indexOfUserBid = autoBid.contracts.index(usersBid)
-        for i in range(len(biddingAbsolute)):
-            bid = biddingAbsolute[i]
-            indexOfBid = autoBid.contracts.index(bid)
-            if indexOfBid <  indexOfUserBid:
-                if bid[0] == username:
-                    return True
-    except:
-        return False
-
+    # try:
+    usernamesOpponents = getUsernamesOpponents(location, seatingRelative)
+    indexOfUserBid = autoBid.contracts.index(usersBid)
+    for i in range(len(biddingAbsolute)):
+        bid = biddingAbsolute[i]
+        if not getIsBidAContractBid(bid[1]): continue
+        indexOfBid = autoBid.contracts.index(bid[1])
+        if indexOfBid <  indexOfUserBid:
+            if bid[0] in usernamesOpponents:
+                return True
 
     return False
+    # except:
+    #     return False
 
 def getUsernamesOpponents(location, seatingRelative):
     '''

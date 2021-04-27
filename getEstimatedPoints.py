@@ -303,10 +303,8 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(biddingRelative, seatingRelative, username)
 
         isFirstBidJumpshift = False
-        isLastBidJumpshift = False
         try: 
-            isFirstBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser[1], firstBid)
-            isLastBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser[1], lastBid)
+            isFirstBidJumpshift = helpers.getIsJumpshift(currentContractBidForUser, firstBid)
 
             #TODO: do we need to check if the user made a bid that is a jumpshift ever and then have entirely separate logic in that case?
             isAnyBidJumpshift = helpers.getHasPlayerJumpshifted(username, playersBids, biddingAbsolute)
@@ -317,13 +315,12 @@ def getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute,
         #endregion
         #region Debugging (remove when done)
         print('currentContractBid = {0}'.format(currentContractBidForUser))
-        # print('players = {0}'.format(biddingAbsolute[indexOfUsersFirstBid][1]))
+        # print('players = {0}'.format(biddingAbsolute[indexOfUsersFirstBid]))
         print('biddingObjectRelative = {0}'.format(biddingRelative))
         print('firstBid = {0}'.format(firstBid)) 
 
         print('hasPartnerOpened = {0}'.format(hasPartnerOpened))
         print('isFirstBidJumpShift = {0}'.format(isFirstBidJumpshift))
-        print('isLastBidJumpShift = {0}'.format(isLastBidJumpshift))
         print('isTeamsFirstBidOpportunity = {0}'.format(isTeamsFirstBidOpportunity))
 
         #endregion
@@ -592,7 +589,10 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
             wasFirstOpeningBidANthLevelBid = helpers.getWasFirstOpeningBidANthLevelBid(biddingAbsolute, 2)
             hasOtherTeamMentionedSameSuit = helpers.getHasOtherTeamMentionedSameSuit(location, firstBid, biddingAbsolute, seatingRelative)
 
-            if (wasFirstOpeningBidANthLevelBid != False and  wasFirstOpeningBidANthLevelBid != username) or hasOtherTeamMentionedSameSuit:
+            print(f"hasOtherTeamMentionedSameSuit = {hasOtherTeamMentionedSameSuit}")
+            print(f"isFirstBidJumpshift = {isFirstBidJumpshift}")
+
+            if (not isFirstBidJumpshift and wasFirstOpeningBidANthLevelBid != False and  wasFirstOpeningBidANthLevelBid != username) or (hasOtherTeamMentionedSameSuit and not isFirstBidJumpshift):
                 minToUse = values['special']['weakTwo']['min']
                 maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
             else:

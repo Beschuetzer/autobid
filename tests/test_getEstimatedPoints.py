@@ -769,7 +769,7 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
                 "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['max']
             },
             "right": {
-                "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['min'],
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max']
             },
             "bottom": {
