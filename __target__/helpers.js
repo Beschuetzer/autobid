@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-04-26 12:39:47
+// Transcrypt'ed from Python, 2021-04-26 19:34:05
 var autoBid = {};
 var getEstimatedPoints = {};
 var math = {};
@@ -132,6 +132,8 @@ export var getHasPlayerJumpshifted = function (username, playersBids, biddingAbs
 	return false;
 };
 export var getIsJumpshift = function (currentContractBid, usersBid) {
+	print ('{}{}'.format (currentContractBid));
+	print ('{}{}'.format (usersBid));
 	if (!(currentContractBid) || currentContractBid == '' || re.search ('pass', usersBid, re.IGNORECASE) || re.search ('double', usersBid, re.IGNORECASE) || re.search ('pass', currentContractBid, re.IGNORECASE) || re.search ('double', currentContractBid, re.IGNORECASE)) {
 		return false;
 	}
@@ -140,6 +142,9 @@ export var getIsJumpshift = function (currentContractBid, usersBid) {
 	}
 	var indexOfCurrentActualBid = autoBid.contracts.index (currentContractBid);
 	var indexOfUsersBid = autoBid.contracts.index (usersBid);
+	print ('{}{}'.format (indexOfCurrentActualBid));
+	print ('{}{}'.format (indexOfUsersBid));
+	print ('{}{}'.format (abs (indexOfCurrentActualBid - indexOfUsersBid)));
 	return abs (indexOfCurrentActualBid - indexOfUsersBid) > 5;
 };
 export var getWasForcedToBid = function (username, biddingAbsolute, seatingRelative) {
@@ -777,6 +782,33 @@ export var getPlayerHasOnlyPassed = function (playerBids) {
 		}
 	}
 	return true;
+};
+export var getHasOtherTeamMentionedSameSuit = function (location, usersBid, biddingAbsolute, seatingRelative) {
+	var usernamesOpponents = getUsernamesOpponents (location, seatingRelative);
+	var indexOfUserBid = autoBid.contracts.index (usersBid);
+	for (var i = 0; i < len (biddingAbsolute); i++) {
+		var bid = biddingAbsolute [i];
+		if (!(getIsBidAContractBid (bid [1]))) {
+			continue;
+		}
+		var indexOfBid = autoBid.contracts.index (bid [1]);
+		if (indexOfBid < indexOfUserBid) {
+			if (__in__ (bid [0], usernamesOpponents)) {
+				return true;
+			}
+		}
+	}
+	return false;
+};
+export var getUsernamesOpponents = function (location, seatingRelative) {
+	try {
+		var leftUser = seatingRelative [getLocationAfterRotationsAround (location, 1)];
+		var rightUser = seatingRelative [getLocationAfterRotationsAround (location, -(1))];
+		return [leftUser, rightUser];
+	}
+	catch (__except0__) {
+		return [];
+	}
 };
 export var getHasTakenPartnerOutOfGameBid = function (username, biddingRelative, seatingRelative) {
 	for (var bids of biddingRelative ['top']) {
