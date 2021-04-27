@@ -1179,46 +1179,46 @@ def getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, seatingR
     returns:------------------------------
         the bidding array e.g. [['LeftPlayer', "One Diamond"],['TopPlayer', 'Two Heart'],['RightPlayer', 'Two No Trump'], ...] based on inputs
     '''
-    # try:
-    print(f"biddingRelative = {biddingRelative}")
-    print(f"seatingRelative = {seatingRelative}")
-    locations = getEstimatedPoints.locations
-    locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
+    try:
+        print(f"biddingRelative = {biddingRelative}")
+        print(f"seatingRelative = {seatingRelative}")
+        locations = getEstimatedPoints.locations
+        locationOrder = [locations['left'], locations['top'],locations['right'], locations['bottom']]
 
-    dealer = getDealerLocation(biddingRelative)
+        dealer = getDealerLocation(biddingRelative)
 
-    #get new order based on dealer
-    locationOrderToUse = locationOrder
-    if dealer != locations['left']:
-        index = locationOrder.index(locations[dealer])
-        locationOrderToUse = locationOrder[index:] + locationOrder[:index]
+        #get new order based on dealer
+        locationOrderToUse = locationOrder
+        if dealer != locations['left']:
+            index = locationOrder.index(locations[dealer])
+            locationOrderToUse = locationOrder[index:] + locationOrder[:index]
 
-    #iterate through each location n times where n is the # of opportunities the dealer has had to bid and add bids in order they were made 
-    print(f"dealer = {dealer}")
-    bids = []
-    for i in range(0, len(biddingRelative[dealer])):
-        print(1)
-        for j in range(0, len(locationOrderToUse)):
-            print(2)
-            locationToGet = locationOrderToUse[j]
-            try:
-                bidInQuestion = biddingRelative[locationToGet][i]   
-                print(3)
-            except:
-                break      
+        #iterate through each location n times where n is the # of opportunities the dealer has had to bid and add bids in order they were made 
+        print(f"dealer = {dealer}")
+        bids = []
+        for i in range(0, len(biddingRelative[dealer])):
+            print(1)
+            for j in range(0, len(locationOrderToUse)):
+                print(2)
+                locationToGet = locationOrderToUse[j]
+                try:
+                    bidInQuestion = biddingRelative[locationToGet][i]   
+                    print(3)
+                except:
+                    break      
 
-            if bidInQuestion is not None:
-                bids.append([seatingRelative[locationToGet], bidInQuestion])
-            else:
-                break
-            
-    if re.search('bottom', bids[-1][0], re.IGNORECASE):
-        bids = bids[:-1]
-    return bids
+                if bidInQuestion is not None:
+                    bids.append([seatingRelative[locationToGet], bidInQuestion])
+                else:
+                    break
+                
+        if re.search('bottom', bids[-1][0], re.IGNORECASE):
+            bids = bids[:-1]
+        return bids
 
-    # except ValueError as error:
-    #     print('error-----------')
-    #     return []
+    except:
+        print('error-----------')
+        return []
 
 def getDealerLocation(biddingRelative):
     '''
