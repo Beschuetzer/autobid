@@ -1,3 +1,5 @@
+
+
 Things to consider when adding score considerations into the getEstimatedPoints function:
   1.  North-south has 90 partial, north opens One Heart, if east and south pass, we can't say anything about souths points score
 

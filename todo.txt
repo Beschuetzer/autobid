@@ -1,0 +1,3 @@
+-Need to adjust how HCP and dist points are counted
+  if partner has not opened, pick the best suit and get points based on that
+  if partner has opened, calculate dist points based the contract being in the suit your partner mentioned (3 of that suits adds 1, 4 adds 2 pts, etc.); also count all hcp rather than just covered ones as your partner likely has stoppers too?
