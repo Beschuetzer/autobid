@@ -304,6 +304,8 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
 
         except:
             pass
+        
+        hasSomeoneOpenedTwoClubs, personWhoOpenedTwoClubs = helpers.getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative);
         #endregion
         #region Debugging (remove when done)
         print('currentContractBid = {0}'.format(currentContractBidForUser))
@@ -317,10 +319,22 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
 
         #endregion
 
-        #region Handling Two Clubs Opener Scenario
-        hasSomeoneOpenedTwoClubs, personWhoOpenedTwoClubs = helpers.getHasSomeoneOpenedTwoClubs(biddingAbsolute, biddingRelative, seatingRelative);
+        #region Handling Partner 1NT forced Scenario
+        partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
+        hasPartnerOpenedOneNoTrump = helpers.getHasPartnerOpenedNoTrump(partnersLocation, biddingRelative)
+        if hasPartnerOpenedOneNoTrump:
+            print('one trump scenario------------------')
+            #TODO: handle partner opens 1NT scenarios
+            
 
-        if hasSomeoneOpenedTwoClubs:
+            minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
+            estimatedScoring[location]['min'] = minToUse
+            estimatedScoring[location]['max'] = maxToUse
+            continue
+
+        #endregion
+        #region Handling Two Clubs Opener Scenario
+        elif hasSomeoneOpenedTwoClubs:
             print('someone opened two clubs')
             print('personWhoOpenedTwoClubs = {0}'.format(personWhoOpenedTwoClubs))
             print('partner = {0}'.format(partner))
@@ -429,7 +443,6 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
                             print('else clause')
                             print(f"isPartnersFirstBidPass = {isPartnersFirstBidPass}")
                             if isPartnersFirstBidPass:
-                                partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
                                 partnersSecondBid = None
 
                                 try:

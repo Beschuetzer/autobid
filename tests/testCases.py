@@ -230,9 +230,57 @@ biddingRelatives = {
         "right": ['Two Heart'],
         "bottom": ['One Heart'],
     },
+    "forcedOneNoTrumpResponse": {
+        "left": ['One No Trump'],
+        "top": ['pass'],
+        "right": ['Two Heart'],
+        "bottom": [],
+    },
+    "notForcedOneNoTrumpResponse": {
+        "left": ['One No Trump'],
+        "top": ['Two Diamond'],
+        "right": ['Two Heart'],
+        "bottom": [],
+    },
   },
 
   "twoBidOpportunities": {
+    "notForcedOneNoTrumpResponsePassSecond": {
+        "left": ['One No Trump', 'Two No Trump'],
+        "top": ['Two Diamond', 'pass'],
+        "right": ['Two Heart', 'pass'],
+        "bottom": ['Two Spade'],
+    },
+    "notForcedOneNoTrumpResponseBidSuitSecondNotJumpshift": {
+        "left": ['One No Trump', 'Two No Trump'],
+        "top": ['Two Diamond', 'pass'],
+        "right": ['Two Heart', 'Three Club'],
+        "bottom": ['Two Spade'],
+    },
+    "notForcedOneNoTrumpResponseBidSuitSecondJumpshift": {
+        "left": ['One No Trump', 'Two No Trump'],
+        "top": ['Two Diamond', 'pass'],
+        "right": ['Two Heart', 'Four Club'],
+        "bottom": ['Two Spade'],
+    },
+    "forcedOneNoTrumpResponsePassSecond": {
+        "left": ['One No Trump', 'Two No Trump'],
+        "top": ['pass', 'pass'],
+        "right": ['Two Heart', 'pass'],
+        "bottom": ['Two Spade'],
+    },
+    "forcedOneNoTrumpResponseBidSuitSecondNotJumpshift": {
+        "left": ['One No Trump', 'Two No Trump'],
+        "top": ['pass', 'pass'],
+        "right": ['Two Heart', 'Three Club'],
+        "bottom": ['Two Spade'],
+    },
+    "forcedOneNoTrumpResponseBidSuitSecondJumpshift": {
+        "left": ['One No Trump', 'Two No Trump'],
+        "top": ['pass', 'pass'],
+        "right": ['Two Heart', 'Four Club'],
+        "bottom": ['Two Spade'],
+    },
     "twoClubIssue": {
         "right": ['One Spade', 'Two Diamond'],
         "bottom": ['One No Trump'],

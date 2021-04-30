@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-04-26 20:15:42
+// Transcrypt'ed from Python, 2021-04-30 09:26:56
 var helpers = {};
 var re = {};
 import {AssertionError, AttributeError, BaseException, DeprecationWarning, Exception, IndexError, IterableError, KeyError, NotImplementedError, RuntimeWarning, StopIteration, UserWarning, ValueError, Warning, __JsIterator__, __PyIterator__, __Terminal__, __add__, __and__, __call__, __class__, __envir__, __eq__, __floordiv__, __ge__, __get__, __getcm__, __getitem__, __getslice__, __getsm__, __gt__, __i__, __iadd__, __iand__, __idiv__, __ijsmod__, __ilshift__, __imatmul__, __imod__, __imul__, __in__, __init__, __ior__, __ipow__, __irshift__, __isub__, __ixor__, __jsUsePyNext__, __jsmod__, __k__, __kwargtrans__, __le__, __lshift__, __lt__, __matmul__, __mergefields__, __mergekwargtrans__, __mod__, __mul__, __ne__, __neg__, __nest__, __or__, __pow__, __pragma__, __proxy__, __pyUseJsNext__, __rshift__, __setitem__, __setproperty__, __setslice__, __sort__, __specialattrib__, __sub__, __super__, __t__, __terminal__, __truediv__, __withblock__, __xor__, abs, all, any, assert, bool, bytearray, bytes, callable, chr, copy, deepcopy, delattr, dict, dir, divmod, enumerate, filter, float, getattr, hasattr, input, int, isinstance, issubclass, len, list, map, max, min, object, ord, pow, print, property, py_TypeError, py_iter, py_metatype, py_next, py_reversed, py_typeof, range, repr, round, set, setattr, sorted, str, sum, tuple, zip} from './org.transcrypt.__runtime__.js';
@@ -73,7 +73,7 @@ export var OPENING_WEAK_TWO_AFTER_OPENERS_MIN = OPENING_WEAK_TWO_NO_PRIOR_OPENER
 export var OPENING_WEAK_THREE_AFTER_OPENERS_MAX = IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX;
 export var OPENING_WEAK_THREE_AFTER_OPENERS_MIN = OPENING_WEAK_THREE_NO_PRIOR_OPENERS_MIN;
 export var py_values = dict ([['passFirstBidSecond', dict ([['isJumpshift', dict ([['partnerHasOpened', dict ([['min', RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MIN], ['max', RESPONDING_JUMPSHIFT_PASS_FIRST_ROUND_MAX]])], ['partnerHasNotOpened', dict ([['min', SPECIAL_WEAK_THREE_MIN], ['max', SPECIAL_WEAK_TWO_CLUBS_MAX]])]])]])], ['isTeamsFirstBid', dict ([['playerPasses', dict ([['min', IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MIN], ['max', IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_MAX]])], ['playerDoubles', dict ([['min', IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MIN], ['max', IS_TEAMS_FIRST_BID_AND_PLAYER_DOUBLES_MAX]])], ['playerBidsSuit', dict ([['min', IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MIN], ['max', IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_SUIT_MAX]])], ['playerBidsNoTrump', dict ([['min', IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MIN], ['max', IS_TEAMS_FIRST_BID_AND_PLAYER_BIDS_NT_MAX]])], ['playerPassesFirstOpensSecond', dict ([['min', IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_FIRST_OPENS_SECOND_MIN], ['max', IS_TEAMS_FIRST_BID_AND_PLAYER_PASSES_FIRST_OPENS_SECOND_MAX]])]])], ['partnerPassesFirst', dict ([['playerPasses', dict ([['min', PARTNER_PASSES_FIRST_AND_PLAYER_PASSES_MIN], ['max', PARTNER_PASSES_FIRST_AND_PLAYER_PASSES_MAX]])], ['playerDoubles', dict ([['min', PARTNER_PASSES_FIRST_AND_PLAYER_DOUBLES_MIN], ['max', PARTNER_PASSES_FIRST_AND_PLAYER_DOUBLES_MAX]])], ['playerBidsSuit', dict ([['min', PARTNER_PASSES_FIRST_AND_PLAYER_BIDS_SUIT_MIN], ['max', PARTNER_PASSES_FIRST_AND_PLAYER_BIDS_SUIT_MAX]])], ['playerBidsNoTrump', dict ([['min', PARTNER_PASSES_FIRST_AND_PLAYER_BIDS_NT_MIN], ['max', PARTNER_PASSES_FIRST_AND_PLAYER_BIDS_NT_MAX]])]])], ['partnerBidsFirst', dict ([['playerPasses', dict ([['min', PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MIN], ['max', PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX]])], ['playerDoubles', dict ([['min', PARTNER_BIDS_FIRST_AND_PLAYER_DOUBLES_MIN], ['max', PARTNER_BIDS_FIRST_AND_PLAYER_DOUBLES_MAX]])], ['playerBidsSuit', dict ([['isJumpshift', dict ([['min', PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_JUMPSHIFT_MIN], ['max', PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_JUMPSHIFT_MAX]])], ['isNotJumpshift', dict ([['min', PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_NOT_JUMPSHIFT_MIN], ['max', PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_SUIT_IS_NOT_JUMPSHIFT_MAX]])]])], ['playerBidsNoTrump', dict ([['isJumpshift', dict ([['min', PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_NT_IS_JUMPSHIFT_MIN], ['max', PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_NT_IS_JUMPSHIFT_MAX]])], ['isNotJumpshift', dict ([['min', PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_NT_IS_NOT_JUMPSHIFT_MIN], ['max', PARTNER_BIDS_FIRST_AND_PLAYER_BIDS_NT_IS_NOT_JUMPSHIFT_MAX]])]])]])], ['special', dict ([['weakTwo', dict ([['min', SPECIAL_WEAK_TWO_MIN], ['max', SPECIAL_WEAK_TWO_MAX]])], ['weakThree', dict ([['min', SPECIAL_WEAK_THREE_MIN], ['max', SPECIAL_WEAK_THREE_MAX]])], ['respondTwoClubs', dict ([['oneBidAbove', dict ([['min', 0], ['max', 3]])], ['twoBidAbove', dict ([['min', 4], ['max', 6]])], ['threeBidAbove', dict ([['min', 7], ['max', 9]])], ['fourBidAbove', dict ([['min', 10], ['max', 12]])], ['fiveBidAbove', dict ([['min', 13], ['max', 15]])], ['sixBidAbove', dict ([['min', 16], ['max', 18]])], ['sevenAndMoreAbove', dict ([['min', 19], ['max', -(1)]])]])], ['openTwoClubs', dict ([['min', SPECIAL_WEAK_TWO_CLUBS_MIN], ['max', SPECIAL_WEAK_TWO_CLUBS_MAX]])], ['wtf', dict ([['min', SPECIAL_WEAK_THREE_MIN], ['max', SPECIAL_WEAK_TWO_CLUBS_MAX]])]])]]);
-export var getEstimatedPoints = function (estimatedScoringBounds, biddingRelative, biddingAbsolute, seatingRelative) {
+export var getEstimatedPoints = function (biddingRelative, biddingAbsolute, seatingRelative) {
 	var estimatedScoring = dict ([['top', dict ([['min', null], ['max', null]])], ['bottom', dict ([['min', null], ['max', null]])], ['left', dict ([['min', null], ['max', null]])], ['right', dict ([['min', null], ['max', null]])]]);
 	for (var [location, playersBids] of biddingRelative.py_items ()) {
 		var numberOfBidsMade = len (biddingRelative [location]);
@@ -197,8 +197,11 @@ export var getEstimatedPoints = function (estimatedScoringBounds, biddingRelativ
 			print ('{}{}'.format (wasPlayerForcedToBid));
 			if (len (playersBids) == 2) {
 				if (wasPlayerForcedToBid) {
-					estimatedScoring [location] ['min'] = estimatedScoringBounds [location] ['min'];
-					estimatedScoring [location] ['max'] = estimatedScoringBounds [location] ['max'];
+					var __left0__ = setInitialBounds (username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, false, isPartnersFirstBidPass, false);
+					var minToUse = __left0__ [0];
+					var maxToUse = __left0__ [1];
+					estimatedScoring [location] ['min'] = minToUse;
+					estimatedScoring [location] ['max'] = maxToUse;
 					continue;
 				}
 				if (hasPartnerOpened) {
@@ -267,9 +270,6 @@ export var getEstimatedPoints = function (estimatedScoringBounds, biddingRelativ
 					}
 					else {
 						print ('first bid is not pass');
-						estimatedScoring [location] ['min'] = estimatedScoringBounds [location] ['min'];
-						estimatedScoring [location] ['max'] = estimatedScoringBounds [location] ['max'];
-						continue;
 					}
 				}
 				else {
@@ -304,17 +304,18 @@ export var getEstimatedPoints = function (estimatedScoringBounds, biddingRelativ
 					}
 					else {
 						print ('first bid is not pass');
-						estimatedScoring [location] ['min'] = estimatedScoringBounds [location] ['min'];
-						estimatedScoring [location] ['max'] = estimatedScoringBounds [location] ['max'];
-						continue;
 					}
 				}
 			}
 			else {
 				// pass;
 			}
-			estimatedScoring [location] ['min'] = estimatedScoringBounds [location] ['min'];
-			estimatedScoring [location] ['max'] = estimatedScoringBounds [location] ['max'];
+			var __left0__ = setInitialBounds (username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, false);
+			var minToUse = __left0__ [0];
+			var maxToUse = __left0__ [1];
+			estimatedScoring [location] ['min'] = minToUse;
+			estimatedScoring [location] ['max'] = maxToUse;
+			continue;
 		}
 	}
 	print ('');
@@ -372,6 +373,10 @@ export var setInitialBounds = function (username, location, biddingAbsolute, bid
 			if (!(isFirstBidJumpshift) && wasFirstOpeningBidANthLevelBid != false && wasFirstOpeningBidANthLevelBid != username || hasOtherTeamMentionedSameSuit && !(isFirstBidJumpshift)) {
 				var minToUse = py_values ['special'] ['weakTwo'] ['min'];
 				var maxToUse = py_values ['partnerPassesFirst'] ['playerBidsSuit'] ['max'];
+			}
+			else if (hasPartnerOpened) {
+				var minToUse = py_values ['partnerBidsFirst'] ['playerBidsNoTrump'] ['isNotJumpshift'] ['min'];
+				var maxToUse = py_values ['partnerBidsFirst'] ['playerBidsNoTrump'] ['isNotJumpshift'] ['max'];
 			}
 			else {
 				var minToUse = py_values ['special'] ['weakTwo'] ['min'];

@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-04-26 20:15:42
+// Transcrypt'ed from Python, 2021-04-30 09:26:56
 var autoBid = {};
 var getEstimatedPoints = {};
 var math = {};
@@ -145,6 +145,9 @@ export var getIsJumpshift = function (currentContractBid, usersBid) {
 	print ('{}{}'.format (indexOfCurrentActualBid));
 	print ('{}{}'.format (indexOfUsersBid));
 	print ('{}{}'.format (abs (indexOfCurrentActualBid - indexOfUsersBid)));
+	if (indexOfCurrentActualBid > indexOfUsersBid) {
+		return false;
+	}
 	return abs (indexOfCurrentActualBid - indexOfUsersBid) > 5;
 };
 export var getWasForcedToBid = function (username, biddingAbsolute, seatingRelative) {
@@ -786,13 +789,18 @@ export var getPlayerHasOnlyPassed = function (playerBids) {
 export var getHasOtherTeamMentionedSameSuit = function (location, usersBid, biddingAbsolute, seatingRelative) {
 	var usernamesOpponents = getUsernamesOpponents (location, seatingRelative);
 	var indexOfUserBid = autoBid.contracts.index (usersBid);
+	print ('{}{}'.format (location));
+	print ('{}{}'.format (usersBid));
+	print ('{}{}'.format (biddingAbsolute));
+	print ('{}{}'.format (indexOfUserBid));
 	for (var i = 0; i < len (biddingAbsolute); i++) {
 		var bid = biddingAbsolute [i];
 		if (!(getIsBidAContractBid (bid [1]))) {
 			continue;
 		}
 		var indexOfBid = autoBid.contracts.index (bid [1]);
-		if (indexOfBid < indexOfUserBid) {
+		print ('{}{}'.format (indexOfBid));
+		if (indexOfUserBid > indexOfBid && __mod__ (abs (indexOfBid - indexOfUserBid), 5) == 0) {
 			if (__in__ (bid [0], usernamesOpponents)) {
 				return true;
 			}
@@ -818,6 +826,8 @@ export var getHasTakenPartnerOutOfGameBid = function (username, biddingRelative,
 };
 export var getBiddingAbsoluteFromBiddingObjAndSeatingRelative = function (biddingRelative, seatingRelative) {
 	try {
+		print ('{}{}'.format (biddingRelative));
+		print ('{}{}'.format (seatingRelative));
 		var locations = getEstimatedPoints.locations;
 		var locationOrder = [locations ['left'], locations ['top'], locations ['right'], locations ['bottom']];
 		var dealer = getDealerLocation (biddingRelative);
@@ -826,12 +836,16 @@ export var getBiddingAbsoluteFromBiddingObjAndSeatingRelative = function (biddin
 			var index = locationOrder.index (locations [dealer]);
 			var locationOrderToUse = locationOrder.__getslice__ (index, null, 1) + locationOrder.__getslice__ (0, index, 1);
 		}
+		print ('{}{}'.format (dealer));
 		var bids = [];
 		for (var i = 0; i < len (biddingRelative [dealer]); i++) {
+			print (1);
 			for (var j = 0; j < len (locationOrderToUse); j++) {
+				print (2);
 				var locationToGet = locationOrderToUse [j];
 				try {
 					var bidInQuestion = biddingRelative [locationToGet] [i];
+					print (3);
 				}
 				catch (__except0__) {
 					break;
@@ -850,6 +864,7 @@ export var getBiddingAbsoluteFromBiddingObjAndSeatingRelative = function (biddin
 		return bids;
 	}
 	catch (__except0__) {
+		print ('error-----------');
 		return [];
 	}
 };

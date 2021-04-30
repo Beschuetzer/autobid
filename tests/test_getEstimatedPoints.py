@@ -21,6 +21,59 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         print('expected = {0}'.format(self.expected))
         print('')
 
+    #TODO: How do we handle 1NT first then bid when opponent in between passes (some ppl don't want to be left in 1NT, so it is the same as a forced takeout double in those situations)
+    def test_set_forced_1NT(self):
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['forcedOneNoTrumpResponse']
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "right": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+    def test_set_not_forced_1NT(self):
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['notForcedOneNoTrumpResponse']
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        
+        self.assertDictEqual(self.actual, self.expected)
+    
     def test_set_exit_early(self):
         biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['exitEarly']
 
@@ -1043,7 +1096,164 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         print('expected = {0}'.format(self.expected))
         print('self.actual ={0}'.format(self.actual))
 
+    def test_update_not_forced_1NT_pass_second(self):
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['notForcedOneNoTrumpResponsePassSecond']
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        
+        self.assertDictEqual(self.actual, self.expected)
+    
+    def test_update_not_forced_1NT_suit_second_not_jumpshift(self):
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['notForcedOneNoTrumpResponseBidSuitSecondNotJumpshift']
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+    def test_update_not_forced_1NT_suit_second_jumpshift(self):
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['notForcedOneNoTrumpResponseBidSuitSecondJumpshift']
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['wtf']['min'],
+                "max": getEstimatedPoints.values['special']['wtf']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        
+        self.assertDictEqual(self.actual, self.expected)
+
     #NOTE: This is an interesting case that we kind of overlooked
+    #TODO: Ask andrew about these force ones
+    def test_update_forced_1NT_pass_second(self):
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['forcedOneNoTrumpResponsePassSecond']
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+    def test_update_forced_1NT_suit_second_not_jumpshift(self):
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['forcedOneNoTrumpResponseBidSuitSecondNotJumpshift']
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+    def test_update_forced_1NT_suit_second_jumpshift(self):
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['forcedOneNoTrumpResponseBidSuitSecondJumpshift']
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "top": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['special']['wtf']['min'],
+                "max": getEstimatedPoints.values['special']['wtf']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        
+        self.assertDictEqual(self.actual, self.expected)
+
     def test_update_two_club_response_check_issue(self):
         biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['twoClubIssue']
 

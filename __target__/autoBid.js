@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-04-26 20:15:41
+// Transcrypt'ed from Python, 2021-04-30 09:26:56
 var getEstimatedPoints = {};
 var getEstimatedSuitCounts = {};
 var helpers = {};
@@ -18,7 +18,6 @@ __nest__ (helpers, '', __module_helpers__);
 var __name__ = '__main__';
 export var suits = dict ([['clubs', 'club'], ['diamonds', 'diamond'], ['hearts', 'heart'], ['spades', 'spade'], ['noTrump', 'trump']]);
 export var contracts = ['One Club', 'One Diamond', 'One Heart', 'One Spade', 'One No Trump', 'Two Club', 'Two Diamond', 'Two Heart', 'Two Spade', 'Two No Trump', 'Three Club', 'Three Diamond', 'Three Heart', 'Three Spade', 'Three No Trump', 'Four Club', 'Four Diamond', 'Four Heart', 'Four Spade', 'Four No Trump', 'Five Club', 'Five Diamond', 'Five Heart', 'Five Spade', 'Five No Trump', 'Six Club', 'Six Diamond', 'Six Heart', 'Six Spade', 'Six No Trump', 'Seven Club', 'Seven Diamond', 'Seven Heart', 'Seven Spade', 'Seven No Trump'];
-export var estimatedScoringBounds = dict ([['top', dict ([['min', null], ['max', null]])], ['bottom', dict ([['min', null], ['max', null]])], ['left', dict ([['min', null], ['max', null]])], ['right', dict ([['min', null], ['max', null]])]]);
 export var flatten = (function __lambda__ (t) {
 	return (function () {
 		var __accu0__ = [];
@@ -37,7 +36,6 @@ export var scoring = dict ([['northSouth', dict ([['aboveTheLine', 0], ['belowTh
 export var bids = [['Adam', 'Two No Trump'], ['Dan', 'Double'], ['Ann', 'Double'], ['Andrew', 'Three Club']];
 export var hand = [[0, 1, 7, 8, 12], [13, 18, 19], [29, 30, 32], [40, 42]];
 export var autoBid = function (biddingAbsolute, hand, scoring, seatingInput, spot, clientPointCountingConvention) {
-	print ('{}{}'.format (estimatedScoringBounds));
 	seating ['north'] = seatingInput ['north'];
 	seating ['south'] = seatingInput ['south'];
 	seating ['east'] = seatingInput ['east'];
@@ -51,7 +49,7 @@ export var autoBid = function (biddingAbsolute, hand, scoring, seatingInput, spo
 	var biddingRelative = helpers.getBiddingObjRelative (biddingObjAbsolute, spot);
 	var biddingHistory = helpers.getBiddingHistory (biddingAbsolute);
 	var seatingRelative = helpers.getSeatingRelative (seating, spot);
-	var estimatedPoints = getEstimatedPoints.getEstimatedPoints (estimatedScoringBounds, biddingRelative, biddingAbsolute, seatingRelative);
+	var estimatedPoints = getEstimatedPoints.getEstimatedPoints (biddingRelative, biddingAbsolute, seatingRelative);
 	var estimatedSuitCounts = getEstimatedSuitCounts.getEstimatedSuitCounts (biddingRelative, biddingAbsolute, seatingRelative);
 	var partnersBids = biddingRelative ['top'];
 	print ('{}{}'.format (estimatedPoints));

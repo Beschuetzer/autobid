@@ -1180,6 +1180,10 @@ def getHasTakenPartnerOutOfGameBid(username, biddingRelative, seatingRelative):
         pass
     return False
 
+def getHasPartnerOpenedNoTrump(partnersLocation, biddingRelative):
+    if len(biddingRelative[partnersLocation]) == 0: return False
+    return re.search('trump', biddingRelative[partnersLocation][0], re.IGNORECASE)
+
 #region Test Case Helpers
 def getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):
     '''
