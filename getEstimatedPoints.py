@@ -532,21 +532,8 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
 
     print(f"IsUsernamesFirstContractBidTheFirstContractBid = {IsUsernamesFirstContractBidTheFirstContractBid}")
     print('setInitialBounds-----------------')
-    # print('biddingRelative["right"][0] = {0}'.format(biddingRelative['right'][0]))
-    # print('haveOpponentsNotHadTurnOrPassed = {0}'.format(haveOpponentsNotHadTurnOrPassed))
-    # print('re:'.format(re.search('Pass' , biddingRelative['right'][0], re.IGNORECASE)))
-    # if hasPartnerOpened:
-    #     if isFirstBidJumpshift:
-    #         minToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isJumpshift']['min']
-    #         maxToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isJumpshift']['max']
-    #     else:
-    #         minToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['min']
-    #         maxToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['max']
-        
             
     if re.search('trump', firstBid, re.IGNORECASE):
-        #partner = []
-        #player =['One NT']
         print('trump branch')
         print('isFirstBidJumpshift = {0}'.format(isFirstBidJumpshift))
         if hasOtherTeamOpenedTwoClubs:
@@ -564,22 +551,16 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
                 maxToUse = values['isTeamsFirstBid']['playerBidsNoTrump']['max']
 
     elif re.search('two club', firstBid, re.IGNORECASE) and IsUsernamesFirstContractBidTheFirstContractBid:
-        #partner = []
-        #player =['Two Club']
         print('two club branch')
         maxToUse = values['special']['openTwoClubs']['max']
         minToUse = values['special']['openTwoClubs']['min']
 
     elif re.search('double', firstBid, re.IGNORECASE):
-        #partner = []
-        #player =['Double']
         print('double branch')
         minToUse = values['isTeamsFirstBid']['playerDoubles']['min']
         maxToUse = values['isTeamsFirstBid']['playerDoubles']['max']
 
     elif re.search('two', firstBid, re.IGNORECASE):
-        #partner = []
-        #player =['Two Diamond']
         print('two branch')
         print(f"hasOtherTeamOpenedTwoClubs = {hasOtherTeamOpenedTwoClubs}")
         if hasOtherTeamOpenedTwoClubs:
@@ -604,8 +585,6 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
                     maxToUse = values['special']['weakTwo']['max']
 
     elif re.search('three', firstBid, re.IGNORECASE):
-        #partner = []
-        #player =['Three Club']
         print('three branch')
         if hasOtherTeamOpenedTwoClubs:
             minToUse = values['special']['wtf']['min']
@@ -637,8 +616,6 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
 
     else:
         print('else branch')
-        #partner = []
-        #player =['One Club']
         if hasOtherTeamOpenedTwoClubs:
             minToUse = values['special']['wtf']['min']
             maxToUse = values['special']['wtf']['max']

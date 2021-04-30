@@ -1128,13 +1128,22 @@ def getHasOtherTeamMentionedSameSuit(location, usersBid, biddingAbsolute, seatin
         true if the other team has mentioned the same suit as bid's suit but at a lower level, false otherwise
     '''
     # try:
+    
+
     usernamesOpponents = getUsernamesOpponents(location, seatingRelative)
     indexOfUserBid = autoBid.contracts.index(usersBid)
+
+    print(f"location = {location}")
+    print(f"usersBid = {usersBid}")
+    print(f"biddingAbsolute = {biddingAbsolute}")
+    print(f"indexOfUserBid = {indexOfUserBid}")
+
     for i in range(len(biddingAbsolute)):
         bid = biddingAbsolute[i]
         if not getIsBidAContractBid(bid[1]): continue
         indexOfBid = autoBid.contracts.index(bid[1])
-        if indexOfBid <  indexOfUserBid:
+        print(f"indexOfBid = {indexOfBid}")
+        if indexOfUserBid > indexOfBid and abs(indexOfBid - indexOfUserBid) % 5 == 0:
             if bid[0] in usernamesOpponents:
                 return True
 
