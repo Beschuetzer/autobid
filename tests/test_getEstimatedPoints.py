@@ -1,14 +1,10 @@
 import getEstimatedPoints, helpers, unittest
 import testCases
 
+#NOTE: ESTIMATED SCORING BOUNDS ARE NOT USED IN THIS VERSION
+
 class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
     def setUp(self) -> None:
-        self.estimatedScoringBounds = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
-        }
         self.seatingRelative = {
             "top": "TopPlayer",
             "bottom": "BottomPlayer",
@@ -1041,11 +1037,9 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.bids = None
         self.actual = None
         self.expected = None
-        self.estimatedScoringBounds = None
 
     def tearDown(self) -> None:
         print('bids = {0}'.format(self.bids))
-        print('estimatedScoringBounds = {0}'.format(self.estimatedScoringBounds))
         print('expected = {0}'.format(self.expected))
         print('self.actual ={0}'.format(self.actual))
 
@@ -1058,7 +1052,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "top": ['Two Club'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
@@ -1077,31 +1071,11 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             },
         }
 
-        self.expected = {
-            "left": {
-                "min": self.estimatedScoringBounds['left']['min'],
-                "max": self.estimatedScoringBounds['left']['max']
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max']
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max']
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
 
         self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
         
         self.assertDictEqual(self.actual, self.expected)
-
 
     def test_update_One_Spade_first_two_NT_second(self):
         biddingRelative = {
@@ -1111,7 +1085,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "top": ['Two Spade'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['min'],
                 "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['max'],
@@ -1123,25 +1097,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                 "min": self.estimatedScoringBounds['left']['min'],
-                "max": self.estimatedScoringBounds['left']['max']
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max']
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max']
             },
             "bottom": {
                 "min": None,
@@ -1163,10 +1118,10 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['One Diamond'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
             },
             "top": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
@@ -1175,25 +1130,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max']
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max']
             },
             "bottom": {
                 "min": None,
@@ -1215,9 +1151,9 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['One Diamond'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "top": {
@@ -1227,26 +1163,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['left']['max']
-
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max']
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max']
             },
             "bottom": {
                 "min": None,
@@ -1268,7 +1184,8 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['pass'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
+            #NOTE: we don't know anything extra here about left because he was forced to bid due to takeout double
             "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
@@ -1280,26 +1197,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            #NOTE: we don't know anything extra here about left because he was forced to bid due to takeout double
-            "left": {
-                "min": self.estimatedScoringBounds['left']['min'],
-                "max": self.estimatedScoringBounds['left']['max']
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max']
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max']
             },
             "bottom": {
                 "min": None,
@@ -1321,9 +1218,9 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Diamond'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "top": {
@@ -1332,25 +1229,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             },
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max']
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
                 "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
             },
             "bottom": {
@@ -1373,9 +1251,9 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Diamond'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "top": {
@@ -1383,27 +1261,8 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
             },
             "right": {
-                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max']
-            },
-            "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1425,9 +1284,9 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Diamond'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "top": {
@@ -1435,27 +1294,8 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
             },
             "right": {
-                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max']
-            },
-            "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1477,37 +1317,18 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Diamond'],
         }
 
-        self.estimatedScoringBounds = {
-            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
-            },
-            "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
         self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['max']
             },
             "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max']
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
             },
             "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1529,37 +1350,18 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Diamond'],
         }
 
-        self.estimatedScoringBounds = {
-            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
-            },
-            "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
         self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPassesFirstOpensSecond']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "top": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1581,25 +1383,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Diamond'],
         }
 
-        self.estimatedScoringBounds = {
-            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
-            },
-            "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
         self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
@@ -1607,11 +1390,11 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             },
             "top": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1633,25 +1416,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Diamond'],
         }
 
-        self.estimatedScoringBounds = {
-            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
-            },
-            "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
         self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
@@ -1659,12 +1423,11 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             },
             "top": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-
-                "max": self.estimatedScoringBounds['right']['max'],
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1686,25 +1449,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Diamond'],
         }
 
-        self.estimatedScoringBounds = {
-            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
-            },
-            "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
         self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
@@ -1712,11 +1456,11 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             },
             "top": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1738,37 +1482,18 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Diamond'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": self.estimatedScoringBounds['left']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
-            },
-            "top": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1788,9 +1513,9 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Spade'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "top": {
@@ -1800,25 +1525,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['special']['weakTwo']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1838,9 +1544,9 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['pass'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "top": {
@@ -1850,25 +1556,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['special']['weakTwo']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['special']['weakTwo']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1888,9 +1575,9 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Three Spade'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "top": {
@@ -1900,25 +1587,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['special']['weakThree']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['special']['weakThree']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1938,10 +1606,10 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Three Spade'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
+                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "top": {
                 "min": getEstimatedPoints.values['special']['weakThree']['min'],
@@ -1950,25 +1618,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['special']['weakThree']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['special']['weakThree']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
             },
             "bottom": {
                 "min": None,
@@ -1988,10 +1637,10 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['One Spade'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+                "min": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasOpened']['min'],
+                "max": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasOpened']['max'],
             },
             "top": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
@@ -2000,25 +1649,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsSuit']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasOpened']['min'],
-                "max": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasOpened']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
             },
             "bottom": {
                 "min": None,
@@ -2038,10 +1668,10 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['One Spade'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+                "min": getEstimatedPoints.values['special']['wtf']['min'],
+                "max": getEstimatedPoints.values['special']['wtf']['max'],
             },
             "top": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
@@ -2050,25 +1680,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['special']['wtf']['min'],
-                "max": getEstimatedPoints.values['special']['wtf']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
             },
             "bottom": {
                 "min": None,
@@ -2088,10 +1699,10 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['One Spade'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+                "min": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasOpened']['min'],
+                "max": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasOpened']['max'],
             },
             "top": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
@@ -2100,25 +1711,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerBidsNoTrump']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerBidsNoTrump']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasOpened']['min'],
-                "max": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasOpened']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
             },
             "bottom": {
                 "min": None,
@@ -2138,10 +1730,10 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['One Spade'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+                "min": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasNotOpened']['min'],
+                "max": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasNotOpened']['max'],
             },
             "top": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
@@ -2150,25 +1742,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasNotOpened']['min'],
-                "max": getEstimatedPoints.values['passFirstBidSecond']['isJumpshift']['partnerHasNotOpened']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
             },
             "bottom": {
                 "min": None,
@@ -2188,7 +1761,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['pass'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
@@ -2200,25 +1773,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
                 "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
             },
             "bottom": {
                 "min": None,
@@ -2238,7 +1792,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['Two Heart'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
                 "max": getEstimatedPoints.values['special']['openTwoClubs']['max'],
@@ -2246,25 +1800,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "top": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['min'],
-                "max": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": self.estimatedScoringBounds['left']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
             },
             "right": {
                 "min": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['min'],
@@ -2289,7 +1824,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['pass'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
                 "max": getEstimatedPoints.values['special']['openTwoClubs']['max'],
@@ -2297,25 +1832,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "top": {
                 "min": getEstimatedPoints.values['special']['weakTwo']['min'],
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['min'],
-                "max": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": self.estimatedScoringBounds['left']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max'],
             },
             "right": {
                 "min": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['min'],
@@ -2340,37 +1856,18 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
             "bottom": ['pass'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
                 "min": getEstimatedPoints.values['special']['openTwoClubs']['min'],
                 "max": getEstimatedPoints.values['special']['openTwoClubs']['max'],
-            },
-            "top": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
-            },
-            "right": {
-                "min": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['min'],
-                "max": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": self.estimatedScoringBounds['left']['min'],
-                "max": self.estimatedScoringBounds['left']['max'],
             },
             "top": {
                 "min": getEstimatedPoints.values['special']['weakThree']['min'],
                 "max": getEstimatedPoints.values['special']['weakThree']['max'],
             },
             "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max'],
+                "min": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['min'],
+                "max": getEstimatedPoints.values['special']['respondTwoClubs']['oneBidAbove']['max'],
             },
             "bottom": {
                 "min": None,
@@ -2384,8 +1881,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
 class getEstimatedPoints_3_Or_More_Bid_Opportunities(unittest.TestCase):
-  #TODO: add tests for more than two bid opportunity cases...
-  #Can just rely on the TwoBidOpportunity evaluations unless there are certain behaviors like bidding the same suit every time or jumpshifts?
     def setUp(self) -> None:
         self.seatingRelative = {
             "top": "TopPlayer",
@@ -2396,15 +1891,12 @@ class getEstimatedPoints_3_Or_More_Bid_Opportunities(unittest.TestCase):
         self.bids = None
         self.actual = None
         self.expected = None
-        self.estimatedScoringBounds = None
 
     def tearDown(self) -> None:
         print('bids = {0}'.format(self.bids))
-        print('estimatedScoringBounds = {0}'.format(self.estimatedScoringBounds))
         print('expected = {0}'.format(self.expected))
         print('self.actual ={0}'.format(self.actual))
 
-    #NOTE: the test below is not finished.  can you think of any other cases where the third bid would change our estimated points?
     def test_update_Say_Same_Suit_Three_Or_More_Time(self):
         biddingRelative = {
             "left": ['pass', 'pass', 'pass'],
@@ -2413,10 +1905,10 @@ class getEstimatedPoints_3_Or_More_Bid_Opportunities(unittest.TestCase):
             "bottom": ['One Diamond', 'Two Spade'],
         }
 
-        self.estimatedScoringBounds = {
+        self.expected = {
             "left": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
             },
             "top": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
@@ -2425,25 +1917,6 @@ class getEstimatedPoints_3_Or_More_Bid_Opportunities(unittest.TestCase):
             "right": {
                 "min": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['min'],
                 "max": getEstimatedPoints.values['partnerPassesFirst']['playerDoubles']['max'],
-            },
-            "bottom": {
-                "min": None,
-                "max": None,
-            },
-        }
-
-        self.expected = {
-            "left": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
-            },
-            "top": {
-                "min": self.estimatedScoringBounds['top']['min'],
-                "max": self.estimatedScoringBounds['top']['max']
-            },
-            "right": {
-                "min": self.estimatedScoringBounds['right']['min'],
-                "max": self.estimatedScoringBounds['right']['max']
             },
             "bottom": {
                 "min": None,
