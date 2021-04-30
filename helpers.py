@@ -201,6 +201,8 @@ def getIsJumpshift(currentContractBid, usersBid):
     print(f"indexOfCurrentActualBid = {indexOfCurrentActualBid}")
     print(f"indexOfUsersBid = {indexOfUsersBid}")
     print(f"abs(indexOfCurrentActualBid - indexOfUsersBid) = {abs(indexOfCurrentActualBid - indexOfUsersBid)}")
+    
+    if (indexOfCurrentActualBid > indexOfUsersBid): return False
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
 def getWasForcedToBid(username, biddingAbsolute, seatingRelative):

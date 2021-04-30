@@ -48,24 +48,6 @@ contracts = [
   "Seven Spade",
   "Seven No Trump",
 ];
-estimatedScoringBounds = {
-    "top": {
-        "min": None,
-        "max": None,
-    },
-    "bottom": {
-        "min": None,
-        "max": None,
-    },
-    "left": {
-        "min": None,
-        "max": None,
-    },
-    "right": {
-        "min": None,
-        "max": None,
-    },
-}
 flatten = lambda t: [item for sublist in t for item in sublist]
 #endregion
 
@@ -127,7 +109,6 @@ def autoBid(biddingAbsolute, hand, scoring, seatingInput, spot, clientPointCount
         "best" bid for current situation in the form of a string (e.g. 'One Club', 'Two No Trump', 'Pass', etc... )
     '''
     #region Initialization (Getting Values and Dicts to work with)
-    print(f"estimatedScoringBounds = {estimatedScoringBounds}")
     seating['north'] = seatingInput['north']
     seating['south'] = seatingInput['south']
     seating['east'] = seatingInput['east']
@@ -145,7 +126,7 @@ def autoBid(biddingAbsolute, hand, scoring, seatingInput, spot, clientPointCount
 
     biddingHistory = helpers.getBiddingHistory(biddingAbsolute)
     seatingRelative = helpers.getSeatingRelative(seating, spot)
-    estimatedPoints = getEstimatedPoints.getEstimatedPoints(estimatedScoringBounds, biddingRelative, biddingAbsolute, seatingRelative)
+    estimatedPoints = getEstimatedPoints.getEstimatedPoints( biddingRelative, biddingAbsolute, seatingRelative)
     estimatedSuitCounts = getEstimatedSuitCounts.getEstimatedSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
     partnersBids = biddingRelative['top']
 
