@@ -1045,12 +1045,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
 
     #NOTE: This is an interesting case that we kind of overlooked
     def test_update_two_club_response_check_issue(self):
-        biddingRelative = {
-            "right": ['One Spade', 'Two Diamond'],
-            "bottom": ['One No Trump'],
-            "left": ['pass'],
-            "top": ['Two Club'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['twoClubIssue']
 
         self.expected = {
             "left": {
@@ -1078,12 +1073,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_One_Spade_first_two_NT_second(self):
-        biddingRelative = {
-            "right": ['One Spade', 'Two No Trump'],
-            "bottom": ['pass'],
-            "left": ['One No Trump'],
-            "top": ['Two Spade'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['oneSpadeFirstTwoNTSecond']
 
         self.expected = {
             "left": {
@@ -1111,12 +1101,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Double_First_Pass_Second(self):
-        biddingRelative = {
-            "left": ['pass', 'pass'],
-            "top": ['One Club', 'pass'],
-            "right": ['Double', 'pass'],
-            "bottom": ['One Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['doubleFirstPassSecond']
 
         self.expected = {
             "left": {
@@ -1144,12 +1129,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Double_First_Bid_Suit_Second(self):
-        biddingRelative = {
-            "left": ['pass', 'One Heart'],
-            "top": ['One Club', 'pass'],
-            "right": ['Double', 'Two Club'],
-            "bottom": ['One Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['doubleFirstBidSuitSecond']
 
         self.expected = {
             "left": {
@@ -1177,12 +1157,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_partner_takeout_double_forced_bid(self):
-        biddingRelative = {
-            "left": ['pass', 'One Heart'],
-            "top": ['One Club', 'pass'],
-            "right": ['Double', 'Two Club'],
-            "bottom": ['pass'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['partnerTakeoutDoubleForcedBid']
 
         self.expected = {
             #NOTE: we don't know anything extra here about left because he was forced to bid due to takeout double
@@ -1211,12 +1186,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_NT_First_Pass_Second(self):
-        biddingRelative = {
-            "left": ['pass', 'Two Heart'],
-            "top": ['One No Trump', 'pass'],
-            "right": ['pass', 'pass'],
-            "bottom": ['Two Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['ntFirstPassSecond']
 
         self.expected = {
             "left": {
@@ -1244,12 +1214,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_NT_First_Bid_Suit_Second(self):
-        biddingRelative = {
-            "left": ['pass', 'Two Heart'],
-            "top": ['One No Trump', 'Two Spade'],
-            "right": ['pass', 'Three Heart'],
-            "bottom": ['Two Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['ntFirstBidSuitSecond']
 
         self.expected = {
             "left": {
@@ -1277,12 +1242,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_NT_First_Bid_NT_Second(self):
-        biddingRelative = {
-            "left": ['pass', 'Two Heart'],
-            "top": ['One No Trump', 'Two No Trump'],
-            "right": ['Pass', 'Three Heart'],
-            "bottom": ['Two Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['ntFirstNTSecond']
 
         self.expected = {
             "left": {
@@ -1310,12 +1270,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
     
     def test_update_pass_first_NT_second_responding(self):
-        biddingRelative = {
-            "left": ['Pass', 'Two No Trump'],
-            "top": ['One Club', 'Pass'],
-            "right": ['Pass', 'Three Heart'],
-            "bottom": ['Two Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['passFirstNTSecondResponding']
 
         self.expected = {
             "left": {
@@ -1343,12 +1298,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Pass_First_Bid_Suit_Second(self):
-        biddingRelative = {
-            "left": ['pass', 'Two Heart'],
-            "top": ['pass', 'Two Spade'],
-            "right": ['Pass', 'Three Heart'],
-            "bottom": ['Two Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['passFirstBidSuitSecond']
 
         self.expected = {
             "left": {
@@ -1376,12 +1326,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_pass_first_NT_second(self):
-        biddingRelative = {
-            "left": ['One Heart', 'pass'],
-            "top": ['pass', 'Two No Trump'],
-            "right": ['Pass', 'Three Heart'],
-            "bottom": ['Two Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['passFirstNTSecond']
 
         self.expected = {
             "left": {
@@ -1409,12 +1354,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Pass_First_Double_Second(self):
-        biddingRelative = {
-            "left": ['One Heart', 'pass'],
-            "top": ['pass', 'Two No Trump'],
-            "right": ['Pass', 'double'],
-            "bottom": ['Two Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['passFirstDoubleSecond']
 
         self.expected = {
             "left": {
@@ -1442,12 +1382,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Pass_First_Pass_Second_Partner_Opens_First(self):
-        biddingRelative = {
-            "left": ['One Heart', 'pass'],
-            "top": ['pass', 'Two No Trump'],
-            "right": ['Pass', 'pass'],
-            "bottom": ['Two Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['passFirstPassSecondPartnerOpensFirst']
 
         self.expected = {
             "left": {
@@ -1475,12 +1410,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Pass_First_Pass_Second_Partner_Passes_First(self):
-        biddingRelative = {
-            "left": ['Pass', 'pass'],
-            "top": ['pass', 'Two No Trump'],
-            "right": ['Pass', 'pass'],
-            "bottom": ['Two Diamond'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['passFirstPassSecondPartnerPassesFirst']
 
         self.expected = {
             "left": {
@@ -1506,12 +1436,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_WeakTwo_First_Pass_Second(self):
-        biddingRelative = {
-            "left": ['Pass', 'Two No Trump'],
-            "top": ['Two Diamond', 'pass'],
-            "right": ['Two Heart', 'pass'],
-            "bottom": ['Two Spade'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['weakTwoFirstPassSecond']
 
         self.expected = {
             "left": {
@@ -1537,12 +1462,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_WeakTwo_First_Same_Suit_Second(self):
-        biddingRelative = {
-            "left": ['Pass', 'Two No Trump'],
-            "top": ['Two Diamond', 'Three Diamond'],
-            "right": ['Two Heart', 'pass'],
-            "bottom": ['pass'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['weakTwoFirstSameSuitSecond']
 
         self.expected = {
             "left": {
@@ -1568,12 +1488,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Weak_Three_First_Pass_Second(self):
-        biddingRelative = {
-            "left": ['Pass', 'Three No Trump'],
-            "top": ['Three Diamond', 'pass'],
-            "right": ['Three Heart', 'pass'],
-            "bottom": ['Three Spade'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['weakThreeFirstPassSecond']
 
         self.expected = {
             "left": {
@@ -1599,12 +1514,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Weak_Three_First_Same_Suit_Second(self):
-        biddingRelative = {
-            "left": ['Pass', 'Three No Trump'],
-            "top": ['Three Diamond', 'Four Diamond'],
-            "right": ['Three Heart', 'pass'],
-            "bottom": ['Three Spade'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['weakThreeFirstSameSuitSecond']
 
         self.expected = {
             "left": {
@@ -1630,12 +1540,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Partner_Has_Opened_Pass_First_Jumpshift_Suit_Second(self):
-        biddingRelative = {
-            "left": ['Pass', 'Three Heart'],
-            "top": ['One Club', 'Pass'],
-            "right": ['One Heart', 'pass'],
-            "bottom": ['One Spade'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['partnerHasOpenedPassFirstJumpshiftSuitSecond']
 
         self.expected = {
             "left": {
@@ -1661,12 +1566,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Partner_Has_Not_Opened_Pass_First_Jumpshift_Suit_Second(self):
-        biddingRelative = {
-            "left": ['Pass', 'Three Heart'],
-            "top": ['One Club', 'Pass'],
-            "right": ['Pass', 'pass'],
-            "bottom": ['One Spade'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['partnerHasNotOpenedPassFirstJumpshiftSuitSecond']
 
         self.expected = {
             "left": {
@@ -1692,12 +1592,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Partner_Has_Opened_Pass_First_Jumpshift_NT_Second(self):
-        biddingRelative = {
-            "left": ['Pass', 'Three No Trump'],
-            "top": ['One Club', 'Pass'],
-            "right": ['One No Trump', 'pass'],
-            "bottom": ['One Spade'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['partnerHasOpenedPassFirstJumpshiftNTSecond']
 
         self.expected = {
             "left": {
@@ -1723,12 +1618,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
     
     def test_update_Partner_Has_Not_Opened_Pass_First_Jumpshift_NT_Second(self):
-        biddingRelative = {
-            "left": ['Pass', 'Three No Trump'],
-            "top": ['One Club', 'Pass'],
-            "right": ['Pass', 'pass'],
-            "bottom": ['One Spade'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['partnerHasNotOpenedPassFirstJumpshiftNTSecond']
 
         self.expected = {
             "left": {
@@ -1754,12 +1644,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Player_Opens_Then_Jumpshift_Second(self):
-        biddingRelative = {
-            "left": ['One No Trump', 'Four Spade'],
-            "top": ['pass', 'Pass'],
-            "right": ['Two Spade', 'pass'],
-            "bottom": ['pass'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['openFirstJumpshiftPartnersRespondingSuitSecond']
 
         self.expected = {
             "left": {
@@ -1785,12 +1670,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Partner_Opens_Two_Clubs_Interference_Two_Level_One_Above_Bid_1(self):
-        biddingRelative = {
-            "left": ['Two Club','Two Spade'],
-            "top": ['pass', 'pass'],
-            "right": ['Two Diamond', 'Three No Trump'],
-            "bottom": ['Two Heart'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['partnerOpensTwoClubsInterferenceTwoLevelOneAboveBid1']
 
         self.expected = {
             "left": {
@@ -1817,12 +1697,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Partner_Opens_Two_Clubs_Interference_Two_Level_One_Above_Bid_2(self):
-        biddingRelative = {
-            "left": ['Two Club','Three Club'],
-            "top": ['Two Heart', 'pass'],
-            "right": ['Two Spade', 'Three Spade'],
-            "bottom": ['pass'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['partnerOpensTwoClubsInterferenceTwoLevelOneAboveBid2']
 
         self.expected = {
             "left": {
@@ -1849,12 +1724,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.assertDictEqual(self.actual, self.expected)
 
     def test_update_Partner_Opens_Two_Clubs_Interference_Three_Level_One_Above_Bid(self):
-        biddingRelative = {
-            "left": ['Two Club','Two Spade'],
-            "top": ['pass', 'Three Heart'],
-            "right": ['Two Diamond', 'Three No Trump'],
-            "bottom": ['pass'],
-        }
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['partnerOpensTwoClubsInterferenceThreeLevelOneAboveBid']
 
         self.expected = {
             "left": {

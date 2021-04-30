@@ -233,7 +233,162 @@ biddingRelatives = {
   },
 
   "twoBidOpportunities": {
-
+    "twoClubIssue": {
+        "right": ['One Spade', 'Two Diamond'],
+        "bottom": ['One No Trump'],
+        "left": ['pass'],
+        "top": ['Two Club'],
+    },
+    "oneSpadeFirstTwoNTSecond": {
+        "right": ['One Spade', 'Two No Trump'],
+        "bottom": ['pass'],
+        "left": ['One No Trump'],
+        "top": ['Two Spade'],
+    },
+    "doubleFirstPassSecond": {
+        "left": ['pass', 'pass'],
+        "top": ['One Club', 'pass'],
+        "right": ['Double', 'pass'],
+        "bottom": ['One Diamond'],
+    },
+    "doubleFirstBidSuitSecond": {
+        "left": ['pass', 'One Heart'],
+        "top": ['One Club', 'pass'],
+        "right": ['Double', 'Two Club'],
+        "bottom": ['One Diamond'],
+    },
+    "partnerTakeoutDoubleForcedBid": {
+        "left": ['pass', 'One Heart'],
+        "top": ['One Club', 'pass'],
+        "right": ['Double', 'Two Club'],
+        "bottom": ['pass'],
+    },
+    "ntFirstPassSecond": {
+        "left": ['pass', 'Two Heart'],
+        "top": ['One No Trump', 'pass'],
+        "right": ['pass', 'pass'],
+        "bottom": ['Two Diamond'],
+    },
+    "ntFirstBidSuitSecond": {
+        "left": ['pass', 'Two Heart'],
+        "top": ['One No Trump', 'Two Spade'],
+        "right": ['pass', 'Three Heart'],
+        "bottom": ['Two Diamond'],
+    },
+    "ntFirstNTSecond": {
+        "left": ['pass', 'Two Heart'],
+        "top": ['One No Trump', 'Two No Trump'],
+        "right": ['Pass', 'Three Heart'],
+        "bottom": ['Two Diamond'],
+    },
+    "passFirstNTSecondResponding": {
+        "left": ['Pass', 'Two No Trump'],
+        "top": ['One Club', 'Pass'],
+        "right": ['Pass', 'Three Heart'],
+        "bottom": ['Two Diamond'],
+    },
+    "passFirstBidSuitSecond": {
+        "left": ['pass', 'Two Heart'],
+        "top": ['pass', 'Two Spade'],
+        "right": ['Pass', 'Three Heart'],
+        "bottom": ['Two Diamond'],
+    },
+    "passFirstNTSecond": {
+        "left": ['One Heart', 'pass'],
+        "top": ['pass', 'Two No Trump'],
+        "right": ['Pass', 'Three Heart'],
+        "bottom": ['Two Diamond'],
+    },
+    "passFirstDoubleSecond": {
+        "left": ['One Heart', 'pass'],
+        "top": ['pass', 'Two No Trump'],
+        "right": ['Pass', 'double'],
+        "bottom": ['Two Diamond'],
+    },
+    "passFirstPassSecondPartnerOpensFirst": {
+        "left": ['One Heart', 'pass'],
+        "top": ['pass', 'Two No Trump'],
+        "right": ['Pass', 'pass'],
+        "bottom": ['Two Diamond'],
+    },
+    "passFirstPassSecondPartnerPassesFirst": {
+        "left": ['Pass', 'pass'],
+        "top": ['pass', 'Two No Trump'],
+        "right": ['Pass', 'pass'],
+        "bottom": ['Two Diamond'],
+    },
+    "weakTwoFirstPassSecond": {
+        "left": ['Pass', 'Two No Trump'],
+        "top": ['Two Diamond', 'pass'],
+        "right": ['Two Heart', 'pass'],
+        "bottom": ['Two Spade'],
+    },
+    "weakTwoFirstSameSuitSecond": {
+        "left": ['Pass', 'Two No Trump'],
+        "top": ['Two Diamond', 'Three Diamond'],
+        "right": ['Two Heart', 'pass'],
+        "bottom": ['pass'],
+    },
+    "weakThreeFirstPassSecond": {
+        "left": ['Pass', 'Three No Trump'],
+        "top": ['Three Diamond', 'pass'],
+        "right": ['Three Heart', 'pass'],
+        "bottom": ['Three Spade'],
+    },
+    "weakThreeFirstSameSuitSecond": {
+        "left": ['Pass', 'Three No Trump'],
+        "top": ['Three Diamond', 'Four Diamond'],
+        "right": ['Three Heart', 'pass'],
+        "bottom": ['Three Spade'],
+    },
+    "partnerHasOpenedPassFirstJumpshiftSuitSecond": {
+        "left": ['Pass', 'Three Heart'],
+        "top": ['One Club', 'Pass'],
+        "right": ['One Heart', 'pass'],
+        "bottom": ['One Spade'],
+    },
+    "partnerHasNotOpenedPassFirstJumpshiftSuitSecond": {
+        "left": ['Pass', 'Three Heart'],
+        "top": ['One Club', 'Pass'],
+        "right": ['Pass', 'pass'],
+        "bottom": ['One Spade'],
+    },
+    "partnerHasOpenedPassFirstJumpshiftNTSecond": {
+        "left": ['Pass', 'Three No Trump'],
+        "top": ['One Club', 'Pass'],
+        "right": ['One No Trump', 'pass'],
+        "bottom": ['One Spade'],
+    },
+    "partnerHasNotOpenedPassFirstJumpshiftNTSecond": {
+        "left": ['Pass', 'Three No Trump'],
+        "top": ['One Club', 'Pass'],
+        "right": ['Pass', 'pass'],
+        "bottom": ['One Spade'],
+    },
+    "openFirstJumpshiftPartnersRespondingSuitSecond": {
+        "left": ['One No Trump', 'Four Spade'],
+        "top": ['pass', 'Pass'],
+        "right": ['Two Spade', 'pass'],
+        "bottom": ['pass'],
+    },
+    "partnerOpensTwoClubsInterferenceTwoLevelOneAboveBid1": {
+        "left": ['Two Club','Two Spade'],
+        "top": ['pass', 'pass'],
+        "right": ['Two Diamond', 'Three No Trump'],
+        "bottom": ['Two Heart'],
+    },
+    "partnerOpensTwoClubsInterferenceTwoLevelOneAboveBid2": {
+        "left": ['Two Club','Three Club'],
+        "top": ['Two Heart', 'pass'],
+        "right": ['Two Spade', 'Three Spade'],
+        "bottom": ['pass'],
+    },
+    "partnerOpensTwoClubsInterferenceThreeLevelOneAboveBid": {
+        "left": ['Two Club','Two Spade'],
+        "top": ['pass', 'Three Heart'],
+        "right": ['Two Diamond', 'Three No Trump'],
+        "bottom": ['pass'],
+    }
   },
 
   "threePlusBidOpportunities": {
