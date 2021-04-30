@@ -465,10 +465,7 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
 
                     else:
                         print('first bid is not pass')
-                        minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
-                        estimatedScoring[location]['min'] = minToUse
-                        estimatedScoring[location]['max'] = maxToUse
-                        continue
+                        
                 else:
                     print('partner has not opened')
 
@@ -496,11 +493,8 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
                             continue
 
                     else:
-                        print('first bid is not pass test')
-                        minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
-                        estimatedScoring[location]['min'] = minToUse
-                        estimatedScoring[location]['max'] = maxToUse
-                        continue
+                        print('first bid is not pass')
+                       
                 #endregion
             #endregion
 
