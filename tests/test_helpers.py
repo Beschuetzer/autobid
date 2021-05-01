@@ -3793,6 +3793,45 @@ class getUsernameOfPlayerWhoHadFirstOpportunityToBid(unittest.TestCase):
         self.actual = helpers.getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, usernamesPartner, username);
         self.expected = None
         self.assertEqual(self.actual, self.expected)
+class getBiddableSuits(unittest.TestCase):
+    def tearDown(self) -> None:
+        print(f"self.actual = {self.actual}")
+        print(f"self.expected = {self.expected}")
+ 
+    def test_1(self):
+        self.handDictionary = {
+            "clubs": "T932",
+            "diamonds": "AKQ72",
+            "hearts": "965",
+            "spades": "53",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getBiddableSuits(self.hand)
+        self.expected = ['clubs', 'diamonds']
+        self.assertListEqual(self.expected, self.actual)
+    def test_2(self):
+        self.handDictionary = {
+            "clubs": "T9432",
+            "diamonds": "AKQ72",
+            "hearts": "96543",
+            "spades": "76532",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getBiddableSuits(self.hand)
+        self.expected = ['clubs', 'diamonds', 'hearts', 'spades']
+        self.assertListEqual(self.expected, self.actual)
+    def test_none(self):
+        self.handDictionary = {
+            "clubs": "T93",
+            "diamonds": "AKQ",
+            "hearts": "9654",
+            "spades": "533",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getBiddableSuits(self.hand)
+        self.expected = []
+        self.assertListEqual(self.expected, self.actual)
+
 #region Testing Test Case Helpers
 class getDealerLocation(unittest.TestCase):
     def test_empty_dict(self):

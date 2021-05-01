@@ -570,40 +570,16 @@ def getBiddableSuits(hand):
         a list of suits that are "biddable" (e.g. ["clubs", "spades"])
     '''
     biddableSuits = []
-    suitNames = ["club","diamond","heart","spade"]
+    suitNames = ["clubs","diamonds","hearts","spades"]
 
     biddableSuitLengths = {
-        "club": 4,
-        "diamond": 4,
-        "heart": 5,
-        "spade": 5,
+        "clubs": 4,
+        "diamonds": 4,
+        "hearts": 5,
+        "spades": 5,
     }
 
-    suitCounts = {
-        "club": 0,
-        "diamond": 0,
-        "heart": 0,
-        "spade": 0,
-    }
-
-    for suit in hand:
-        if len(suit) == 0: continue
-        suitName = ""
-        firstCardInSuit = suit[0]
-        if firstCardInSuit < 0:
-            raise Exception("Error inside of getBiddableSuits, card < 0")
-        if firstCardInSuit < 13: 
-            suitName = "club" 
-        elif firstCardInSuit < 26:
-            suitName = "diamond"
-        elif firstCardInSuit < 39:
-            suitName = "heart"
-        elif firstCardInSuit < 52:
-            suitName = "spade"
-        else: raise Exception("Error inside of GetBiddableSuits, card > 51")
-
-        suitCounts[suitName] = len(suit)
-
+    suitCounts = getSuitCountsFromHand(hand)
     for suitName in suitNames:
         if suitCounts[suitName] >= biddableSuitLengths[suitName]: biddableSuits.append(suitName)
 
