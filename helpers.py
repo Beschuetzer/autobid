@@ -563,6 +563,7 @@ def getBiddingObjAbsolute(biddingAbsolute, seating):
 
 def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     '''
+    #NOTE: This function is only called in takeout double and two club best suit response (no need to consider partner's suit as they likely want to know your 'best' suit regardless of theirs)
     input: 
         hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
         (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
@@ -570,11 +571,37 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     returns ------------------------------:
         'club', 'diamond', 'heart', 'spade', or 'no trump' depending on which suit is the 'strongest' (considers which suits have already been mentioned, the number of points in that suit the analyzing player has, and how long the suit it for the analyzing player
     '''
-    # suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingRelative)
 
-    #global vars to use: 'suitCounts' and 'highCardPointValuesInEachSuit'
-    #NOTE: respond with best suit that left and right didn't open with?
+    #NOTE: Idea: each additional card in a suit above three shall be counted as 2 points (this number is arbitrary and may need some adjusting between 2 - 4).  
+
+    #NOTE: Another idea: having 4 = 2 extra, 5 = 5 extra, 6 = 9, 7 = 14 ... (each additional is worth x more points)
+
+    #If no biddable suits and the two highest suits are within x points, bid return no trump
+
+    #get suits mentioned by opponents
+    suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingRelative)
+
+    #compare evaluated points for each suit and rank
+    suitsYouCanMention = getSuitYouCanMention(hand)
+
+    #add suits you can mention to a list
+
+    #if no suits you 'can' mention in list then add longest suit and any others of that length
+
+        #if you have a singleton:
+            #if more than one suit of same length when no suits you can mention, return suit with highest point count.
+
+            #if point counts and suit lengths tie when 'no suits you can mention' scenario return highest contract index suit (spades > hearts > ...)
+
+        #else:
+            #return next no trump bid
+          
     
+    #compare suits against each other and form a ranking
+
+    #return highest suit that opponents haven't mentioned
+
+
     leftOpeningSuit = biddingRelative['left'][0]
     rightOpeningSuit = biddingRelative['right'][0]
     suitWithMostPoints = rightOpeningSuit
@@ -614,6 +641,8 @@ def getSuitsMentionedByOpponents(biddingRelative):
         returns ------------------------------: 
             a dictionary obj representing whether that suit has been said by opponents or not (e.g. { "clubs": True, "diamonds": False, "noTrump": True, ... })
     '''
+
+
     mentioned = {
         "clubs": False,
         "diamonds": False,

@@ -448,7 +448,7 @@ class getDistributionPoints(unittest.TestCase):
             "hearts": 0,
             "spades": 0,
         }
-        self.expected = 'Not Done'
+        self.expected = 18
 
         self.actual = helpers.getDistributionPoints(self.hand, self.biddingAbsolute, self.biddingRelative, self.seatingRelative, self.suitCounts)
         self.assertEqual(self.actual, self.expected)
@@ -473,7 +473,7 @@ class getDistributionPoints(unittest.TestCase):
             "hearts": 0,
             "spades": 0,
         }
-        self.expected = 'Not Done'
+        self.expected = 18
         self.actual = helpers.getDistributionPoints(self.hand, self.biddingAbsolute, self.biddingRelative, self.seatingRelative, self.suitCounts)
         self.assertEqual(self.actual, self.expected)
 
@@ -1465,12 +1465,12 @@ class getStrongestSuit(unittest.TestCase):
     def tearDown(self):
         print(f"self.hand = {self.hand}")
 
-    def test_partner_not_open_1(self):
+    def test_HCP_over_length(self):
         handDictionary = {
-            "clubs": [0, 1, 7, 8, 12],
-            "diamonds": [0, 5, 10, 11],
-            "hearts": [3, 4, 6],
-            "spades": [1,3]
+            "clubs": "AKQJ",
+            "diamonds": "53",
+            "hearts": "65432",
+            "spades": "53",
         }
         
         biddingRelative = {
@@ -1484,57 +1484,18 @@ class getStrongestSuit(unittest.TestCase):
         self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
         self.expected = 'club'
         self.assertEqual(self.actual, self.expected)
-    def test_partner_not_open_length(self):
+
+    def test_crap_1(self):
         handDictionary = {
-            "clubs": [0, 1, 7],
-            "diamonds": [0, 5, 12],
-            "hearts": [3,4,6,7,8],
-            "spades": [1,3]
+            "clubs": "6543",
+            "diamonds": "T32",
+            "hearts": "654",
+            "spades": "532",
         }
         
         biddingRelative = {
             "left": ['Pass'],
-            "top": ['Pass'],
-            "right": ['Pass'],
-            "bottom": [],
-        }
-
-        self.hand = helpers.getHandFromHandDictionary(handDictionary)
-        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
-        self.expected = 'heart'
-        self.assertEqual(self.actual, self.expected)
-    def test_partner_not_open_points_over_length(self):
-        handDictionary = {
-            "clubs": [0, 1, 7],
-            "diamonds": [0],
-            "hearts": [3,4,6,7,8],
-            "spades": [9,10,11,12]
-        }
-        
-        biddingRelative = {
-            "left": ['Pass'],
-            "top": ['Pass'],
-            "right": ['Pass'],
-            "bottom": [],
-        }
-
-        self.hand = helpers.getHandFromHandDictionary(handDictionary)
-        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
-        self.expected = 'spade'
-        self.assertEqual(self.actual, self.expected)
-
-    #TODO: need tests for partner opens and you are responding based on his/her opening suit
-    def test_respond_same_suit_1(self):
-        handDictionary = {
-            "clubs": [0, 1, 7, 8, 12],
-            "diamonds": [0, 5, 10, 11],
-            "hearts": [3, 4, 6],
-            "spades": [1,3]
-        }
-        
-        biddingRelative = {
-            "left": ['Pass'],
-            "top": ['One Club'],
+            "top": ['double'],
             "right": ['Pass'],
             "bottom": [],
         }
@@ -1543,17 +1504,18 @@ class getStrongestSuit(unittest.TestCase):
         self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
         self.expected = 'club'
         self.assertEqual(self.actual, self.expected)
-    def test_respond_other_suit_1(self):
+
+    def test_crap_2(self):
         handDictionary = {
-            "clubs": [0, 1, 7, 8, 11],
-            "diamonds": [0, 5, 10, 11],
-            "hearts": [3, 4, 6],
-            "spades": [1,3]
+            "clubs": "6543",
+            "diamonds": "AK2",
+            "hearts": "654",
+            "spades": "532",
         }
         
         biddingRelative = {
             "left": ['Pass'],
-            "top": ['One Club'],
+            "top": ['double'],
             "right": ['Pass'],
             "bottom": [],
         }
@@ -1562,36 +1524,98 @@ class getStrongestSuit(unittest.TestCase):
         self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
         self.expected = 'diamond'
         self.assertEqual(self.actual, self.expected)
-    def test_respond_length(self):
+
+    def test_crap_3(self):
         handDictionary = {
-            "clubs": [0, 1, 7],
-            "diamonds": [0, 5, 12],
-            "hearts": [3,4,6,7,8],
-            "spades": [1,3]
+            "clubs": "6543",
+            "diamonds": "AKQ",
+            "hearts": "654",
+            "spades": "532",
         }
         
         biddingRelative = {
             "left": ['Pass'],
-            "top": ['One Club'],
+            "top": ['double'],
             "right": ['Pass'],
             "bottom": [],
         }
 
         self.hand = helpers.getHandFromHandDictionary(handDictionary)
         self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
-        self.expected = 'heart'
+        self.expected = 'diamond'
         self.assertEqual(self.actual, self.expected)
-    def test_respond_points_over_length(self):
+
+    def test_crap_4(self):
         handDictionary = {
-            "clubs": [0, 1, 7],
-            "diamonds": [0],
-            "hearts": [3,4,6,7,8],
-            "spades": [9,10,11,12]
+            "clubs": "65432",
+            "diamonds": "AK",
+            "hearts": "654",
+            "spades": "532",
         }
         
         biddingRelative = {
             "left": ['Pass'],
-            "top": ['One Club'],
+            "top": ['double'],
+            "right": ['Pass'],
+            "bottom": [],
+        }
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'club'
+        self.assertEqual(self.actual, self.expected)
+
+    def test_crap_5(self):
+        handDictionary = {
+            "clubs": "65432",
+            "diamonds": "AKQ",
+            "hearts": "65",
+            "spades": "532",
+        }
+        
+        biddingRelative = {
+            "left": ['Pass'],
+            "top": ['double'],
+            "right": ['Pass'],
+            "bottom": [],
+        }
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'diamond'
+        self.assertEqual(self.actual, self.expected)
+
+    def test_crap_6(self):
+        handDictionary = {
+            "clubs": "65432",
+            "diamonds": "J543",
+            "hearts": "543",
+            "spades": "2",
+        }
+        
+        biddingRelative = {
+            "left": ['Pass'],
+            "top": ['double'],
+            "right": ['Pass'],
+            "bottom": [],
+        }
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'club'
+        self.assertEqual(self.actual, self.expected)
+
+    def test_no_mentionable_suit_but_higher_than_threshold_points(self):
+        handDictionary = {
+            "clubs": "52",
+            "diamonds": "432",
+            "hearts": "6543",
+            "spades": "A653",
+        }
+        
+        biddingRelative = {
+            "left": ['Pass'],
+            "top": ['Double'],
             "right": ['Pass'],
             "bottom": [],
         }
@@ -1600,6 +1624,164 @@ class getStrongestSuit(unittest.TestCase):
         self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
         self.expected = 'spade'
         self.assertEqual(self.actual, self.expected)
+
+    def test_no_mentionable_suit_but_less_than_or_equal_to_threshold_points(self):
+        handDictionary = {
+            "clubs": "52",
+            "diamonds": "432",
+            "hearts": "6543",
+            "spades": "K653",
+        }
+        
+        biddingRelative = {
+            "left": ['Pass'],
+            "top": ['Double'],
+            "right": ['Pass'],
+            "bottom": [],
+        }
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'no trump'
+        self.assertEqual(self.actual, self.expected)
+
+    def test_partner_not_open_1(self):
+        handDictionary = {
+            "clubs": "AT932",
+            "diamonds": "KQ72",
+            "hearts": "965",
+            "spades": "53",
+        }
+        
+        biddingRelative = {
+            "left": ['Pass'],
+            "top": ['Pass'],
+            "right": ['Pass'],
+            "bottom": [],
+        }
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'club'
+        self.assertEqual(self.actual, self.expected)
+    
+    def test_same_score_but_one_is_major(self):
+        handDictionary = {
+            "clubs": "932",
+            "diamonds": "A72",
+            "hearts": "T9865",
+            "spades": "53"
+        }
+        
+        biddingRelative = {
+            "left": ['Pass'],
+            "top": ['Pass'],
+            "right": ['Pass'],
+            "bottom": [],
+        }
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'heart'
+        self.assertEqual(self.actual, self.expected)
+
+    def test_same_score_but_both_major(self):
+        handDictionary = {
+            "clubs": "932",
+            "diamonds": "32",
+            "hearts": "T9865",
+            "spades": "A72"
+        }
+        
+        biddingRelative = {
+            "left": ['Pass'],
+            "top": ['Pass'],
+            "right": ['Pass'],
+            "bottom": [],
+        }
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'spade'
+        self.assertEqual(self.actual, self.expected)
+    
+
+    # def test_respond_same_suit_1(self):
+    #     handDictionary = {
+    #         "clubs": [0, 1, 7, 8, 12],
+    #         "diamonds": [0, 5, 10, 11],
+    #         "hearts": [3, 4, 6],
+    #         "spades": [1,3]
+    #     }
+        
+    #     biddingRelative = {
+    #         "left": ['Pass'],
+    #         "top": ['One Club'],
+    #         "right": ['Pass'],
+    #         "bottom": [],
+    #     }
+
+    #     self.hand = helpers.getHandFromHandDictionary(handDictionary)
+    #     self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+    #     self.expected = 'club'
+    #     self.assertEqual(self.actual, self.expected)
+    # def test_respond_other_suit_1(self):
+    #     handDictionary = {
+    #         "clubs": [0, 1, 7, 8, 11],
+    #         "diamonds": [0, 5, 10, 11],
+    #         "hearts": [3, 4, 6],
+    #         "spades": [1,3]
+    #     }
+        
+    #     biddingRelative = {
+    #         "left": ['Pass'],
+    #         "top": ['One Club'],
+    #         "right": ['Pass'],
+    #         "bottom": [],
+    #     }
+
+    #     self.hand = helpers.getHandFromHandDictionary(handDictionary)
+    #     self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+    #     self.expected = 'diamond'
+    #     self.assertEqual(self.actual, self.expected)
+    # def test_respond_length(self):
+    #     handDictionary = {
+    #         "clubs": [0, 1, 7],
+    #         "diamonds": [0, 5, 12],
+    #         "hearts": [3,4,6,7,8],
+    #         "spades": [1,3]
+    #     }
+        
+    #     biddingRelative = {
+    #         "left": ['Pass'],
+    #         "top": ['One Club'],
+    #         "right": ['Pass'],
+    #         "bottom": [],
+    #     }
+
+    #     self.hand = helpers.getHandFromHandDictionary(handDictionary)
+    #     self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+    #     self.expected = 'heart'
+    #     self.assertEqual(self.actual, self.expected)
+    # def test_respond_points_over_length(self):
+    #     handDictionary = {
+    #         "clubs": [0, 1, 7],
+    #         "diamonds": [0],
+    #         "hearts": [3,4,6,7,8],
+    #         "spades": [9,10,11,12]
+    #     }
+        
+    #     biddingRelative = {
+    #         "left": ['Pass'],
+    #         "top": ['One Club'],
+    #         "right": ['Pass'],
+    #         "bottom": [],
+    #     }
+
+    #     self.hand = helpers.getHandFromHandDictionary(handDictionary)
+    #     self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+    #     self.expected = 'spade'
+    #     self.assertEqual(self.actual, self.expected)
 
 class getSuitsMentionedByOpponents(unittest.TestCase):
     def test_five(self):
