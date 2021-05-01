@@ -585,6 +585,39 @@ def getBiddableSuits(hand):
 
     return biddableSuits
 
+def getWeightedSuitScore(hand, clientPointCountingConvention):
+    '''
+    input: 
+        hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
+        (e.g. [ [11,10,8], [24,22,20,17,15], [], [51,50,49,48,47]
+    returns:
+        a dictionary representing the weighted score for each suit 
+        (e.g. {"clubs": 10, "diamonds": 12, ... })
+    '''
+    #NOTE: Idea: each additional card (valueOfAdditionalLength) in a suit above three shall be counted as 2 points (this number is arbitrary and may need some adjusting between 2 - 4).  
+
+    #NOTE: Another idea: having 4 = 2 extra, 5 = 5 extra, 6 = 9, 7 = 14 ... (each additional is worth x more points)
+
+    valueOfAdditionalLength = 2
+    weightedSuitScores = {
+        "clubs": 0,
+        "diamonds": 0,
+        "hearts": 0,
+        "spades": 0,
+    }
+    pointsInEachSuit = getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention)
+    suitCounts = getSuitCountsFromHand(hand)
+
+    print(f"pointsInEachSuit = {pointsInEachSuit}")
+    print(f"suitCounts = {suitCounts}")
+    for suit, suitCount in suitCounts.items():
+        if suitCount < 3: 
+            weightedSuitScores[suit] = pointsInEachSuit[suit]
+        else:
+            weightedSuitScores[suit] = pointsInEachSuit[suit] + ((suitCount - 3) * valueOfAdditionalLength)
+
+    return weightedSuitScores
+
 def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     
     #NOTE: This function is only called in takeout double and two club best suit response (no need to consider partner's suit as they likely want to know your 'best' suit regardless of theirs)
@@ -596,11 +629,6 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     returns ------------------------------:
         'club', 'diamond', 'heart', 'spade', or 'no trump' depending on which suit is the 'strongest' (considers which suits have already been mentioned, the number of points in that suit the analyzing player has, and how long the suit it for the analyzing player
     '''
-
-    #NOTE: Idea: each additional card in a suit above three shall be counted as 2 points (this number is arbitrary and may need some adjusting between 2 - 4).  
-
-    #NOTE: Another idea: having 4 = 2 extra, 5 = 5 extra, 6 = 9, 7 = 14 ... (each additional is worth x more points)
-
     possibleOutputs = {
         "club": "club", 
         "diamond": "diamond", 
@@ -612,13 +640,22 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     #create a variable called biddableSuits
     biddableSuits = getBiddableSuits(hand) 
 
+    #getting weightedSuitScore for each suit
+    weightedSuitScore = getWeightedSuitScore(hand, clientPointCountingConvention)
+
     #If no biddable suits and the two highest suits are within x points, bid return no trump
+    if len(biddableSuits) == 0:
+        pass
+
+    else:
+        pass
+
 
     #get suits mentioned by opponents
     suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingRelative)
 
     #compare evaluated points for each suit and rank
-    suitsYouCanMention = getSuitYouCanMention(hand)
+    # suitsYouCanMention = getSuitYouCanMention(hand)
 
     #add suits you can mention to a list
 

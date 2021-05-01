@@ -3831,6 +3831,63 @@ class getBiddableSuits(unittest.TestCase):
         self.actual = helpers.getBiddableSuits(self.hand)
         self.expected = []
         self.assertListEqual(self.expected, self.actual)
+class getWeightedSuitScore(unittest.TestCase):
+    def tearDown(self) -> None:
+        print(f"self.actual = {self.actual}")
+        print(f"self.expected = {self.expected}")
+ 
+    def test_1(self):
+        self.handDictionary = {
+            "clubs": "T932",
+            "diamonds": "AKQ72",
+            "hearts": "965",
+            "spades": "53",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getWeightedSuitScore(self.hand, 'hcp')
+        self.expected = {
+            "clubs": 2,
+            "diamonds": 13,
+            "hearts": 0,
+            "spades": 0,
+        }
+        self.assertDictEqual(self.expected, self.actual)
+    
+    def test_2(self):
+        self.handDictionary = {
+            "clubs": "65432",
+            "diamonds": "J543",
+            "hearts": "543",
+            "spades": "2",
+        }
+        
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getWeightedSuitScore(self.hand, 'hcp')
+        self.expected = {
+            "clubs": 4,
+            "diamonds": 3,
+            "hearts": 0,
+            "spades": 0,
+        }
+        self.assertDictEqual(self.expected, self.actual)
+   
+    def test_3(self):
+        self.handDictionary = {
+            "clubs": "AKQJ52",
+            "diamonds": "AKQJT98",
+            "hearts": "",
+            "spades": "",
+        }
+        
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getWeightedSuitScore(self.hand, 'hcp')
+        self.expected = {
+            "clubs": 16,
+            "diamonds": 18,
+            "hearts": 0,
+            "spades": 0,
+        }
+        self.assertDictEqual(self.expected, self.actual)
 
 #region Testing Test Case Helpers
 class getDealerLocation(unittest.TestCase):
