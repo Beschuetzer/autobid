@@ -3889,6 +3889,60 @@ class getWeightedSuitScore(unittest.TestCase):
         }
         self.assertDictEqual(self.expected, self.actual)
 
+class getShouldReturnNoTrump(unittest.TestCase):
+    def tearDown(self) -> None:
+        print(f"self.actual = {self.actual}")
+        print(f"self.expected = {self.expected}")
+ 
+    def test_no_biddable(self):
+        self.weightedSuitScores = {
+            "clubs": 4,
+            "diamonds": 4,
+            "hearts": 4,
+            "spades": 4,
+        }
+        self.biddableSuits = []
+        self.actual = helpers.getShouldReturnNoTrump(self.weightedSuitScores, self.biddableSuits)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+
+    def test_not_close_enough(self):
+        self.weightedSuitScores = {
+            "clubs": 4,
+            "diamonds": 7,
+            "hearts": 4,
+            "spades": 4,
+        }
+        self.biddableSuits = []
+        self.actual = helpers.getShouldReturnNoTrump(self.weightedSuitScores, self.biddableSuits)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+
+    def test_just_right(self):
+        self.weightedSuitScores = {
+            "clubs": 4,
+            "diamonds": 6,
+            "hearts": 4,
+            "spades": 4,
+        }
+        self.biddableSuits = []
+        self.actual = helpers.getShouldReturnNoTrump(self.weightedSuitScores, self.biddableSuits)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+
+    def test_just_right_1(self):
+        self.weightedSuitScores = {
+            "clubs": 0,
+            "diamonds": 0,
+            "hearts": 2,
+            "spades": 0,
+        }
+        self.biddableSuits = []
+        self.actual = helpers.getShouldReturnNoTrump(self.weightedSuitScores, self.biddableSuits)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    
+
 #region Testing Test Case Helpers
 class getDealerLocation(unittest.TestCase):
     def test_empty_dict(self):

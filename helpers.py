@@ -618,6 +618,37 @@ def getWeightedSuitScore(hand, clientPointCountingConvention):
 
     return weightedSuitScores
 
+def getShouldReturnNoTrump(weightedSuitScores, biddableSuits):
+    '''
+    input: 
+        weightedSuitScores =  a dictionary representing the weighted score for each suit 
+        (e.g. {"clubs": 10, "diamonds": 12, ... })
+    returns ------------------------------:
+        return tuple of strings representing suits with highest 'point counts'
+    '''
+    #NEVER BID NO TRUMP UNLESS no biddable suits and the two highest suits are within x points, bid return no trump
+    differenceThreshold = 3
+    
+    if len(biddableSuits) == 0:
+        highestSuit = None
+        secondHighestSuit = None
+        highestSuitValue = 0
+        secondHighestSuitValue = 0
+
+        for suit, weightedValue in weightedSuitScores.items():
+            if weightedValue > highestSuitValue: 
+                highestSuitValue = weightedValue
+                highestSuit = suit
+
+        for suit, weightedValue in weightedSuitScores.items():
+            if weightedValue > secondHighestSuitValue and suit != highestSuit: 
+                secondHighestSuitValue = weightedValue
+                secondHighestSuit = suit
+        
+        if (abs(highestSuitValue - secondHighestSuitValue) < differenceThreshold): return True
+       
+    return False
+
 def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     
     #NOTE: This function is only called in takeout double and two club best suit response (no need to consider partner's suit as they likely want to know your 'best' suit regardless of theirs)
@@ -641,11 +672,10 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     biddableSuits = getBiddableSuits(hand) 
 
     #getting weightedSuitScore for each suit
-    weightedSuitScore = getWeightedSuitScore(hand, clientPointCountingConvention)
+    weightedSuitScores = getWeightedSuitScore(hand, clientPointCountingConvention)
 
-    #If no biddable suits and the two highest suits are within x points, bid return no trump
-    if len(biddableSuits) == 0:
-        pass
+    shouldReturnNoTrump = getShouldReturnNoTrump(weightedSuitScores, biddableSuits)
+    if shouldReturnNoTrump: return 'no trump'
 
     else:
         pass

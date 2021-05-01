@@ -46,3 +46,11 @@ print(max_key)
 
 test = [1,2,3,4,5,6]
 print (4 in test)
+
+x = {
+  "clubs": 0,
+  "diamonds": 0,
+  "heart": 0,
+  "clubs": 0,
+}
+print(dict(sorted(x.items(), key=lambda item: item[1])))
