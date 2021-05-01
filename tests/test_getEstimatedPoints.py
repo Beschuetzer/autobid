@@ -29,8 +29,8 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
         self.expected = {
             "right": {
-                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
             },
             "top": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
@@ -1174,8 +1174,6 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         
         self.assertDictEqual(self.actual, self.expected)
 
-    #NOTE: This is an interesting case that we kind of overlooked
-    #TODO: Ask andrew about these force ones
     def test_update_forced_1NT_pass_second(self):
         biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['forcedOneNoTrumpResponsePassSecond']
 
@@ -1191,8 +1189,8 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
             },
             "right": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
-                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
             },
             "bottom": {
                 "min": None,

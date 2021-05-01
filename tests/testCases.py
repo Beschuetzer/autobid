@@ -264,10 +264,10 @@ biddingRelatives = {
         "bottom": ['Two Spade'],
     },
     "forcedOneNoTrumpResponsePassSecond": {
-        "left": ['One No Trump', 'Two No Trump'],
+        "left": ['One No Trump', 'Two Spade'],
         "top": ['pass', 'pass'],
         "right": ['Two Heart', 'pass'],
-        "bottom": ['Two Spade'],
+        "bottom": ['Pass'],
     },
     "forcedOneNoTrumpResponseBidSuitSecondNotJumpshift": {
         "left": ['One No Trump', 'Two No Trump'],
@@ -276,9 +276,9 @@ biddingRelatives = {
         "bottom": ['Two Spade'],
     },
     "forcedOneNoTrumpResponseBidSuitSecondJumpshift": {
-        "left": ['One No Trump', 'Two No Trump'],
+        "left": ['One No Trump', 'Three Club'],
         "top": ['pass', 'pass'],
-        "right": ['Two Heart', 'Four Club'],
+        "right": ['Two Heart', 'Five Club'],
         "bottom": ['Two Spade'],
     },
     "twoClubIssue": {
