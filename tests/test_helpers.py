@@ -1665,7 +1665,7 @@ class getStrongestSuit(unittest.TestCase):
         self.expected = 'diamond'
         self.assertEqual(self.actual, self.expected)
 
-     def test_opponents_mentioned_my_best_suit(self):
+    def test_opponents_mentioned_my_best_suit(self):
         handDictionary = {
             "clubs": "T932",
             "diamonds": "AKQ72",
