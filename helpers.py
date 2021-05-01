@@ -561,9 +561,58 @@ def getBiddingObjAbsolute(biddingAbsolute, seating):
         biddingObjAbsolute[direction].append(bid[1])
     return biddingObjAbsolute
 
-def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
+def getBiddableSuits(hand):
     '''
+    input: 
+        hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
+        (e.g. [ [11,10,8], [24,22,20,17,15], [], [51,50,49,48,47]
+    returns:
+        a list of suits that are "biddable" (e.g. ["clubs", "spades"])
+    '''
+    biddableSuits = []
+    suitNames = ["club","diamond","heart","spade"]
+
+    biddableSuitLengths = {
+        "club": 4,
+        "diamond": 4,
+        "heart": 5,
+        "spade": 5,
+    }
+
+    suitCounts = {
+        "club": 0,
+        "diamond": 0,
+        "heart": 0,
+        "spade": 0,
+    }
+
+    for suit in hand:
+        if len(suit) == 0: continue
+        suitName = ""
+        firstCardInSuit = suit[0]
+        if firstCardInSuit < 0:
+            raise Exception("Error inside of getBiddableSuits, card < 0")
+        if firstCardInSuit < 13: 
+            suitName = "club" 
+        elif firstCardInSuit < 26:
+            suitName = "diamond"
+        elif firstCardInSuit < 39:
+            suitName = "heart"
+        elif firstCardInSuit < 52:
+            suitName = "spade"
+        else: raise Exception("Error inside of GetBiddableSuits, card > 51")
+
+        suitCounts[suitName] = len(suit)
+
+    for suitName in suitNames:
+        if suitCounts[suitName] >= biddableSuitLengths[suitName]: biddableSuits.append(suitName)
+
+    return biddableSuits
+
+def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
+    
     #NOTE: This function is only called in takeout double and two club best suit response (no need to consider partner's suit as they likely want to know your 'best' suit regardless of theirs)
+    '''
     input: 
         hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
         (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
@@ -575,6 +624,17 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     #NOTE: Idea: each additional card in a suit above three shall be counted as 2 points (this number is arbitrary and may need some adjusting between 2 - 4).  
 
     #NOTE: Another idea: having 4 = 2 extra, 5 = 5 extra, 6 = 9, 7 = 14 ... (each additional is worth x more points)
+
+    possibleOutputs = {
+        "club": "club", 
+        "diamond": "diamond", 
+        "heart": "heart",
+        "spade": "spade", 
+        "noTrump": "no trump",     
+    }
+
+    #create a variable called biddableSuits
+    biddableSuits = getBiddableSuits(hand) 
 
     #If no biddable suits and the two highest suits are within x points, bid return no trump
 
