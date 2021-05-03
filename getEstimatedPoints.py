@@ -322,7 +322,7 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
         #region Handling Partner 1NT forced Scenario
         wasPlayerForcedToBid = helpers.getWasForcedToBid(username, biddingAbsolute, seatingRelative)
         partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
-        hasPartnerOpenedOneNoTrump = helpers.getHasPartnerOpenedNoTrump(partnersLocation, biddingRelative)
+        hasPartnerOpenedOneNoTrump = helpers.getHasPartnerOpenedNoTrump(location, partnersLocation, biddingRelative, biddingAbsolute, seatingRelative)
         if hasPartnerOpenedOneNoTrump:
             print('one trump scenario------------------')
             #TODO: handle partner opens 1NT scenarios

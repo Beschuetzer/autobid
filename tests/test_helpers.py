@@ -2374,8 +2374,9 @@ class getHasPartnerOpenedNoTrump(unittest.TestCase):
         print('self.actual ={0}'.format(self.actual))
         print('')
 
-    def test_1(self):
-        self.partnersLocation = "left"
+    def test_False_1(self):
+        self.partnersLocation = "right"
+        self.location = "left"
         self.biddingRelative = {
             "left": ['pass'],
             "top": ['pass'],
@@ -2383,23 +2384,25 @@ class getHasPartnerOpenedNoTrump(unittest.TestCase):
             "bottom": [],
         }
         self.biddingAbsolute = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
-        self.actual = helpers.getHasPartnerOpenedNoTrump(self.partnersLocation, self.biddingRelative, self.biddingAbsolute)
+        self.actual = helpers.getHasPartnerOpenedNoTrump(self.location, self.partnersLocation, self.biddingRelative, self.biddingAbsolute, self.seatingRelative)
         self.expected = False
         self.assertEqual(self.actual, self.expected)
-    def test_2(self):
+    def test_True_1(self):
         self.partnersLocation = "right"
+        self.location = "left"
         self.biddingRelative = {
             "left": ['pass', 'pass'],
             "top": ['pass', 'pass'],
             "right": ['One No Trump', 'One Spade'],
-            "bottom": [],
+            "bottom": ['pass'],
         }
         self.biddingAbsolute = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
-        self.actual = helpers.getHasPartnerOpenedNoTrump(self.partnersLocation, self.biddingRelative, self.biddingAbsolute)
+        self.actual = helpers.getHasPartnerOpenedNoTrump(self.location, self.partnersLocation, self.biddingRelative, self.biddingAbsolute, self.seatingRelative)
         self.expected = True
         self.assertEqual(self.actual, self.expected)
-    def test_3(self):
+    def test_True_2(self):
         self.partnersLocation = "left"
+        self.location = "right"
         self.biddingRelative = {
             "left": ['One No Trump'],
             "top": ['pass'],
@@ -2407,7 +2410,7 @@ class getHasPartnerOpenedNoTrump(unittest.TestCase):
             "bottom": [],
         }
         self.biddingAbsolute = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
-        self.actual = helpers.getHasPartnerOpenedNoTrump(self.partnersLocation, self.biddingRelative, self.biddingAbsolute)
+        self.actual = helpers.getHasPartnerOpenedNoTrump(self.location, self.partnersLocation, self.biddingRelative, self.biddingAbsolute, self.seatingRelative)
         self.expected = True
         self.assertEqual(self.actual, self.expected)
 class getIndexOfNthBid(unittest.TestCase):

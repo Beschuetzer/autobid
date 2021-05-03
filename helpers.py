@@ -1314,20 +1314,29 @@ def getHasTakenPartnerOutOfGameBid(username, biddingRelative, seatingRelative):
         pass
     return False
 
-def getHasPartnerOpenedNoTrump(partnersLocation, biddingRelative, biddingAbsolute):
+def getHasPartnerOpenedNoTrump(location, partnersLocation, biddingRelative, biddingAbsolute, seatingRelative):
     '''
     inputs:
         partnersLocation = string (e.g. 'left', 'right', 'top', or 'bottom')
         biddingRelative = { "top": ['pass', 'one heart', ...], ... }
     returns:
-        true if the player at partnersLocation's first bid is a no trump bid and the no trump bid came before partnersLocation's partner's last bid, false otherwise
+        true if the first bid for the player at partnersLocation a no trump bid and that bid came before the player at partnersLocation's partner's last bid, false otherwise
     '''
     
-    print(f"partnersLocation = {partnersLocation}")
-    print(f"biddingRelative = {biddingRelative}")
-    print(f"biddingAbsolute = {biddingAbsolute}")
     if len(biddingRelative[partnersLocation]) == 0: return False
-    if re.search('trump', biddingRelative[partnersLocation][0], re.IGNORECASE): return True
+    if re.search('trump', biddingRelative[partnersLocation][0], re.IGNORECASE):
+
+        partnersOneNoTrumpBidIndex = -1
+        locationsLastBidIndex = -1
+
+        for i in range(len(biddingAbsolute)):
+            bid = biddingAbsolute[i]
+
+            if bid[0] == seatingRelative[partnersLocation] and re.search('trump', bid[1], re.IGNORECASE): partnersOneNoTrumpBidIndex = i
+            if bid[0] == seatingRelative[location]: locationsLastBidIndex = i
+
+        if partnersOneNoTrumpBidIndex < locationsLastBidIndex: return True
+        return False
 
 #region Test Case Helpers
 def getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):
