@@ -318,11 +318,11 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
 
         #endregion
 
-        #region Handling Partner 1NT forced Scenario
+        #region Handling Partner 1NT Scenario One Bid
         wasPlayerForcedToBid = helpers.getWasForcedToBid(username, biddingAbsolute, seatingRelative)
         partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
         hasPartnerOpenedOneNoTrump = helpers.getHasPartnerOpenedNoTrump(location, partnersLocation, biddingRelative, biddingAbsolute, seatingRelative)
-        if hasPartnerOpenedOneNoTrump:
+        if hasPartnerOpenedOneNoTrump and secondBid == '':
             print('one trump scenario------------------')
             print(f"wasPlayerForcedToBid = {wasPlayerForcedToBid}")
             if wasPlayerForcedToBid:
@@ -421,7 +421,7 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
 
                 #nothing more can be gleamed from second bid if they were forced to bid due to takeout double
                 if wasPlayerForcedToBid: 
-                    minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, False, isPartnersFirstBidPass, False)
+                    minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False, True)
                     estimatedScoring[location]['min'] = minToUse
                     estimatedScoring[location]['max'] = maxToUse
                     continue
@@ -503,6 +503,7 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
                             print('second bid is pass')
                             didPlayerHaveFirstBidOpportunity = helpers.getUsernameOfPlayerWhoHadFirstOpportunityToBid(biddingAbsolute, username, partner) == username
 
+                            print(f"didPlayerHaveFirstBidOpportunity = {didPlayerHaveFirstBidOpportunity}")
                             if not didPlayerHaveFirstBidOpportunity:
                                 estimatedScoring[location]['min'] = values['partnerPassesFirst']['playerPasses']['min']
                                 estimatedScoring[location]['max'] = values['partnerPassesFirst']['playerPasses']['max']
@@ -534,7 +535,7 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
     print('')
     return estimatedScoring
 
-def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False):
+def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False, wasForcedToBid = False):
     '''
     inputs--------------------------------------------------:
         location = a string representing relative locations: ('right', 'left',...)
@@ -589,6 +590,10 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
             indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, biddingAbsolute, 1)
             hasSomeOneOpenedBefore = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
 
+            print(f"location = {location}")
+            print(f"hasSomeOneOpenedBefore = {hasSomeOneOpenedBefore}")
+            print(f"hasPartnerOpened = {hasPartnerOpened}")
+            print(f"isFirstBidJumpshift = {isFirstBidJumpshift}")
             if hasSomeOneOpenedBefore:
                 if hasPartnerOpened:
                     minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
@@ -624,7 +629,10 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
         print('pass branch')
         print(f"hasPartnerOpened = {hasPartnerOpened}")
         print(f"hasOtherTeamOpenedTwoClubs = {hasOtherTeamOpenedTwoClubs}")
-        if hasPartnerOpened:
+        if wasForcedToBid:
+            minToUse = values['isTeamsFirstBid']['playerPasses']['min']
+            maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
+        elif hasPartnerOpened:
             if hasOtherTeamOpenedTwoClubs:
                 minToUse = values['isTeamsFirstBid']['playerPasses']['min']
                 maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
