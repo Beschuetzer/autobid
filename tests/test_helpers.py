@@ -3964,9 +3964,8 @@ class getShouldReturnNoTrump(unittest.TestCase):
         }
         self.biddableSuits = []
         self.actual = helpers.getShouldReturnNoTrump(self.weightedSuitScores, self.biddableSuits)
-        self.expected = False
+        self.expected = True
         self.assertEqual(self.expected, self.actual)
-
     def test_not_close_enough(self):
         self.weightedSuitScores = {
             "clubs": 4,
@@ -3978,7 +3977,6 @@ class getShouldReturnNoTrump(unittest.TestCase):
         self.actual = helpers.getShouldReturnNoTrump(self.weightedSuitScores, self.biddableSuits)
         self.expected = False
         self.assertEqual(self.expected, self.actual)
-
     def test_just_right(self):
         self.weightedSuitScores = {
             "clubs": 4,
@@ -3990,7 +3988,6 @@ class getShouldReturnNoTrump(unittest.TestCase):
         self.actual = helpers.getShouldReturnNoTrump(self.weightedSuitScores, self.biddableSuits)
         self.expected = True
         self.assertEqual(self.expected, self.actual)
-
     def test_just_right_1(self):
         self.weightedSuitScores = {
             "clubs": 0,
@@ -4002,7 +3999,17 @@ class getShouldReturnNoTrump(unittest.TestCase):
         self.actual = helpers.getShouldReturnNoTrump(self.weightedSuitScores, self.biddableSuits)
         self.expected = True
         self.assertEqual(self.expected, self.actual)
-    
+    def test_biddable_suit(self):
+        self.weightedSuitScores = {
+            "clubs": 0,
+            "diamonds": 0,
+            "hearts": 2,
+            "spades": 0,
+        }
+        self.biddableSuits = ['clubs']
+        self.actual = helpers.getShouldReturnNoTrump(self.weightedSuitScores, self.biddableSuits)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
 
 #region Testing Test Case Helpers
 class getDealerLocation(unittest.TestCase):

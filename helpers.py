@@ -628,7 +628,7 @@ def getShouldReturnNoTrump(weightedSuitScores, biddableSuits):
     returns ------------------------------:
         return tuple of strings representing suits with highest 'point counts'
     '''
-    #NEVER BID NO TRUMP UNLESS no biddable suits and the two highest suits are within x points, bid return no trump
+    #NEVER BID NO TRUMP UNLESS no biddable suits and the two highest suits are within differenceThreshold points, bid return no trump
     differenceThreshold = 3
     
     if len(biddableSuits) == 0:
