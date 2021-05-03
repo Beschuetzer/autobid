@@ -326,9 +326,13 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
         if hasPartnerOpenedOneNoTrump:
             print('one trump scenario------------------')
             #TODO: handle partner opens 1NT scenarios
-            
-
-            minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
+            print(f"wasPlayerForcedToBid = {wasPlayerForcedToBid}")
+            if wasPlayerForcedToBid:
+                minToUse = values['partnerPassesFirst']['playerPasses']['min']
+                maxToUse = values['partnerPassesFirst']['playerPasses']['max']
+            else:
+                minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
+                
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
             continue

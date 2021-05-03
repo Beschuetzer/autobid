@@ -1314,9 +1314,20 @@ def getHasTakenPartnerOutOfGameBid(username, biddingRelative, seatingRelative):
         pass
     return False
 
-def getHasPartnerOpenedNoTrump(partnersLocation, biddingRelative):
+def getHasPartnerOpenedNoTrump(partnersLocation, biddingRelative, biddingAbsolute):
+    '''
+    inputs:
+        partnersLocation = string (e.g. 'left', 'right', 'top', or 'bottom')
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+    returns:
+        true if the player at partnersLocation's first bid is a no trump bid and the no trump bid came before partnersLocation's partner's last bid, false otherwise
+    '''
+    
+    print(f"partnersLocation = {partnersLocation}")
+    print(f"biddingRelative = {biddingRelative}")
+    print(f"biddingAbsolute = {biddingAbsolute}")
     if len(biddingRelative[partnersLocation]) == 0: return False
-    return re.search('trump', biddingRelative[partnersLocation][0], re.IGNORECASE)
+    if re.search('trump', biddingRelative[partnersLocation][0], re.IGNORECASE): return True
 
 #region Test Case Helpers
 def getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):

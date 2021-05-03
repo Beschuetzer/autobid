@@ -21,7 +21,6 @@ class getEstimatedPoints_1_Bid_Opportunity(unittest.TestCase):
         print('expected = {0}'.format(self.expected))
         print('')
 
-    #TODO: How do we handle 1NT first then bid when opponent in between passes (some ppl don't want to be left in 1NT, so it is the same as a forced takeout double in those situations)
     def test_set_forced_1NT(self):
         biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['forcedOneNoTrumpResponse']
 
