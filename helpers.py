@@ -215,6 +215,7 @@ def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
     '''
 
     try:
+        print(f"biddingAbsolute = {biddingAbsolute}")
         partnersUsername = getUsernamesPartner(username, seatingRelative) 
         indexOfPartnersFirstBid = getIndexOfNthBid(partnersUsername, biddingAbsolute, 1)
         partnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid]
@@ -227,8 +228,9 @@ def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
         # print(f"biddingAbsolute = {biddingAbsolute}")
         # print(f"partnersFirstBid = {partnersFirstBid}")
         # print(f"bidAfterPartnersFirstBid = {bidAfterPartnersFirstBid}")
-
-        if re.search('double', partnersFirstBid[1], re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid[1], re.IGNORECASE): return True
+        caseDouble = re.search('double', partnersFirstBid[1], re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid[1], re.IGNORECASE)
+        caseNoTrump = re.search('trump', partnersFirstBid[1], re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid[1], re.IGNORECASE)
+        if caseDouble or caseNoTrump: return True
         return False
     except:
         return 'Error in getWasForcedToBid'

@@ -320,6 +320,7 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
         #endregion
 
         #region Handling Partner 1NT forced Scenario
+        wasPlayerForcedToBid = helpers.getWasForcedToBid(username, biddingAbsolute, seatingRelative)
         partnersLocation = helpers.getPartnersLocation(username, seatingRelative)
         hasPartnerOpenedOneNoTrump = helpers.getHasPartnerOpenedNoTrump(partnersLocation, biddingRelative)
         if hasPartnerOpenedOneNoTrump:
@@ -403,7 +404,6 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
         #region Two or More Bids Made
         else:
             isSecondBidJumpshift = helpers.getIsJumpshift( currentContractBidForUser, secondBid)
-            wasPlayerForcedToBid = helpers.getWasForcedToBid(username, biddingAbsolute, seatingRelative)
 
             print(f"secondBid = {secondBid}")
             print(f"currentContractBidForUser = {currentContractBidForUser}")

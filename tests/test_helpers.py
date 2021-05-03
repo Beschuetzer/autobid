@@ -1,4 +1,4 @@
-import getEstimatedPoints, helpers, unittest
+import getEstimatedPoints, helpers, unittest, testCases
 
 class getSuitFromCardAsNumber(unittest.TestCase):
     def test_clubLow(self):
@@ -3431,8 +3431,7 @@ class getWasForcedToBid(unittest.TestCase):
             "left": "LeftPlayer",
             "right": "RightPlayer",
         }
-
-    def test_wasForced(self):
+    def test_wasForced_Double(self):
         biddingRelative = {
             "left": ['pass', 'One Heart'],
             "top": ['One Club', 'pass'],
@@ -3444,6 +3443,15 @@ class getWasForcedToBid(unittest.TestCase):
         actual = helpers.getWasForcedToBid(username, biddingAbsolute, self.seatingRelative)
         expected = True
         self.assertEqual(expected, actual)
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['forcedOneNoTrumpResponse']
+    def test_wasForced_1NT(self):
+        biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['forcedOneNoTrumpResponse']
+        username = "RightPlayer"
+        biddingAbsolute = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        actual = helpers.getWasForcedToBid(username, biddingAbsolute, self.seatingRelative)
+        expected = True
+        self.assertEqual(expected, actual)
+   
     def test_wasNOTForced(self):
         biddingRelative = {
             "left": ['pass', 'One Heart'],
