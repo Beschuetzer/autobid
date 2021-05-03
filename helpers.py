@@ -1365,6 +1365,7 @@ def getHasPartnerOpenedNoTrump(location, partnersLocation, biddingRelative, bidd
         if partnersOneNoTrumpBidIndex < locationsLastBidIndex: return True
         return False
 
+
 #region Test Case Helpers
 def getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):
     '''

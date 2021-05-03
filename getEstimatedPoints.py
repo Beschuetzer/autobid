@@ -281,7 +281,6 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
         print('biddingUpToUsersTurn = {0}'.format(biddingUpToUsersLastTurn))
         print('currentContractBidForUser = {0}'.format(currentContractBidForUser))
 
-        indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, biddingAbsolute, 1)
         hasPartnerOpened = helpers.getHasPartnerOpened(biddingAbsolute, seatingRelative, username)
         firstBid = biddingRelative[location][0]
         secondBid = ''
@@ -587,32 +586,24 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
             minToUse = values['special']['weakTwo']['min']
             maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
         else: 
-            wasFirstOpeningBidANthLevelBid = helpers.getWasFirstOpeningBidANthLevelBid(biddingAbsolute, 2)
-            hasOtherTeamMentionedSameSuit = helpers.getHasOtherTeamMentionedSameSuit(location, firstBid, biddingAbsolute, seatingRelative)
-            isTeamsFirstBidOpportunity = helpers.getIsTeamsFirstBidOpportunity(biddingRelative, location)
+            indexOfUsersFirstBid = helpers.getIndexOfNthBid(username, biddingAbsolute, 1)
+            hasSomeOneOpenedBefore = helpers.getHasSomeOneOpenedBefore(indexOfUsersFirstBid, biddingAbsolute)
 
-            print(f"wasFirstOpeningBidANthLevelBid = {wasFirstOpeningBidANthLevelBid}")
-            print(f"hasOtherTeamMentionedSameSuit = {hasOtherTeamMentionedSameSuit}")
-            print(f"isFirstBidJumpshift = {isFirstBidJumpshift}")
-            print(f"isTeamsFirstBidOpportunity = {isTeamsFirstBidOpportunity}")
-
-        
-    
-            if (not isFirstBidJumpshift and wasFirstOpeningBidANthLevelBid != False and  wasFirstOpeningBidANthLevelBid != username) or (hasOtherTeamMentionedSameSuit and not isFirstBidJumpshift):
-                print(2)
-                minToUse = values['special']['weakTwo']['min']
-                maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
-            else:
+            if hasSomeOneOpenedBefore:
                 if hasPartnerOpened:
-                    print(3)
-
                     minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
                     maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
                 else:
-                    print(4)
+                    if isFirstBidJumpshift:
+                        minToUse = values['special']['weakTwo']['min']
+                        maxToUse = values['special']['weakTwo']['max']
+                    else:
+                        minToUse = values['special']['weakTwo']['min']
+                        maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
+            else:
+                minToUse = values['special']['weakTwo']['min']
+                maxToUse = values['special']['weakTwo']['max']
 
-                    minToUse = values['special']['weakTwo']['min']
-                    maxToUse = values['special']['weakTwo']['max']
 
     elif re.search('three', firstBid, re.IGNORECASE):
         print('three branch')
