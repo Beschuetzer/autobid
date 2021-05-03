@@ -325,11 +325,14 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
         hasPartnerOpenedOneNoTrump = helpers.getHasPartnerOpenedNoTrump(location, partnersLocation, biddingRelative, biddingAbsolute, seatingRelative)
         if hasPartnerOpenedOneNoTrump:
             print('one trump scenario------------------')
-            #TODO: handle partner opens 1NT scenarios
             print(f"wasPlayerForcedToBid = {wasPlayerForcedToBid}")
             if wasPlayerForcedToBid:
-                minToUse = values['partnerPassesFirst']['playerPasses']['min']
-                maxToUse = values['partnerPassesFirst']['playerPasses']['max']
+                if firstBidIsPass:
+                    minToUse = values['partnerBidsFirst']['playerPasses']['min']
+                    maxToUse = values['partnerBidsFirst']['playerPasses']['max']
+                else: 
+                    minToUse = values['partnerPassesFirst']['playerPasses']['min']
+                    maxToUse = values['partnerPassesFirst']['playerPasses']['max']
             else:
                 minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
                 
@@ -586,18 +589,28 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
         else: 
             wasFirstOpeningBidANthLevelBid = helpers.getWasFirstOpeningBidANthLevelBid(biddingAbsolute, 2)
             hasOtherTeamMentionedSameSuit = helpers.getHasOtherTeamMentionedSameSuit(location, firstBid, biddingAbsolute, seatingRelative)
+            isTeamsFirstBidOpportunity = helpers.getIsTeamsFirstBidOpportunity(biddingRelative, location)
 
+            print(f"wasFirstOpeningBidANthLevelBid = {wasFirstOpeningBidANthLevelBid}")
             print(f"hasOtherTeamMentionedSameSuit = {hasOtherTeamMentionedSameSuit}")
             print(f"isFirstBidJumpshift = {isFirstBidJumpshift}")
+            print(f"isTeamsFirstBidOpportunity = {isTeamsFirstBidOpportunity}")
 
+        
+    
             if (not isFirstBidJumpshift and wasFirstOpeningBidANthLevelBid != False and  wasFirstOpeningBidANthLevelBid != username) or (hasOtherTeamMentionedSameSuit and not isFirstBidJumpshift):
+                print(2)
                 minToUse = values['special']['weakTwo']['min']
                 maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
             else:
                 if hasPartnerOpened:
-                    minToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['min']
-                    maxToUse = values['partnerBidsFirst']['playerBidsNoTrump']['isNotJumpshift']['max']
+                    print(3)
+
+                    minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
+                    maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
                 else:
+                    print(4)
+
                     minToUse = values['special']['weakTwo']['min']
                     maxToUse = values['special']['weakTwo']['max']
 

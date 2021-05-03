@@ -3151,6 +3151,79 @@ class getHighCardPointValuesInEachSuit(unittest.TestCase):
          }
         self.assertEqual(actual, expected)
 
+class getWasPlayerForcedToBidAnNthLevelBid(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+    
+    def tearDown(self) -> None:
+        print(f"self.bids = {self.bids}")
+    
+    def test_error(self):
+        self.biddingRelative = {
+            "left": ['One No Trump'],
+            "top": ['Two Diamond'],
+            "right": ['Two Heart'],
+            "bottom": [],
+        }
+        self.username = "RightPlayer"
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+
+        with self.assertRaises(Exception) as context:
+            self.actual = helpers.getWasPlayersNthBidAJumpshift(self.username, self.bids, 2)
+
+    def test_False_1(self):
+        self.biddingRelative = {
+            "left": ['One No Trump'],
+            "top": ['Two Diamond'],
+            "right": ['Two Heart'],
+            "bottom": [],
+        }
+        self.username = "TopPlayer"
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getWasPlayersNthBidAJumpshift(self.username, self.bids, 1)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+    def test_false_2(self):
+        self.biddingRelative = {
+            "left": ['One No Trump', 'Four Club'],
+            "top": ['Three Diamond', 'Four Diamond'],
+            "right": ['Three Heart', 'pass'],
+            "bottom": ['Three Spade'],
+        }
+        self.username = "TopPlayer"
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getWasPlayersNthBidAJumpshift(self.username, self.bids, 2)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+    def test_true_1(self):
+        self.biddingRelative = {
+            "left": ['One No Trump'],
+            "top": ['Three Diamond'],
+            "right": ['Three Heart'],
+            "bottom": [],
+        }
+        self.username = "TopPlayer"
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getWasPlayersNthBidAJumpshift(self.username, self.bids, 1)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    def test_true_2(self):
+        self.biddingRelative = {
+            "left": ['One No Trump', 'Four Club'],
+            "top": ['Three Diamond', 'Five Diamond'],
+            "right": ['Three Heart', 'pass'],
+            "bottom": ['Three Spade'],
+        }
+        self.username = "TopPlayer"
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getWasPlayersNthBidAJumpshift(self.username, self.bids, 2)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
 class getWasFirstOpeningBidANthLevelBid(unittest.TestCase):
     def setUp(self) -> None:
         self.seatingRelative = {
@@ -3162,7 +3235,6 @@ class getWasFirstOpeningBidANthLevelBid(unittest.TestCase):
     
     def tearDown(self) -> None:
         print(f"self.bids = {self.bids}")
-
     
     def test_false_1(self):
         self.biddingRelative = {
@@ -3197,8 +3269,7 @@ class getWasFirstOpeningBidANthLevelBid(unittest.TestCase):
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getWasFirstOpeningBidANthLevelBid(self.bids, 2)
         self.expected = "TopPlayer"
-        self.assertEqual(self.expected, self.actual)
-        
+        self.assertEqual(self.expected, self.actual) 
 
     def test_true_2(self):
         self.biddingRelative = {

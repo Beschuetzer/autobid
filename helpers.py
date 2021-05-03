@@ -1057,16 +1057,50 @@ def getLocationAfterRotationsAround(location, numberOfRotations):
     indexOfLocation = locations.index(location)
     return locations[(indexOfLocation + numberOfRotations) % 4]
 
-def getCurrentContractBidFromBidding(bidding):
+def getCurrentContractBidFromBidding(biddingAbsolute):
     '''
     inputs: ------------------------------
-        bidding = an array of arrays representing the bids to consider (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        biddingAbsolute = an array of arrays representing the bids to consider (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
     returns ------------------------------
-        a string representing the currentContractBid based on bidding (e.g. 'One Club', 'Two Heart', etc... )
+        a string representing the currentContractBid based on biddingAbsolute (e.g. 'One Club', 'Two Heart', etc... )
     '''
-    for bid in reversed(bidding):
+    for bid in reversed(biddingAbsolute):
         if not re.search('pass', bid[1], re.IGNORECASE) and not re.search('double', bid[1], re.IGNORECASE):
             return bid[1]
+
+def getWasPlayersNthBidAJumpshift(username, biddingAbsolute, nthBid):
+    '''
+    inputs:
+        username = string
+        biddingAbsolute = an array of arrays representing the bids to consider (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        nthBid = integer representing the 1st, 2nd, 3rd, etc. bid that the user name (e.g. 1 = 1st bid user made, 5 = 5th bid that user made)
+        bidLevel = integer representing the level of bid to check for 
+            (e.g. 
+                1 = 'One Club', 'One Diamond', ... ; 
+                2 = 'Two Club', 'Two Diamond', ... ;
+                3 = 'Three Club', 'Three Diamond', ... ;
+                ...
+                7 (is highest)
+            )
+    returns:
+        True if username's nthBid had to be at nthLevel due to currentContractBid up to that point, otherwise false
+    '''
+    indexOfNthBid = -1
+    nthBidCount = 1
+    for i in range(len(biddingAbsolute)):
+        bid = biddingAbsolute[i]
+        if bid[0] == username:
+            if nthBidCount == nthBid: 
+                indexOfNthBid = i
+                break
+            nthBidCount += 1
+
+    if indexOfNthBid == -1: raise Exception('Invalid nthBid to getWasPlayerForcedToBidAnNthLevelBidAsTheirNthBid()')
+
+    bidsUpToUsersNthBid = biddingAbsolute[:indexOfNthBid]
+    currentContractBid = getCurrentContractBidFromBidding(bidsUpToUsersNthBid)
+
+    return getIsJumpshift(currentContractBid, biddingAbsolute[indexOfNthBid][1])
 
 def getWasFirstOpeningBidANthLevelBid(biddingAbsolute, bidLevel):
     '''
@@ -1081,7 +1115,7 @@ def getWasFirstOpeningBidANthLevelBid(biddingAbsolute, bidLevel):
                 7 (is highest)
             )
     returns:
-        the username who made the first non-pass, non-double bid if it was a two level bid (two club included), false otherwise
+        the username who made the first non-pass, non-double bid that was at bidLevel (e.g. a two level bid (One No Trump and two club included) if bidLevel == 2), false otherwise
     '''
     try:
         bidLevels = dict([
@@ -1261,29 +1295,22 @@ def getHasOtherTeamMentionedSameSuit(location, usersBid, biddingAbsolute, seatin
     returns:
         true if the other team has mentioned the same suit as bid's suit but at a lower level, false otherwise
     '''
-    # try:
-    
+    try:
+        usernamesOpponents = getUsernamesOpponents(location, seatingRelative)
+        indexOfUserBid = autoBid.contracts.index(usersBid)
 
-    usernamesOpponents = getUsernamesOpponents(location, seatingRelative)
-    indexOfUserBid = autoBid.contracts.index(usersBid)
+        for i in range(len(biddingAbsolute)):
+            bid = biddingAbsolute[i]
+            if not getIsBidAContractBid(bid[1]): continue
+            indexOfBid = autoBid.contracts.index(bid[1])
+            print(f"indexOfBid = {indexOfBid}")
+            if indexOfUserBid > indexOfBid and abs(indexOfBid - indexOfUserBid) % 5 == 0:
+                if bid[0] in usernamesOpponents:
+                    return True
 
-    print(f"location = {location}")
-    print(f"usersBid = {usersBid}")
-    print(f"biddingAbsolute = {biddingAbsolute}")
-    print(f"indexOfUserBid = {indexOfUserBid}")
-
-    for i in range(len(biddingAbsolute)):
-        bid = biddingAbsolute[i]
-        if not getIsBidAContractBid(bid[1]): continue
-        indexOfBid = autoBid.contracts.index(bid[1])
-        print(f"indexOfBid = {indexOfBid}")
-        if indexOfUserBid > indexOfBid and abs(indexOfBid - indexOfUserBid) % 5 == 0:
-            if bid[0] in usernamesOpponents:
-                return True
-
-    return False
-    # except:
-    #     return False
+        return False
+    except:
+        return False
 
 def getUsernamesOpponents(location, seatingRelative):
     '''
@@ -1363,16 +1390,12 @@ def getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, seatingR
             locationOrderToUse = locationOrder[index:] + locationOrder[:index]
 
         #iterate through each location n times where n is the # of opportunities the dealer has had to bid and add bids in order they were made 
-        print(f"dealer = {dealer}")
         bids = []
         for i in range(0, len(biddingRelative[dealer])):
-            print(1)
             for j in range(0, len(locationOrderToUse)):
-                print(2)
                 locationToGet = locationOrderToUse[j]
                 try:
                     bidInQuestion = biddingRelative[locationToGet][i]   
-                    print(3)
                 except:
                     break      
 
