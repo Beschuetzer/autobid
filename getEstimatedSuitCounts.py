@@ -3,13 +3,20 @@ import helpers, re, autoBid
 class EstimateSuitCounts: 
     '''
     assumptions:
-    if a player says the same suit twice they likely have 1-2 more of that suit that would be assumed otherwise (5-6 for minors and 6-7 for majors?)
 
-    opening in no trump means no voids
+    opening in no trump means no voids and no more than 5 in any suit?
+    responding NT means same thing as opening NT?
 
-    responding to opening points in the same suit means you have at least 3 of that suit?
+    responding to your partner's opening suit with same suit means you have at least 3 of that suit?
+    responding twice in a row to your partners's opening suit means you have at least 4 of that suit?
 
-    responding with a major means you have at least 5
+    opening weakTwo means at least 6
+    opening weakThree means at least 7
+
+    if a player opens a suit then says the same suit again do they likely have 1-2 more of that suit than would be assumed otherwise (5-6 for minors and 6-7 for majors?)
+    responding twice with the same suit means you have at least one more than the minimum required to say that suit?  if three times in a row, at least 2 more?  does it have to be right after one another?
+
+    does a jumpshift ever definitely mean more of a suit?
     '''
 
     def __init__(self, biddingRelative, biddingAbsolute, seatingRelative):
