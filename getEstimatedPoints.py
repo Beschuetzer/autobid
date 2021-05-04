@@ -1,7 +1,3 @@
-'''
-    Getting the estimated points of each player based on their first two bids
-'''
-#TODO: make sure suit count estimates from bidding is complete
 import helpers, re
 
 locations = {
@@ -10,7 +6,6 @@ locations = {
     "right": 'right',
     "top": 'top',
 }
-
 
 PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MAX = 5
 PARTNER_BIDS_FIRST_AND_PLAYER_PASSES_MIN = 0

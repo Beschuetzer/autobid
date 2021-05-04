@@ -1,6 +1,6 @@
 #Purpose: make best bid that the humans we play with can understand, taking into account cards in hand, previous bids, and eventually score
 
-import re, math, getEstimatedPoints, getEstimatedSuitCounts, helpers
+import re, getEstimatedPoints, getEstimatedSuitCounts, helpers
 
 #region Globals
 
