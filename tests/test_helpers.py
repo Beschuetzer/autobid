@@ -1400,37 +1400,64 @@ class partnerTwoClubResponse(unittest.TestCase):
         expected = 'Four Heart'
         self.assertEqual(actual, expected)
 
-    #TODO: These best_suit cases depend on a function not yet implemented called getStrongestSuit()
-    def test_best_suit_club(self):
-        hand = [[9,10,11,12], [13, 18, 21, 25], [29, 30, 32], [40,42]]
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
+    def test_best_suit_same_as_first(self):
+        handDictionary = {
+            "clubs": "AKQJ",
+            "diamonds": "AJ82",
+            "hearts": "865",
+            "spades": "32",
         }
+        hand = helpers.getHandFromHandDictionary(handDictionary)
+        
         biddingRelative = {
-            "top": ['Two Club', 'Three Diamond'],
             "left": ['Pass', 'Pass'],
+            "top": ['Two Club', 'Three Diamond'],
+            "right": ['Pass', 'Pass'],
+            "bottom": ['Three Club'],
         }
         totalOpeningPoints = 15
         currentActualBid = ['Adam', biddingRelative['top'][1]]
         actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Four Club'
         self.assertEqual(actual, expected)
-    def test_best_suit_diamond(self):
-        hand = [[3,4,5,12], [22,23,24,25], [29, 30, 32], [40,42]]
-        currentEstimatedPoints = {
-            "left": None,
-            "top": None,
-            "right": None,
-            "Bottom": None,
+
+    def test_best_suit_same_level(self):
+        handDictionary = {
+            "clubs": "32",
+            "diamonds": "AKJ",
+            "hearts": "83",
+            "spades": "QJ8532",
         }
+        hand = helpers.getHandFromHandDictionary(handDictionary)
+        
         biddingRelative = {
-            "top": ['Two Club', 'Three Diamond'],
             "left": ['Pass', 'Pass'],
+            "top": ['Two Club', 'Three Diamond'],
+            "right": ['Pass', 'Pass'],
+            "bottom": ['Three Club'],
         }
-        totalOpeningPoints = 15
+        totalOpeningPoints = 14
+        currentActualBid = ['Adam', biddingRelative['top'][1]]
+        actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
+        expected = 'Three Spade'
+        self.assertEqual(actual, expected)
+
+    def test_best_suit_next_level(self):
+        handDictionary = {
+            "clubs": "32",
+            "diamonds": "QJ8532",
+            "hearts": "83",
+            "spades": "543",
+        }
+        hand = helpers.getHandFromHandDictionary(handDictionary)
+        
+        biddingRelative = {
+            "left": ['Pass', 'Pass'],
+            "top": ['Two Club', 'Three Diamond'],
+            "right": ['Pass', 'Pass'],
+            "bottom": ['Two Spade'],
+        }
+        totalOpeningPoints = 7
         currentActualBid = ['Adam', biddingRelative['top'][1]]
         actual = helpers.getTwoClubResponse(hand, biddingRelative, self.seatingRelative,  totalOpeningPoints, currentActualBid, 'hcp')
         expected = 'Four Diamond'
@@ -1505,7 +1532,6 @@ class getStrongestSuit(unittest.TestCase):
         self.expected = 'club'
         self.assertEqual(self.actual, self.expected)
 
-    #NOTE: do we want to change biddible suits to 3 for minors or have a distinction between opening and responding required suit lengths for a suit to be biddable?  Basically it seems like diamonds should be the response for below
     def test_crap_2(self):
         handDictionary = {
             "clubs": "6543",
@@ -1565,7 +1591,7 @@ class getStrongestSuit(unittest.TestCase):
         self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
         self.expected = 'diamond'
         self.assertEqual(self.actual, self.expected)
-        
+
     def test_crap_5(self):
         handDictionary = {
             "clubs": "65432",
