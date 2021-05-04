@@ -269,6 +269,12 @@ biddingRelatives = {
         "right": ['Two Heart', 'pass'],
         "bottom": ['Pass'],
     },
+    "forcedOneNoTrumpResponsePassSecondPartnerBids": {
+        "left": ['One No Trump', 'Three No Trump'],
+        "top": ['pass', 'pass'],
+        "right": ['Two Heart', 'pass'],
+        "bottom": ['Two Spade'],
+    },
     "forcedOneNoTrumpResponseBidSuitSecondNotJumpshift": {
         "left": ['One No Trump', 'Two No Trump'],
         "top": ['pass', 'pass'],

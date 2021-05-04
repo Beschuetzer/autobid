@@ -1184,6 +1184,32 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
             },
             "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+        
+        self.assertDictEqual(self.actual, self.expected)
+
+    def test_update_forced_1NT_pass_second_partner_bids(self):
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['forcedOneNoTrumpResponsePassSecondPartnerBids']
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+        self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsNoTrump']['max'],
+            },
+            "top": {
                 "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
                 "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
             },
@@ -1260,8 +1286,8 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
             },
             "top": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": getEstimatedPoints.values['special']['weakTwo']['max'],
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
             },
             "right": {
                 "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],

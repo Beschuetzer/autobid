@@ -508,8 +508,12 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
                                 estimatedScoring[location]['min'] = values['partnerPassesFirst']['playerPasses']['min']
                                 estimatedScoring[location]['max'] = values['partnerPassesFirst']['playerPasses']['max']
                             else:
-                                estimatedScoring[location]['min'] = values['isTeamsFirstBid']['playerPasses']['min']
-                                estimatedScoring[location]['max'] = values['isTeamsFirstBid']['playerPasses']['max']
+                                if hasPartnerOpened:
+                                    estimatedScoring[location]['min'] = values['partnerBidsFirst']['playerPasses']['min'],
+                                    estimatedScoring[location]['max'] = values['partnerBidsFirst']['playerPasses']['max'],
+                                else:
+                                    estimatedScoring[location]['min'] = values['isTeamsFirstBid']['playerPasses']['min']
+                                    estimatedScoring[location]['max'] = values['isTeamsFirstBid']['playerPasses']['max']
                             continue
 
                     else:
