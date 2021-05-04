@@ -610,13 +610,12 @@ def getWeightedSuitScore(hand, clientPointCountingConvention):
     pointsInEachSuit = getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention)
     suitCounts = getSuitCountsFromHand(hand)
 
-    print(f"pointsInEachSuit = {pointsInEachSuit}")
-    print(f"suitCounts = {suitCounts}")
     for suit, suitCount in suitCounts.items():
         if suitCount < 3: 
             weightedSuitScores[suit] = pointsInEachSuit[suit]
         else:
             weightedSuitScores[suit] = pointsInEachSuit[suit] + ((suitCount - 3) * valueOfAdditionalLength)
+    print('')
 
     return weightedSuitScores
 
@@ -629,11 +628,10 @@ def getShouldReturnNoTrump(weightedSuitScores, biddableSuits):
         return tuple of strings representing suits with highest 'point counts'
     '''
     #NEVER BID NO TRUMP UNLESS no biddable suits and the two highest suits are within differenceThreshold points, bid return no trump
-    differenceThreshold = 3
-    
+    differenceThreshold = 2
+
     if len(biddableSuits) == 0:
         highestSuit = None
-        secondHighestSuit = None
         highestSuitValue = 0
         secondHighestSuitValue = 0
 
@@ -645,9 +643,8 @@ def getShouldReturnNoTrump(weightedSuitScores, biddableSuits):
         for suit, weightedValue in weightedSuitScores.items():
             if weightedValue > secondHighestSuitValue and suit != highestSuit: 
                 secondHighestSuitValue = weightedValue
-                secondHighestSuit = suit
         
-        if (abs(highestSuitValue - secondHighestSuitValue) < differenceThreshold): return True
+        if (abs(highestSuitValue - secondHighestSuitValue) <= differenceThreshold): return True
        
     return False
 
@@ -700,9 +697,12 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     weightedSuitScores = getWeightedSuitScore(hand, clientPointCountingConvention)
 
     shouldReturnNoTrump = getShouldReturnNoTrump(weightedSuitScores, biddableSuits)
+    print(f"shouldReturnNoTrump = {shouldReturnNoTrump}")
     if shouldReturnNoTrump: return possibleOutputs['noTrump']
-
     else:
+        #NOTE: we can add all suits to biddableSuits because only cases where no biddable suits present and one suit is larger than no trump response threshold hit this line
+        if len(biddableSuits) == 0: biddableSuits = ['clubs', 'diamonds', 'hearts', 'spades']
+
         #get suits mentioned by opponents
         suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingRelative)
 
@@ -723,7 +723,11 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
             maxKey2Value = weightedSuitScores[secondStrongestSuit]
             del weightedSuitScores[secondStrongestSuit]
 
-            #if values for 1st and 2nd best suit are equal
+            print(f"strongestSuit = {strongestSuit}")
+            print(f"secondStrongestSuit = {secondStrongestSuit}")
+            print(f"maxKey1Value = {maxKey1Value}")
+            print(f"maxKey2Value = {maxKey2Value}")
+            #if values for 1st and 2nd best suit are equal swap strongest and secondStrongest if necessary
             if maxKey1Value == maxKey2Value:
                 print('equal---------------------')
                 #first check length of suits (grab longer if dif.)
@@ -732,6 +736,7 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
 
                 if strongestSuitLength == secondStrongestSuitLength:
                     #if same length grab one higher up (spade > heart > diamond > club)
+                    print('grabbing higher up')
                     suits = ['clubs', 'diamonds', 'hearts', 'spades']
                     indexForStrongestSuit = suits.find(strongestSuit)
                     indexForSecondStrongestSuit = suits.find(secondStrongestSuit)
@@ -749,6 +754,8 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
                     secondStrongestSuit = lowerSuit
 
                 else:
+                    print('grabbing longer suit')
+
                     longerSuit = strongestSuit
                     shorterSuit = secondStrongestSuit
 
@@ -759,6 +766,8 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
                     strongestSuit = longerSuit
                     secondStrongestSuit = shorterSuit
                     
+
+            print(f"biddableSuits = {biddableSuits}")
             if strongestSuit in biddableSuits and suitsMentionedByOpponents[strongestSuit] is False:  return possibleOutputs[strongestSuit]
 
             if secondStrongestSuit in biddableSuits and suitsMentionedByOpponents[secondStrongestSuit] is False:  return possibleOutputs[secondStrongestSuit]

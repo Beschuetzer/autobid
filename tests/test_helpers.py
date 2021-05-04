@@ -1549,26 +1549,6 @@ class getStrongestSuit(unittest.TestCase):
     def test_crap_4(self):
         handDictionary = {
             "clubs": "65432",
-            "diamonds": "AK",
-            "hearts": "654",
-            "spades": "532",
-        }
-        
-        biddingRelative = {
-            "left": ['Pass'],
-            "top": ['double'],
-            "right": ['Pass'],
-            "bottom": [],
-        }
-
-        self.hand = helpers.getHandFromHandDictionary(handDictionary)
-        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
-        self.expected = 'club'
-        self.assertEqual(self.actual, self.expected)
-
-    def test_crap_5(self):
-        handDictionary = {
-            "clubs": "65432",
             "diamonds": "AKQ",
             "hearts": "65",
             "spades": "532",
@@ -1584,6 +1564,26 @@ class getStrongestSuit(unittest.TestCase):
         self.hand = helpers.getHandFromHandDictionary(handDictionary)
         self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
         self.expected = 'diamond'
+        self.assertEqual(self.actual, self.expected)
+        
+    def test_crap_5(self):
+        handDictionary = {
+            "clubs": "65432",
+            "diamonds": "AK",
+            "hearts": "654",
+            "spades": "532",
+        }
+        
+        biddingRelative = {
+            "left": ['Pass'],
+            "top": ['double'],
+            "right": ['Pass'],
+            "bottom": [],
+        }
+
+        self.hand = helpers.getHandFromHandDictionary(handDictionary)
+        self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
+        self.expected = 'club'
         self.assertEqual(self.actual, self.expected)
 
     def test_crap_6(self):
@@ -1631,7 +1631,7 @@ class getStrongestSuit(unittest.TestCase):
             "clubs": "52",
             "diamonds": "432",
             "hearts": "6543",
-            "spades": "K653",
+            "spades": "Q653",
         }
         
         biddingRelative = {
