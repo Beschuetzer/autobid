@@ -663,10 +663,10 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
         'club', 'diamond', 'heart', 'spade', or 'no trump' depending on which suit is the 'strongest' (considers which suits have already been mentioned, the number of points in that suit the analyzing player has, and how long the suit it for the analyzing player
     '''
     possibleOutputs = {
-        "club": "club", 
-        "diamond": "diamond", 
-        "heart": "heart",
-        "spade": "spade", 
+        "clubs": "club", 
+        "diamonds": "diamond", 
+        "hearts": "heart",
+        "spades": "spade", 
         "noTrump": "no trump",     
     }
 
@@ -677,14 +677,71 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     weightedSuitScores = getWeightedSuitScore(hand, clientPointCountingConvention)
 
     shouldReturnNoTrump = getShouldReturnNoTrump(weightedSuitScores, biddableSuits)
-    if shouldReturnNoTrump: return 'no trump'
+    if shouldReturnNoTrump: return possibleOutputs['noTrump']
 
     else:
-        pass
+        #get suits mentioned by opponents
+        suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingRelative)
 
+        print(f"biddableSuits = {biddableSuits}")
+        print(f"weightedSuitScores = {weightedSuitScores}")
+        print(f"suitsMentionedByOpponents = {suitsMentionedByOpponents}")
 
-    #get suits mentioned by opponents
-    suitsMentionedByOpponents = getSuitsMentionedByOpponents(biddingRelative)
+        while weightedSuitScores.items():
+            
+            #get the key for best suit
+            strongestSuit = max(weightedSuitScores, key=weightedSuitScores.get)
+            maxKey1Value = weightedSuitScores[strongestSuit]
+            del weightedSuitScores[strongestSuit]
+
+            #get key for 2nd best suit
+            secondStrongestSuit = max(weightedSuitScores, 
+            key=weightedSuitScores.get)
+            maxKey2Value = weightedSuitScores[secondStrongestSuit]
+            del weightedSuitScores[secondStrongestSuit]
+
+            #if values for 1st and 2nd best suit are equal
+            if maxKey1Value == maxKey2Value:
+                print('equal---------------------')
+                #first check length of suits (grab longer if dif.)
+                strongestSuitLength = getLengthOfSuitFromHand(hand, strongestSuit)
+                secondStrongestSuitLength = getLengthOfSuitFromHand(hand, secondStrongestSuit)
+
+                if strongestSuitLength == secondStrongestSuitLength:
+                    #if same length grab one higher up (spade > heart > diamond > club)
+                    suits = ['clubs', 'diamonds', 'hearts', 'spades']
+                    indexForStrongestSuit = suits.find(strongestSuit)
+                    indexForSecondStrongestSuit = suits.find(secondStrongestSuit)
+
+                    largerSuitIndex = indexForStrongestSuit
+                    lowerSuitIndex = indexForSecondStrongestSuit
+                    higherSuit = strongestSuit
+                    lowerSuit = secondStrongestSuit
+
+                    if lowerSuitIndex > largerSuitIndex:
+                        lowerSuit = strongestSuit
+                        higherSuit = secondStrongestSuit
+
+                    strongestSuit = higherSuit
+                    secondStrongestSuit = lowerSuit
+
+                else:
+                    longerSuit = strongestSuit
+                    shorterSuit = secondStrongestSuit
+
+                    if secondStrongestSuitLength > strongestSuitLength: 
+                        longerSuit = secondStrongestSuit
+                        shorterSuit = strongestSuit
+
+                    strongestSuit = longerSuit
+                    secondStrongestSuit = shorterSuit
+                    
+            if strongestSuit in biddableSuits and suitsMentionedByOpponents[strongestSuit] is False:  return possibleOutputs[strongestSuit]
+
+            if secondStrongestSuit in biddableSuits and suitsMentionedByOpponents[secondStrongestSuit] is False:  return possibleOutputs[secondStrongestSuit]
+               
+        return None
+    
 
     #compare evaluated points for each suit and rank
     # suitsYouCanMention = getSuitYouCanMention(hand)
@@ -738,6 +795,24 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
         pass
 
     return suitToReturn
+
+def getLengthOfSuitFromHand(hand, suitName):
+    '''
+    input: 
+        hand = 2D array where the first index represents clubs, the second diamonds, the third hearts, and the fourth spades 
+        (e.g. [ [11,10, 8], [24,22,20,17,15], [], [51,50,49,48,47])
+        biddingRelative = { "top": ['pass', 'one heart', ...], ... }
+        suitName = string (e.g. 'clubs', 'diamonds', 'hearts', or 'spades')
+    returns ------------------------------:
+        an
+    '''
+    validSuitNames = ['clubs', 'diamonds', 'hearts', 'spades']
+    if suitName.lower() not in validSuitNames: raise Exception("Invalid SuitName.  Must be 'clubs', 'diamonds', 'hearts', or 'spades'")
+
+    suitCounts = getSuitCountsFromHand(hand)
+    
+    for suit in validSuitNames:
+        if re.search(suit, suitName, re.IGNORECASE): return suitCounts[suit]
 
 def getSuitsMentionedByOpponents(biddingRelative):
     '''

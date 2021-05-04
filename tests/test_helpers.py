@@ -1505,6 +1505,7 @@ class getStrongestSuit(unittest.TestCase):
         self.expected = 'club'
         self.assertEqual(self.actual, self.expected)
 
+    #NOTE: do we want to change biddible suits to 3 for minors or have a distinction between opening and responding required suit lengths for a suit to be biddable?  Basically it seems like diamonds should be the response for below
     def test_crap_2(self):
         handDictionary = {
             "clubs": "6543",
@@ -1514,7 +1515,7 @@ class getStrongestSuit(unittest.TestCase):
         }
         
         biddingRelative = {
-            "left": ['Pass'],
+            "left": ['One Heart'],
             "top": ['double'],
             "right": ['Pass'],
             "bottom": [],
@@ -1648,7 +1649,7 @@ class getStrongestSuit(unittest.TestCase):
     def test_Diamond_better(self):
         handDictionary = {
             "clubs": "AT932",
-            "diamonds": "KQ72",
+            "diamonds": "AQJ2",
             "hearts": "965",
             "spades": "53",
         }
@@ -4096,7 +4097,81 @@ class getShouldReturnNoTrump(unittest.TestCase):
         self.actual = helpers.getShouldReturnNoTrump(self.weightedSuitScores, self.biddableSuits)
         self.expected = False
         self.assertEqual(self.expected, self.actual)
+class getLengthOfSuitFromHand(unittest.TestCase):
+    def tearDown(self) -> None:
+        print(f"self.actual = {self.actual}")
+        print(f"self.expected = {self.expected}")
+        print(f"self.hand = {self.hand}")
 
+    def test_error(self):
+        self.handDictionary = {
+            "clubs": "AK52",
+            "diamonds": "A98",
+            "hearts": "345",
+            "spades": "539",
+        }
+        self.suitName = 'clubss'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+
+        self.actual = helpers.getLengthOfSuitFromHand(self.hand, self.suitName)
+        self.expected = 44
+        self.assertEqual(self.expected, self.actual) 
+
+    def test_1(self):
+        self.handDictionary = {
+            "clubs": "AK52",
+            "diamonds": "A98",
+            "hearts": "3",
+            "spades": "T9876",
+        }
+        self.suitName = 'clubs'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+
+        self.actual = helpers.getLengthOfSuitFromHand(self.hand, self.suitName)
+        self.expected = 4
+        self.assertEqual(self.expected, self.actual) 
+
+    def test_2(self):
+        self.handDictionary = {
+            "clubs": "AK52",
+            "diamonds": "A98",
+            "hearts": "3",
+            "spades": "T9876",
+        }
+        self.suitName = 'Diamonds'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+
+        self.actual = helpers.getLengthOfSuitFromHand(self.hand, self.suitName)
+        self.expected = 3
+        self.assertEqual(self.expected, self.actual) 
+
+    def test_3(self):
+        self.handDictionary = {
+            "clubs": "AK52",
+            "diamonds": "A98",
+            "hearts": "3",
+            "spades": "T9876",
+        }
+        self.suitName = 'HEARTS'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+
+        self.actual = helpers.getLengthOfSuitFromHand(self.hand, self.suitName)
+        self.expected = 1
+        self.assertEqual(self.expected, self.actual) 
+
+    def test_4(self):
+        self.handDictionary = {
+            "clubs": "AK52",
+            "diamonds": "A98",
+            "hearts": "3",
+            "spades": "T9876",
+        }
+        self.suitName = 'spades'
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+
+        self.actual = helpers.getLengthOfSuitFromHand(self.hand, self.suitName)
+        self.expected = 5
+        self.assertEqual(self.expected, self.actual) 
 #region Testing Test Case Helpers
 class getDealerLocation(unittest.TestCase):
     def test_empty_dict(self):

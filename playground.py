@@ -54,3 +54,9 @@ x = {
   "clubs": 0,
 }
 print(dict(sorted(x.items(), key=lambda item: item[1])))
+
+while a_dictionary.items():
+  max_key = max(a_dictionary, key=a_dictionary.get)
+  print(f"max_key = {max_key}")
+  del a_dictionary[max_key]
+  
