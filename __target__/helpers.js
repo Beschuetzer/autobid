@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-04-30 09:26:56
+// Transcrypt'ed from Python, 2021-05-03 21:20:44
 var autoBid = {};
 var getEstimatedPoints = {};
 var math = {};
@@ -152,11 +152,14 @@ export var getIsJumpshift = function (currentContractBid, usersBid) {
 };
 export var getWasForcedToBid = function (username, biddingAbsolute, seatingRelative) {
 	try {
+		print ('{}{}'.format (biddingAbsolute));
 		var partnersUsername = getUsernamesPartner (username, seatingRelative);
 		var indexOfPartnersFirstBid = getIndexOfNthBid (partnersUsername, biddingAbsolute, 1);
 		var partnersFirstBid = biddingAbsolute [indexOfPartnersFirstBid];
 		var bidAfterPartnersFirstBid = biddingAbsolute [indexOfPartnersFirstBid + 1];
-		if (re.search ('double', partnersFirstBid [1], re.IGNORECASE) && re.search ('pass', bidAfterPartnersFirstBid [1], re.IGNORECASE)) {
+		var caseDouble = re.search ('double', partnersFirstBid [1], re.IGNORECASE) && re.search ('pass', bidAfterPartnersFirstBid [1], re.IGNORECASE);
+		var caseNoTrump = re.search ('trump', partnersFirstBid [1], re.IGNORECASE) && re.search ('pass', bidAfterPartnersFirstBid [1], re.IGNORECASE);
+		if (caseDouble || caseNoTrump) {
 			return true;
 		}
 		return false;
@@ -443,7 +446,72 @@ export var getBiddingObjAbsolute = function (biddingAbsolute, seating) {
 	}
 	return biddingObjAbsolute;
 };
+export var getBiddableSuits = function (hand) {
+	var biddableSuits = [];
+	var suitNames = ['clubs', 'diamonds', 'hearts', 'spades'];
+	var biddableSuitLengths = dict ([['clubs', 4], ['diamonds', 4], ['hearts', 5], ['spades', 5]]);
+	var suitCounts = getSuitCountsFromHand (hand);
+	for (var suitName of suitNames) {
+		if (suitCounts [suitName] >= biddableSuitLengths [suitName]) {
+			biddableSuits.append (suitName);
+		}
+	}
+	return biddableSuits;
+};
+export var getWeightedSuitScore = function (hand, clientPointCountingConvention) {
+	var valueOfAdditionalLength = 2;
+	var weightedSuitScores = dict ([['clubs', 0], ['diamonds', 0], ['hearts', 0], ['spades', 0]]);
+	var pointsInEachSuit = getHighCardPointValuesInEachSuit (hand, clientPointCountingConvention);
+	var suitCounts = getSuitCountsFromHand (hand);
+	print ('{}{}'.format (pointsInEachSuit));
+	print ('{}{}'.format (suitCounts));
+	for (var [suit, suitCount] of suitCounts.py_items ()) {
+		if (suitCount < 3) {
+			weightedSuitScores [suit] = pointsInEachSuit [suit];
+		}
+		else {
+			weightedSuitScores [suit] = pointsInEachSuit [suit] + (suitCount - 3) * valueOfAdditionalLength;
+		}
+	}
+	return weightedSuitScores;
+};
+export var getShouldReturnNoTrump = function (weightedSuitScores, biddableSuits) {
+	var differenceThreshold = 3;
+	if (len (biddableSuits) == 0) {
+		var highestSuit = null;
+		var secondHighestSuit = null;
+		var highestSuitValue = 0;
+		var secondHighestSuitValue = 0;
+		for (var [suit, weightedValue] of weightedSuitScores.py_items ()) {
+			if (weightedValue > highestSuitValue) {
+				var highestSuitValue = weightedValue;
+				var highestSuit = suit;
+			}
+		}
+		for (var [suit, weightedValue] of weightedSuitScores.py_items ()) {
+			if (weightedValue > secondHighestSuitValue && suit != highestSuit) {
+				var secondHighestSuitValue = weightedValue;
+				var secondHighestSuit = suit;
+			}
+		}
+		if (abs (highestSuitValue - secondHighestSuitValue) < differenceThreshold) {
+			return true;
+		}
+	}
+	return false;
+};
 export var getStrongestSuit = function (hand, biddingRelative, clientPointCountingConvention) {
+	var possibleOutputs = dict ([['club', 'club'], ['diamond', 'diamond'], ['heart', 'heart'], ['spade', 'spade'], ['noTrump', 'no trump']]);
+	var biddableSuits = getBiddableSuits (hand);
+	var weightedSuitScores = getWeightedSuitScore (hand, clientPointCountingConvention);
+	var shouldReturnNoTrump = getShouldReturnNoTrump (weightedSuitScores, biddableSuits);
+	if (shouldReturnNoTrump) {
+		return 'no trump';
+	}
+	else {
+		// pass;
+	}
+	var suitsMentionedByOpponents = getSuitsMentionedByOpponents (biddingRelative);
 	var leftOpeningSuit = biddingRelative ['left'] [0];
 	var rightOpeningSuit = biddingRelative ['right'] [0];
 	var suitWithMostPoints = rightOpeningSuit;
@@ -652,12 +720,34 @@ export var getLocationAfterRotationsAround = function (location, numberOfRotatio
 	var indexOfLocation = locations.index (location);
 	return locations [__mod__ (indexOfLocation + numberOfRotations, 4)];
 };
-export var getCurrentContractBidFromBidding = function (bidding) {
-	for (var bid of py_reversed (bidding)) {
+export var getCurrentContractBidFromBidding = function (biddingAbsolute) {
+	for (var bid of py_reversed (biddingAbsolute)) {
 		if (!(re.search ('pass', bid [1], re.IGNORECASE)) && !(re.search ('double', bid [1], re.IGNORECASE))) {
 			return bid [1];
 		}
 	}
+};
+export var getWasPlayersNthBidAJumpshift = function (username, biddingAbsolute, nthBid) {
+	var indexOfNthBid = -(1);
+	var nthBidCount = 1;
+	for (var i = 0; i < len (biddingAbsolute); i++) {
+		var bid = biddingAbsolute [i];
+		if (bid [0] == username) {
+			if (nthBidCount == nthBid) {
+				var indexOfNthBid = i;
+				break;
+			}
+			nthBidCount += 1;
+		}
+	}
+	if (indexOfNthBid == -(1)) {
+		var __except0__ = Exception ('Invalid nthBid to getWasPlayerForcedToBidAnNthLevelBidAsTheirNthBid()');
+		__except0__.__cause__ = null;
+		throw __except0__;
+	}
+	var bidsUpToUsersNthBid = biddingAbsolute.__getslice__ (0, indexOfNthBid, 1);
+	var currentContractBid = getCurrentContractBidFromBidding (bidsUpToUsersNthBid);
+	return getIsJumpshift (currentContractBid, biddingAbsolute [indexOfNthBid] [1]);
 };
 export var getWasFirstOpeningBidANthLevelBid = function (biddingAbsolute, bidLevel) {
 	try {
@@ -787,26 +877,27 @@ export var getPlayerHasOnlyPassed = function (playerBids) {
 	return true;
 };
 export var getHasOtherTeamMentionedSameSuit = function (location, usersBid, biddingAbsolute, seatingRelative) {
-	var usernamesOpponents = getUsernamesOpponents (location, seatingRelative);
-	var indexOfUserBid = autoBid.contracts.index (usersBid);
-	print ('{}{}'.format (location));
-	print ('{}{}'.format (usersBid));
-	print ('{}{}'.format (biddingAbsolute));
-	print ('{}{}'.format (indexOfUserBid));
-	for (var i = 0; i < len (biddingAbsolute); i++) {
-		var bid = biddingAbsolute [i];
-		if (!(getIsBidAContractBid (bid [1]))) {
-			continue;
-		}
-		var indexOfBid = autoBid.contracts.index (bid [1]);
-		print ('{}{}'.format (indexOfBid));
-		if (indexOfUserBid > indexOfBid && __mod__ (abs (indexOfBid - indexOfUserBid), 5) == 0) {
-			if (__in__ (bid [0], usernamesOpponents)) {
-				return true;
+	try {
+		var usernamesOpponents = getUsernamesOpponents (location, seatingRelative);
+		var indexOfUserBid = autoBid.contracts.index (usersBid);
+		for (var i = 0; i < len (biddingAbsolute); i++) {
+			var bid = biddingAbsolute [i];
+			if (!(getIsBidAContractBid (bid [1]))) {
+				continue;
+			}
+			var indexOfBid = autoBid.contracts.index (bid [1]);
+			print ('{}{}'.format (indexOfBid));
+			if (indexOfUserBid > indexOfBid && __mod__ (abs (indexOfBid - indexOfUserBid), 5) == 0) {
+				if (__in__ (bid [0], usernamesOpponents)) {
+					return true;
+				}
 			}
 		}
+		return false;
 	}
-	return false;
+	catch (__except0__) {
+		return false;
+	}
 };
 export var getUsernamesOpponents = function (location, seatingRelative) {
 	try {
@@ -824,6 +915,28 @@ export var getHasTakenPartnerOutOfGameBid = function (username, biddingRelative,
 	}
 	return false;
 };
+export var getHasPartnerOpenedNoTrump = function (location, partnersLocation, biddingRelative, biddingAbsolute, seatingRelative) {
+	if (len (biddingRelative [partnersLocation]) == 0) {
+		return false;
+	}
+	if (re.search ('trump', biddingRelative [partnersLocation] [0], re.IGNORECASE)) {
+		var partnersOneNoTrumpBidIndex = -(1);
+		var locationsLastBidIndex = -(1);
+		for (var i = 0; i < len (biddingAbsolute); i++) {
+			var bid = biddingAbsolute [i];
+			if (bid [0] == seatingRelative [partnersLocation] && re.search ('trump', bid [1], re.IGNORECASE)) {
+				var partnersOneNoTrumpBidIndex = i;
+			}
+			if (bid [0] == seatingRelative [location]) {
+				var locationsLastBidIndex = i;
+			}
+		}
+		if (partnersOneNoTrumpBidIndex < locationsLastBidIndex) {
+			return true;
+		}
+		return false;
+	}
+};
 export var getBiddingAbsoluteFromBiddingObjAndSeatingRelative = function (biddingRelative, seatingRelative) {
 	try {
 		print ('{}{}'.format (biddingRelative));
@@ -836,16 +949,12 @@ export var getBiddingAbsoluteFromBiddingObjAndSeatingRelative = function (biddin
 			var index = locationOrder.index (locations [dealer]);
 			var locationOrderToUse = locationOrder.__getslice__ (index, null, 1) + locationOrder.__getslice__ (0, index, 1);
 		}
-		print ('{}{}'.format (dealer));
 		var bids = [];
 		for (var i = 0; i < len (biddingRelative [dealer]); i++) {
-			print (1);
 			for (var j = 0; j < len (locationOrderToUse); j++) {
-				print (2);
 				var locationToGet = locationOrderToUse [j];
 				try {
 					var bidInQuestion = biddingRelative [locationToGet] [i];
-					print (3);
 				}
 				catch (__except0__) {
 					break;

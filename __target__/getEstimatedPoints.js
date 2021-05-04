@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-04-30 09:26:56
+// Transcrypt'ed from Python, 2021-05-03 21:20:43
 var helpers = {};
 var re = {};
 import {AssertionError, AttributeError, BaseException, DeprecationWarning, Exception, IndexError, IterableError, KeyError, NotImplementedError, RuntimeWarning, StopIteration, UserWarning, ValueError, Warning, __JsIterator__, __PyIterator__, __Terminal__, __add__, __and__, __call__, __class__, __envir__, __eq__, __floordiv__, __ge__, __get__, __getcm__, __getitem__, __getslice__, __getsm__, __gt__, __i__, __iadd__, __iand__, __idiv__, __ijsmod__, __ilshift__, __imatmul__, __imod__, __imul__, __in__, __init__, __ior__, __ipow__, __irshift__, __isub__, __ixor__, __jsUsePyNext__, __jsmod__, __k__, __kwargtrans__, __le__, __lshift__, __lt__, __matmul__, __mergefields__, __mergekwargtrans__, __mod__, __mul__, __ne__, __neg__, __nest__, __or__, __pow__, __pragma__, __proxy__, __pyUseJsNext__, __rshift__, __setitem__, __setproperty__, __setslice__, __sort__, __specialattrib__, __sub__, __super__, __t__, __terminal__, __truediv__, __withblock__, __xor__, abs, all, any, assert, bool, bytearray, bytes, callable, chr, copy, deepcopy, delattr, dict, dir, divmod, enumerate, filter, float, getattr, hasattr, input, int, isinstance, issubclass, len, list, map, max, min, object, ord, pow, print, property, py_TypeError, py_iter, py_metatype, py_next, py_reversed, py_typeof, range, repr, round, set, setattr, sorted, str, sum, tuple, zip} from './org.transcrypt.__runtime__.js';
@@ -88,7 +88,6 @@ export var getEstimatedPoints = function (biddingRelative, biddingAbsolute, seat
 		var currentContractBidForUser = helpers.getCurrentContractBidFromBidding (biddingUpToUsersLastTurn);
 		print ('biddingUpToUsersTurn = {0}'.format (biddingUpToUsersLastTurn));
 		print ('currentContractBidForUser = {0}'.format (currentContractBidForUser));
-		var indexOfUsersFirstBid = helpers.getIndexOfNthBid (username, biddingAbsolute, 1);
 		var hasPartnerOpened = helpers.getHasPartnerOpened (biddingAbsolute, seatingRelative, username);
 		var firstBid = biddingRelative [location] [0];
 		var secondBid = '';
@@ -108,16 +107,41 @@ export var getEstimatedPoints = function (biddingRelative, biddingAbsolute, seat
 		catch (__except0__) {
 			// pass;
 		}
+		var __left0__ = helpers.getHasSomeoneOpenedTwoClubs (biddingAbsolute, biddingRelative, seatingRelative);
+		var hasSomeoneOpenedTwoClubs = __left0__ [0];
+		var personWhoOpenedTwoClubs = __left0__ [1];
 		print ('currentContractBid = {0}'.format (currentContractBidForUser));
 		print ('biddingObjectRelative = {0}'.format (biddingRelative));
 		print ('firstBid = {0}'.format (firstBid));
 		print ('hasPartnerOpened = {0}'.format (hasPartnerOpened));
 		print ('isFirstBidJumpShift = {0}'.format (isFirstBidJumpshift));
 		print ('isTeamsFirstBidOpportunity = {0}'.format (isTeamsFirstBidOpportunity));
-		var __left0__ = helpers.getHasSomeoneOpenedTwoClubs (biddingAbsolute, biddingRelative, seatingRelative);
-		var hasSomeoneOpenedTwoClubs = __left0__ [0];
-		var personWhoOpenedTwoClubs = __left0__ [1];
-		if (hasSomeoneOpenedTwoClubs) {
+		var wasPlayerForcedToBid = helpers.getWasForcedToBid (username, biddingAbsolute, seatingRelative);
+		var partnersLocation = helpers.getPartnersLocation (username, seatingRelative);
+		var hasPartnerOpenedOneNoTrump = helpers.getHasPartnerOpenedNoTrump (location, partnersLocation, biddingRelative, biddingAbsolute, seatingRelative);
+		if (hasPartnerOpenedOneNoTrump && secondBid == '') {
+			print ('one trump scenario------------------');
+			print ('{}{}'.format (wasPlayerForcedToBid));
+			if (wasPlayerForcedToBid) {
+				if (firstBidIsPass) {
+					var minToUse = py_values ['partnerBidsFirst'] ['playerPasses'] ['min'];
+					var maxToUse = py_values ['partnerBidsFirst'] ['playerPasses'] ['max'];
+				}
+				else {
+					var minToUse = py_values ['partnerPassesFirst'] ['playerPasses'] ['min'];
+					var maxToUse = py_values ['partnerPassesFirst'] ['playerPasses'] ['max'];
+				}
+			}
+			else {
+				var __left0__ = setInitialBounds (username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, false);
+				var minToUse = __left0__ [0];
+				var maxToUse = __left0__ [1];
+			}
+			estimatedScoring [location] ['min'] = minToUse;
+			estimatedScoring [location] ['max'] = maxToUse;
+			continue;
+		}
+		else if (hasSomeoneOpenedTwoClubs) {
 			print ('someone opened two clubs');
 			print ('personWhoOpenedTwoClubs = {0}'.format (personWhoOpenedTwoClubs));
 			print ('partner = {0}'.format (partner));
@@ -190,14 +214,13 @@ export var getEstimatedPoints = function (biddingRelative, biddingAbsolute, seat
 		}
 		else {
 			var isSecondBidJumpshift = helpers.getIsJumpshift (currentContractBidForUser, secondBid);
-			var wasPlayerForcedToBid = helpers.getWasForcedToBid (username, biddingAbsolute, seatingRelative);
 			print ('{}{}'.format (secondBid));
 			print ('{}{}'.format (currentContractBidForUser));
 			print ('{}{}'.format (isSecondBidJumpshift));
 			print ('{}{}'.format (wasPlayerForcedToBid));
 			if (len (playersBids) == 2) {
 				if (wasPlayerForcedToBid) {
-					var __left0__ = setInitialBounds (username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, false, isPartnersFirstBidPass, false);
+					var __left0__ = setInitialBounds (username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, false, true, secondBid, isSecondBidJumpshift);
 					var minToUse = __left0__ [0];
 					var maxToUse = __left0__ [1];
 					estimatedScoring [location] ['min'] = minToUse;
@@ -231,7 +254,6 @@ export var getEstimatedPoints = function (biddingRelative, biddingAbsolute, seat
 							print ('else clause');
 							print ('{}{}'.format (isPartnersFirstBidPass));
 							if (isPartnersFirstBidPass) {
-								var partnersLocation = helpers.getPartnersLocation (username, seatingRelative);
 								var partnersSecondBid = null;
 								try {
 									var partnersSecondBid = biddingRelative [partnersLocation] [1];
@@ -291,9 +313,14 @@ export var getEstimatedPoints = function (biddingRelative, biddingAbsolute, seat
 						else {
 							print ('second bid is pass');
 							var didPlayerHaveFirstBidOpportunity = helpers.getUsernameOfPlayerWhoHadFirstOpportunityToBid (biddingAbsolute, username, partner) == username;
+							print ('{}{}'.format (didPlayerHaveFirstBidOpportunity));
 							if (!(didPlayerHaveFirstBidOpportunity)) {
 								estimatedScoring [location] ['min'] = py_values ['partnerPassesFirst'] ['playerPasses'] ['min'];
 								estimatedScoring [location] ['max'] = py_values ['partnerPassesFirst'] ['playerPasses'] ['max'];
+							}
+							else if (hasPartnerOpened) {
+								estimatedScoring [location] ['min'] = tuple ([py_values ['partnerBidsFirst'] ['playerPasses'] ['min']]);
+								estimatedScoring [location] ['max'] = tuple ([py_values ['partnerBidsFirst'] ['playerPasses'] ['max']]);
 							}
 							else {
 								estimatedScoring [location] ['min'] = py_values ['isTeamsFirstBid'] ['playerPasses'] ['min'];
@@ -310,7 +337,7 @@ export var getEstimatedPoints = function (biddingRelative, biddingAbsolute, seat
 			else {
 				// pass;
 			}
-			var __left0__ = setInitialBounds (username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, false);
+			var __left0__ = setInitialBounds (username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, false, wasPlayerForcedToBid, secondBid, isSecondBidJumpshift);
 			var minToUse = __left0__ [0];
 			var maxToUse = __left0__ [1];
 			estimatedScoring [location] ['min'] = minToUse;
@@ -321,9 +348,18 @@ export var getEstimatedPoints = function (biddingRelative, biddingAbsolute, seat
 	print ('');
 	return estimatedScoring;
 };
-export var setInitialBounds = function (username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs) {
+export var setInitialBounds = function (username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs, wasForcedToBid, secondBid, isSecondBidJumpshift) {
 	if (typeof hasOtherTeamOpenedTwoClubs == 'undefined' || (hasOtherTeamOpenedTwoClubs != null && hasOtherTeamOpenedTwoClubs.hasOwnProperty ("__kwargtrans__"))) {;
 		var hasOtherTeamOpenedTwoClubs = false;
+	};
+	if (typeof wasForcedToBid == 'undefined' || (wasForcedToBid != null && wasForcedToBid.hasOwnProperty ("__kwargtrans__"))) {;
+		var wasForcedToBid = false;
+	};
+	if (typeof secondBid == 'undefined' || (secondBid != null && secondBid.hasOwnProperty ("__kwargtrans__"))) {;
+		var secondBid = null;
+	};
+	if (typeof isSecondBidJumpshift == 'undefined' || (isSecondBidJumpshift != null && isSecondBidJumpshift.hasOwnProperty ("__kwargtrans__"))) {;
+		var isSecondBidJumpshift = false;
 	};
 	var IsUsernamesFirstContractBidTheFirstContractBid = helpers.getIsUsernamesFirstContractBidTheFirstContractBid (username, biddingAbsolute);
 	print ('{}{}'.format (IsUsernamesFirstContractBidTheFirstContractBid));
@@ -366,19 +402,65 @@ export var setInitialBounds = function (username, location, biddingAbsolute, bid
 			var maxToUse = py_values ['isTeamsFirstBid'] ['playerBidsSuit'] ['max'];
 		}
 		else {
-			var wasFirstOpeningBidANthLevelBid = helpers.getWasFirstOpeningBidANthLevelBid (biddingAbsolute, 2);
-			var hasOtherTeamMentionedSameSuit = helpers.getHasOtherTeamMentionedSameSuit (location, firstBid, biddingAbsolute, seatingRelative);
-			print ('{}{}'.format (hasOtherTeamMentionedSameSuit));
+			var indexOfUsersFirstBid = helpers.getIndexOfNthBid (username, biddingAbsolute, 1);
+			var hasSomeOneOpenedBefore = helpers.getHasSomeOneOpenedBefore (indexOfUsersFirstBid, biddingAbsolute);
+			print ('{}{}'.format (location));
+			print ('{}{}'.format (hasSomeOneOpenedBefore));
+			print ('{}{}'.format (hasPartnerOpened));
 			print ('{}{}'.format (isFirstBidJumpshift));
-			if (!(isFirstBidJumpshift) && wasFirstOpeningBidANthLevelBid != false && wasFirstOpeningBidANthLevelBid != username || hasOtherTeamMentionedSameSuit && !(isFirstBidJumpshift)) {
-				var minToUse = py_values ['special'] ['weakTwo'] ['min'];
-				var maxToUse = py_values ['partnerPassesFirst'] ['playerBidsSuit'] ['max'];
-			}
-			else if (hasPartnerOpened) {
-				var minToUse = py_values ['partnerBidsFirst'] ['playerBidsNoTrump'] ['isNotJumpshift'] ['min'];
-				var maxToUse = py_values ['partnerBidsFirst'] ['playerBidsNoTrump'] ['isNotJumpshift'] ['max'];
+			if (hasSomeOneOpenedBefore) {
+				if (hasPartnerOpened) {
+					if (wasForcedToBid) {
+						if (isFirstBidJumpshift) {
+							print (1);
+							var minToUse = py_values ['partnerBidsFirst'] ['playerBidsSuit'] ['isJumpshift'] ['min'];
+							var maxToUse = py_values ['partnerBidsFirst'] ['playerBidsSuit'] ['isJumpshift'] ['max'];
+						}
+						else if (isSecondBidJumpshift) {
+							print (1.1);
+							var minToUse = py_values ['special'] ['wtf'] ['min'];
+							var maxToUse = py_values ['special'] ['wtf'] ['max'];
+						}
+						else if (!(re.search ('pass', secondBid, re.IGNORECASE))) {
+							print (1.2);
+							var minToUse = py_values ['partnerBidsFirst'] ['playerBidsSuit'] ['isNotJumpshift'] ['min'];
+							var maxToUse = py_values ['partnerBidsFirst'] ['playerBidsSuit'] ['isNotJumpshift'] ['max'];
+						}
+						else {
+							print (1.3);
+							var minToUse = py_values ['partnerPassesFirst'] ['playerPasses'] ['min'];
+							var maxToUse = py_values ['partnerPassesFirst'] ['playerPasses'] ['max'];
+						}
+					}
+					else if (secondBid) {
+						if (isSecondBidJumpshift) {
+							var minToUse = py_values ['special'] ['wtf'] ['min'];
+							var maxToUse = py_values ['special'] ['wtf'] ['max'];
+						}
+						else {
+							var minToUse = py_values ['partnerBidsFirst'] ['playerBidsSuit'] ['isNotJumpshift'] ['min'];
+							var maxToUse = py_values ['partnerBidsFirst'] ['playerBidsSuit'] ['isNotJumpshift'] ['max'];
+						}
+					}
+					else {
+						print (2);
+						var minToUse = py_values ['partnerBidsFirst'] ['playerBidsSuit'] ['isNotJumpshift'] ['min'];
+						var maxToUse = py_values ['partnerBidsFirst'] ['playerBidsSuit'] ['isNotJumpshift'] ['max'];
+					}
+				}
+				else if (isFirstBidJumpshift) {
+					print (3);
+					var minToUse = py_values ['special'] ['weakTwo'] ['min'];
+					var maxToUse = py_values ['special'] ['weakTwo'] ['max'];
+				}
+				else {
+					print (4);
+					var minToUse = py_values ['special'] ['weakTwo'] ['min'];
+					var maxToUse = py_values ['partnerPassesFirst'] ['playerBidsSuit'] ['max'];
+				}
 			}
 			else {
+				print (5);
 				var minToUse = py_values ['special'] ['weakTwo'] ['min'];
 				var maxToUse = py_values ['special'] ['weakTwo'] ['max'];
 			}
@@ -405,7 +487,11 @@ export var setInitialBounds = function (username, location, biddingAbsolute, bid
 		print ('pass branch');
 		print ('{}{}'.format (hasPartnerOpened));
 		print ('{}{}'.format (hasOtherTeamOpenedTwoClubs));
-		if (hasPartnerOpened) {
+		if (wasForcedToBid) {
+			var minToUse = py_values ['isTeamsFirstBid'] ['playerPasses'] ['min'];
+			var maxToUse = py_values ['isTeamsFirstBid'] ['playerPasses'] ['max'];
+		}
+		else if (hasPartnerOpened) {
 			if (hasOtherTeamOpenedTwoClubs) {
 				var minToUse = py_values ['isTeamsFirstBid'] ['playerPasses'] ['min'];
 				var maxToUse = py_values ['isTeamsFirstBid'] ['playerPasses'] ['max'];
