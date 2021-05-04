@@ -527,7 +527,7 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
 
             #returning the values that are already present if no other cases hit
             
-            minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
+            minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False, wasPlayerForcedToBid, secondBid, isSecondBidJumpshift)
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
             continue
@@ -616,9 +616,17 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
                                     minToUse = values['partnerPassesFirst']['playerPasses']['min'];
                                     maxToUse = values['partnerPassesFirst']['playerPasses']['max'];
                     else:
-                        print(2)
-                        minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
-                        maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
+                        if secondBid:
+                            if isSecondBidJumpshift:
+                                minToUse = values['special']['wtf']['min']
+                                maxToUse = values['special']['wtf']['max']
+                            else:
+                                minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
+                                maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
+                        else:
+                            print(2)
+                            minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
+                            maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
                 else:
                     if isFirstBidJumpshift:
                         print(3)
