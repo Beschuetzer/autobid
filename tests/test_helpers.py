@@ -1723,7 +1723,7 @@ class getStrongestSuit(unittest.TestCase):
 
         self.hand = helpers.getHandFromHandDictionary(handDictionary)
         self.actual = helpers.getStrongestSuit(self.hand, biddingRelative, 'hcp')
-        self.expected = 'spade'
+        self.expected = 'heart'
         self.assertEqual(self.actual, self.expected)
     
 
@@ -4098,6 +4098,10 @@ class getShouldReturnNoTrump(unittest.TestCase):
         self.expected = False
         self.assertEqual(self.expected, self.actual)
 class getLengthOfSuitFromHand(unittest.TestCase):
+    def setUp(self) -> None:
+        self.actual = None
+        self.expected = None
+        self.hand = None
     def tearDown(self) -> None:
         print(f"self.actual = {self.actual}")
         print(f"self.expected = {self.expected}")
@@ -4112,10 +4116,8 @@ class getLengthOfSuitFromHand(unittest.TestCase):
         }
         self.suitName = 'clubss'
         self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
-
-        self.actual = helpers.getLengthOfSuitFromHand(self.hand, self.suitName)
-        self.expected = 44
-        self.assertEqual(self.expected, self.actual) 
+        with self.assertRaises(Exception) as context:
+            self.actual = helpers.getLengthOfSuitFromHand(self.hand, self.suitName)
 
     def test_1(self):
         self.handDictionary = {

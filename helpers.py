@@ -662,6 +662,29 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
     returns ------------------------------:
         'club', 'diamond', 'heart', 'spade', or 'no trump' depending on which suit is the 'strongest' (considers which suits have already been mentioned, the number of points in that suit the analyzing player has, and how long the suit it for the analyzing player
     '''
+
+    #region Andrew's Approach
+    #compare evaluated points for each suit and rank
+    # suitsYouCanMention = getSuitYouCanMention(hand)
+
+    #add suits you can mention to a list
+
+    #if no suits you 'can' mention in list then add longest suit and any others of that length
+
+        #if you have a singleton:
+            #if more than one suit of same length when no suits you can mention, return suit with highest point count.
+
+            #if point counts and suit lengths tie when 'no suits you can mention' scenario return highest contract index suit (spades > hearts > ...)
+
+        #else:
+            #return next no trump bid
+          
+    
+    #compare suits against each other and form a ranking
+
+    #return highest suit that opponents haven't mentioned
+    #endregion
+
     possibleOutputs = {
         "clubs": "club", 
         "diamonds": "diamond", 
@@ -742,60 +765,6 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
                
         return None
     
-
-    #compare evaluated points for each suit and rank
-    # suitsYouCanMention = getSuitYouCanMention(hand)
-
-    #add suits you can mention to a list
-
-    #if no suits you 'can' mention in list then add longest suit and any others of that length
-
-        #if you have a singleton:
-            #if more than one suit of same length when no suits you can mention, return suit with highest point count.
-
-            #if point counts and suit lengths tie when 'no suits you can mention' scenario return highest contract index suit (spades > hearts > ...)
-
-        #else:
-            #return next no trump bid
-          
-    
-    #compare suits against each other and form a ranking
-
-    #return highest suit that opponents haven't mentioned
-
-
-    leftOpeningSuit = biddingRelative['left'][0]
-    rightOpeningSuit = biddingRelative['right'][0]
-    suitWithMostPoints = rightOpeningSuit
-    suitToReturn = None
-
-    #region if you are getting strongest suit for opening 
-    if re.search('pass', biddingRelative['top'][0], re.IGNORECASE): 
-        highCardPointValuesInEachSuitLocal = getHighCardPointValuesInEachSuit(hand, clientPointCountingConvention)
-
-        while suitWithMostPoints != rightOpeningSuit and suitWithMostPoints != leftOpeningSuit:
-            suitWithMostPoints = max(highCardPointValuesInEachSuitLocal, key=highCardPointValuesInEachSuitLocal.get)
-            highCardPointValuesInEachSuitLocal.pop(suitWithMostPoints, None)
-            # print(f"suitWithMostPoints = {suitWithMostPoints}")
-
-        # print(f"highCardPointValuesInEachSuitLocal =    {highCardPointValuesInEachSuitLocal}")
-        # print(f"leftOpeningSuit = {leftOpeningSuit}")
-        # print(f"rightOpeningSuit = {rightOpeningSuit}")
-            
-    #endregion
-    #region getting responding strongest
-    else:
-        #TODO: change how the getHighCardPointValuesInEachSuit() call is made because the analyzing player needs to change how it evaluates the points in the suit its partner opened with.
-
-        #NOTE: length points  are (cardCount - 4) normally but if you partner opened a suit then use (cardCount -2): e.g. normally a 4 card suit gets 0 for length but if your partner opens that suit and you are responding, you count that as 1 for length?
-
-        #NOTE: Should we just respond with getStrongestSuit if it is the first bid and no special cases apply (i.e. Two Clubs, WeakTwo, WeakThree, 1 Club, or 1NT)?
-        #NOTE: If analyzing player doesn't have at least from of the partner's opening suit, say your best suit for the first bid?
-        #NOTE: if your partner puts it back into their opening suit, just pass if you don't have at least three?
-        pass
-
-    return suitToReturn
-
 def getLengthOfSuitFromHand(hand, suitName):
     '''
     input: 
@@ -804,7 +773,7 @@ def getLengthOfSuitFromHand(hand, suitName):
         biddingRelative = { "top": ['pass', 'one heart', ...], ... }
         suitName = string (e.g. 'clubs', 'diamonds', 'hearts', or 'spades')
     returns ------------------------------:
-        an
+        an integer representing the length of suitName in hand
     '''
     validSuitNames = ['clubs', 'diamonds', 'hearts', 'spades']
     if suitName.lower() not in validSuitNames: raise Exception("Invalid SuitName.  Must be 'clubs', 'diamonds', 'hearts', or 'spades'")
