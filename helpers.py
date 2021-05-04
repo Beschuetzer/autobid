@@ -681,7 +681,7 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
 
     #return highest suit that opponents haven't mentioned
     #endregion
-
+    thresholdToMakeANonBiddableSuitBiddable = 3
     possibleOutputs = {
         "clubs": "club", 
         "diamonds": "diamond", 
@@ -711,24 +711,17 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
         print(f"suitsMentionedByOpponents = {suitsMentionedByOpponents}")
 
         while weightedSuitScores.items():
-            
-            #get the key for best suit
             strongestSuit = max(weightedSuitScores, key=weightedSuitScores.get)
-            maxKey1Value = weightedSuitScores[strongestSuit]
+            strongestSuitValue = weightedSuitScores[strongestSuit]
             del weightedSuitScores[strongestSuit]
 
-            #get key for 2nd best suit
             secondStrongestSuit = max(weightedSuitScores, 
             key=weightedSuitScores.get)
-            maxKey2Value = weightedSuitScores[secondStrongestSuit]
+            secondStrongestSuitValue = weightedSuitScores[secondStrongestSuit]
             del weightedSuitScores[secondStrongestSuit]
 
-            print(f"strongestSuit = {strongestSuit}")
-            print(f"secondStrongestSuit = {secondStrongestSuit}")
-            print(f"maxKey1Value = {maxKey1Value}")
-            print(f"maxKey2Value = {maxKey2Value}")
             #if values for 1st and 2nd best suit are equal swap strongest and secondStrongest if necessary
-            if maxKey1Value == maxKey2Value:
+            if strongestSuitValue == secondStrongestSuitValue:
                 print('equal---------------------')
                 #first check length of suits (grab longer if dif.)
                 strongestSuitLength = getLengthOfSuitFromHand(hand, strongestSuit)
@@ -766,8 +759,9 @@ def getStrongestSuit(hand, biddingRelative, clientPointCountingConvention):
                     strongestSuit = longerSuit
                     secondStrongestSuit = shorterSuit
                     
+            #adding strongestSuit to biddableSuits if it is thresholdToMakeANonBiddableSuitBiddable points or larger than secondStrongestSuit
+            if abs(strongestSuitValue - secondStrongestSuitValue) > thresholdToMakeANonBiddableSuitBiddable: biddableSuits.append(strongestSuit) 
 
-            print(f"biddableSuits = {biddableSuits}")
             if strongestSuit in biddableSuits and suitsMentionedByOpponents[strongestSuit] is False:  return possibleOutputs[strongestSuit]
 
             if secondStrongestSuit in biddableSuits and suitsMentionedByOpponents[secondStrongestSuit] is False:  return possibleOutputs[secondStrongestSuit]
