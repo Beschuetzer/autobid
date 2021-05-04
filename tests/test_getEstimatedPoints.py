@@ -1863,8 +1863,8 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
                 "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
             },
             "right": {
-                "min": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min'],
-                "max": getEstimatedPoints.values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max'],
+                "min": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerPassesFirst']['playerPasses']['max'],
             },
             "bottom": {
                 "min": None,
