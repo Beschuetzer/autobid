@@ -131,6 +131,8 @@ def autoBid(biddingAbsolute, hand, scoring, seatingInput, spot, clientPointCount
     partnersBids = biddingRelative['top']
 
     print(f"estimatedPoints = {estimatedPoints}")
+    print(f"estimatedSuitCounts = {estimatedSuitCounts}")
+
     #endregion
 
     #region get hand points
