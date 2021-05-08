@@ -246,17 +246,7 @@ class tallyUpTotal(unittest.TestCase):
         }
         self.assertEqual(helpers.getOpeningDistributionPoints(suitCounts), 3)
 class getOpeningDistributionPoints(unittest.TestCase):
-    def setUp(self):
-        self.seatingRelative = {
-            "top": "topPlayer",
-            "bottom": "bottomPlayer",
-            "left": "leftPlayer",
-            "right": "rightPlayer",
-        }
     def tearDown(self):
-        print(f"self.biddingAbsolute = {self.biddingAbsolute}")
-        print(f"self.biddingRelative = {self.biddingRelative}")
-        print(f"self.hand = {self.hand}")
         print(f"self.suitCounts = {self.suitCounts}")
         print(f"self.expected = {self.expected}")
         print(f"self.actual = {self.actual}")
@@ -351,7 +341,7 @@ class getOpeningDistributionPoints(unittest.TestCase):
         self.expected = {
             "clubs": 0,
             "diamonds": 3,
-            "hearts": 3,
+            "hearts": 0,
             "spades": 4,
         }
         self.actual = helpers.getOpeningDistributionPoints(self.suitCounts);
@@ -384,7 +374,7 @@ class getOpeningDistributionPoints(unittest.TestCase):
             "clubs": 1,
             "diamonds": 0,
             "hearts": 0,
-            "spades": 1,
+            "spades": 0,
         }
         self.actual = helpers.getOpeningDistributionPoints(self.suitCounts);
         self.assertEqual(self.actual, self.expected)

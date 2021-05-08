@@ -1122,7 +1122,7 @@ def getOpeningDistributionPoints(suitCounts):
             #need to have function that returns baseline void, singleton, and doubleton points (inputs are)
             if suitCount < requiredLengthsToCount[suit]: distributionPoints[suit] = 0
             else:
-                baselineShortnessPoints = getBaselineShortnessPoint(suitCounts, suit)
+                baselineShortnessPoints = getBaselineShortnessPoints(suitCounts, suit)
                 
                 #get length points
                 if suitCount > 4:
