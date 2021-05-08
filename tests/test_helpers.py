@@ -700,7 +700,7 @@ class getBaselineShortnessPoints(unittest.TestCase):
         self.suitToSkip = "diamonds"
         self.expected = 6
         self.actual = helpers.getBaselineShortnessPoints(self.suitCounts, self.suitToSkip)
-        self.assertDictEqual(self.actual, self.expected)
+        self.assertEqual(self.actual, self.expected)
     def test_three_voids_in_same_suits(self):
         self.suitCounts = {
             "clubs": 13,
@@ -711,7 +711,7 @@ class getBaselineShortnessPoints(unittest.TestCase):
         self.suitToSkip = "clubs"
         self.expected = 9
         self.actual = helpers.getBaselineShortnessPoints(self.suitCounts, self.suitToSkip)
-        self.assertDictEqual(self.actual, self.expected)
+        self.assertEqual(self.actual, self.expected)
     def test_three_singletons_in_other_suits(self):
         self.suitCounts = {
             "clubs": 10,
@@ -722,7 +722,7 @@ class getBaselineShortnessPoints(unittest.TestCase):
         self.suitToSkip = "diamonds"
         self.expected = 4
         self.actual = helpers.getBaselineShortnessPoints(self.suitCounts, self.suitToSkip)
-        self.assertDictEqual(self.actual, self.expected)
+        self.assertEqual(self.actual, self.expected)
     def test_three_singletons_in_same_suits(self):
         self.suitCounts = {
             "clubs": 10,
@@ -733,7 +733,7 @@ class getBaselineShortnessPoints(unittest.TestCase):
         self.suitToSkip = "clubs"
         self.expected = 6
         self.actual = helpers.getBaselineShortnessPoints(self.suitCounts, self.suitToSkip)
-        self.assertDictEqual(self.actual, self.expected)
+        self.assertEqual(self.actual, self.expected)
     def test_three_doubletons_in_other_suits(self):
         self.suitCounts = {
             "clubs": 7,
@@ -744,7 +744,7 @@ class getBaselineShortnessPoints(unittest.TestCase):
         self.suitToSkip = "diamonds"
         self.expected = 2
         self.actual = helpers.getBaselineShortnessPoints(self.suitCounts, self.suitToSkip)
-        self.assertDictEqual(self.actual, self.expected)
+        self.assertEqual(self.actual, self.expected)
     def test_three_doubletons_in_same_suits(self):
         self.suitCounts = {
             "clubs": 7,
@@ -755,7 +755,7 @@ class getBaselineShortnessPoints(unittest.TestCase):
         self.suitToSkip = "clubs"
         self.expected = 3
         self.actual = helpers.getBaselineShortnessPoints(self.suitCounts, self.suitToSkip)
-        self.assertDictEqual(self.actual, self.expected)
+        self.assertEqual(self.actual, self.expected)
     def test_three_mix_in_other_suits(self):
         self.suitCounts = {
             "clubs": 0,
@@ -766,7 +766,7 @@ class getBaselineShortnessPoints(unittest.TestCase):
         self.suitToSkip = "diamonds"
         self.expected = 6
         self.actual = helpers.getBaselineShortnessPoints(self.suitCounts, self.suitToSkip)
-        self.assertDictEqual(self.actual, self.expected)
+        self.assertEqual(self.actual, self.expected)
     def test_three_mix_in_same_suits(self):
         self.suitCounts = {
             "clubs": 0,
@@ -777,7 +777,7 @@ class getBaselineShortnessPoints(unittest.TestCase):
         self.suitToSkip = "clubs"
         self.expected = 3
         self.actual = helpers.getBaselineShortnessPoints(self.suitCounts, self.suitToSkip)
-        self.assertDictEqual(self.actual, self.expected)
+        self.assertEqual(self.actual, self.expected)
 class getCurrentActualBid(unittest.TestCase):
     def test_Normal(self):
         bids = [['Adam', '2 No Trump'], ['Tim', 'Double'], ['Ann', '3 Club'], ['Andrew', 'Pass'], ['Adam', 'Double']]

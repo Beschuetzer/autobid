@@ -1139,25 +1139,19 @@ def getBaselineShortnessPoints(suitCounts, suitToSkip):
     returns: 
         a dictionary representing how many shortness points you would have if in the suit suitToSkip given suitCounts
     '''
-    shortnessPoints = {
-        "clubs": 0,
-        "diamonds": 0,
-        "hearts": 0,
-        "spades": 0,
-    }
 
+    points = 0
     for suit, suitCount in suitCounts.items():
-        pass
-        # if suitCount == 0:
-        #     points += distributionPointValues['shortness']['void']
-        # elif suitCount == 1:
-        #     points += distributionPointValues['shortness']['singleton']
-        # elif suitCount == 2:
-        #     points += distributionPointValues['shortness']['doubleton']
-        # elif suitCount > 4:
-        #     points += suitCounts[suit] - 4
+        if re.search(suitToSkip, suit, re.IGNORECASE): continue
 
-    return shortnessPoints
+        if suitCount == 0:
+            points += distributionPointValues['shortness']['void']
+        elif suitCount == 1:
+            points += distributionPointValues['shortness']['singleton']
+        elif suitCount == 2:
+            points += distributionPointValues['shortness']['doubleton']
+
+    return points
 
 def getLocationAfterRotationsAround(location, numberOfRotations):
     '''
