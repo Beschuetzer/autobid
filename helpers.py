@@ -1107,6 +1107,7 @@ def getOpeningDistributionPoints(suitCounts):
         "hearts": 5,
         "spades": 5,
     }
+    
     for suit, suitCount in suitCounts.items():
         if suitCount >= 10:
             if suitCount == 10: distributionPoints[suit] = unlikelyLengths['ten']
@@ -1125,18 +1126,38 @@ def getOpeningDistributionPoints(suitCounts):
                 
                 #get length points
                 if suitCount > 4:
-                    distributionPoints[suit] = 
-
-            # if suitCount == 0:
-            #     points += distributionPointValues['shortness']['void']
-            # elif suitCount == 1:
-            #     points += distributionPointValues['shortness']['singleton']
-            # elif suitCount == 2:
-            #     points += distributionPointValues['shortness']['doubleton']
-            # elif suitCount > 4:
-            #     points += suitCounts[suit] - 4
+                    distributionPoints[suit] = baselineShortnessPoints + (suitCount - 4)
+                else: distributionPoints[suit] = baselineShortnessPoints
 
     return distributionPoints    
+
+def getBaselineShortnessPoints(suitCounts, suitToSkip):
+    '''
+    input:
+        suitCounts = { "clubs": 3, "diamonds": 4, etc... }
+        suit = string representing suit to not count shortness points for
+    returns: 
+        a dictionary representing how many shortness points you would have if in the suit suitToSkip given suitCounts
+    '''
+    shortnessPoints = {
+        "clubs": 0,
+        "diamonds": 0,
+        "hearts": 0,
+        "spades": 0,
+    }
+
+    for suit, suitCount in suitCounts.items():
+        pass
+        # if suitCount == 0:
+        #     points += distributionPointValues['shortness']['void']
+        # elif suitCount == 1:
+        #     points += distributionPointValues['shortness']['singleton']
+        # elif suitCount == 2:
+        #     points += distributionPointValues['shortness']['doubleton']
+        # elif suitCount > 4:
+        #     points += suitCounts[suit] - 4
+
+    return shortnessPoints
 
 def getLocationAfterRotationsAround(location, numberOfRotations):
     '''
