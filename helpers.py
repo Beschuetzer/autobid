@@ -899,6 +899,8 @@ def getCurrentContractBid(biddingAbsolute):
         if re.search('pass', bid[1], re.IGNORECASE) is None and re.search('double', bid[1], re.IGNORECASE) is None:
             return bid
 
+    return None
+
 def handlePartnerDouble(hand, biddingAbsolute, biddingRelative, totalPoints, clientPointCountingConvention):
     '''
         responding to takeout dbl if applicable otherwise passing if less than 6 points total and is first bid
@@ -1029,10 +1031,9 @@ def getDistributionPoints(hand, biddingAbsolute, biddingRelative, seatingRelativ
     
     getShouldCalculateRespondingPoints(biddingAbsolute)
 
-    if hasPartnerOpened:
-        partnersMentionedSuits = getPartnersMentionedSuits(biddingRelative['top'])
-        distributionPoints = getRespondingDistributionPoints(suitCounts, partnersMentionedSuits)
-    else:
+    distributionPoints = getRespondingDistributionPoints(suitCounts)
+    currentActualBid = getCurrentContractBid(biddingAbsolute)
+    if currentActualBid is None:
         distributionPoints = getOpeningDistributionPoints(suitCounts)
 
     return distributionPoints
@@ -1058,8 +1059,9 @@ def getShouldCalculateRespondingPoints(biddingAbsolute):
 
     #otherwise 
     pass
-
-def getRespondingDistributionPoints(suitCounts, partnersMentionedSuits):
+getDistributionPoints
+def getRespondingDistributionPoints(suitCounts):
+    #NOTE: needs to return the dist point in each suit if that suit is the contract
     '''
     inputs-----------------------------------------------:
         suitCounts = { "clubs": 3, "diamonds": 4, etc... }
@@ -1068,25 +1070,56 @@ def getRespondingDistributionPoints(suitCounts, partnersMentionedSuits):
     returns:-----------------------------------------------
         the estimated responding distribution points of the analyzing player
     '''
+    #note: if suit length is 0 return 0 for suit
+
+
+
+    #get multiple if applicable (check based on above dict)
     return -1
 
 def getOpeningDistributionPoints(suitCounts):
+    #NOTE: needs to return the dist point in each suit if no contract given (only count Lenght points so length - 4 is point count for each suit)
     '''
     input:
         suitCounts = { "clubs": 3, "diamonds": 4, etc... }
     returns: 
         an integer representing total opening distribution that the analyzing player has
     '''
+
+    #note: if length of suit is 10 or greater just return a fixed amount (to ensure that the bidding doesn't stay low)
+
+    result = {
+        "clubs": 0,
+        "diamonds": 0,
+        "hearts": 0,
+        "spades": 0,
+    }
+
+    unlikelyLengths = {
+        "ten": 28,
+        "eleven": 32,
+        "twelve": 36,
+        "thirteen": 40,
+    }
+
     points = 0
     for suit, suitCount in suitCounts.items():
-        if suitCount == 0:
-            points += distributionPointValues['shortness']['void']
-        elif suitCount == 1:
-            points += distributionPointValues['shortness']['singleton']
-        elif suitCount == 2:
-            points += distributionPointValues['shortness']['doubleton']
-        elif suitCount > 4:
-            points += suitCounts[suit] - 4
+        if suitCount >= 10:
+            if suitCount == 10: return unlikelyLengths['ten']
+            if suitCount == 11: return unlikelyLengths['eleven']
+            if suitCount == 12: return unlikelyLengths['twelve']
+            if suitCount == 13: return unlikelyLengths['thirteen']
+        else:
+            #average case logic
+
+            # if suitCount == 0:
+            #     points += distributionPointValues['shortness']['void']
+            # elif suitCount == 1:
+            #     points += distributionPointValues['shortness']['singleton']
+            # elif suitCount == 2:
+            #     points += distributionPointValues['shortness']['doubleton']
+            # elif suitCount > 4:
+            #     points += suitCounts[suit] - 4
 
     return points    
 
