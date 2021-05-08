@@ -1087,8 +1087,7 @@ def getOpeningDistributionPoints(suitCounts):
     '''
 
     #note: if length of suit is 10 or greater just return a fixed amount (to ensure that the bidding doesn't stay low)
-
-    result = {
+    distributionPoints = {
         "clubs": 0,
         "diamonds": 0,
         "hearts": 0,
@@ -1102,15 +1101,31 @@ def getOpeningDistributionPoints(suitCounts):
         "thirteen": 40,
     }
 
-    points = 0
+    requiredLengthsToCount = {
+        "clubs": 4,
+        "diamonds": 4,
+        "hearts": 5,
+        "spades": 5,
+    }
     for suit, suitCount in suitCounts.items():
         if suitCount >= 10:
-            if suitCount == 10: return unlikelyLengths['ten']
-            if suitCount == 11: return unlikelyLengths['eleven']
-            if suitCount == 12: return unlikelyLengths['twelve']
-            if suitCount == 13: return unlikelyLengths['thirteen']
+            if suitCount == 10: distributionPoints[suit] = unlikelyLengths['ten']
+            if suitCount == 11: distributionPoints[suit] = unlikelyLengths['eleven']
+            if suitCount == 12: distributionPoints[suit] = unlikelyLengths['twelve']
+            if suitCount == 13: distributionPoints[suit] = unlikelyLengths['thirteen']
         else:
             #average case logic
+
+            if suitCount == 0: distributionPoints[suit] = 0
+
+            #need to have function that returns baseline void, singleton, and doubleton points (inputs are)
+            if suitCount < requiredLengthsToCount[suit]: distributionPoints[suit] = 0
+            else:
+                baselineShortnessPoints = getBaselineShortnessPoint(suitCounts, suit)
+                
+                #get length points
+                if suitCount > 4:
+                    distributionPoints[suit] = 
 
             # if suitCount == 0:
             #     points += distributionPointValues['shortness']['void']
@@ -1121,7 +1136,7 @@ def getOpeningDistributionPoints(suitCounts):
             # elif suitCount > 4:
             #     points += suitCounts[suit] - 4
 
-    return points    
+    return distributionPoints    
 
 def getLocationAfterRotationsAround(location, numberOfRotations):
     '''

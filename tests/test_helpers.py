@@ -286,7 +286,7 @@ class getOpeningDistributionPoints(unittest.TestCase):
         }
         self.expected = {
             "clubs": 36,
-            "diamonds": 3,
+            "diamonds": 0,
             "hearts": 0,
             "spades": 0,
         }
@@ -302,7 +302,7 @@ class getOpeningDistributionPoints(unittest.TestCase):
         }
         self.expected = {
             "clubs": 32,
-            "diamonds": 3,
+            "diamonds": 0,
             "hearts": 0,
             "spades": 0,
         }
@@ -318,12 +318,13 @@ class getOpeningDistributionPoints(unittest.TestCase):
         }
         self.expected = {
             "clubs": 28,
-            "diamonds": 3,
+            "diamonds": 0,
             "hearts": 0,
             "spades": 0,
         }
         self.actual = helpers.getOpeningDistributionPoints(self.suitCounts);
         self.assertEqual(self.actual, self.expected)
+    
     def test_Opening_None(self):
         self.suitCounts = {
             "clubs": 4,
@@ -366,7 +367,7 @@ class getOpeningDistributionPoints(unittest.TestCase):
         self.expected = {
             "clubs": 2,
             "diamonds": 0,
-            "hearts": 2,
+            "hearts": 0,
             "spades": 3,
         }
         self.actual = helpers.getOpeningDistributionPoints(self.suitCounts);
@@ -382,7 +383,7 @@ class getOpeningDistributionPoints(unittest.TestCase):
         self.expected = {
             "clubs": 1,
             "diamonds": 0,
-            "hearts": 1,
+            "hearts": 0,
             "spades": 1,
         }
         self.actual = helpers.getOpeningDistributionPoints(self.suitCounts);
@@ -396,9 +397,9 @@ class getOpeningDistributionPoints(unittest.TestCase):
             "spades": 10,
         }
         self.expected = {
-            "clubs": 1,
+            "clubs": 0,
             "diamonds": 0,
-            "hearts": 1,
+            "hearts": 0,
             "spades": 28,
         }
         self.actual = helpers.getOpeningDistributionPoints(self.suitCounts);
