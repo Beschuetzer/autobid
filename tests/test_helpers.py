@@ -395,17 +395,7 @@ class getOpeningDistributionPoints(unittest.TestCase):
         self.actual = helpers.getOpeningDistributionPoints(self.suitCounts);
         self.assertEqual(self.actual, self.expected)
 class getRespondingDistributionPoints(unittest.TestCase):
-    def setUp(self):
-        self.seatingRelative = {
-            "top": "topPlayer",
-            "bottom": "bottomPlayer",
-            "left": "leftPlayer",
-            "right": "rightPlayer",
-        }
     def tearDown(self):
-        print(f"self.biddingAbsolute = {self.biddingAbsolute}")
-        print(f"self.biddingRelative = {self.biddingRelative}")
-        print(f"self.hand = {self.hand}")
         print(f"self.suitCounts = {self.suitCounts}")
         print(f"self.expected = {self.expected}")
         print(f"self.actual = {self.actual}")
@@ -494,7 +484,6 @@ class getRespondingDistributionPoints(unittest.TestCase):
             "spades": 0,
         }
 
-        self.biddingAbsolute = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getRespondingDistributionPoints(self.suitCounts);
         self.assertEqual(self.expected, self.actual)
    
@@ -527,7 +516,6 @@ class getRespondingDistributionPoints(unittest.TestCase):
             "hearts": 0,
             "spades": 6,
         }
-        self.biddingAbsolute = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getRespondingDistributionPoints(self.suitCounts);
         self.assertEqual(self.expected, self.actual)
     
@@ -543,13 +531,6 @@ class getRespondingDistributionPoints(unittest.TestCase):
             "diamonds": 6,
             "hearts": 0,
             "spades": 2,
-        }
-      
-        self.suitCounts = {
-            "clubs": clubLength,
-            "diamonds": diamondLength,
-            "hearts": heartLength,
-            "spades": spadeLength,
         }
         self.actual = helpers.getRespondingDistributionPoints(self.suitCounts);
         self.assertEqual(self.expected, self.actual)
@@ -593,9 +574,9 @@ class getRespondingDistributionPoints(unittest.TestCase):
         }
         self.expected = {
             "clubs": 11,
-            "diamonds": 14,
+            "diamonds": 17,
             "hearts": 0,
-            "spades": 0,
+            "spades": 3,
         }
         self.actual = helpers.getRespondingDistributionPoints(self.suitCounts);
         self.assertEqual(self.expected, self.actual)
@@ -622,7 +603,7 @@ class getRespondingDistributionPoints(unittest.TestCase):
             "spades": 1,
         }
         self.expected = {
-            "clubs": 10,
+            "clubs": 12,
             "diamonds": 6,
             "hearts": 2,
             "spades": 2,
@@ -653,9 +634,9 @@ class getRespondingDistributionPoints(unittest.TestCase):
         }
         self.expected = {
             "clubs": 28,
-            "diamonds": 2,
-            "hearts": 2,
-            "spades": 2,
+            "diamonds": 4,
+            "hearts": 4,
+            "spades": 4,
         }
         self.actual = helpers.getRespondingDistributionPoints(self.suitCounts);
         self.assertEqual(self.expected, self.actual)

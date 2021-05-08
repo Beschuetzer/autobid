@@ -2,6 +2,12 @@
 import getEstimatedPoints, autoBid
 import re, math
 
+unlikelyLengths = {
+    "ten": 28,
+    "eleven": 32,
+    "twelve": 36,
+    "thirteen": 40,
+}
 highCardPointValues = {
     "hcp": {
         "ace": 4,
@@ -1070,12 +1076,71 @@ def getRespondingDistributionPoints(suitCounts):
     returns:-----------------------------------------------
         the estimated responding distribution points of the analyzing player
     '''
+    result = {
+        "clubs": 0,
+        "diamonds": 0,
+        "hearts": 0,
+        "spades": 0,
+    }
+    requiredLengthToCountMultiple = 4
+    print('')
+    print(f"suitCounts = {suitCounts}")
+
     #note: if suit length is 0 return 0 for suit
+    for suit, suitCount in suitCounts.items():
 
+        if suitCount == 13: 
+            result[suit] = 40
+            continue
+        if suitCount == 12: 
+            result[suit] = 36
+            continue
+        if suitCount == 11: 
+            result[suit] = 32
+            continue
+        if suitCount == 10: 
+            result[suit] = 28
+            continue
 
+        if suitCount == 0: 
+            result[suit] = 0
+            continue
+        baselineShortnessPoints = getBaselineShortnessPoints(suitCounts, suit)
 
-    #get multiple if applicable (check based on above dict)
-    return -1
+        print(f"suit = {suit}")
+        #get multiple if applicable (check based on above dict)
+        if suitCount >= requiredLengthToCountMultiple:
+            surplusCount = suitCount - 3
+            multiplier = 0
+            for suit2, suitCount2 in suitCounts.items():
+                if suit == suit2: continue
+                if suitCount2 == 0: 
+                    multiplier = 3
+                    break
+
+            if multiplier == 0:
+                for suit2, suitCount2 in suitCounts.items():
+                    if suit == suit2: continue
+                    if suitCount2 == 1: 
+                        multiplier = 2
+                        break
+
+            if multiplier == 0:
+                for suit2, suitCount2 in suitCounts.items():
+                    if suit == suit2: continue
+                    if suitCount2 == 2: 
+                        multiplier = 1
+                        break
+            
+            print('surplus')
+            print(f"multiplier = {multiplier}")
+            print(f"surplusCount = {surplusCount}")
+            result[suit] = baselineShortnessPoints + (multiplier * surplusCount)
+        else:
+            print('baseline')
+            result[suit] = baselineShortnessPoints
+    print('')
+    return result
 
 def getOpeningDistributionPoints(suitCounts):
     #NOTE: needs to return the dist point in each suit if no contract given (only count Lenght points so length - 4 is point count for each suit)
@@ -1092,13 +1157,6 @@ def getOpeningDistributionPoints(suitCounts):
         "diamonds": 0,
         "hearts": 0,
         "spades": 0,
-    }
-
-    unlikelyLengths = {
-        "ten": 28,
-        "eleven": 32,
-        "twelve": 36,
-        "thirteen": 40,
     }
 
     requiredLengthsToCount = {
