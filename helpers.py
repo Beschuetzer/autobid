@@ -1142,6 +1142,50 @@ def getRespondingDistributionPoints(suitCounts):
     print('')
     return result
 
+def getNumberOfQuickTricks(hand):
+    '''
+    input:
+        hand = [ [12,11,10], [...], [...], [51,50,49,...] ]
+        suit = string representing the suit to check for quick trick in
+    returns: 
+        an integer representing the number of quick tricks in every suit other than the suit given
+    '''
+
+    quickTrickTotals = {
+        "aceKing": 2,
+        "aceQueen": 1.5,
+        "aceOnly": 1,
+        "kingQueen": 1,
+        "kingCovered": .5,
+    }
+
+    totalQuickTricks = 0
+    for i in range(len(hand)):
+        suit = hand[i]
+        hasAce = False
+        hasKing = False
+        hasQueen = False
+        isCovered = len(suit) > 1
+        print('')
+
+        for j in range(len(suit)):
+            cardAsNumber = suit[j]
+            cardValue = cardAsNumber % 13
+            print(f"cardValue = {cardValue}")
+            if cardValue == 12: hasAce = True
+            if cardValue == 11: hasKing = True
+            if cardValue == 10: hasQueen = True
+
+        if hasAce and hasKing: totalQuickTricks += quickTrickTotals["aceKing"]
+        elif hasAce and hasQueen: totalQuickTricks += quickTrickTotals["aceQueen"]
+        elif hasAce: totalQuickTricks += quickTrickTotals["aceOnly"]
+        elif hasKing and hasQueen: totalQuickTricks += quickTrickTotals["kingQueen"]
+        elif hasKing and isCovered: totalQuickTricks += quickTrickTotals["kingCovered"]
+
+    return totalQuickTricks
+
+
+
 def getOpeningDistributionPoints(suitCounts):
     #NOTE: needs to return the dist point in each suit if no contract given (only count Lenght points so length - 4 is point count for each suit)
     '''

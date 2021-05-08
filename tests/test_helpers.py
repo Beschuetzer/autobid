@@ -1086,7 +1086,95 @@ class getSuitCounts(unittest.TestCase):
             "spades": 0,
         }
         self.assertEqual(actual, expected)
-
+class getHasThreeQuickTricksInSuit(unittest.TestCase):
+    def test_none(self):
+        self.handDictionary = {
+            "clubs": "T932",
+            "diamonds": "Q876",
+            "hearts": "965",
+            "spades": "53",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getNumberOfQuickTricks(self.hand)
+        self.expected = 0
+        self.assertEqual(self.expected, self.actual)
+    def test_ace_king(self):
+        self.handDictionary = {
+            "clubs": "AK32",
+            "diamonds": "Q876",
+            "hearts": "965",
+            "spades": "53",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getNumberOfQuickTricks(self.hand)
+        self.expected = 2
+        self.assertEqual(self.expected, self.actual)
+    def test_ace_queen(self):
+        self.handDictionary = {
+            "clubs": "AQ32",
+            "diamonds": "Q876",
+            "hearts": "965",
+            "spades": "53",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getNumberOfQuickTricks(self.hand)
+        self.expected = 1.5
+        self.assertEqual(self.expected, self.actual)
+    def test_ace_only(self):
+        self.handDictionary = {
+            "clubs": "A532",
+            "diamonds": "Q876",
+            "hearts": "965",
+            "spades": "53",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getNumberOfQuickTricks(self.hand)
+        self.expected = 1
+        self.assertEqual(self.expected, self.actual)
+    def test_king_queen(self):
+        self.handDictionary = {
+            "clubs": "KQ32",
+            "diamonds": "Q876",
+            "hearts": "965",
+            "spades": "53",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getNumberOfQuickTricks(self.hand)
+        self.expected = 1
+        self.assertEqual(self.expected, self.actual)
+    def test_king_covered(self):
+        self.handDictionary = {
+            "clubs": "KT32",
+            "diamonds": "Q876",
+            "hearts": "965",
+            "spades": "53",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getNumberOfQuickTricks(self.hand)
+        self.expected = .5
+        self.assertEqual(self.expected, self.actual)
+    def test_combination_two_ace_kings(self):
+        self.handDictionary = {
+            "clubs": "AK32",
+            "diamonds": "AK76",
+            "hearts": "965",
+            "spades": "53",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getNumberOfQuickTricks(self.hand)
+        self.expected = 4
+        self.assertEqual(self.expected, self.actual)
+    def test_combination_two_kings_covered(self):
+        self.handDictionary = {
+            "clubs": "KT32",
+            "diamonds": "KT76",
+            "hearts": "965",
+            "spades": "53",
+        }
+        self.hand = helpers.getHandFromHandDictionary(self.handDictionary)
+        self.actual = helpers.getNumberOfQuickTricks(self.hand)
+        self.expected = 1
+        self.assertEqual(self.expected, self.actual)
 #TODO: FINISH partnerTwoClubResponse
 class partnerTwoClubResponse(unittest.TestCase):
     def setUp(self) -> None:
