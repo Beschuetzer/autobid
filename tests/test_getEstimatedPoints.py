@@ -1389,7 +1389,7 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         
         self.assertDictEqual(self.actual, self.expected)
 
-    def test_update_partner_takeout_double_forced_bid(self):
+    def test_update_partner_takeout_double_forced_bid_1(self):
         biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['partnerTakeoutDoubleForcedBid']
 
         self.expected = {
@@ -1417,6 +1417,35 @@ class getEstimatedPoints_2_Bid_Opportunities(unittest.TestCase):
         self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
         
         self.assertDictEqual(self.actual, self.expected)
+
+    def test_update_partner_takeout_double_forced_bid_2(self):
+        biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['partnerTakeoutDoubleForcedBid2']
+
+        self.expected = {
+            "left": {
+                "min": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['partnerBidsFirst']['playerPasses']['max'],
+            },
+           "top": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerPasses']['max'],
+            },
+            "right": {
+                "min": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['min'],
+                "max": getEstimatedPoints.values['isTeamsFirstBid']['playerBidsSuit']['max'],
+            },
+            "bottom": {
+                "min": None,
+                "max": None,
+            },
+        }
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, self.seatingRelative)
+
+        self.actual =getEstimatedPoints.getEstimatedPoints( biddingRelative, self.bids, self.seatingRelative)
+        
+        self.assertDictEqual(self.actual, self.expected)
+
 
     def test_update_NT_First_Pass_Second(self):
         biddingRelative = testCases.biddingRelatives['twoBidOpportunities']['ntFirstPassSecond']

@@ -397,7 +397,8 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
                 
             else: 
                 print('one opportunity else-----------')
-                minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False)
+                print(f"wasPlayerForcedToBid = {wasPlayerForcedToBid}")
+                minToUse, maxToUse = setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, False, wasPlayerForcedToBid)
 
             estimatedScoring[location]['min'] = minToUse
             estimatedScoring[location]['max'] = maxToUse
@@ -534,7 +535,7 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
     print('')
     return estimatedScoring
 
-def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False, wasForcedToBid = False, secondBid = None, isSecondBidJumpshift = False):
+def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seatingRelative, firstBid, isFirstBidJumpshift, hasPartnerOpened, isPartnersFirstBidPass, hasOtherTeamOpenedTwoClubs = False, wasForcedToBid = False, secondBid = '', isSecondBidJumpshift = False):
     '''
     inputs--------------------------------------------------:
         location = a string representing relative locations: ('right', 'left',...)
@@ -615,7 +616,7 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
                                     minToUse = values['partnerPassesFirst']['playerPasses']['min'];
                                     maxToUse = values['partnerPassesFirst']['playerPasses']['max'];
                     else:
-                        if secondBid:
+                        if secondBid != '':
                             if isSecondBidJumpshift:
                                 minToUse = values['special']['wtf']['min']
                                 maxToUse = values['special']['wtf']['max']
@@ -681,16 +682,25 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
             maxToUse = values['special']['wtf']['max']
         elif hasPartnerOpened:
             if isPartnersFirstBidPass:
+                print(1)
                 minToUse = values['partnerPassesFirst']['playerBidsSuit']['min']
                 maxToUse = values['partnerPassesFirst']['playerBidsSuit']['max']
             else:
                 if isFirstBidJumpshift:
+                    print(2)
+
                     minToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['min']
                     maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['max']
                 else:
-                    minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
-                    maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
+                    if wasForcedToBid:
+                        minToUse = values['isTeamsFirstBid']['playerPasses']['min']
+                        maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
+                    else:
+                        minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
+                        maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
         else:
+            print(4)
+
             minToUse = values['isTeamsFirstBid']['playerBidsSuit']['min']
             maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
 

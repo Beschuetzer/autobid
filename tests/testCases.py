@@ -317,6 +317,12 @@ biddingRelatives = {
         "right": ['Double', 'Two Club'],
         "bottom": ['pass'],
     },
+    "partnerTakeoutDoubleForcedBid2": {
+        "right": ['One Club', 'One Heart'],
+        "bottom": ['Double'],
+        "left": ['pass'],
+        "top": ['One Diamond'],
+    },
     "ntFirstPassSecond": {
         "left": ['pass', 'Two Heart'],
         "top": ['One No Trump', 'pass'],
