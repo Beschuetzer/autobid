@@ -323,6 +323,18 @@ biddingRelatives = {
         "left": ['pass'],
         "top": ['One Diamond'],
     },
+    "partnerTakeoutDoubleForcedBidJumpshiftTwoBid": {
+        "right": ['One Club', 'One Heart'],
+        "bottom": ['Double'],
+        "left": ['pass'],
+        "top": ['Two Diamond'],
+    },
+    "partnerTakeoutDoubleForcedBidJumpshiftThreeBid": {
+        "right": ['One Club', 'One Heart'],
+        "bottom": ['Double'],
+        "left": ['pass'],
+        "top": ['Three Diamond'],
+    },
     "partnerTakeoutDoubleForcedBidButBidAgain": {
         "right": ['One Club', 'One Heart', 'Pass'],
         "bottom": ['Double', 'One Spade'],

@@ -598,9 +598,12 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
                 if hasPartnerOpened:
                     if wasForcedToBid:
                         if isFirstBidJumpshift:
-                            print(1)
-                            minToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['min']
-                            maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['max']
+                            print(1.000)
+                            minToUse = values['special']['weakTwo']['min']
+                            maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
+                            # print(1.3)
+                            # minToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['min']
+                            # maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['max']
                         else:
                             if isSecondBidJumpshift:
                                 print(1.1)
@@ -692,8 +695,7 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
                     maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['max']
                 else:
                     if wasForcedToBid:
-                        print(3.1)
-                        if secondBid == '' or re.search('pass', secondBid, re.IGNORECASE):
+                        if secondBid == '' or re.search('pass', secondBid, re.IGNORECASE):                           
                             minToUse = values['isTeamsFirstBid']['playerPasses']['min']
                             maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
                         else:
