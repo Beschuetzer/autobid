@@ -688,19 +688,27 @@ def setInitialBounds(username, location, biddingAbsolute, biddingRelative, seati
             else:
                 if isFirstBidJumpshift:
                     print(2)
-
                     minToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['min']
                     maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isJumpshift']['max']
                 else:
                     if wasForcedToBid:
-                        minToUse = values['isTeamsFirstBid']['playerPasses']['min']
-                        maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
+                        print(3.1)
+                        if secondBid == '' or re.search('pass', secondBid, re.IGNORECASE):
+                            minToUse = values['isTeamsFirstBid']['playerPasses']['min']
+                            maxToUse = values['isTeamsFirstBid']['playerPasses']['max']
+                        else:
+                            if isSecondBidJumpshift:
+                                minToUse = values['special']['wtf']['min']
+                                maxToUse = values['special']['wtf']['max']                            
+                            else:
+                                minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
+                                maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
                     else:
+                        print(3.2)
                         minToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['min']
                         maxToUse = values['partnerBidsFirst']['playerBidsSuit']['isNotJumpshift']['max']
         else:
             print(4)
-
             minToUse = values['isTeamsFirstBid']['playerBidsSuit']['min']
             maxToUse = values['isTeamsFirstBid']['playerBidsSuit']['max']
 
