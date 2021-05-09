@@ -411,7 +411,7 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
             print(f"isSecondBidJumpshift = {isSecondBidJumpshift}")
             print(f"wasPlayerForcedToBid = {wasPlayerForcedToBid}")
             #region when the opportunities to bid is two long
-            if len(playersBids) == 2: 
+            if len(playersBids) >= 2: 
                 #region when the first bid is pass and 2nd bid is not pass or double
 
                 #nothing more can be gleamed from second bid if they were forced to bid due to takeout double
@@ -518,7 +518,7 @@ def getEstimatedPoints(biddingRelative, biddingAbsolute, seatingRelative):
             #endregion
 
             #region When the opportunities to bid is longer than 2
-            else:
+            if len(playersBids) >= 3:
                 #did they say the same suit multiple times?
                 #did they pass first then jumpshift?
                 pass
