@@ -12,6 +12,8 @@ minDefaultValue = 0
 openMinorMinValue = 4
 openMajorMinValue = 5
 openNoTrumpMinValue = 2
+openWeakTwo = 6
+openWeakThree = 7
 
 
 class EstimateSuitCounts: 
