@@ -171,7 +171,7 @@ class EstimateSuitCounts:
 
             if self.suitKey is None: continue
 
-            if self.wasPlayerForcedToBid:
+            if self.wasPlayerForcedToBid  :
                 self.suitCounts[location][self.suitKey]['min'] = forcedResponseMinValue
 
             elif re.search('trump', self.firstBid, re.IGNORECASE):

@@ -211,6 +211,17 @@ def getIsJumpshift(currentContractBid, usersBid):
     if (indexOfCurrentActualBid > indexOfUsersBid): return False
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
+def getIndexOfPlayersNthBid(username, biddingAbsolute, nthBid):
+     '''
+    inputs:
+        biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
+        username = string of the user whose partner is to be checked
+        nthBid = either positive integer starting from 1 (first bid) or negative integer starting at -1 (last bid)
+    returns ------------------------------ 
+        an integer representing the index of username's nth bid 
+    '''
+    
+
 def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
     '''
     inputs:
@@ -221,20 +232,27 @@ def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
     '''
 
     try:
+        if len(biddingAbsolute) < 1: return False
         print(f"biddingAbsolute = {biddingAbsolute}")
         partnersUsername = getUsernamesPartner(username, seatingRelative) 
         indexOfPartnersFirstBid = getIndexOfNthBid(partnersUsername, biddingAbsolute, 1)
         partnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid]
+        print(3)
+        print(f"indexOfPartnersFirstBid = {indexOfPartnersFirstBid}")
+        
+        indexOfPlayersBid = getIndexOfPlayersNthBid(username, biddingAbsolute, 1)
+        if indexOfPlayersBid < indexOfPartnersFirstBid: return False
+
         bidAfterPartnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid + 1]
 
-        # print(f"username = {username}")
-        # print(f"seatingRelative = {seatingRelative}")
-        # print(f"partnersUsername = {partnersUsername}")
-        # print(f"indexOfPartnersFirstBid = {indexOfPartnersFirstBid}")
-        # print(f"biddingAbsolute = {biddingAbsolute}")
-        # print(f"partnersFirstBid = {partnersFirstBid}")
-        # print(f"bidAfterPartnersFirstBid = {bidAfterPartnersFirstBid}")
-        
+        print(f"username = {username}")
+        print(f"seatingRelative = {seatingRelative}")
+        print(f"partnersUsername = {partnersUsername}")
+        print(f"indexOfPartnersFirstBid = {indexOfPartnersFirstBid}")
+        print(f"biddingAbsolute = {biddingAbsolute}")
+        print(f"partnersFirstBid = {partnersFirstBid}")
+        print(f"bidAfterPartnersFirstBid = {bidAfterPartnersFirstBid}")
+
         caseDouble = re.search('double', partnersFirstBid[1], re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid[1], re.IGNORECASE)
         caseNoTrump = re.search('trump', partnersFirstBid[1], re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid[1], re.IGNORECASE)
         if caseDouble or caseNoTrump: return True
