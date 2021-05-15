@@ -212,7 +212,7 @@ def getIsJumpshift(currentContractBid, usersBid):
     return abs(indexOfCurrentActualBid - indexOfUsersBid) > 5    
 
 def getIndexOfPlayersNthBid(username, biddingAbsolute, nthBid):
-     '''
+    '''
     inputs:
         biddingAbsolute = an array of arrays representing every bid made thus far (e.g. [ ['Andrew', 'Pass], ['Adam', 'One Club'], ... ])
         username = string of the user whose partner is to be checked
@@ -220,7 +220,20 @@ def getIndexOfPlayersNthBid(username, biddingAbsolute, nthBid):
     returns ------------------------------ 
         an integer representing the index of username's nth bid 
     '''
-    
+    userBidArray = []
+    count = 0
+
+    for bid in biddingAbsolute:         
+        usernameOfBid = bid[0]
+        if usernameOfBid == username:
+            userBidArray.append(bid)
+
+    usersNthBid = userBidArray[nthBid - 1][1]
+    for bid in biddingAbsolute:
+        if usersNthBid == bid:
+            return count
+        count += 1
+    #return the nth bid -1 for that array
 
 def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
     '''
