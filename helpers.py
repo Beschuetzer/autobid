@@ -268,7 +268,7 @@ def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
         partnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid]
         
         indexOfPlayersBid = getIndexOfPlayersNthBid(username, biddingAbsolute, 1)
-        if indexOfPlayersBid < indexOfPartnersFirstBid: return False
+        if indexOfPlayersBid < indexOfPartnersFirstBid and len(biddingAbsolute) <= 4: return False
 
         bidAfterPartnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid + 1]
 
