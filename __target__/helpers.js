@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2021-05-03 21:20:44
+// Transcrypt'ed from Python, 2021-05-09 10:17:41
 var autoBid = {};
 var getEstimatedPoints = {};
 var math = {};
@@ -13,6 +13,7 @@ __nest__ (getEstimatedPoints, '', __module_getEstimatedPoints__);
 import * as __module_autoBid__ from './autoBid.js';
 __nest__ (autoBid, '', __module_autoBid__);
 var __name__ = 'helpers';
+export var unlikelyLengths = dict ([['ten', 28], ['eleven', 32], ['twelve', 36], ['thirteen', 40]]);
 export var highCardPointValues = dict ([['hcp', dict ([['ace', 4], ['king', 3], ['queen', 2], ['jack', 1]])], ['alternative', dict ([['ace', 4.5], ['king', 3], ['queen', 1.5], ['jack', 0.75], ['ten', 0.25]])]]);
 export var suitLengthRequiredToCount = dict ([['king', 2], ['queen', 3], ['jack', 4], ['ten', 5]]);
 export var distributionPointValues = dict ([['shortness', dict ([['void', 3], ['singleton', 2], ['doubleton', 1]])], ['length', dict ([['fiveCardSuit', 1], ['sixCardsSuit', 2], ['sevenCardsSuit', 3]])]]);
@@ -463,8 +464,6 @@ export var getWeightedSuitScore = function (hand, clientPointCountingConvention)
 	var weightedSuitScores = dict ([['clubs', 0], ['diamonds', 0], ['hearts', 0], ['spades', 0]]);
 	var pointsInEachSuit = getHighCardPointValuesInEachSuit (hand, clientPointCountingConvention);
 	var suitCounts = getSuitCountsFromHand (hand);
-	print ('{}{}'.format (pointsInEachSuit));
-	print ('{}{}'.format (suitCounts));
 	for (var [suit, suitCount] of suitCounts.py_items ()) {
 		if (suitCount < 3) {
 			weightedSuitScores [suit] = pointsInEachSuit [suit];
@@ -473,13 +472,13 @@ export var getWeightedSuitScore = function (hand, clientPointCountingConvention)
 			weightedSuitScores [suit] = pointsInEachSuit [suit] + (suitCount - 3) * valueOfAdditionalLength;
 		}
 	}
+	print ('');
 	return weightedSuitScores;
 };
 export var getShouldReturnNoTrump = function (weightedSuitScores, biddableSuits) {
-	var differenceThreshold = 3;
+	var differenceThreshold = 2;
 	if (len (biddableSuits) == 0) {
 		var highestSuit = null;
-		var secondHighestSuit = null;
 		var highestSuitValue = 0;
 		var secondHighestSuitValue = 0;
 		for (var [suit, weightedValue] of weightedSuitScores.py_items ()) {
@@ -491,42 +490,97 @@ export var getShouldReturnNoTrump = function (weightedSuitScores, biddableSuits)
 		for (var [suit, weightedValue] of weightedSuitScores.py_items ()) {
 			if (weightedValue > secondHighestSuitValue && suit != highestSuit) {
 				var secondHighestSuitValue = weightedValue;
-				var secondHighestSuit = suit;
 			}
 		}
-		if (abs (highestSuitValue - secondHighestSuitValue) < differenceThreshold) {
+		if (abs (highestSuitValue - secondHighestSuitValue) <= differenceThreshold) {
 			return true;
 		}
 	}
 	return false;
 };
 export var getStrongestSuit = function (hand, biddingRelative, clientPointCountingConvention) {
-	var possibleOutputs = dict ([['club', 'club'], ['diamond', 'diamond'], ['heart', 'heart'], ['spade', 'spade'], ['noTrump', 'no trump']]);
+	var thresholdToMakeANonBiddableSuitBiddable = 3;
+	var possibleOutputs = dict ([['clubs', 'club'], ['diamonds', 'diamond'], ['hearts', 'heart'], ['spades', 'spade'], ['noTrump', 'no trump']]);
 	var biddableSuits = getBiddableSuits (hand);
 	var weightedSuitScores = getWeightedSuitScore (hand, clientPointCountingConvention);
 	var shouldReturnNoTrump = getShouldReturnNoTrump (weightedSuitScores, biddableSuits);
+	print ('{}{}'.format (shouldReturnNoTrump));
 	if (shouldReturnNoTrump) {
-		return 'no trump';
+		return possibleOutputs ['noTrump'];
 	}
 	else {
-		// pass;
+		if (len (biddableSuits) == 0) {
+			var biddableSuits = ['clubs', 'diamonds', 'hearts', 'spades'];
+		}
+		var suitsMentionedByOpponents = getSuitsMentionedByOpponents (biddingRelative);
+		print ('{}{}'.format (biddableSuits));
+		print ('{}{}'.format (weightedSuitScores));
+		print ('{}{}'.format (suitsMentionedByOpponents));
+		while (weightedSuitScores.py_items ()) {
+			var strongestSuit = max (weightedSuitScores, __kwargtrans__ ({key: weightedSuitScores.py_get}));
+			var strongestSuitValue = weightedSuitScores [strongestSuit];
+			delete weightedSuitScores [strongestSuit];
+			var secondStrongestSuit = max (weightedSuitScores, __kwargtrans__ ({key: weightedSuitScores.py_get}));
+			var secondStrongestSuitValue = weightedSuitScores [secondStrongestSuit];
+			delete weightedSuitScores [secondStrongestSuit];
+			if (strongestSuitValue == secondStrongestSuitValue) {
+				print ('equal---------------------');
+				var strongestSuitLength = getLengthOfSuitFromHand (hand, strongestSuit);
+				var secondStrongestSuitLength = getLengthOfSuitFromHand (hand, secondStrongestSuit);
+				if (strongestSuitLength == secondStrongestSuitLength) {
+					print ('grabbing higher up');
+					var suits = ['clubs', 'diamonds', 'hearts', 'spades'];
+					var indexForStrongestSuit = suits.find (strongestSuit);
+					var indexForSecondStrongestSuit = suits.find (secondStrongestSuit);
+					var largerSuitIndex = indexForStrongestSuit;
+					var lowerSuitIndex = indexForSecondStrongestSuit;
+					var higherSuit = strongestSuit;
+					var lowerSuit = secondStrongestSuit;
+					if (lowerSuitIndex > largerSuitIndex) {
+						var lowerSuit = strongestSuit;
+						var higherSuit = secondStrongestSuit;
+					}
+					var strongestSuit = higherSuit;
+					var secondStrongestSuit = lowerSuit;
+				}
+				else {
+					print ('grabbing longer suit');
+					var longerSuit = strongestSuit;
+					var shorterSuit = secondStrongestSuit;
+					if (secondStrongestSuitLength > strongestSuitLength) {
+						var longerSuit = secondStrongestSuit;
+						var shorterSuit = strongestSuit;
+					}
+					var strongestSuit = longerSuit;
+					var secondStrongestSuit = shorterSuit;
+				}
+			}
+			if (abs (strongestSuitValue - secondStrongestSuitValue) > thresholdToMakeANonBiddableSuitBiddable) {
+				biddableSuits.append (strongestSuit);
+			}
+			if (__in__ (strongestSuit, biddableSuits) && suitsMentionedByOpponents [strongestSuit] === false) {
+				return possibleOutputs [strongestSuit];
+			}
+			if (__in__ (secondStrongestSuit, biddableSuits) && suitsMentionedByOpponents [secondStrongestSuit] === false) {
+				return possibleOutputs [secondStrongestSuit];
+			}
+		}
+		return null;
 	}
-	var suitsMentionedByOpponents = getSuitsMentionedByOpponents (biddingRelative);
-	var leftOpeningSuit = biddingRelative ['left'] [0];
-	var rightOpeningSuit = biddingRelative ['right'] [0];
-	var suitWithMostPoints = rightOpeningSuit;
-	var suitToReturn = null;
-	if (re.search ('pass', biddingRelative ['top'] [0], re.IGNORECASE)) {
-		var highCardPointValuesInEachSuitLocal = getHighCardPointValuesInEachSuit (hand, clientPointCountingConvention);
-		while (suitWithMostPoints != rightOpeningSuit && suitWithMostPoints != leftOpeningSuit) {
-			var suitWithMostPoints = max (highCardPointValuesInEachSuitLocal, __kwargtrans__ ({key: highCardPointValuesInEachSuitLocal.py_get}));
-			highCardPointValuesInEachSuitLocal.py_pop (suitWithMostPoints, null);
+};
+export var getLengthOfSuitFromHand = function (hand, suitName) {
+	var validSuitNames = ['clubs', 'diamonds', 'hearts', 'spades'];
+	if (!__in__ (suitName.lower (), validSuitNames)) {
+		var __except0__ = Exception ("Invalid SuitName.  Must be 'clubs', 'diamonds', 'hearts', or 'spades'");
+		__except0__.__cause__ = null;
+		throw __except0__;
+	}
+	var suitCounts = getSuitCountsFromHand (hand);
+	for (var suit of validSuitNames) {
+		if (re.search (suit, suitName, re.IGNORECASE)) {
+			return suitCounts [suit];
 		}
 	}
-	else {
-		// pass;
-	}
-	return suitToReturn;
 };
 export var getSuitsMentionedByOpponents = function (biddingRelative) {
 	var mentioned = dict ([['clubs', false], ['diamonds', false], ['hearts', false], ['spades', false], ['noTrump', false]]);
@@ -577,6 +631,7 @@ export var getCurrentContractBid = function (biddingAbsolute) {
 			return bid;
 		}
 	}
+	return null;
 };
 export var handlePartnerDouble = function (hand, biddingAbsolute, biddingRelative, totalPoints, clientPointCountingConvention) {
 	if (len (biddingRelative ['top']) == 1 && re.search ('Double', biddingRelative ['top'] [0], re.IGNORECASE)) {
@@ -679,11 +734,9 @@ export var getDistributionPoints = function (hand, biddingAbsolute, biddingRelat
 	var distributionPoints = -(1);
 	var hasPartnerOpened = getHasPartnerOpened (biddingAbsolute, seatingRelative, seatingRelative ['bottom']);
 	getShouldCalculateRespondingPoints (biddingAbsolute);
-	if (hasPartnerOpened) {
-		var partnersMentionedSuits = getPartnersMentionedSuits (biddingRelative ['top']);
-		var distributionPoints = getRespondingDistributionPoints (suitCounts, partnersMentionedSuits);
-	}
-	else {
+	var distributionPoints = getRespondingDistributionPoints (suitCounts);
+	var currentActualBid = getCurrentContractBid (biddingAbsolute);
+	if (currentActualBid === null) {
 		var distributionPoints = getOpeningDistributionPoints (suitCounts);
 	}
 	return distributionPoints;
@@ -694,12 +747,168 @@ export var getPartnersMentionedSuits = function (partnersBids) {
 export var getShouldCalculateRespondingPoints = function (biddingAbsolute) {
 	// pass;
 };
-export var getRespondingDistributionPoints = function (suitCounts, partnersMentionedSuits) {
-	return -(1);
+getDistributionPoints;
+export var getRespondingDistributionPoints = function (suitCounts) {
+	var result = dict ([['clubs', 0], ['diamonds', 0], ['hearts', 0], ['spades', 0]]);
+	var requiredLengthToCountMultiple = 4;
+	print ('');
+	print ('{}{}'.format (suitCounts));
+	for (var [suit, suitCount] of suitCounts.py_items ()) {
+		if (suitCount == 13) {
+			result [suit] = 40;
+			continue;
+		}
+		if (suitCount == 12) {
+			result [suit] = 36;
+			continue;
+		}
+		if (suitCount == 11) {
+			result [suit] = 32;
+			continue;
+		}
+		if (suitCount == 10) {
+			result [suit] = 28;
+			continue;
+		}
+		if (suitCount == 0) {
+			result [suit] = 0;
+			continue;
+		}
+		var baselineShortnessPoints = getBaselineShortnessPoints (suitCounts, suit);
+		print ('{}{}'.format (suit));
+		if (suitCount >= requiredLengthToCountMultiple) {
+			var surplusCount = suitCount - 3;
+			var multiplier = 0;
+			for (var [suit2, suitCount2] of suitCounts.py_items ()) {
+				if (suit == suit2) {
+					continue;
+				}
+				if (suitCount2 == 0) {
+					var multiplier = 3;
+					break;
+				}
+			}
+			if (multiplier == 0) {
+				for (var [suit2, suitCount2] of suitCounts.py_items ()) {
+					if (suit == suit2) {
+						continue;
+					}
+					if (suitCount2 == 1) {
+						var multiplier = 2;
+						break;
+					}
+				}
+			}
+			if (multiplier == 0) {
+				for (var [suit2, suitCount2] of suitCounts.py_items ()) {
+					if (suit == suit2) {
+						continue;
+					}
+					if (suitCount2 == 2) {
+						var multiplier = 1;
+						break;
+					}
+				}
+			}
+			print ('surplus');
+			print ('{}{}'.format (multiplier));
+			print ('{}{}'.format (surplusCount));
+			result [suit] = baselineShortnessPoints + multiplier * surplusCount;
+		}
+		else {
+			print ('baseline');
+			result [suit] = baselineShortnessPoints;
+		}
+	}
+	print ('');
+	return result;
+};
+export var getNumberOfQuickTricks = function (hand) {
+	var quickTrickTotals = dict ([['aceKing', 2], ['aceQueen', 1.5], ['aceOnly', 1], ['kingQueen', 1], ['kingCovered', 0.5]]);
+	var totalQuickTricks = 0;
+	for (var i = 0; i < len (hand); i++) {
+		var suit = hand [i];
+		var hasAce = false;
+		var hasKing = false;
+		var hasQueen = false;
+		var isCovered = len (suit) > 1;
+		print ('');
+		for (var j = 0; j < len (suit); j++) {
+			var cardAsNumber = suit [j];
+			var cardValue = __mod__ (cardAsNumber, 13);
+			print ('{}{}'.format (cardValue));
+			if (cardValue == 12) {
+				var hasAce = true;
+			}
+			if (cardValue == 11) {
+				var hasKing = true;
+			}
+			if (cardValue == 10) {
+				var hasQueen = true;
+			}
+		}
+		if (hasAce && hasKing) {
+			totalQuickTricks += quickTrickTotals ['aceKing'];
+		}
+		else if (hasAce && hasQueen) {
+			totalQuickTricks += quickTrickTotals ['aceQueen'];
+		}
+		else if (hasAce) {
+			totalQuickTricks += quickTrickTotals ['aceOnly'];
+		}
+		else if (hasKing && hasQueen) {
+			totalQuickTricks += quickTrickTotals ['kingQueen'];
+		}
+		else if (hasKing && isCovered) {
+			totalQuickTricks += quickTrickTotals ['kingCovered'];
+		}
+	}
+	return totalQuickTricks;
 };
 export var getOpeningDistributionPoints = function (suitCounts) {
+	var distributionPoints = dict ([['clubs', 0], ['diamonds', 0], ['hearts', 0], ['spades', 0]]);
+	var requiredLengthsToCount = dict ([['clubs', 4], ['diamonds', 4], ['hearts', 5], ['spades', 5]]);
+	for (var [suit, suitCount] of suitCounts.py_items ()) {
+		if (suitCount >= 10) {
+			if (suitCount == 10) {
+				distributionPoints [suit] = unlikelyLengths ['ten'];
+			}
+			if (suitCount == 11) {
+				distributionPoints [suit] = unlikelyLengths ['eleven'];
+			}
+			if (suitCount == 12) {
+				distributionPoints [suit] = unlikelyLengths ['twelve'];
+			}
+			if (suitCount == 13) {
+				distributionPoints [suit] = unlikelyLengths ['thirteen'];
+			}
+		}
+		else {
+			if (suitCount == 0) {
+				distributionPoints [suit] = 0;
+			}
+			if (suitCount < requiredLengthsToCount [suit]) {
+				distributionPoints [suit] = 0;
+			}
+			else {
+				var baselineShortnessPoints = getBaselineShortnessPoints (suitCounts, suit);
+				if (suitCount > 4) {
+					distributionPoints [suit] = baselineShortnessPoints + (suitCount - 4);
+				}
+				else {
+					distributionPoints [suit] = baselineShortnessPoints;
+				}
+			}
+		}
+	}
+	return distributionPoints;
+};
+export var getBaselineShortnessPoints = function (suitCounts, suitToSkip) {
 	var points = 0;
 	for (var [suit, suitCount] of suitCounts.py_items ()) {
+		if (re.search (suitToSkip, suit, re.IGNORECASE)) {
+			continue;
+		}
 		if (suitCount == 0) {
 			points += distributionPointValues ['shortness'] ['void'];
 		}
@@ -708,9 +917,6 @@ export var getOpeningDistributionPoints = function (suitCounts) {
 		}
 		else if (suitCount == 2) {
 			points += distributionPointValues ['shortness'] ['doubleton'];
-		}
-		else if (suitCount > 4) {
-			points += suitCounts [suit] - 4;
 		}
 	}
 	return points;
