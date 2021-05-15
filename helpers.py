@@ -230,7 +230,7 @@ def getIndexOfPlayersNthBid(username, biddingAbsolute, nthBid):
 
     usersNthBid = userBidArray[nthBid - 1][1]
     for bid in biddingAbsolute:
-        if usersNthBid == bid:
+        if usersNthBid == bid[1]:
             return count
         count += 1
     #return the nth bid -1 for that array
