@@ -4535,10 +4535,59 @@ class getHandFromHandDictionary(unittest.TestCase):
         self.assertListEqual(actual, expected)
 #endregion
 
+class getIsMinor(unittest.TestCase):
+    def test_error(self):
+        self.bid = 'One No Trumps'
+        self.actual = helpers.getIsMinor(self.bid)
+        self.expected = None
+        self.assertEqual(self.expected, self.actual)
+    def test_false(self):
+        self.bid = 'One No Trump'
+        self.actual = helpers.getIsMinor(self.bid)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+    def test_false2(self):
+        self.bid = 'One Spade'
+        self.actual = helpers.getIsMinor(self.bid)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+    def test_true(self):
+        self.bid = 'One Club'
+        self.actual = helpers.getIsMinor(self.bid)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    def test_true2(self):
+        self.bid = 'Two Diamond'
+        self.actual = helpers.getIsMinor(self.bid)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
 
-
-
-
+class getIsMajor(unittest.TestCase):
+    def test_error(self):
+        self.bid = 'One No Trumps'
+        self.actual = helpers.getIsMajor(self.bid)
+        self.expected = None
+        self.assertEqual(self.expected, self.actual)
+    def test_True(self):
+        self.bid = 'Two Heart'
+        self.actual = helpers.getIsMajor(self.bid)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    def test_True2(self):
+        self.bid = 'One Spade'
+        self.actual = helpers.getIsMajor(self.bid)
+        self.expected = True
+        self.assertEqual(self.expected, self.actual)
+    def test_false(self):
+        self.bid = 'One Club'
+        self.actual = helpers.getIsMajor(self.bid)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
+    def test_false2(self):
+        self.bid = 'Two Diamond'
+        self.actual = helpers.getIsMajor(self.bid)
+        self.expected = False
+        self.assertEqual(self.expected, self.actual)
 
 
 

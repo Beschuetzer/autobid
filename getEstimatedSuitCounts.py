@@ -12,8 +12,9 @@ minDefaultValue = 0
 openMinorMinValue = 4
 openMajorMinValue = 5
 openNoTrumpMinValue = 2
-openWeakTwo = 6
-openWeakThree = 7
+openWeakTwoMinValue = 6
+openWeakThreeMinValue = 7
+respondingMinValue = 3
 
 #NOTE: when takeout dbl or 2 club responding
 forcedResponseMinValue = 3
@@ -21,11 +22,12 @@ forcedResponseMinValue = 3
 
 class EstimateSuitCounts: 
     '''
-    inputs:
-
-    returns:
-
-
+    inputs: ------------------------------ 
+        biddingRelative: dictionary where keys are relative positions and values are lists of strings representing that user's bids (in chronological order) 
+        self.biddingAbsolute: list of bids as a list 
+        self.seatingRelative: dictionary where keys are relative positions and values are strings representing user's name
+    returns ------------------------------:
+         a dictionary representing the current "best guess" of how many of each suit a player has
     
     NOTE: Are the bottom two useful for playing phase when someone can no longer follow suit in the suit that someone said two or more time?
     if a player opens a suit then says the same suit again do they likely have 1-2 more of that suit than would be assumed otherwise (5-6 for minors and 6-7 majorsminDefaultValue)
@@ -94,6 +96,7 @@ class EstimateSuitCounts:
                 },
             },
         }
+        self.start()
 
     def start(self):
         for location, playersBids in self.biddingRelative.items():
@@ -103,6 +106,7 @@ class EstimateSuitCounts:
                 continue
             #endregion
             #region Setup
+            
             self.username = self.seatingRelative[location]
             self.partner = self.seatingRelative[helpers.getLocationAfterRotationsAround(location, 2)]
             print('')
@@ -120,6 +124,8 @@ class EstimateSuitCounts:
             if len(self.biddingRelative[location]) > 1:
                 self.secondBid = self.biddingRelative[location][1]
 
+            self.isFirstBidMinor = helpers.getIsMinor(self.firstBid)
+            self.isFirstBidMajor = helpers.getIsMajor(self.firstBid)
             self.firstBidIsPass = re.search('pass', self.firstBid, re.IGNORECASE)
             self.isTeamsFirstBidOpportunity = helpers.getIsTeamsFirstBidOpportunity(self.biddingRelative, location)
             self.isPartnersFirstBidPass = helpers.getIsPartnersFirstBidPass(self.biddingRelative, self.seatingRelative, self.username)
@@ -153,8 +159,33 @@ class EstimateSuitCounts:
             self.wasPlayerForcedToBid = helpers.getWasForcedToBid(self.username, self.biddingAbsolute, self.seatingRelative)
             self.partnersLocation = helpers.getPartnersLocation(self.username, self.seatingRelative)
             self.hasPartnerOpenedOneNoTrump = helpers.getHasPartnerOpenedNoTrump(location, self.partnersLocation, self.biddingRelative, self.biddingAbsolute, self.seatingRelative)
-            if self.hasPartnerOpenedOneNoTrump and self.secondBid == '':
+
+            # if self.wasPlayerForcedToBid
+            # if getIsMinor(firstBid):
+           
+            self.suitOfBid = helpers.getSuitFromBid(self.firstBid)
+            self.suitKey = self.convertToKey()
+
+            print(f"self.suitOfBid = {self.suitOfBid}")
+            print(f"self.suitKey = {self.suitKey}")
+            print(f"self.isFirstBidMinor = {self.isFirstBidMinor}")
+            print(f"self.isFirstBidMajor = {self.isFirstBidMajor}")
+            if self.suitKey is None: continue
+
+
+            if re.search('two', self.firstBid, re.IGNORECASE):
+                self.suitCounts[location][self.suitKey]['min'] = openWeakTwoMinValue
+
+            elif re.search('three', self.firstBid, re.IGNORECASE):
+                self.suitCounts[location][self.suitKey]['min'] = openWeakThreeMinValue
+
+            elif self.isFirstBidMinor :
+                self.suitCounts[location][self.suitKey]['min'] = openMinorMinValue
             
+            elif self.isFirstBidMajor:
+                self.suitCounts[location][self.suitKey]['min'] = openMajorMinValue
+
+            elif self.hasPartnerOpenedOneNoTrump and self.secondBid == '':
                 continue
 
             #endregion
@@ -162,26 +193,17 @@ class EstimateSuitCounts:
             elif self.hasSomeoneOpenedTwoClubs:
                 pass
             #endregion
-            #region Setting Initial Bounds Logic
-            elif self.secondBid == '':
-                pass
-                
-            #endregion
-            #region Two or More Bids Made
-            else:
-                continue
-            # #endregion
     
-def getEstimatedSuitCounts(biddingRelative = None, biddingAbsolute = None, seatingRelative = None):
-    '''
-    inputs: ------------------------------ 
-        biddingRelative: dictionary where keys are relative positions and values are lists of strings representing that user's bids (in chronological order) 
-        self.biddingAbsolute: list of bids as a list 
-        self.seatingRelative: dictionary where keys are relative positions and values are strings representing user's name
-    returns ------------------------------:
-         a dictionary representing the current "best guess" of how many of each suit a player has
-    '''
-    estimateSuitCounts = EstimateSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
-    estimateSuitCounts.start()
+    def convertToKey(self):
+        # 'Heart' => 'hearts'
+        print(f"self.suitOfBid = {self.suitOfBid}")
+        try:
+            return self.suitOfBid.lower() + 's'
+        except:
+            return None
+        
+
     
-    return estimateSuitCounts.suitCounts
+    
+
+

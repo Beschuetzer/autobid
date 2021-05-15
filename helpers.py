@@ -1577,6 +1577,23 @@ def getHasPartnerOpenedNoTrump(location, partnersLocation, biddingRelative, bidd
         if partnersOneNoTrumpBidIndex < locationsLastBidIndex: return True
         return False
 
+def getIsMinor(bid):
+    try:
+        indexOfBid = autoBid.contracts.index(bid)
+        isClub = indexOfBid % 5 == 0
+        isDiamond = indexOfBid % 5 == 1
+        return isDiamond or isClub
+    except:
+        return None
+
+def getIsMajor(bid):
+    try:
+        indexOfBid = autoBid.contracts.index(bid)
+        isHeart = indexOfBid % 5 == 2
+        isSpade = indexOfBid % 5 == 3
+        return isHeart or isSpade
+    except:
+        return None
 
 #region Test Case Helpers
 def getBiddingAbsoluteFromBiddingObjAndSeatingRelative(biddingRelative, seatingRelative):

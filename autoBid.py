@@ -127,7 +127,7 @@ def autoBid(biddingAbsolute, hand, scoring, seatingInput, spot, clientPointCount
     biddingHistory = helpers.getBiddingHistory(biddingAbsolute)
     seatingRelative = helpers.getSeatingRelative(seating, spot)
     estimatedPoints = getEstimatedPoints.getEstimatedPoints( biddingRelative, biddingAbsolute, seatingRelative)
-    estimatedSuitCounts = getEstimatedSuitCounts.getEstimatedSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
+    estimatedSuitCounts = getEstimatedSuitCounts.EstimateSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
     partnersBids = biddingRelative['top']
 
     print(f"estimatedPoints = {estimatedPoints}")
