@@ -13,8 +13,8 @@ class EstimateSuitCounts:
     opening weakTwo means at least 6
     opening weakThree means at least 7
 
-    if a player opens a suit then says the same suit again do they likely have 1-2 more of that suit than would be assumed otherwise (5-6 for minors and 6-7 for majors?)
-    responding twice with the same suit means you have at least one more than the minimum required to say that suit?  if three times in a row, at least 2 more?  does it have to be right after one another?
+    if a player opens a suit then says the same suit again do they likely have 1-2 more of that suit than would be assumed otherwise (5-6 for minors and 6-7 for majorsminDefaultValue)
+    responding twice with the same suit means you have at least one more than the minimum required to say that suit?  if three times minDefaultValue a row, at least 2 more?  does it have to be right after one another?
 
     does a jumpshift ever definitely mean more of a suit?
     '''
@@ -23,7 +23,8 @@ class EstimateSuitCounts:
         self.biddingRelative = biddingRelative
         self.biddingAbsolute = self.biddingAbsolute
         self.seatingRelative = self.seatingRelative
-        self.defaultValue = 3.25
+        self.maxDefaultValue = 3.25
+        self.minDefaultValue = 0
         self.suits = {
             'clubs': 'clubs',
             'diamonds': 'diamonds',
@@ -33,56 +34,56 @@ class EstimateSuitCounts:
         self.suitCounts = {
             "top": {
                 self.suits["clubs"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
                 self.suits["diamonds"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
                 self.suits["hearts"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
                 self.suits["spades"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
             },
             "left": {
                 self.suits["clubs"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
                 self.suits["diamonds"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
                 self.suits["hearts"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
                 self.suits["spades"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
             },
             "right": {
                 self.suits["clubs"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
                 self.suits["diamonds"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
                 self.suits["hearts"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
                 self.suits["spades"]: {
-                    "min": self.defaultValue,
-                    "max": self.defaultValue,
+                    "min": self.minDefaultValue,
+                    "max": self.maxDefaultValue,
                 },
             },
         }
