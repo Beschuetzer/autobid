@@ -4588,6 +4588,28 @@ class getIsMajor(unittest.TestCase):
         self.actual = helpers.getIsMajor(self.bid)
         self.expected = False
         self.assertEqual(self.expected, self.actual)
+class getIndexOfPlayersNthBid(unittest.TestCase):
+    def setUp(self) -> None:
+        self.seatingRelative = {
+            "top": "TopPlayer",
+            "bottom": "BottomPlayer",
+            "left": "LeftPlayer",
+            "right": "RightPlayer",
+        }
+    def test_1(self):
+        self.biddingRelative = {
+            "left": ['pass', 'double'],
+            "top": ['double', 'pass'],
+            "right": ['three club', 'pass'],
+            "bottom": ['pass'],
+        }
+        self.username = "RightPlayer"
+        self.nthBid = 1
+        self.expected = 2
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getIndexOfPlayersNthBid(self.username, self.bids, self.nthBid)
+        self.assertEqual(self.actual, self.expected)
 
 
 
