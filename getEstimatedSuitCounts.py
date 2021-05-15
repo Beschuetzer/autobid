@@ -15,20 +15,16 @@ openNoTrumpMinValue = 2
 openWeakTwo = 6
 openWeakThree = 7
 
+#NOTE: when takeout dbl or 2 club responding
+forcedResponseMinValue = 3
+
 
 class EstimateSuitCounts: 
     '''
-    assumptions:
+    inputs:
 
-    opening majors = 5
-    opening minors = 4
-    opening in no trump means no voids and probably no singleton and no more than 7 in any suit?
-    responding NT means same thing as opening NT?
+    returns:
 
-    responding to your partner's opening suit with same suit means you have at least 3 of that suit?
-
-    opening weakTwo means at least 6
-    opening weakThree means at least 7
 
     
     NOTE: Are the bottom two useful for playing phase when someone can no longer follow suit in the suit that someone said two or more time?
@@ -38,15 +34,10 @@ class EstimateSuitCounts:
 
     does a jumpshift ever definitely mean more of a suit?
     '''
-
-    
-
     def __init__(self, biddingRelative, biddingAbsolute, seatingRelative):
         self.biddingRelative = biddingRelative
         self.biddingAbsolute = biddingAbsolute
         self.seatingRelative = seatingRelative
-       
-        
         self.suitCounts = {
             "left": {
                 suits["clubs"]: {
@@ -103,15 +94,8 @@ class EstimateSuitCounts:
                 },
             },
         }
-        print(f"self = {self}")
-        print(f"suitCounts = {self.suitCounts}")
-
-    def getResult(self, num1, num2):
-        return num1 * num2
-       
 
     def start(self):
-        # #NOTE: this is the for loop from getEstimatedPoints (most of this will be deleted)
         for location, playersBids in self.biddingRelative.items():
         #region Skipping estimation if location is bottom (as that is your hand) or the player in question has made no bids
             self.numberOfBidsMade = len(self.biddingRelative[location])
@@ -187,8 +171,7 @@ class EstimateSuitCounts:
             else:
                 continue
             # #endregion
-
-
+    
 def getEstimatedSuitCounts(biddingRelative = None, biddingAbsolute = None, seatingRelative = None):
     '''
     inputs: ------------------------------ 
@@ -198,8 +181,7 @@ def getEstimatedSuitCounts(biddingRelative = None, biddingAbsolute = None, seati
     returns ------------------------------:
          a dictionary representing the current "best guess" of how many of each suit a player has
     '''
-    estimateSuitCounts = EstimateSuitCounts(biddingRelative, self.biddingAbsolute, self.seatingRelative)
-
-    #TODO: figure out what methods we need to run to get correct suitCounts
+    estimateSuitCounts = EstimateSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
+    estimateSuitCounts.start()
     
     return estimateSuitCounts.suitCounts
