@@ -16,17 +16,367 @@ def getObject(biddingRelative = None):
   return obj
 
 class TestingResultMethod(unittest.TestCase):
+  def setUp(self) -> None:
+    self.actual = {}
+    self.expected = {}
+
   def tearDown(self) -> None:
     print('')
     print('biddingRelative ={0}'.format   (self.biddingRelative))
+    print('')
     print('actual ={0}'.format   (self.actual))
+    print('')
     print('expected = {0}'.format(self.expected))
     print('')
 
-  def test_1(self):
-    self.biddingRelative = testCases.biddingRelatives['oneBidOpportunity']['notForcedOneNoTrumpResponse']
-    self.obj = getObject(self.biddingRelative)
+  def test_default(self):
+    self.biddingRelative = {
+        "left": [],
+        "top": [],
+        "right": [],
+        "bottom": [],
+    }
 
-    self.expected = 10
-    self.actual = getEstimatedSuitCounts.EstimateSuitCounts(self.biddingRelative, self.obj.biddingAbsolute, self.obj.seatingRelative).getResult(5, 2)
-    self.assertEqual(self.expected, self.actual)
+    self.obj = getObject(self.biddingRelative)
+    print(self.obj)
+    self.expected = {
+        "left": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+        "top": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          }, 
+        },
+        "right": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+           getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+    }
+
+    self.actual = getEstimatedSuitCounts.EstimateSuitCounts(self.biddingRelative, self.obj.biddingAbsolute, self.obj.seatingRelative).suitCounts
+    self.assertDictEqual(self.expected, self.actual)
+  
+  def test_open_minor(self):
+    self.biddingRelative = {
+        "left": ['One Diamond'],
+        "top": ['pass'],
+        "right": ['pass'],
+        "bottom": [],
+    }
+
+    self.obj = getObject(self.biddingRelative)
+    print(self.obj)
+    self.expected = {
+        "left": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.openMinorMinValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+        "top": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          }, 
+        },
+        "right": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+           getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+    }
+
+    self.actual = getEstimatedSuitCounts.EstimateSuitCounts(self.biddingRelative, self.obj.biddingAbsolute, self.obj.seatingRelative).suitCounts
+    self.assertDictEqual(self.expected, self.actual)
+
+  def test_open_major(self):
+    self.biddingRelative = {
+        "left": ['One Spade'],
+        "top": ['pass'],
+        "right": ['pass'],
+        "bottom": [],
+    }
+
+    self.obj = getObject(self.biddingRelative)
+    print(self.obj)
+    self.expected = {
+        "left": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.openMajorMinValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+        "top": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          }, 
+        },
+        "right": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+           getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+    }
+
+    self.actual = getEstimatedSuitCounts.EstimateSuitCounts(self.biddingRelative, self.obj.biddingAbsolute, self.obj.seatingRelative).suitCounts
+    self.assertDictEqual(self.expected, self.actual)
+
+  def test_open_NT(self):
+    self.biddingRelative = {
+        "left": ['One No Trump'],
+        "top": ['pass'],
+        "right": ['pass'],
+        "bottom": [],
+    }
+
+    self.obj = getObject(self.biddingRelative)
+    print(self.obj)
+    self.expected = {
+        "left": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.openNoTrumpMinValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.openNoTrumpMinValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.openNoTrumpMinValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.openNoTrumpMinValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+        "top": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          }, 
+        },
+        "right": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+           getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+    }
+
+    self.actual = getEstimatedSuitCounts.EstimateSuitCounts(self.biddingRelative, self.obj.biddingAbsolute, self.obj.seatingRelative).suitCounts
+    self.assertDictEqual(self.expected, self.actual)
+
+def test_open_major(self):
+    self.biddingRelative = {
+        "left": ['One Spade'],
+        "top": ['pass'],
+        "right": ['pass'],
+        "bottom": [],
+    }
+
+    self.obj = getObject(self.biddingRelative)
+    print(self.obj)
+    self.expected = {
+        "left": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.openMajorMinValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+        "top": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          }, 
+        },
+        "right": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+           getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+    }
+
+    self.actual = getEstimatedSuitCounts.EstimateSuitCounts(self.biddingRelative, self.obj.biddingAbsolute, self.obj.seatingRelative).suitCounts
+    self.assertDictEqual(self.expected, self.actual)
+
+
