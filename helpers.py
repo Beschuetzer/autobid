@@ -234,6 +234,7 @@ def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
         # print(f"biddingAbsolute = {biddingAbsolute}")
         # print(f"partnersFirstBid = {partnersFirstBid}")
         # print(f"bidAfterPartnersFirstBid = {bidAfterPartnersFirstBid}")
+        
         caseDouble = re.search('double', partnersFirstBid[1], re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid[1], re.IGNORECASE)
         caseNoTrump = re.search('trump', partnersFirstBid[1], re.IGNORECASE) and re.search('pass', bidAfterPartnersFirstBid[1], re.IGNORECASE)
         if caseDouble or caseNoTrump: return True

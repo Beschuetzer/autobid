@@ -457,9 +457,9 @@ class TestingResultMethod(unittest.TestCase):
 
   def test_respond_takeout_double(self):
       self.biddingRelative = {
-          "bottom": ['pass'],
-          "left": ['One Diamond'],
-          "top": ['Double'],
+          "bottom": ['One Diamond'],
+          "left": ['Double'],
+          "top": ['pass'],
           "right": ['One Heart'],
       }
 
@@ -472,7 +472,7 @@ class TestingResultMethod(unittest.TestCase):
               "expected": getEstimatedSuitCounts.expectedValue,
             },
             getEstimatedSuitCounts.suits["diamonds"]: {
-              "min": getEstimatedSuitCounts.openMinorMinValue,
+              "min": getEstimatedSuitCounts.minDefaultValue,
               "expected": getEstimatedSuitCounts.expectedValue,
             },
             getEstimatedSuitCounts.suits["hearts"]: {

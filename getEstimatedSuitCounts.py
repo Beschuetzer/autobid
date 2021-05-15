@@ -164,16 +164,23 @@ class EstimateSuitCounts:
             # if getIsMinor(firstBid):
            
             self.suitOfBid = helpers.getSuitFromBid(self.firstBid)
-            self.suitKey = self.convertToKey()
+            self.suitKey = self.convertSuitOfBidToKey()
 
-            print(f"self.suitOfBid = {self.suitOfBid}")
-            print(f"self.suitKey = {self.suitKey}")
-            print(f"self.isFirstBidMinor = {self.isFirstBidMinor}")
-            print(f"self.isFirstBidMajor = {self.isFirstBidMajor}")
+            print(f"self.wasPlayerForcedToBid = {self.wasPlayerForcedToBid}")
+            print(f"self.wasPlayerForcedToBid = {self.wasPlayerForcedToBid}")
+
             if self.suitKey is None: continue
 
+            if self.wasPlayerForcedToBid:
+                self.suitCounts[location][self.suitKey]['min'] = forcedResponseMinValue
 
-            if re.search('two', self.firstBid, re.IGNORECASE):
+            elif re.search('trump', self.firstBid, re.IGNORECASE):
+                self.suitCounts[location][suits['clubs']]['min'] = openNoTrumpMinValue
+                self.suitCounts[location][suits['diamonds']]['min'] = openNoTrumpMinValue
+                self.suitCounts[location][suits['hearts']]['min'] = openNoTrumpMinValue
+                self.suitCounts[location][suits['spades']]['min'] = openNoTrumpMinValue
+
+            elif re.search('two', self.firstBid, re.IGNORECASE):
                 self.suitCounts[location][self.suitKey]['min'] = openWeakTwoMinValue
 
             elif re.search('three', self.firstBid, re.IGNORECASE):
@@ -194,7 +201,7 @@ class EstimateSuitCounts:
                 pass
             #endregion
     
-    def convertToKey(self):
+    def convertSuitOfBidToKey(self):
         # 'Heart' => 'hearts'
         print(f"self.suitOfBid = {self.suitOfBid}")
         try:
