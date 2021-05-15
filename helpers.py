@@ -220,20 +220,36 @@ def getIndexOfPlayersNthBid(username, biddingAbsolute, nthBid):
     returns ------------------------------ 
         an integer representing the index of username's nth bid 
     '''
-    userBidArray = []
-    count = 0
+    print(f"nthBid = {nthBid}")
+    if nthBid > 0:
+        baseValue = -1
+        for i in range(len(biddingAbsolute)):
+            bid = biddingAbsolute[i]
+            if bid[0] == username: 
+                baseValue = i
+                break
+        
+        indexToReturn = baseValue + (4 * (nthBid - 1))
+        print(f"baseValue = {baseValue}")
+        print(f"indexToReturn = {indexToReturn}")
+        if indexToReturn >= 0 and indexToReturn <= len(biddingAbsolute): return indexToReturn
+    elif nthBid < 0:
+        baseValue = -1
+        startvalue = len(biddingAbsolute) -1
+        while startvalue >= 0:
+            print(f"startvalue = {startvalue}")
+            bid = biddingAbsolute[startvalue]
+            if bid[0] == username: 
+                baseValue = startvalue
+                break
+            startvalue -= 1
+        
+        indexToReturn = baseValue + (4 * (nthBid + 1))
+        print(f"baseValue = {baseValue}")
+        print(f"indexToReturn = {indexToReturn}")
+        if indexToReturn >= 0 and indexToReturn <= len(biddingAbsolute): return indexToReturn
 
-    for bid in biddingAbsolute:         
-        usernameOfBid = bid[0]
-        if usernameOfBid == username:
-            userBidArray.append(bid)
-
-    usersNthBid = userBidArray[nthBid - 1][1]
-    for bid in biddingAbsolute:
-        if usersNthBid == bid[1]:
-            return count
-        count += 1
-    #return the nth bid -1 for that array
+    else: raise ValueError('Invalid nthBid.')
 
 def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
     '''
@@ -250,8 +266,6 @@ def getWasForcedToBid(username, biddingAbsolute, seatingRelative):
         partnersUsername = getUsernamesPartner(username, seatingRelative) 
         indexOfPartnersFirstBid = getIndexOfNthBid(partnersUsername, biddingAbsolute, 1)
         partnersFirstBid = biddingAbsolute[indexOfPartnersFirstBid]
-        print(3)
-        print(f"indexOfPartnersFirstBid = {indexOfPartnersFirstBid}")
         
         indexOfPlayersBid = getIndexOfPlayersNthBid(username, biddingAbsolute, 1)
         if indexOfPlayersBid < indexOfPartnersFirstBid: return False

@@ -15,7 +15,7 @@ def getObject(biddingRelative = None):
   obj = getEstimatedSuitCounts.EstimateSuitCounts(biddingRelative, biddingAbsolute, seatingRelative)
   return obj
 
-class TestingResultMethod(unittest.TestCase):
+class Main(unittest.TestCase):
   def setUp(self) -> None:
     self.actual = {}
     self.expected = {}

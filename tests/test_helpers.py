@@ -4596,7 +4596,25 @@ class getIndexOfPlayersNthBid(unittest.TestCase):
             "left": "LeftPlayer",
             "right": "RightPlayer",
         }
-    def test_1(self):
+
+    def tearDown(self) -> None:
+        print(f"self.bids = {self.bids}")
+
+    def test_invalid(self):
+        self.biddingRelative = {
+            "left": ['pass', 'double'],
+            "top": ['double', 'pass'],
+            "right": ['three club', 'pass'],
+            "bottom": ['pass'],
+        }
+        self.username = "RightPlayer"
+        self.nthBid = 0
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        with self.assertRaises(ValueError) as cm:
+            helpers.getIndexOfPlayersNthBid(self.username, self.bids, self.nthBid)
+    
+    def test_positive1(self):
         self.biddingRelative = {
             "left": ['pass', 'double'],
             "top": ['double', 'pass'],
@@ -4606,6 +4624,51 @@ class getIndexOfPlayersNthBid(unittest.TestCase):
         self.username = "RightPlayer"
         self.nthBid = 1
         self.expected = 2
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getIndexOfPlayersNthBid(self.username, self.bids, self.nthBid)
+        self.assertEqual(self.actual, self.expected)
+
+    def test_positive2(self):
+        self.biddingRelative = {
+            "left": ['pass', 'double','pass','pass','pass'],
+            "top": ['double', 'pass','pass','pass','pass'],
+            "right": ['three club', 'pass','pass','pass','pass'],
+            "bottom": ['pass','pass','pass','pass'],
+        }
+        self.username = "TopPlayer"
+        self.nthBid = 3
+        self.expected = 9
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getIndexOfPlayersNthBid(self.username, self.bids, self.nthBid)
+        self.assertEqual(self.actual, self.expected)
+    
+    def test_negative1(self):
+        self.biddingRelative = {
+            "left": ['pass', 'double','pass','pass','pass'],
+            "top": ['double', 'pass','pass','pass','pass'],
+            "right": ['three club', 'pass','pass','pass','pass'],
+            "bottom": ['pass','pass','pass','pass'],
+        }
+        self.username = "LeftPlayer"
+        self.nthBid = -1
+        self.expected = 16
+
+        self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
+        self.actual = helpers.getIndexOfPlayersNthBid(self.username, self.bids, self.nthBid)
+        self.assertEqual(self.actual, self.expected)
+    
+    def test_negative2(self):
+        self.biddingRelative = {
+            "left": ['pass', 'double','pass','pass','pass'],
+            "top": ['double', 'pass','pass','pass','pass'],
+            "right": ['three club', 'pass','pass','pass','pass'],
+            "bottom": ['pass','pass','pass','pass'],
+        }
+        self.username = "LeftPlayer"
+        self.nthBid = -2
+        self.expected = 12
 
         self.bids = helpers.getBiddingAbsoluteFromBiddingObjAndSeatingRelative(self.biddingRelative, self.seatingRelative)
         self.actual = helpers.getIndexOfPlayersNthBid(self.username, self.bids, self.nthBid)
