@@ -945,5 +945,99 @@ class OneBidOpportunity(unittest.TestCase):
       self.actual = getEstimatedSuitCounts.EstimateSuitCounts(self.biddingRelative, self.obj.biddingAbsolute, self.obj.seatingRelative).suitCounts
       self.assertDictEqual(self.expected, self.actual)
 
+class TwoBidOpportunities(unittest.TestCase): 
+  def setUp(self) -> None:
+    self.actual = {}
+    self.expected = {}
+
+  def tearDown(self) -> None:
+    print('')
+    print('biddingRelative ={0}'.format   (self.biddingRelative))
+    print('')
+    print('actual:--------------------')
+    for location, values in self.actual.items():
+      print(location)
+      print(f'\t{values}')
+    print('')
+    print('expected:--------------------')
+    for location, values in self.expected.items():
+      print(location)
+      print(f'\t{values}')
+    print('')
+
+  #TODO: need more 2nd suit or 3rd suit cases?
+  #what about if pass first, then bid second?
+  #Maybe we just need a function that gets if the player being analyzed was the first person on that team to say that suit/NT, if so then they are considered to have opening length in suit/NT?
+  #does right have more than 4 min or just more expected (5-6)?
+  def test_pass_then_bid(self):
+    self.biddingRelative = {
+        "right": ['One Club', 'Two Club', 'Three Club'],
+        "bottom": ['pass', 'pass'],
+        "top": ['pass', 'Two Heart'],
+        "left": ['One Diamond', 'Two Spade'],
+    }
+
+    self.obj = getObject(self.biddingRelative)
+    print(self.obj)
+    self.expected = {
+        "left": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+        "top": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          }, 
+        },
+        "right": {
+          getEstimatedSuitCounts.suits["clubs"]: {
+            "min": getEstimatedSuitCounts.forcedResponseMinValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["diamonds"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["hearts"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+          getEstimatedSuitCounts.suits["spades"]: {
+            "min": getEstimatedSuitCounts.minDefaultValue,
+            "expected": getEstimatedSuitCounts.expectedValue,
+          },
+        },
+    }
+
+    self.actual = getEstimatedSuitCounts.EstimateSuitCounts(self.biddingRelative, self.obj.biddingAbsolute, self.obj.seatingRelative).suitCounts
+    self.assertDictEqual(self.expected, self.actual)
+  
 
 

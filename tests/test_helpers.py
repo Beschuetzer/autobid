@@ -191,60 +191,6 @@ class getHighCardPoints(unittest.TestCase):
     def test_Error_NoConvention(self):
         convention = 'hcp'
         self.assertEqual(helpers.getHighCardPoints([1,2,3], None), -1)
-class tallyUpTotal(unittest.TestCase):
-    def test_AllOneSuit(self):
-        suitCounts = {
-            "clubs": 13,
-            "diamonds":  0,
-            "hearts":  0,
-            "spades": 0,
-        }
-        self.assertEqual(helpers.getOpeningDistributionPoints(suitCounts), 18)
-    
-    def test_None(self):
-        suitCounts = {
-            "clubs": 4,
-            "diamonds":  3,
-            "hearts":  3,
-            "spades": 3,
-        }
-        self.assertEqual(helpers.getOpeningDistributionPoints(suitCounts), 0)
-    
-    def test_Singleton(self):
-        suitCounts = {
-            "clubs": 4,
-            "diamonds":  4,
-            "hearts":  4,
-            "spades": 1,
-        }
-        self.assertEqual(helpers.getOpeningDistributionPoints(suitCounts), 2)
-    
-    def test_Doubleton(self):
-        suitCounts = {
-            "clubs": 4,
-            "diamonds":  4,
-            "hearts":  3,
-            "spades": 2,
-        }
-        self.assertEqual(helpers.getOpeningDistributionPoints(suitCounts), 1)
-    
-    def test_FiveOfOne(self):
-        suitCounts = {
-            "clubs": 5,
-            "diamonds":  4,
-            "hearts":  3,
-            "spades": 3,
-        }
-        self.assertEqual(helpers.getOpeningDistributionPoints(suitCounts), 1)
-    
-    def test_Void(self):
-        suitCounts = {
-            "clubs": 4,
-            "diamonds":  0,
-            "hearts":  4,
-            "spades": 4,
-        }
-        self.assertEqual(helpers.getOpeningDistributionPoints(suitCounts), 3)
 class getOpeningDistributionPoints(unittest.TestCase):
     def tearDown(self):
         print(f"self.suitCounts = {self.suitCounts}")
