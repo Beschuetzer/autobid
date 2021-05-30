@@ -141,6 +141,7 @@ class EstimateSuitCounts:
             except:
                 pass
             
+            self.currentActualBidWhenUserBid = helpers.getCurrentContractBidFromBidding(self.biddingUpToUsersLastTurn)
             self.hasSomeoneOpenedTwoClubs, self.personWhoOpenedTwoClubs = helpers.getHasSomeoneOpenedTwoClubs(self.biddingAbsolute, self.biddingRelative, self.seatingRelative);
             #endregion
             #region Debugging (remove when done)
@@ -168,6 +169,7 @@ class EstimateSuitCounts:
 
             print(f"self.wasPlayerForcedToBid = {self.wasPlayerForcedToBid}")
             print(f"self.wasPlayerForcedToBid = {self.wasPlayerForcedToBid}")
+            print(f"self.currentActualBid = {self.currentActualBidWhenUserBid}")
 
             if self.suitKey is None: continue
 
@@ -180,7 +182,7 @@ class EstimateSuitCounts:
                 self.suitCounts[location][suits['hearts']]['min'] = openNoTrumpMinValue
                 self.suitCounts[location][suits['spades']]['min'] = openNoTrumpMinValue
 
-            elif re.search('two', self.firstBid, re.IGNORECASE):
+            elif re.search('two', self.firstBid, re.IGNORECASE) and (self.isFirstBidJumpshift or self.currentActualBidWhenUserBid == None):
                 self.suitCounts[location][self.suitKey]['min'] = openWeakTwoMinValue
 
             elif re.search('three', self.firstBid, re.IGNORECASE):

@@ -664,6 +664,76 @@ class OneBidOpportunity(unittest.TestCase):
 
       self.actual = getEstimatedSuitCounts.EstimateSuitCounts(self.biddingRelative, self.obj.biddingAbsolute, self.obj.seatingRelative).suitCounts
       self.assertDictEqual(self.expected, self.actual)
+  
+  def test_open_weakTwo_2(self):
+      self.biddingRelative = {
+          "bottom": ['One Spade'],
+          "left": ['Two Heart'],
+          "top": ['pass'],
+          "right": ['pass'],
+      }
+
+      self.obj = getObject(self.biddingRelative)
+      print(self.obj)
+      self.expected = {
+          "left": {
+            getEstimatedSuitCounts.suits["clubs"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+            getEstimatedSuitCounts.suits["diamonds"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+            getEstimatedSuitCounts.suits["hearts"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+            getEstimatedSuitCounts.suits["spades"]: {
+              "min": getEstimatedSuitCounts.openWeakTwoMinValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+          },
+          "top": {
+            getEstimatedSuitCounts.suits["clubs"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+            getEstimatedSuitCounts.suits["diamonds"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+            getEstimatedSuitCounts.suits["hearts"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+            getEstimatedSuitCounts.suits["spades"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            }, 
+          },
+          "right": {
+            getEstimatedSuitCounts.suits["clubs"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+            getEstimatedSuitCounts.suits["diamonds"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+            getEstimatedSuitCounts.suits["hearts"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+            getEstimatedSuitCounts.suits["spades"]: {
+              "min": getEstimatedSuitCounts.minDefaultValue,
+              "expected": getEstimatedSuitCounts.expectedValue,
+            },
+          },
+      }
+
+      self.actual = getEstimatedSuitCounts.EstimateSuitCounts(self.biddingRelative, self.obj.biddingAbsolute, self.obj.seatingRelative).suitCounts
+      self.assertDictEqual(self.expected, self.actual)
 
   def test_open_weakThree(self):
       self.biddingRelative = {
